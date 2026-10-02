@@ -193,6 +193,13 @@ module top_reticula (
     logic [7:0] sensor_id;
     logic       sensor_ok;
 
+    logic signed [15:0] mpu_accel_x;
+    logic signed [15:0] mpu_accel_y;
+    logic signed [15:0] mpu_accel_z;
+    logic signed [15:0] mpu_gyro_x;
+    logic signed [15:0] mpu_gyro_y;
+    logic signed [15:0] mpu_gyro_z;
+
     // Diagnostico temporario do WHO_AM_I.
     // BTNU solto: nibble baixo.
     // BTNU pressionado: nibble alto.
@@ -203,7 +210,13 @@ module top_reticula (
         .i2c_sda   (i2c_sda),
         .i2c_scl   (i2c_scl),
         .who_am_i  (sensor_id),
-        .sensor_ok (sensor_ok)
+        .sensor_ok (sensor_ok),
+        .accel_x   (mpu_accel_x),
+        .accel_y   (mpu_accel_y),
+        .accel_z   (mpu_accel_z),
+        .gyro_x    (mpu_gyro_x),
+        .gyro_y    (mpu_gyro_y),
+        .gyro_z    (mpu_gyro_z)
     );
 
     // -----------------------------------------------------
