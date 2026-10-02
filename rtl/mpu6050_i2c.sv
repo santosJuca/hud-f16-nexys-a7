@@ -265,7 +265,7 @@ module mpu6050_i2c #(
                                 OP_ID: begin
                                     who_am_i <= samples[0];
                                     sensor_ok <= 1'b0;
-                                    if (samples[0] == 8'h68)
+                                    if ((samples[0] == 8'h68) || (samples[0] == 8'h70))
                                         operation <= OP_WAKE;
                                 end
                                 OP_WAKE: begin

@@ -181,13 +181,13 @@ module mpu6050_i2c_tb;
         check_axes(0, 0, 0, 0, 0, 0);
         $display("PASS sensor ausente: sensor_ok=0, novas tentativas");
 
-        identity = 8'h70;
+        identity = 8'h69;
         present = 1;
-        wait (who_am_i == 8'h70);
+        wait (who_am_i == 8'h69);
         #100000;
         if (sensor_ok !== 0 || wakes != 0)
             $fatal(1, "ID incorreto: status=%b inicializacoes=%0d", sensor_ok, wakes);
-        $display("PASS WHO_AM_I=70: sensor_ok=0, sem inicializacao");
+        $display("PASS WHO_AM_I=69: sensor_ok=0, sem inicializacao");
 
         identity = 8'h68;
         nack_wake = 1;
@@ -240,6 +240,16 @@ module mpu6050_i2c_tb;
         wait (sensor_ok);
         check_axes(-1, -292, -32768, 32767, -1, -32768);
         $display("PASS recuperacao apos liberar SCL");
+
+        // Forca nova identificacao e valida o ID 0x70 observado no hardware.
+        nack_register = 1;
+        wait (!sensor_ok);
+        identity = 8'h70;
+        nack_register = 0;
+        wait (who_am_i == 8'h70);
+        wait (sensor_ok);
+        $display("PASS WHO_AM_I=70: identificacao, wake e leitura de dados");
+
         $display("PASS todos os testes");
         $finish;
     end
