@@ -150,9 +150,20 @@ module simbologia_vga (
         // Horizonte artificial
         // -------------------------------------------------
 
-        // Inclinação linear da simbologia; escalas e retículo permanecem fixos.
-        deslocamento_roll = (($signed({12'b0, pixel_x}) - 22'sd320) * 22'(roll_q8)) >>> 8;
-        distancia_horizonte = $signed({12'b0, pixel_y}) - $signed({12'b0, horizonte_y}) - deslocamento_roll;
+        // roll_q8 representa o banco da aeronave:
+        //   positivo = banco para a direita.
+        //
+        // O horizonte representa uma referencia estabilizada no mundo.
+        // Por isso sua inclinacao visual ocorre no sentido oposto ao
+        // roll da aeronave, como em um horizonte artificial convencional.
+        deslocamento_roll =
+            -((($signed({12'b0, pixel_x}) - 22'sd320) *
+               22'(roll_q8)) >>> 8);
+
+        distancia_horizonte =
+            $signed({12'b0, pixel_y}) -
+            $signed({12'b0, horizonte_y}) -
+            deslocamento_roll;
 
             // -------------------------------------------------
             // Números da escada de pitch
