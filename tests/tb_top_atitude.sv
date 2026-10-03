@@ -150,8 +150,126 @@ module tb_top_atitude;
                 $signed(dut.gyro_roll_q8)
             );
 
+        // A integracao do gyro ocorreu na borda anterior.
+        // A fusao recebe o pulso atrasado nesta borda.
+        //
+        // Na PRIMEIRA atualizacao a fusao apenas estabelece
+        // sua referencia:
+        //
+        //   atitude inicial <- acelerometro
+        //   gyro anterior   <- gyro atual
+        //
+        // Portanto, como o acelerometro ainda esta em zero,
+        // a fusao deve iniciar em zero mesmo que o gyro ja
+        // tenha integrado o primeiro intervalo.
+        @(posedge clk);
+        #1;
+
+        if (dut.fusao_valida !== 1'b1)
+            $fatal(1, "fusao complementar deveria estar valida");
+
+        if ($signed(dut.fusao_pitch_q10) !== 0 ||
+            $signed(dut.fusao_roll_q10) !== 0)
+            $fatal(
+                1,
+                "fusao deveria iniciar pela referencia accel: pitch=%0d roll=%0d",
+                $signed(dut.fusao_pitch_q10),
+                $signed(dut.fusao_roll_q10)
+            );
+
+        if ($signed(dut.fusao_pitch_px) !== 0 ||
+            $signed(dut.fusao_roll_q8) !== 0)
+            $fatal(
+                1,
+                "saida HUD da fusao deveria iniciar em zero: pitch=%0d roll=%0d",
+                $signed(dut.fusao_pitch_px),
+                $signed(dut.fusao_roll_q8)
+            );
+
+        $display(
+            "PASS inicializacao fusao: gyro=%0d/%0d fusao=0/0",
+            $signed(dut.gyro_pitch_q10),
+            $signed(dut.gyro_roll_q10)
+        );
+
+        // -------------------------------------------------
+        // Segunda amostra com movimento.
+        //
+        // Agora existe uma referencia anterior do gyro.
+        // A fusao deve usar o incremento angular entre as
+        // duas amostras e aplicar a pequena correcao do
+        // acelerometro.
+        // -------------------------------------------------
+
+        repeat (120000) @(posedge clk);
+
+        // Mantem o mesmo movimento:
+        //
+        // gyro_x_corr = +30000
+        // gyro_y_corr = +30000
+        amostra();
+
+        // Primeira borda:
+        // gyro_integrador consome dt_valid.
+        @(posedge clk);
+        #1;
+
+        // Segunda borda:
+        // atitude_fusao_complementar consome fusao_atualizar
+        // e enxerga o novo angulo integrado.
+        @(posedge clk);
+        #1;
+
+        if ($signed(dut.gyro_pitch_q10) <= 281 ||
+            $signed(dut.gyro_roll_q10) <= 281)
+            $fatal(
+                1,
+                "gyro nao acumulou segunda amostra: pitch=%0d roll=%0d",
+                $signed(dut.gyro_pitch_q10),
+                $signed(dut.gyro_roll_q10)
+            );
+
+        if ($signed(dut.fusao_pitch_q10) <= 0 ||
+            $signed(dut.fusao_pitch_q10) >=
+                $signed(dut.gyro_pitch_q10))
+            $fatal(
+                1,
+                "fusao pitch incoerente: fusao=%0d gyro=%0d",
+                $signed(dut.fusao_pitch_q10),
+                $signed(dut.gyro_pitch_q10)
+            );
+
+        if ($signed(dut.fusao_roll_q10) <= 0 ||
+            $signed(dut.fusao_roll_q10) >=
+                $signed(dut.gyro_roll_q10))
+            $fatal(
+                1,
+                "fusao roll incoerente: fusao=%0d gyro=%0d",
+                $signed(dut.fusao_roll_q10),
+                $signed(dut.gyro_roll_q10)
+            );
+
+        if ($signed(dut.fusao_pitch_px) <= 0 ||
+            $signed(dut.fusao_roll_q8) <= 0)
+            $fatal(
+                1,
+                "fusao nao converteu para HUD: pitch=%0d roll=%0d",
+                $signed(dut.fusao_pitch_px),
+                $signed(dut.fusao_roll_q8)
+            );
+
+        $display(
+            "PASS fusao observadora: gyro=%0d/%0d fusao=%0d/%0d HUD=%0d/%0d",
+            $signed(dut.gyro_pitch_q10),
+            $signed(dut.gyro_roll_q10),
+            $signed(dut.fusao_pitch_q10),
+            $signed(dut.fusao_roll_q10),
+            $signed(dut.fusao_pitch_px),
+            $signed(dut.fusao_roll_q8)
+        );
+
         // Fundamental nesta etapa:
-        // o observador existe, mas ainda NAO controla o HUD.
+        // a fusao existe, mas ainda NAO controla o HUD.
         confere(0, 0);
 
         $display(

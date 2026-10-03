@@ -227,6 +227,17 @@ module top_reticula (
     logic signed [10:0] gyro_pitch_px;
     logic signed [9:0]  gyro_roll_q8;
 
+    // Fusao complementar accel + gyro.
+    // Nesta etapa ainda funciona apenas como observador.
+    logic fusao_atualizar = 1'b0;
+    logic fusao_valida;
+
+    logic signed [31:0] fusao_pitch_q10;
+    logic signed [31:0] fusao_roll_q10;
+
+    logic signed [10:0] fusao_pitch_px;
+    logic signed [9:0]  fusao_roll_q8;
+
     // Mapeamento fisico validado em hardware no GY-521.
     //
     // Acelerometro:
@@ -282,6 +293,15 @@ module top_reticula (
         .dt_valid    (gyro_dt_valid)
     );
 
+    // A fusao deve observar o angulo ja atualizado pelos
+    // integradores. Por isso o pulso e atrasado um ciclo.
+    always_ff @(posedge clk) begin
+        if (!sensor_ok)
+            fusao_atualizar <= 1'b0;
+        else
+            fusao_atualizar <= gyro_dt_valid;
+    end
+
     // -----------------------------------------------------
     // Observador de atitude pelo giroscopio
     //
@@ -327,6 +347,43 @@ module top_reticula (
         .calibrado   (atitude_calibrada),
         .pitch_px    (pitch_sensor),
         .roll_q8     (roll_sensor)
+    );
+
+    // -----------------------------------------------------
+    // Fusao complementar accel + gyro
+    //
+    // O resultado ainda nao controla o HUD nesta etapa.
+    // -----------------------------------------------------
+
+    atitude_fusao_complementar #(
+        .CORR_SHIFT(5)
+    ) u_fusao_atitude (
+        .clk             (clk),
+
+        .sensor_ok       (sensor_ok),
+        .accel_calibrado (atitude_calibrada),
+        .gyro_calibrado  (gyro_bias_calibrado),
+
+        .atualizar       (fusao_atualizar),
+
+        .accel_pitch_px  (pitch_sensor),
+        .accel_roll_q8   (roll_sensor),
+
+        .gyro_pitch_q10  (gyro_pitch_q10),
+        .gyro_roll_q10   (gyro_roll_q10),
+
+        .valido          (fusao_valida),
+
+        .pitch_q10       (fusao_pitch_q10),
+        .roll_q10        (fusao_roll_q10)
+    );
+
+    atitude_gyro_hud u_atitude_fusao_hud (
+        .pitch_q10 (fusao_pitch_q10),
+        .roll_q10  (fusao_roll_q10),
+
+        .pitch_px  (fusao_pitch_px),
+        .roll_q8   (fusao_roll_q8)
     );
 
     // -----------------------------------------------------
