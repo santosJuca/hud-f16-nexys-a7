@@ -9,10 +9,12 @@ module mpu6050_i2c_tb;
     assign scl = slave_scl_low ? 1'b0 : 1'bz;
     wire [7:0] who_am_i;
     wire sensor_ok;
+    wire amostra_nova;
     wire signed [15:0] ax, ay, az, gx, gy, gz;
     mpu6050_i2c dut (
         .clk(clk), .i2c_sda(sda), .i2c_scl(scl),
         .who_am_i(who_am_i), .sensor_ok(sensor_ok),
+        .amostra_nova(amostra_nova),
         .accel_x(ax), .accel_y(ay), .accel_z(az),
         .gyro_x(gx), .gyro_y(gy), .gyro_z(gz)
     );
@@ -33,7 +35,22 @@ module mpu6050_i2c_tb;
     integer wakes = 0;
     integer identities = 0;
     integer marker;
+    integer pulsos_amostra = 0;
+    integer pulsos_antes = 0;
+    reg amostra_nova_anterior = 0;
     time wake_time;
+
+    // Conta cada pulso pela borda real de subida.
+    always @(posedge amostra_nova)
+        pulsos_amostra = pulsos_amostra + 1;
+
+    // amostra_nova nao pode permanecer alto por mais de um clock.
+    always @(posedge clk) begin
+        if (amostra_nova && amostra_nova_anterior)
+            $fatal(1, "amostra_nova permaneceu alta por mais de um clock");
+
+        amostra_nova_anterior <= amostra_nova;
+    end
 
     time scl_rise = 0;
     time scl_fall = 0;
@@ -203,13 +220,29 @@ module mpu6050_i2c_tb;
         $display("PASS leitura com clock stretching: eixos=4660,-292,-32768,32767,-1,258");
 
         marker = bursts;
+        pulsos_antes = pulsos_amostra;
+
         {registers['h3B], registers['h3C]} = 16'hFFFF;
         {registers['h47], registers['h48]} = 16'h8000;
+
         wait (bursts > marker);
+
         // O driver só publica os eixos após STOP.
         check_axes(4660, -292, -32768, 32767, -1, 258);
+
         #50000;
+
         check_axes(-1, -292, -32768, 32767, -1, -32768);
+
+        if (pulsos_amostra != (pulsos_antes + 1))
+            $fatal(
+                1,
+                "amostra_nova: pulsos=%0d esperado=%0d",
+                pulsos_amostra,
+                pulsos_antes + 1
+            );
+
+        $display("PASS amostra_nova: pulso unico por conjunto completo");
         $display("PASS segunda amostra: eixos publicados juntos apos STOP");
 
         nack_register = 1;

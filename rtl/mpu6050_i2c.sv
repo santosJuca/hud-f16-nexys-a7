@@ -8,6 +8,7 @@ module mpu6050_i2c #(
     inout  wire  i2c_scl,
     output logic [7:0] who_am_i = 8'h00,
     output logic sensor_ok = 1'b0,
+    output logic amostra_nova = 1'b0,
     output logic signed [15:0] accel_x = 16'sd0,
     output logic signed [15:0] accel_y = 16'sd0,
     output logic signed [15:0] accel_z = 16'sd0,
@@ -66,6 +67,10 @@ module mpu6050_i2c #(
     wire last_byte = (operation == OP_ID) || (byte_index == 4'd13);
 
     always_ff @(posedge clk) begin
+        // Pulso de um clock quando um conjunto completo
+        // de accel e gyro e publicado.
+        amostra_nova <= 1'b0;
+
         if (div_count == CLK_DIV_LAST) begin
             div_count <= 8'd0;
             if (state != ST_IDLE)
@@ -274,6 +279,7 @@ module mpu6050_i2c #(
                                 end
                                 OP_DATA: begin
                                     // Publica uma amostra completa; ignora a temperatura (6 e 7).
+                                    amostra_nova <= 1'b1;
                                     accel_x <= $signed({samples[0], samples[1]});
                                     accel_y <= $signed({samples[2], samples[3]});
                                     accel_z <= $signed({samples[4], samples[5]});
