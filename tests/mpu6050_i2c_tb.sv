@@ -286,9 +286,92 @@ module mpu6050_i2c_tb;
         $display("PASS amostra_nova: pulso unico por conjunto completo");
         $display("PASS segunda amostra: eixos publicados juntos apos STOP");
 
+        // -------------------------------------------------
+        // SDA presa durante o STOP.
+        //
+        // Nenhuma nova amostra pode ser publicada antes de
+        // SDA realmente subir enquanto SCL permanece alto.
+        // -------------------------------------------------
+
+        marker = bursts;
+        pulsos_antes = pulsos_amostra;
+
+        // Valores diferentes da ultima amostra publicada.
+        {registers['h3B], registers['h3C]} = 16'h1111;
+        {registers['h3D], registers['h3E]} = 16'h2222;
+        {registers['h3F], registers['h40]} = 16'h3333;
+        {registers['h41], registers['h42]} = 16'h4444;
+        {registers['h43], registers['h44]} = 16'h5555;
+        {registers['h45], registers['h46]} = 16'h6666;
+        {registers['h47], registers['h48]} = 16'h7777;
+
+        // O modelo terminou de enviar o ultimo byte.
+        // Prende SDA antes de o mestre concluir o STOP.
+        wait (bursts > marker);
+        slave_sda_low = 1'b1;
+
+        // Maior que o timeout de 10 ms do driver.
+        #12000000;
+
+        if (sensor_ok !== 1'b0)
+            $fatal(
+                1,
+                "SDA presa no STOP: sensor_ok=%b esperado=0",
+                sensor_ok
+            );
+
+        if (pulsos_amostra != pulsos_antes)
+            $fatal(
+                1,
+                "SDA presa no STOP publicou amostra: pulsos=%0d esperado=%0d",
+                pulsos_amostra,
+                pulsos_antes
+            );
+
+        // A ultima amostra valida deve permanecer intacta.
+        check_axes(-1, -292, -32768, 32767, -1, -32768);
+
+        $display(
+            "PASS SDA presa no STOP: sem publicacao e eixos preservados"
+        );
+
+        // Libera o barramento. O driver deve refazer a
+        // identificacao/configuracao e voltar a publicar.
+        slave_sda_low = 1'b0;
+
+        wait (sensor_ok);
+
+        check_axes(
+            16'sh1111,
+            16'sh2222,
+            16'sh3333,
+            16'sh5555,
+            16'sh6666,
+            16'sh7777
+        );
+
+        if (pulsos_amostra != (pulsos_antes + 1))
+            $fatal(
+                1,
+                "Recuperacao do STOP: pulsos=%0d esperado=%0d",
+                pulsos_amostra,
+                pulsos_antes + 1
+            );
+
+        $display(
+            "PASS recuperacao apos SDA presa no STOP"
+        );
+
         nack_register = 1;
         wait (!sensor_ok);
-        check_axes(-1, -292, -32768, 32767, -1, -32768);
+        check_axes(
+            16'sh1111,
+            16'sh2222,
+            16'sh3333,
+            16'sh5555,
+            16'sh6666,
+            16'sh7777
+        );
         #1000000;
         nack_register = 0;
         wait (sensor_ok);
@@ -312,7 +395,14 @@ module mpu6050_i2c_tb;
         slave_scl_low = 0;
         $display("PASS SCL preso: sensor_ok=0 apos timeout");
         wait (sensor_ok);
-        check_axes(-1, -292, -32768, 32767, -1, -32768);
+        check_axes(
+            16'sh1111,
+            16'sh2222,
+            16'sh3333,
+            16'sh5555,
+            16'sh6666,
+            16'sh7777
+        );
         $display("PASS recuperacao apos liberar SCL");
 
         // Forca nova identificacao e valida o ID 0x70 observado no hardware.
@@ -329,7 +419,7 @@ module mpu6050_i2c_tb;
     end
 
     initial begin
-        #1500000000;
+        #2500000000;
         $fatal(1, "Timeout global da simulacao");
     end
 endmodule

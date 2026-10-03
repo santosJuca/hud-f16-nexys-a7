@@ -5,7 +5,24 @@ module tb_modos;
     tri1 sda,scl;
     wire [3:0] r,g,b;
     wire hs,vs;
-    top_reticula dut(clk,2'b0,4'b0,btn,sda,scl,r,g,b,hs,vs);
+    top_reticula dut (
+        .clk(clk),
+        .btn_heading(2'b00),
+        .sw(4'b0000),
+        .display_mode(btn),
+        .vauxp3(1'b0),
+        .vauxn3(1'b0),
+        .vauxp10(1'b0),
+        .vauxn10(1'b0),
+        .JOY_LED(),
+        .i2c_sda(sda),
+        .i2c_scl(scl),
+        .VGA_R(r),
+        .VGA_G(g),
+        .VGA_B(b),
+        .VGA_HS(hs),
+        .VGA_VS(vs)
+    );
     defparam dut.u_modo.DEBOUNCE_CYCLES=4;
     integer ocultos=0, criticos=0;
     logic [11:0] esperado;

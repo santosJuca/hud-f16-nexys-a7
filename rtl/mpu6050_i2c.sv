@@ -262,8 +262,11 @@ module mpu6050_i2c #(
                             state <= ST_STOP_RELEASE;
                     end
                     ST_STOP_RELEASE: begin
+                        // STOP so e valido quando o barramento confirma
+                        // SCL alto e SDA realmente liberada em nivel alto.
                         sda_low <= 1'b0;
-                        state <= ST_DONE;
+                        if (scl_sync[1] && scl_high_ready && sda_sync[1])
+                            state <= ST_DONE;
                     end
                     ST_DONE: begin
                         idle_count <= POLL_TICKS;

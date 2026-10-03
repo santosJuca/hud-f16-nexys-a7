@@ -2,6 +2,9 @@
 
 module tb_controle_joystick;
 
+    logic clk = 1'b0;
+    always #5 clk = ~clk;
+
     logic [11:0] x_raw = 12'd1000;
     logic [11:0] y_raw = 12'd1200;
     logic sw_n = 1'b1;
@@ -13,10 +16,10 @@ module tb_controle_joystick;
     wire botao;
 
     controle_joystick #(
-        .CENTRO_X(1000),
-        .CENTRO_Y(1200),
-        .DEADZONE(100)
+        .DEADZONE(100),
+        .CALIB_BITS(2)
     ) dut (
+        .clk(clk),
         .x_raw(x_raw),
         .y_raw(y_raw),
         .sw_n(sw_n),
@@ -28,6 +31,8 @@ module tb_controle_joystick;
     );
 
     initial begin
+        // Mantem o joystick parado durante a calibracao automatica.
+        repeat (5) @(posedge clk);
         #1;
         if ({x_menos,x_mais,y_menos,y_mais,botao} !== 5'b00000)
             $fatal(1, "Falha no centro");
