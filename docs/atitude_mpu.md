@@ -1,6 +1,8 @@
 # Atitude pelo acelerômetro no HUD
 
-Integração na branch `dev/joystick-mpu-atitude`, a partir de `6ae2bbd`.
+Documento evolutivo da integração do MPU-6050. O estado consolidado atual
+está na linha de desenvolvimento `dev/imu-gyro-bias-dt` e na branch documental
+`docs/consolidacao-final-hud`.
 Antes da edição, `rtl/top_reticula.sv` estava igual ao commit e ao backup
 `rtl/top_reticula.sv.pre-atitude-accel.bak`. A tentativa anterior não havia
 alterado o arquivo. Os arquivos `.bak` foram preservados.
@@ -144,14 +146,18 @@ Esse resultado é de simulação, não uma medição da placa nem garantia de
 período fixo. A futura integração do giroscópio deve usar o tempo entre
 amostras válidas e reiniciar a referência temporal após perda do sensor.
 
-O HUD continua usando apenas o acelerômetro. A fusão complementar ainda
-precisa de calibração do offset do giroscópio, integração temporal e testes
-de repouso, movimento e recuperação. As faixas explícitas preparam essa etapa.
+O HUD atualmente utiliza fusão complementar entre a referência do
+acelerômetro e a variação angular obtida pelo giroscópio. O caminho inclui
+calibração do bias, medição do intervalo entre amostras, integração temporal
+e conversão para as unidades gráficas do HUD. A cadeia foi coberta por
+testbenches e validada fisicamente na placa.
 
 Validação desta preparação:
 
 - `mpu6050_i2c_tb`: PASS, incluindo NACK em GYRO_CONFIG e ACCEL_CONFIG,
-  ordem das escritas e reconfiguração após falhas, com IDs 0x68 e 0x70.
+  ordem das escritas e reconfiguração após falhas, com ID 0x68 e com aceitação adicional de 0x70. O valor padrão documentado
+para WHO_AM_I do MPU-6050 é 0x68; 0x70 é mantido apenas como compatibilidade
+adicional e não deve ser descrito como o ID padrão do MPU-6050.
 - `tb_atitude_accel_fixa` e `tb_top_atitude`: PASS.
 - `git diff --check`: sem erros.
 - Vivado 2026.1: build concluído em `build/faixas-mpu/`; WNS 0,575 ns,

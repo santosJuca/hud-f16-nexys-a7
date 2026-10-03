@@ -1,5 +1,8 @@
 # Auditoria do display e validação do retículo
 
+
+> **Registro histórico:** este documento descreve o estado do projeto na data indicada. Para o estado consolidado atual, consulte o `README.md` e `docs/atitude_mpu.md`.
+
 Data: 27/09/2026. Base remota: `46d07015dda619fe59415b2e3bdf9d00ca3fd6c7`.
 A cópia local estava limpa em `6207870` e foi atualizada por fast-forward.
 

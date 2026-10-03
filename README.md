@@ -1,28 +1,31 @@
 # Display de avião
 
-Na branch `dev/joystick-mpu-atitude`, SW15..SW12 = `1111` seleciona
-o acelerômetro após a calibração, com joystick/switches como fallback.
-Veja [integração e validação da atitude MPU](docs/atitude_mpu.md).
-As descrições de horizonte simulado e sensor antigo abaixo documentam a base anterior.
+Na branch `docs/consolidacao-final-hud`, derivada de
+`dev/imu-gyro-bias-dt`, SW15..SW12 = `1111` seleciona a atitude proveniente
+do MPU-6050 após calibração do acelerômetro, calibração do bias do giroscópio
+e inicialização da fusão complementar. Joystick e switches permanecem como
+fallback. Veja [integração e validação da atitude MPU](docs/atitude_mpu.md).
 
 Display VGA 640×480 com retículo, horizonte deslocável e inclinado, escada de
 pitch, escalas de velocidade/altitude, heading em graus com N/E/S/W e alvo fixo.
 A imagem é gerada por coordenadas, sem framebuffer, a 25 MHz (aproximadamente
-59,52 Hz). Pitch, roll e heading são simulados por controles da placa;
-velocidade e altitude permanecem em 280 KT e 36000 FT.
+59,52 Hz). Pitch e roll podem ser fornecidos pelo MPU-6050 através da cadeia de
+calibração, integração do giroscópio e fusão complementar. Joystick e switches
+permanecem como fallback manual. Heading continua controlado pelos botões;
+velocidade e altitude permanecem simuladas em 280 KT e 36000 FT.
 
 ## O que aparece na tela
 
 | Elemento | O que significa | Como funciona neste projeto |
 | --- | --- | --- |
 | Retículo | Cruz de referência no centro da tela, com um vão no meio. Serve como referência de apontamento. | Fica parado e verde, mesmo quando o horizonte muda. O desenho está em `rtl/reticula_vga.sv`. |
-| Horizonte artificial | Linha que representa a referência do horizonte. | Sobe, desce e inclina conforme os switches. É desenhado em `rtl/simbologia_vga.sv`. |
-| Escada de pitch | Marcas que ajudam a visualizar a atitude de nariz para cima ou para baixo. | Acompanha o horizonte, com referências ±10/20/30/40 de simulação, sem calibração com sensor. |
+| Horizonte artificial | Linha que representa a referência do horizonte. | Sobe, desce e inclina conforme a atitude selecionada: MPU-6050 ou fallback manual. É desenhado em `rtl/simbologia_vga.sv`. |
+| Escada de pitch | Marcas que ajudam a visualizar a atitude de nariz para cima ou para baixo. | Acompanha o horizonte, com referências ±10/20/30/40. No modo MPU, a atitude vem da cadeia de estimação do sensor. |
 | Escala de velocidade | Indicação à esquerda, em nós (KT). | O valor fornecido pelo projeto é fixo em 280 KT. |
 | Escala de altitude | Indicação à direita, em pés (FT). | O valor fornecido pelo projeto é fixo em 36000 FT. |
 | Heading (rumo) | Direção em graus, acompanhada das letras N/E/S/W. | Varia pelos botões BTNU e BTND, em passos de 10°. |
 | Marcador de alvo | Símbolo que representa um alvo na demonstração. | Tem posição fixa; ainda não rastreia nem trava um alvo. |
-| Indicador do sensor | Mostra se a identificação do MMA8452Q foi reconhecida. | Não representa leitura de inclinação ou movimento da aeronave. |
+| Indicador do sensor | Indica o estado da identificação do IMU conectado ao barramento I²C. | O caminho ativo utiliza o MPU-6050/GY-521 e sua disponibilidade condiciona o uso da atitude medida. |
 
 **Retículo e horizonte são elementos diferentes:** o retículo é a referência
 fixa central; o horizonte se desloca e inclina em relação a essa referência.
@@ -77,7 +80,11 @@ os controles de cor foram removidos. Pitch, roll e heading funcionam nos dois mo
 | `rtl/top_reticula.sv` | Interpreta SW12 a SW15 como pitch/roll simulados e fornece velocidade e altitude fixas. |
 | `rtl/entrada_hud.sv` | Transfere o conjunto de dados do clock de 100 MHz para o de 25 MHz com confirmação. |
 | `rtl/dados_hud.sv` | Recebe os dados processados e aplica o conjunto entre quadros. |
-| `rtl/mma8452_i2c.sv` | Lê a identificação WHO_AM_I do sensor; não calcula a atitude da aeronave. |
+| `rtl/mpu6050_i2c.sv` | Inicializa o MPU-6050/GY-521 e publica acelerômetro e giroscópio dos seis eixos. |
+| `rtl/gyro_bias_dt.sv` | Calibra o bias do giroscópio e mede o intervalo entre amostras válidas. |
+| `rtl/gyro_integrador.sv` | Integra velocidade angular utilizando o intervalo real entre amostras. |
+| `rtl/atitude_fusao_complementar.sv` | Combina referência gravitacional do acelerômetro com a variação angular integrada do giroscópio. |
+| `rtl/atitude_gyro_hud.sv` | Converte a atitude estimada para as unidades utilizadas pelo desenho do HUD. |
 
 ### Sinal VGA e ligação com a placa
 
@@ -88,10 +95,11 @@ os controles de cor foram removidos. Pitch, roll e heading funcionam nos dois mo
 | `scripts/build_vivado.tcl` | Cria o projeto no Vivado, inclui os arquivos RTL e gera o bitstream. |
 | `scripts/program_board.tcl` | Programa a FPGA com o bitstream gerado. |
 
-## Horizonte simulado
+## Atitude e fallback manual
 
-SW12 ligado sozinho posiciona o horizonte 40 pixels acima (y=200).
-SW13 ligado sozinho posiciona 40 pixels abaixo (y=280).
+Quando o caminho MPU não está ativo, SW12 ligado sozinho posiciona o
+horizonte 40 pixels acima (y=200) e SW13 ligado sozinho posiciona 40 pixels
+abaixo (y=280).
 Ambos desligados ou ambos ligados mantêm y=240. O retículo permanece fixo.
 As entradas passam por dois estágios de sincronização e a posição é aplicada
 no blanking vertical. São três posições fixas, sem movimento contínuo nem
@@ -113,8 +121,10 @@ mostrados abaixo das barras. Esses valores são simulados.
 
 A interface aceita velocidade, altitude, deslocamento de pitch e inclinação de
 roll processados. Consulte [formatos e ligação futura do sensor](docs/entradas_hud.md).
-A transferência entre clocks já está implementada. A calibração e a conversão
-dos eixos brutos para atitude ainda dependem da montagem do sensor.
+A transferência entre clocks, a calibração do acelerômetro, a calibração
+do bias do giroscópio, a integração temporal e a fusão complementar já estão
+implementadas. A orientação física dos eixos e o movimento visual de pitch e
+roll foram conferidos na placa.
 
 ## GitHub, Vivado e placa: etapas separadas
 
@@ -168,8 +178,8 @@ Confira o modelo físico antes de programar. O script não atende à A7-50T sem
 ajustar o dispositivo. O mapeamento foi conferido no
 [Master XDC da Digilent](https://github.com/Digilent/digilent-xdc/blob/master/Nexys-A7-100T-Master.xdc).
 Os controles utilizados nesta versão usam LVCMOS33.
-O I²C já usa SDA em JA1/C17 e SCL em JA7/D17. A ligação, alimentação e pull-ups
-do sensor externo precisam ser conferidos na montagem.
+O I²C da versão atual usa SDA em JD8/G4 e SCL em JD7/H2, conforme o XDC
+versionado. A montagem física com o GY-521 foi validada no hardware.
 
 Com a placa correta ligada por USB:
 
@@ -177,20 +187,21 @@ Com a placa correta ligada por USB:
 vivado -mode batch -source scripts/program_board.tcl
 ```
 
-A programação é volátil. Verifique estabilidade da imagem, vão central, modos de exibição e ausência de cor fora da área ativa. A nova versão não foi gravada
-na placa durante esta revisão.
+A programação é volátil. A versão consolidada foi programada na Nexys A7-100T
+e validada fisicamente quanto à estabilidade VGA, pitch, roll, seleção MPU,
+fallbacks e modos de exibição.
 
 Os números antigos de utilização e timing não representam esta versão.
 Consulte [arquitetura e validação de RF-08](docs/rf08.md) para os resultados
 atuais e [a auditoria anterior](docs/auditoria.md) como registro histórico.
 
-## Integração futura
+## Extensões e escopo
 
-Quando o hardware estiver disponível, integrar o conversor de nível lógico
-para a interface de 5 V, um switch externo e um módulo de giroscópio/acelerômetro.
-A escolha dos modelos, alimentação, níveis, pinagem e protocolo será feita com
-os componentes em mãos. A referência a 5 V é da interface a adaptar, não uma
-instrução para aplicar 5 V diretamente aos pinos da FPGA.
+O hardware adicional já utilizado inclui o GY-521/MPU-6050 e o joystick
+KY-023. Os eixos analógicos do joystick chegam ao JXADC através do
+condicionamento resistivo usado na montagem, mantendo a tensão dentro da faixa
+adotada para a entrada analógica. Conversores lógicos digitais não são usados
+para os sinais analógicos VRx/VRy.
 
 O código de identificação I²C existente foi preservado como extensão. Ele não
 comprova leitura de atitude nem integração do futuro módulo. Não é necessário

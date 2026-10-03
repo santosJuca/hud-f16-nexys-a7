@@ -32,7 +32,7 @@ set_property -dict { PACKAGE_PIN B11 IOSTANDARD LVCMOS33 } [get_ports { VGA_HS }
 set_property -dict { PACKAGE_PIN B12 IOSTANDARD LVCMOS33 } [get_ports { VGA_VS }]; #Sch=vga_vs
 
 ## =========================================================
-## SEN-10955 / MMA8452Q - I2C
+## GY-521 / MPU-6050 - I2C
 ## =========================================================
 
 set_property -dict { PACKAGE_PIN G4 IOSTANDARD LVCMOS33 } [get_ports { i2c_sda }]; #JD8 - SDA
