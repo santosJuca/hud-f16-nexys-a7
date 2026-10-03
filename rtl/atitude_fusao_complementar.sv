@@ -115,7 +115,32 @@ module atitude_fusao_complementar #(
      accel_roll_ext;
 
     // -----------------------------------------------------
-    // Incremento angular observado no giroscopio
+    // Pipeline da fusao
+    // -----------------------------------------------------
+    //
+    // Estagio 1:
+    //   - calcula delta do gyro
+    //   - calcula a predicao
+    //   - registra a referencia do acelerometro da mesma amostra
+    //
+    // Estagio 2:
+    //   - calcula o erro
+    //   - aplica a correcao complementar
+    //   - atualiza o estado final
+    //
+    // A latencia adicional e de um ciclo de clk, sem alterar
+    // a equacao do filtro.
+
+    logic pipeline_pendente = 1'b0;
+
+    logic signed [31:0] pitch_predito_reg = 32'sd0;
+    logic signed [31:0] roll_predito_reg  = 32'sd0;
+
+    logic signed [31:0] accel_pitch_reg = 32'sd0;
+    logic signed [31:0] accel_roll_reg  = 32'sd0;
+
+    // -----------------------------------------------------
+    // Estagio 1: incremento angular e predicao
     // -----------------------------------------------------
 
     wire signed [31:0] delta_pitch_q10 =
@@ -124,34 +149,24 @@ module atitude_fusao_complementar #(
     wire signed [31:0] delta_roll_q10 =
         gyro_roll_q10 - gyro_roll_anterior_q10;
 
-    // -----------------------------------------------------
-    // Predicao pelo giroscopio
-    // -----------------------------------------------------
-
-    wire signed [31:0] pitch_predito_q10 =
+    wire signed [31:0] pitch_predito_comb =
         pitch_estado_q10 + delta_pitch_q10;
 
-    wire signed [31:0] roll_predito_q10 =
+    wire signed [31:0] roll_predito_comb =
         roll_estado_q10 + delta_roll_q10;
 
     // -----------------------------------------------------
-    // Erro contra a referencia do acelerometro
+    // Estagio 2: erro e correcao
     // -----------------------------------------------------
 
     wire signed [31:0] erro_pitch_q10 =
-        accel_pitch_q10 - pitch_predito_q10;
+        accel_pitch_reg - pitch_predito_reg;
 
     wire signed [31:0] erro_roll_q10 =
-        accel_roll_q10 - roll_predito_q10;
+        accel_roll_reg - roll_predito_reg;
 
     // Divisao assinada por potencia de dois com truncamento
     // simetrico em torno de zero.
-    //
-    // Isso evita o vies de:
-    //
-    //   -1 >>> 5 = -1
-    //
-    // que ocorreria com simples shift aritmetico.
     function automatic signed [31:0] corrige(
         input signed [31:0] valor
     );
@@ -174,10 +189,10 @@ module atitude_fusao_complementar #(
         corrige(erro_roll_q10);
 
     wire signed [31:0] pitch_proximo_q10 =
-        pitch_predito_q10 + correcao_pitch_q10;
+        pitch_predito_reg + correcao_pitch_q10;
 
     wire signed [31:0] roll_proximo_q10 =
-        roll_predito_q10 + correcao_roll_q10;
+        roll_predito_reg + correcao_roll_q10;
 
     // -----------------------------------------------------
     // Estado do filtro
@@ -187,6 +202,7 @@ module atitude_fusao_complementar #(
         if (!pronto) begin
             iniciado <= 1'b0;
             valido <= 1'b0;
+            pipeline_pendente <= 1'b0;
 
             pitch_estado_q10 <= 32'sd0;
             roll_estado_q10 <= 32'sd0;
@@ -194,36 +210,60 @@ module atitude_fusao_complementar #(
             gyro_pitch_anterior_q10 <= 32'sd0;
             gyro_roll_anterior_q10 <= 32'sd0;
 
+            pitch_predito_reg <= 32'sd0;
+            roll_predito_reg <= 32'sd0;
+
+            accel_pitch_reg <= 32'sd0;
+            accel_roll_reg <= 32'sd0;
+
             pitch_q10 <= 32'sd0;
             roll_q10 <= 32'sd0;
         end
-        else if (atualizar) begin
-            if (!iniciado) begin
-                // Primeira referencia:
-                // parte da atitude fornecida pelo acelerometro.
-                pitch_estado_q10 <= accel_pitch_q10;
-                roll_estado_q10 <= accel_roll_q10;
-
-                pitch_q10 <= accel_pitch_q10;
-                roll_q10 <= accel_roll_q10;
-
-                gyro_pitch_anterior_q10 <= gyro_pitch_q10;
-                gyro_roll_anterior_q10 <= gyro_roll_q10;
-
-                iniciado <= 1'b1;
-                valido <= 1'b1;
-            end
-            else begin
+        else begin
+            // Segundo estagio:
+            // conclui a amostra capturada no ciclo anterior.
+            if (pipeline_pendente) begin
                 pitch_estado_q10 <= pitch_proximo_q10;
                 roll_estado_q10 <= roll_proximo_q10;
 
                 pitch_q10 <= pitch_proximo_q10;
                 roll_q10 <= roll_proximo_q10;
 
-                gyro_pitch_anterior_q10 <= gyro_pitch_q10;
-                gyro_roll_anterior_q10 <= gyro_roll_q10;
-
+                pipeline_pendente <= 1'b0;
                 valido <= 1'b1;
+            end
+
+            if (atualizar) begin
+                if (!iniciado) begin
+                    // Primeira referencia:
+                    // parte diretamente da atitude do acelerometro.
+                    pitch_estado_q10 <= accel_pitch_q10;
+                    roll_estado_q10 <= accel_roll_q10;
+
+                    pitch_q10 <= accel_pitch_q10;
+                    roll_q10 <= accel_roll_q10;
+
+                    gyro_pitch_anterior_q10 <= gyro_pitch_q10;
+                    gyro_roll_anterior_q10 <= gyro_roll_q10;
+
+                    pipeline_pendente <= 1'b0;
+                    iniciado <= 1'b1;
+                    valido <= 1'b1;
+                end
+                else if (!pipeline_pendente) begin
+                    // Primeiro estagio:
+                    // registra a predicao e a referencia da mesma amostra.
+                    pitch_predito_reg <= pitch_predito_comb;
+                    roll_predito_reg <= roll_predito_comb;
+
+                    accel_pitch_reg <= accel_pitch_q10;
+                    accel_roll_reg <= accel_roll_q10;
+
+                    gyro_pitch_anterior_q10 <= gyro_pitch_q10;
+                    gyro_roll_anterior_q10 <= gyro_roll_q10;
+
+                    pipeline_pendente <= 1'b1;
+                end
             end
         end
     end

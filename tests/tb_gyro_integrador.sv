@@ -12,6 +12,7 @@ module tb_gyro_integrador;
     logic [31:0] dt_cycles = 32'd0;
 
     wire signed [31:0] angulo_q10;
+    wire angulo_valid;
 
     gyro_integrador dut (
         .clk(clk),
@@ -19,7 +20,8 @@ module tb_gyro_integrador;
         .dt_valid(dt_valid),
         .gyro_corr(gyro_corr),
         .dt_cycles(dt_cycles),
-        .angulo_q10(angulo_q10)
+        .angulo_q10(angulo_q10),
+        .angulo_valid(angulo_valid)
     );
 
     task automatic integra(
@@ -36,6 +38,8 @@ module tb_gyro_integrador;
         @(negedge clk);
         dt_valid = 1'b0;
 
+        // Aguarda a conclusao real do pipeline.
+        @(posedge angulo_valid);
         #1;
     end
     endtask

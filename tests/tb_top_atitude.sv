@@ -141,9 +141,12 @@ module tb_top_atitude;
 
         amostra();
 
-        // dt_valid e produzido por gyro_bias_dt e consumido
-        // pelos integradores na borda seguinte.
-        @(posedge clk);
+        // Aguarda os dois pipelines concluirem a nova
+        // amostra angular.
+        wait (
+            dut.gyro_pitch_atualizado &&
+            dut.gyro_roll_atualizado
+        );
         #1;
 
         if ($signed(dut.gyro_pitch_q10) <= 0 ||
@@ -164,8 +167,9 @@ module tb_top_atitude;
                 $signed(dut.gyro_roll_q8)
             );
 
-        // A integracao do gyro ocorreu na borda anterior.
-        // A fusao recebe o pulso atrasado nesta borda.
+        // Os dois integradores concluiram a nova amostra.
+        // fusao_atualizar fica ativo pelo handshake e a fusao
+        // consome esse pulso na proxima borda de clock.
         //
         // Na PRIMEIRA atualizacao a fusao apenas estabelece
         // sua referencia:
@@ -223,14 +227,21 @@ module tb_top_atitude;
         // gyro_y_corr = +30000
         amostra();
 
-        // Primeira borda:
-        // gyro_integrador consome dt_valid.
+        // Aguarda pitch e roll concluirem o pipeline.
+        wait (
+            dut.gyro_pitch_atualizado &&
+            dut.gyro_roll_atualizado
+        );
+        #1;
+
+        // Primeiro clock apos a conclusao do gyro:
+        // a fusao captura a predicao no primeiro estagio.
         @(posedge clk);
         #1;
 
-        // Segunda borda:
-        // atitude_fusao_complementar consome fusao_atualizar
-        // e enxerga o novo angulo integrado.
+        // Segundo clock:
+        // a fusao aplica a correcao complementar e atualiza
+        // suas saidas registradas.
         @(posedge clk);
         #1;
 

@@ -95,6 +95,11 @@ module top_reticula (
     logic signed [10:0] pitch_sensor;
     logic signed [9:0] roll_sensor;
 
+    logic gyro_bias_calibrado;
+    logic fusao_valida;
+    logic signed [10:0] fusao_pitch_px;
+    logic signed [9:0]  fusao_roll_q8;
+
     // SW15..SW12 = 1111 seleciona o MPU apos a calibracao.
     wire modo_mpu = (horizonte_sync == 2'b11) && (roll_sync == 2'b11);
     wire usar_mpu =
@@ -214,15 +219,16 @@ module top_reticula (
     logic signed [15:0] mpu_gyro_y;
     logic signed [15:0] mpu_gyro_z;
 
-    // Preparacao do giroscopio para a futura fusao de atitude.
-    // Estas saidas ainda nao controlam o HUD.
-    logic gyro_bias_calibrado;
+    // Preparacao do giroscopio para a fusao complementar de atitude.
+    // Estas saidas alimentam a fusao; nao dirigem o HUD diretamente.
     logic signed [15:0] gyro_bias_x;
     logic signed [15:0] gyro_bias_y;
     logic signed [16:0] gyro_x_corr;
     logic signed [16:0] gyro_y_corr;
     logic [31:0] gyro_dt_cycles;
     logic gyro_dt_valid;
+    logic gyro_pitch_atualizado;
+    logic gyro_roll_atualizado;
 
     // Observador de atitude pelo giroscopio.
     // Ainda nao controla o HUD.
@@ -234,14 +240,12 @@ module top_reticula (
 
     // Fusao complementar accel + gyro.
     // No modo MPU, a fusao alimenta efetivamente o HUD.
-    logic fusao_atualizar = 1'b0;
-    logic fusao_valida;
+    wire fusao_atualizar =
+        gyro_pitch_atualizado && gyro_roll_atualizado;
 
     logic signed [31:0] fusao_pitch_q10;
     logic signed [31:0] fusao_roll_q10;
 
-    logic signed [10:0] fusao_pitch_px;
-    logic signed [9:0]  fusao_roll_q8;
 
     // Mapeamento fisico validado em hardware no GY-521.
     //
@@ -298,14 +302,8 @@ module top_reticula (
         .dt_valid    (gyro_dt_valid)
     );
 
-    // A fusao deve observar o angulo ja atualizado pelos
-    // integradores. Por isso o pulso e atrasado um ciclo.
-    always_ff @(posedge clk) begin
-        if (!sensor_ok)
-            fusao_atualizar <= 1'b0;
-        else
-            fusao_atualizar <= gyro_dt_valid;
-    end
+    // A fusao somente e atualizada quando os pipelines de
+    // pitch e roll concluem a nova amostra angular.
 
     // -----------------------------------------------------
     // Observador de atitude pelo giroscopio
@@ -323,7 +321,8 @@ module top_reticula (
         .dt_valid   (gyro_dt_valid),
         .gyro_corr  (gyro_x_corr),
         .dt_cycles  (gyro_dt_cycles),
-        .angulo_q10 (gyro_pitch_q10)
+        .angulo_q10 (gyro_pitch_q10),
+        .angulo_valid (gyro_pitch_atualizado)
     );
 
     gyro_integrador u_gyro_roll_integrador (
@@ -332,7 +331,8 @@ module top_reticula (
         .dt_valid   (gyro_dt_valid),
         .gyro_corr  (gyro_y_corr),
         .dt_cycles  (gyro_dt_cycles),
-        .angulo_q10 (gyro_roll_q10)
+        .angulo_q10 (gyro_roll_q10),
+        .angulo_valid (gyro_roll_atualizado)
     );
 
     atitude_gyro_hud u_atitude_gyro_hud (
