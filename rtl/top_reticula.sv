@@ -71,9 +71,6 @@ module top_reticula (
         .botao   ()
     );
 
-    // Diagnostico temporario do WHO_AM_I do MPU-6050.
-    // SW12=0 mostra nibble baixo; SW12=1 mostra nibble alto.
-
     wire pixel_clk;
     wire declutter;
     controle_modo u_modo (
@@ -191,7 +188,7 @@ module top_reticula (
     // -----------------------------------------------------
 
     logic [7:0] sensor_id;
-    logic       sensor_ok;
+    logic sensor_ok;
 
     logic signed [15:0] mpu_accel_x;
     logic signed [15:0] mpu_accel_y;
@@ -200,10 +197,27 @@ module top_reticula (
     logic signed [15:0] mpu_gyro_y;
     logic signed [15:0] mpu_gyro_z;
 
-    // Diagnostico temporario do WHO_AM_I.
-    // BTNU solto: nibble baixo.
-    // BTNU pressionado: nibble alto.
-    assign JOY_LED = btn_heading[0] ? sensor_id[7:4] : sensor_id[3:0];
+    // Mapeamento fisico validado em hardware no GY-521.
+    //
+    // Acelerometro:
+    // frente para baixo   -> accel_y negativo
+    // tras para baixo     -> accel_y positivo
+    // direita para baixo  -> accel_x negativo
+    // esquerda para baixo -> accel_x positivo
+    //
+    // Giroscopio:
+    // frente para baixo   -> gyro_x negativo
+    // tras para baixo     -> gyro_x positivo
+    // direita para baixo  -> gyro_y positivo
+    // esquerda para baixo -> gyro_y negativo
+    // horario             -> gyro_z negativo
+    // anti-horario        -> gyro_z positivo
+    //
+    // LEDs retornam ao diagnostico normal do joystick.
+    assign JOY_LED[0] = joystick_x_menos;
+    assign JOY_LED[1] = joystick_x_mais;
+    assign JOY_LED[2] = joystick_y_menos;
+    assign JOY_LED[3] = joystick_y_mais;
 
     mpu6050_i2c u_sensor (
         .clk       (clk),
@@ -288,21 +302,22 @@ module top_reticula (
             (pixel_y <= 35);
     end
 
+
     // -----------------------------------------------------
     // Compositor RGB
     // -----------------------------------------------------
 
     assign VGA_R =
-        retic                         ? 4'h0 :
-        alvo                          ? 4'hF :
+        retic                                      ? 4'h0 :
+        alvo                                       ? 4'hF :
         (sensor_status && !declutter && !sensor_ok) ? 4'hF :
-                                        4'h0;
+                                                     4'h0;
 
     assign VGA_G =
-        retic                              ? 4'hF :
+        retic                                      ? 4'hF :
         (horizonte || (!declutter && (altitude || velocidade || direcao || numeros))) ? 4'hF :
-        (sensor_status && !declutter && sensor_ok)        ? 4'hF :
-                                             4'h0;
+        (sensor_status && !declutter && sensor_ok) ? 4'hF :
+                                                     4'h0;
 
     assign VGA_B = 4'h0;
 
