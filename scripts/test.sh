@@ -14,6 +14,7 @@ tests=(
     "atitude_accel_fixa|tb_atitude_accel_fixa|tests/tb_atitude_accel_fixa.sv"
     "gyro_bias_dt|tb_gyro_bias_dt|tests/tb_gyro_bias_dt.sv"
     "gyro_integrador|tb_gyro_integrador|tests/tb_gyro_integrador.sv"
+    "atitude_gyro_hud|tb_atitude_gyro_hud|tests/tb_atitude_gyro_hud.sv"
     "entrada_hud|tb_entrada_hud|tests/tb_entrada_hud.sv"
     "dados_hud|tb_dados_hud|tests/tb_dados_hud.sv"
     "numeros|tb_numeros|tests/tb_numeros.sv"
