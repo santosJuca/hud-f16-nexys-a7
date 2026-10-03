@@ -97,7 +97,12 @@ module top_reticula (
 
     // SW15..SW12 = 1111 seleciona o MPU apos a calibracao.
     wire modo_mpu = (horizonte_sync == 2'b11) && (roll_sync == 2'b11);
-    wire usar_mpu = modo_mpu && sensor_ok && atitude_calibrada;
+    wire usar_mpu =
+    modo_mpu &&
+    sensor_ok &&
+    atitude_calibrada &&
+    gyro_bias_calibrado &&
+    fusao_valida;
 
     always_ff @(posedge clk) begin
         horizonte_meta <= sw[13:12];
@@ -107,12 +112,12 @@ module top_reticula (
         roll_sync <= roll_meta;
     end
 
-    // Pitch pelo MPU; joystick e switches ficam como fallback.
+    // Pitch pela fusao do MPU; joystick e switches ficam como fallback.
     // Joystick para cima = nariz para cima.
     // Os switches continuam como fallback de teste.
     always_comb begin
         if (usar_mpu)
-            pitch_px_entrada = pitch_sensor;
+            pitch_px_entrada = fusao_pitch_px;
         else if (joystick_x_mais)
             pitch_px_entrada = 11'sd40;
         else if (joystick_x_menos)
@@ -126,12 +131,12 @@ module top_reticula (
         end
     end
 
-    // Roll pelo MPU; joystick e switches ficam como fallback.
+    // Roll pela fusao do MPU; joystick e switches ficam como fallback.
     // Joystick para esquerda/direita inclina o horizonte.
     // Os switches continuam como fallback de teste.
     always_comb begin
         if (usar_mpu)
-            roll_q8_entrada = roll_sensor;
+            roll_q8_entrada = fusao_roll_q8;
         else if (joystick_y_menos)
             roll_q8_entrada = -10'sd64;
         else if (joystick_y_mais)
@@ -228,7 +233,7 @@ module top_reticula (
     logic signed [9:0]  gyro_roll_q8;
 
     // Fusao complementar accel + gyro.
-    // Nesta etapa ainda funciona apenas como observador.
+    // No modo MPU, a fusao alimenta efetivamente o HUD.
     logic fusao_atualizar = 1'b0;
     logic fusao_valida;
 
@@ -352,7 +357,7 @@ module top_reticula (
     // -----------------------------------------------------
     // Fusao complementar accel + gyro
     //
-    // O resultado ainda nao controla o HUD nesta etapa.
+    // O resultado controla o HUD quando a fusao esta valida.
     // -----------------------------------------------------
 
     atitude_fusao_complementar #(

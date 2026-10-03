@@ -58,12 +58,26 @@ module tb_top_atitude;
         if (dut.atitude_calibrada !== 1'b0)
             $fatal(1, "calibracao antecipada");
         amostra();
-        confere(0, 0);
+
+        // A calibracao do acelerometro e do bias do gyro
+        // termina nesta amostra, mas a fusao ainda nao
+        // recebeu uma atualizacao temporal valida.
+        //
+        // Portanto o modo MPU ainda NAO deve assumir o HUD.
+        // O fallback do joystick permanece ativo.
+        confere(40, -64);
+
         if (dut.atitude_calibrada !== 1'b1)
             $fatal(1, "calibracao nao concluiu com 64 amostras");
 
         if (dut.gyro_bias_calibrado !== 1'b1)
             $fatal(1, "bias do giroscopio nao calibrou com 64 amostras");
+
+        if (dut.fusao_valida !== 1'b0)
+            $fatal(1, "fusao nao deveria estar valida imediatamente apos calibracao");
+
+        if (dut.usar_mpu !== 1'b0)
+            $fatal(1, "modo MPU nao deveria assumir HUD antes da fusao valida");
 
         if ($signed(dut.gyro_bias_x) !== 100 ||
             $signed(dut.gyro_bias_y) !== -50)
@@ -268,9 +282,33 @@ module tb_top_atitude;
             $signed(dut.fusao_roll_q8)
         );
 
-        // Fundamental nesta etapa:
-        // a fusao existe, mas ainda NAO controla o HUD.
-        confere(0, 0);
+        // A fusao agora controla efetivamente o modo MPU.
+        if (dut.usar_mpu !== 1'b1)
+            $fatal(1, "modo MPU deveria usar a fusao valida");
+
+        confere(
+            $signed(dut.fusao_pitch_px),
+            $signed(dut.fusao_roll_q8)
+        );
+
+        if ($signed(dut.pitch_px_entrada) !==
+                $signed(dut.fusao_pitch_px) ||
+            $signed(dut.roll_q8_entrada) !==
+                $signed(dut.fusao_roll_q8))
+            $fatal(
+                1,
+                "HUD nao esta recebendo a fusao: entrada=%0d/%0d fusao=%0d/%0d",
+                $signed(dut.pitch_px_entrada),
+                $signed(dut.roll_q8_entrada),
+                $signed(dut.fusao_pitch_px),
+                $signed(dut.fusao_roll_q8)
+            );
+
+        $display(
+            "PASS fusao ativa no HUD: pitch=%0d roll=%0d",
+            $signed(dut.fusao_pitch_px),
+            $signed(dut.fusao_roll_q8)
+        );
 
         $display(
             "PASS observador gyro: pitch_q10=%0d roll_q10=%0d pitch_px=%0d roll_q8=%0d",
@@ -286,16 +324,43 @@ module tb_top_atitude;
 
         force dut.u_sensor.accel_x = -16'sd4096;
         force dut.u_sensor.accel_y = 16'sd8192;
-        // Sem pulso, a atitude deve permanecer inalterada.
+        // Sem nova amostra, a fusao deve permanecer retida.
         repeat (3) @(negedge clk);
-        confere(0, 0);
+
+        confere(
+            $signed(dut.fusao_pitch_px),
+            $signed(dut.fusao_roll_q8)
+        );
+
         amostra();
-        confere(16, 16);
+
+        // Permite que acelerometro, integrador e fusao
+        // atravessem seus respectivos ciclos sequenciais.
+        repeat (4) @(posedge clk);
+        #1;
+
+        if (dut.usar_mpu !== 1'b1)
+            $fatal(1, "fusao deveria continuar valida no modo MPU");
+
+        confere(
+            $signed(dut.fusao_pitch_px),
+            $signed(dut.fusao_roll_q8)
+        );
+
+        if ($signed(dut.pitch_px_entrada) !==
+                $signed(dut.fusao_pitch_px) ||
+            $signed(dut.roll_q8_entrada) !==
+                $signed(dut.fusao_roll_q8))
+            $fatal(1, "modo MPU deixou de encaminhar a fusao");
 
         // Somente 1111 deve sobrepor o joystick.
         for (modo = 0; modo < 16; modo = modo + 1) begin
             seleciona(modo[3:0]);
-            if (modo == 15) confere(16, 16);
+            if (dut.usar_mpu)
+            confere(
+                $signed(dut.fusao_pitch_px),
+                $signed(dut.fusao_roll_q8)
+            );
             else confere(40, -64);
         end
 
@@ -313,7 +378,11 @@ module tb_top_atitude;
                 2: roll_esperado = 64;
                 default: roll_esperado = 0;
             endcase
-            if (modo == 15) confere(16, 16);
+            if (dut.usar_mpu)
+            confere(
+                $signed(dut.fusao_pitch_px),
+                $signed(dut.fusao_roll_q8)
+            );
             else confere(pitch_esperado, roll_esperado);
         end
         force dut.joystick_x_menos = 1'b1;
@@ -336,7 +405,7 @@ module tb_top_atitude;
         force dut.u_sensor.sensor_ok = 1'b1;
         confere(-40, 64);
 
-        $display("PASS top: HUD preservado, bias/dt do gyro integrado e perda do sensor");
+        $display("PASS top: fusao ativa no HUD, fallbacks preservados e perda do sensor");
         $finish;
     end
 endmodule
