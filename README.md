@@ -1,5 +1,10 @@
 # Display de avião
 
+Na branch `dev/joystick-mpu-atitude`, SW15..SW12 = `1111` seleciona
+o acelerômetro após a calibração, com joystick/switches como fallback.
+Veja [integração e validação da atitude MPU](docs/atitude_mpu.md).
+As descrições de horizonte simulado e sensor antigo abaixo documentam a base anterior.
+
 Display VGA 640×480 com retículo, horizonte deslocável e inclinado, escada de
 pitch, escalas de velocidade/altitude, heading em graus com N/E/S/W e alvo fixo.
 A imagem é gerada por coordenadas, sem framebuffer, a 25 MHz (aproximadamente

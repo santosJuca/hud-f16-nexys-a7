@@ -90,6 +90,14 @@ module top_reticula (
     wire [8:0] heading_deg;
     logic signed [10:0] pitch_px_entrada;
     logic signed [9:0] roll_q8_entrada;
+    logic sensor_ok;
+    logic atitude_calibrada;
+    logic signed [10:0] pitch_sensor;
+    logic signed [9:0] roll_sensor;
+
+    // SW15..SW12 = 1111 seleciona o MPU apos a calibracao.
+    wire modo_mpu = (horizonte_sync == 2'b11) && (roll_sync == 2'b11);
+    wire usar_mpu = modo_mpu && sensor_ok && atitude_calibrada;
 
     always_ff @(posedge clk) begin
         horizonte_meta <= sw[13:12];
@@ -99,11 +107,13 @@ module top_reticula (
         roll_sync <= roll_meta;
     end
 
-    // Pitch comandado pelo joystick.
+    // Pitch pelo MPU; joystick e switches ficam como fallback.
     // Joystick para cima = nariz para cima.
     // Os switches continuam como fallback de teste.
     always_comb begin
-        if (joystick_x_mais)
+        if (usar_mpu)
+            pitch_px_entrada = pitch_sensor;
+        else if (joystick_x_mais)
             pitch_px_entrada = 11'sd40;
         else if (joystick_x_menos)
             pitch_px_entrada = -11'sd40;
@@ -116,11 +126,13 @@ module top_reticula (
         end
     end
 
-    // Roll comandado pelo joystick.
+    // Roll pelo MPU; joystick e switches ficam como fallback.
     // Joystick para esquerda/direita inclina o horizonte.
     // Os switches continuam como fallback de teste.
     always_comb begin
-        if (joystick_y_menos)
+        if (usar_mpu)
+            roll_q8_entrada = roll_sensor;
+        else if (joystick_y_menos)
             roll_q8_entrada = -10'sd64;
         else if (joystick_y_mais)
             roll_q8_entrada = 10'sd64;
@@ -188,7 +200,7 @@ module top_reticula (
     // -----------------------------------------------------
 
     logic [7:0] sensor_id;
-    logic sensor_ok;
+    logic amostra_nova;
 
     logic signed [15:0] mpu_accel_x;
     logic signed [15:0] mpu_accel_y;
@@ -225,12 +237,25 @@ module top_reticula (
         .i2c_scl   (i2c_scl),
         .who_am_i  (sensor_id),
         .sensor_ok (sensor_ok),
+        .amostra_nova(amostra_nova),
         .accel_x   (mpu_accel_x),
         .accel_y   (mpu_accel_y),
         .accel_z   (mpu_accel_z),
         .gyro_x    (mpu_gyro_x),
         .gyro_y    (mpu_gyro_y),
         .gyro_z    (mpu_gyro_z)
+    );
+
+    atitude_accel_fixa u_atitude_accel (
+        .clk         (clk),
+        .sensor_ok   (sensor_ok),
+        .amostra_nova(amostra_nova),
+        .accel_x     (mpu_accel_x),
+        .accel_y     (mpu_accel_y),
+        .accel_z     (mpu_accel_z),
+        .calibrado   (atitude_calibrada),
+        .pitch_px    (pitch_sensor),
+        .roll_q8     (roll_sensor)
     );
 
     // -----------------------------------------------------

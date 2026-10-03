@@ -54,7 +54,7 @@ module mpu6050_i2c #(
     } state_t;
     state_t state = ST_IDLE;
 
-    typedef enum logic [1:0] { OP_ID, OP_WAKE, OP_DATA } operation_t;
+    typedef enum logic [2:0] { OP_ID, OP_WAKE, OP_GYRO_CONFIG, OP_ACCEL_CONFIG, OP_DATA } operation_t;
     operation_t operation = OP_ID;
     logic [7:0] tx_data = 8'h00;
     logic [7:0] rx_data = 8'h00;
@@ -64,6 +64,9 @@ module mpu6050_i2c #(
     // 0: endereço W; 1: registrador; 2: endereço R ou dado de escrita.
     logic [1:0] etapa = 2'd0;
     logic ack_error = 1'b0;
+    wire escrita_config = (operation == OP_WAKE) ||
+                          (operation == OP_GYRO_CONFIG) ||
+                          (operation == OP_ACCEL_CONFIG);
     wire last_byte = (operation == OP_ID) || (byte_index == 4'd13);
 
     always_ff @(posedge clk) begin
@@ -160,6 +163,8 @@ module mpu6050_i2c #(
                                     case (operation)
                                         OP_ID: tx_data <= 8'h75;
                                         OP_WAKE: tx_data <= 8'h6B;
+                                        OP_GYRO_CONFIG: tx_data <= 8'h1B;
+                                        OP_ACCEL_CONFIG: tx_data <= 8'h1C;
                                         default: tx_data <= 8'h3B;
                                     endcase
                                     etapa <= 2'd1;
@@ -168,8 +173,9 @@ module mpu6050_i2c #(
                                 end
                                 2'd1: begin
                                     etapa <= 2'd2;
-                                    if (operation == OP_WAKE) begin
-                                        tx_data <= 8'h00; // PWR_MGMT_1: SLEEP=0.
+                                    if (escrita_config) begin
+                                        // SLEEP=0; giroscopio +/-250 graus/s; accel +/-2g.
+                                        tx_data <= 8'h00;
                                         bit_index <= 3'd7;
                                         state <= ST_TX_LOW;
                                     end else
@@ -177,7 +183,7 @@ module mpu6050_i2c #(
                                 end
                                 default: begin
                                     bit_index <= 3'd7;
-                                    state <= (operation == OP_WAKE) ? ST_STOP_1 : ST_READ_LOW;
+                                    state <= escrita_config ? ST_STOP_1 : ST_READ_LOW;
                                 end
                             endcase
                         end
@@ -275,8 +281,10 @@ module mpu6050_i2c #(
                                 end
                                 OP_WAKE: begin
                                     idle_count <= STARTUP_TICKS;
-                                    operation <= OP_DATA;
+                                    operation <= OP_GYRO_CONFIG;
                                 end
+                                OP_GYRO_CONFIG: operation <= OP_ACCEL_CONFIG;
+                                OP_ACCEL_CONFIG: operation <= OP_DATA;
                                 OP_DATA: begin
                                     // Publica uma amostra completa; ignora a temperatura (6 e 7).
                                     amostra_nova <= 1'b1;

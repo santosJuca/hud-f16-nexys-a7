@@ -22,6 +22,12 @@ module mpu6050_i2c_tb;
     reg present = 0;
     reg [7:0] identity = 8'h68;
     reg nack_wake = 0;
+    reg nack_gyro_config = 1;
+    reg nack_accel_config = 1;
+    reg gyro_configurado = 0;
+    reg accel_configurado = 0;
+    integer tentativas_gyro = 0;
+    integer tentativas_accel = 0;
     reg nack_register = 0;
     reg nack_read_address = 0;
     reg stretch = 0;
@@ -133,7 +139,8 @@ module mpu6050_i2c_tb;
                 if (!addr[0]) begin
                     reply(1);
                     receive_byte(pointer);
-                    if (pointer != 8'h75 && pointer != 8'h6B && pointer != 8'h3B)
+                    if (pointer != 8'h75 && pointer != 8'h6B && pointer != 8'h3B &&
+                        pointer != 8'h1B && pointer != 8'h1C)
                         $fatal(1, "Registrador inesperado=%h", pointer);
                     reply(!nack_register);
                     if (!nack_register && pointer == 8'h6B) begin
@@ -143,8 +150,27 @@ module mpu6050_i2c_tb;
                         reply(!nack_wake);
                         if (!nack_wake) begin
                             awake = 1;
+                            gyro_configurado = 0;
+                            accel_configurado = 0;
                             wakes = wakes + 1;
                             wake_time = $time;
+                        end
+                    end else if (!nack_register && (pointer == 8'h1B || pointer == 8'h1C)) begin
+                        receive_byte(value);
+                        if (value !== 8'h00)
+                            $fatal(1, "Config reg=%h obtido=%h esperado=00", pointer, value);
+                        if (!awake)
+                            $fatal(1, "Configuracao antes de wake");
+                        if (pointer == 8'h1B) begin
+                            tentativas_gyro = tentativas_gyro + 1;
+                            reply(!nack_gyro_config);
+                            if (!nack_gyro_config) gyro_configurado = 1;
+                        end else begin
+                            if (!gyro_configurado)
+                                $fatal(1, "Accel configurado antes do gyro");
+                            tentativas_accel = tentativas_accel + 1;
+                            reply(!nack_accel_config);
+                            if (!nack_accel_config) accel_configurado = 1;
                         end
                     end
                 end else begin
@@ -158,6 +184,8 @@ module mpu6050_i2c_tb;
                         end else if (pointer == 8'h3B) begin
                             if (!awake || $time - wake_time < 100000000)
                                 $fatal(1, "Leitura antes da inicializacao ou espera de 100 ms");
+                            if (!gyro_configurado || !accel_configurado)
+                                $fatal(1, "Leitura antes da configuracao das faixas");
                             for (i = 0; i < 14; i = i + 1) begin
                                 send_byte(registers[8'h3B+i], master_ack);
                                 if (master_ack !== (i < 13))
@@ -214,6 +242,19 @@ module mpu6050_i2c_tb;
         $display("PASS NACK em PWR_MGMT_1: sensor_ok=0");
 
         nack_wake = 0;
+        wait (tentativas_gyro >= 1);
+        #1000000;
+        if (sensor_ok !== 0 || pulsos_amostra != 0 || tentativas_accel != 0)
+            $fatal(1, "NACK gyro: status=%b pulsos=%0d accel=%0d esperado=0/0/0",
+                sensor_ok, pulsos_amostra, tentativas_accel);
+        $display("PASS NACK GYRO_CONFIG: nao publica dados nem avanca configuracao");
+        nack_gyro_config = 0;
+        wait (tentativas_accel >= 1);
+        #1000000;
+        if (sensor_ok !== 0 || pulsos_amostra != 0)
+            $fatal(1, "NACK accel: status=%b pulsos=%0d esperado=0/0", sensor_ok, pulsos_amostra);
+        $display("PASS NACK ACCEL_CONFIG: nao publica dados");
+        nack_accel_config = 0;
         stretch = 1;
         wait (sensor_ok);
         check_axes(4660, -292, -32768, 32767, -1, 258);
@@ -288,7 +329,7 @@ module mpu6050_i2c_tb;
     end
 
     initial begin
-        #1000000000;
+        #1500000000;
         $fatal(1, "Timeout global da simulacao");
     end
 endmodule
