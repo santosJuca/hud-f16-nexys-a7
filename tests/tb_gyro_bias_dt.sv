@@ -120,8 +120,14 @@ module tb_gyro_bias_dt;
         if (!dt_valid)
             $fatal(1, "dt_valid esperado");
 
-        if (dt_cycles == 0)
-            $fatal(1, "dt_cycles nao pode ser zero");
+        // Foram 21 ciclos completos entre as duas bordas
+        // em que amostra_nova foi reconhecida.
+        if (dt_cycles !== 32'd21)
+            $fatal(
+                1,
+                "dt incorreto: obtido=%0d esperado=21",
+                dt_cycles
+            );
 
         $display(
             "PASS dt: %0d ciclos entre amostras",

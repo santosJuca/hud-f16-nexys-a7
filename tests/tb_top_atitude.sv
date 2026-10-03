@@ -46,6 +46,10 @@ module tb_top_atitude;
         force dut.u_sensor.accel_x = 16'sd0;
         force dut.u_sensor.accel_y = 16'sd0;
         force dut.u_sensor.accel_z = 16'sd16384;
+
+        // Bias conhecido para validar o observador do giroscopio.
+        force dut.u_sensor.gyro_x = 16'sd100;
+        force dut.u_sensor.gyro_y = -16'sd50;
         seleciona(4'b1111);
         confere(40, -64);
         force dut.u_sensor.sensor_ok = 1'b1;
@@ -57,6 +61,110 @@ module tb_top_atitude;
         confere(0, 0);
         if (dut.atitude_calibrada !== 1'b1)
             $fatal(1, "calibracao nao concluiu com 64 amostras");
+
+        if (dut.gyro_bias_calibrado !== 1'b1)
+            $fatal(1, "bias do giroscopio nao calibrou com 64 amostras");
+
+        if ($signed(dut.gyro_bias_x) !== 100 ||
+            $signed(dut.gyro_bias_y) !== -50)
+            $fatal(
+                1,
+                "bias do giroscopio incorreto: x=%0d y=%0d",
+                $signed(dut.gyro_bias_x),
+                $signed(dut.gyro_bias_y)
+            );
+
+        // A correcao deve existir no caminho real sem alterar o HUD.
+        force dut.u_sensor.gyro_x = 16'sd125;
+        force dut.u_sensor.gyro_y = -16'sd20;
+        #1;
+
+        if ($signed(dut.gyro_x_corr) !== 25 ||
+            $signed(dut.gyro_y_corr) !== 30)
+            $fatal(
+                1,
+                "gyro corrigido incorreto no top: x=%0d y=%0d",
+                $signed(dut.gyro_x_corr),
+                $signed(dut.gyro_y_corr)
+            );
+
+        // -------------------------------------------------
+        // Valida a cadeia completa do observador do gyro.
+        //
+        // Primeiro cria a referencia temporal com o sensor
+        // exatamente no bias.
+        // -------------------------------------------------
+
+        force dut.u_sensor.gyro_x = 16'sd100;
+        force dut.u_sensor.gyro_y = -16'sd50;
+
+        amostra();
+
+        // Neste ponto o gyro ainda deve estar em zero.
+        if ($signed(dut.gyro_pitch_q10) !== 0 ||
+            $signed(dut.gyro_roll_q10) !== 0)
+            $fatal(
+                1,
+                "angulo do gyro deveria iniciar em zero: pitch=%0d roll=%0d",
+                $signed(dut.gyro_pitch_q10),
+                $signed(dut.gyro_roll_q10)
+            );
+
+        // Cria um intervalo conhecido antes da proxima
+        // amostra. O valor elevado do gyro permite observar
+        // movimento sem tornar a simulacao excessivamente longa.
+        repeat (120000) @(posedge clk);
+
+        // Bias:
+        //   X = +100
+        //   Y = -50
+        //
+        // Valores abaixo resultam em:
+        //   gyro_x_corr = +30000
+        //   gyro_y_corr = +30000
+        force dut.u_sensor.gyro_x = 16'sd30100;
+        force dut.u_sensor.gyro_y = 16'sd29950;
+
+        amostra();
+
+        // dt_valid e produzido por gyro_bias_dt e consumido
+        // pelos integradores na borda seguinte.
+        @(posedge clk);
+        #1;
+
+        if ($signed(dut.gyro_pitch_q10) <= 0 ||
+            $signed(dut.gyro_roll_q10) <= 0)
+            $fatal(
+                1,
+                "observador gyro nao integrou: pitch=%0d roll=%0d",
+                $signed(dut.gyro_pitch_q10),
+                $signed(dut.gyro_roll_q10)
+            );
+
+        if ($signed(dut.gyro_pitch_px) <= 0 ||
+            $signed(dut.gyro_roll_q8) <= 0)
+            $fatal(
+                1,
+                "conversao gyro->HUD nao ocorreu: pitch_px=%0d roll_q8=%0d",
+                $signed(dut.gyro_pitch_px),
+                $signed(dut.gyro_roll_q8)
+            );
+
+        // Fundamental nesta etapa:
+        // o observador existe, mas ainda NAO controla o HUD.
+        confere(0, 0);
+
+        $display(
+            "PASS observador gyro: pitch_q10=%0d roll_q10=%0d pitch_px=%0d roll_q8=%0d",
+            $signed(dut.gyro_pitch_q10),
+            $signed(dut.gyro_roll_q10),
+            $signed(dut.gyro_pitch_px),
+            $signed(dut.gyro_roll_q8)
+        );
+
+        // Volta o gyro ao bias para o restante do teste.
+        force dut.u_sensor.gyro_x = 16'sd100;
+        force dut.u_sensor.gyro_y = -16'sd50;
 
         force dut.u_sensor.accel_x = -16'sd4096;
         force dut.u_sensor.accel_y = 16'sd8192;
@@ -94,10 +202,23 @@ module tb_top_atitude;
         force dut.joystick_y_mais = 1'b1;
         force dut.u_sensor.sensor_ok = 1'b0;
         confere(-40, 64);
+
+        // Garante que os modulos realmente enxergaram a perda do sensor.
+        @(posedge clk);
+        #1;
+
+        if (dut.gyro_bias_calibrado !== 1'b0)
+            $fatal(1, "bias do giroscopio deveria ser invalidado");
+
+        if (dut.gyro_dt_valid !== 1'b0 ||
+            dut.gyro_dt_cycles !== 32'd0)
+            $fatal(1, "referencia temporal do giroscopio nao foi reiniciada");
+
         @(negedge clk);
         force dut.u_sensor.sensor_ok = 1'b1;
         confere(-40, 64);
-        $display("PASS top: 16 modos, joystick, switches, calibracao, pulso e perda do sensor");
+
+        $display("PASS top: HUD preservado, bias/dt do gyro integrado e perda do sensor");
         $finish;
     end
 endmodule

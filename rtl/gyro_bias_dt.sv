@@ -120,7 +120,9 @@ module gyro_bias_dt #(
                 end
                 else begin
                     if (referencia_temporal) begin
-                        dt_cycles <= ciclos_desde_amostra;
+                        // Inclui o ciclo da borda atual, em que
+                        // amostra_nova foi reconhecida.
+                        dt_cycles <= ciclos_desde_amostra + 32'd1;
                         dt_valid <= 1'b1;
                     end
                     else begin

@@ -209,6 +209,24 @@ module top_reticula (
     logic signed [15:0] mpu_gyro_y;
     logic signed [15:0] mpu_gyro_z;
 
+    // Preparacao do giroscopio para a futura fusao de atitude.
+    // Estas saidas ainda nao controlam o HUD.
+    logic gyro_bias_calibrado;
+    logic signed [15:0] gyro_bias_x;
+    logic signed [15:0] gyro_bias_y;
+    logic signed [16:0] gyro_x_corr;
+    logic signed [16:0] gyro_y_corr;
+    logic [31:0] gyro_dt_cycles;
+    logic gyro_dt_valid;
+
+    // Observador de atitude pelo giroscopio.
+    // Ainda nao controla o HUD.
+    logic signed [31:0] gyro_pitch_q10;
+    logic signed [31:0] gyro_roll_q10;
+
+    logic signed [10:0] gyro_pitch_px;
+    logic signed [9:0]  gyro_roll_q8;
+
     // Mapeamento fisico validado em hardware no GY-521.
     //
     // Acelerometro:
@@ -244,6 +262,59 @@ module top_reticula (
         .gyro_x    (mpu_gyro_x),
         .gyro_y    (mpu_gyro_y),
         .gyro_z    (mpu_gyro_z)
+    );
+
+    gyro_bias_dt u_gyro_bias_dt (
+        .clk         (clk),
+        .sensor_ok   (sensor_ok),
+        .amostra_nova(amostra_nova),
+
+        .gyro_x      (mpu_gyro_x),
+        .gyro_y      (mpu_gyro_y),
+
+        .calibrado   (gyro_bias_calibrado),
+        .bias_x      (gyro_bias_x),
+        .bias_y      (gyro_bias_y),
+        .gyro_x_corr (gyro_x_corr),
+        .gyro_y_corr (gyro_y_corr),
+
+        .dt_cycles   (gyro_dt_cycles),
+        .dt_valid    (gyro_dt_valid)
+    );
+
+    // -----------------------------------------------------
+    // Observador de atitude pelo giroscopio
+    //
+    // Mapeamento fisico validado:
+    //   gyro_x -> pitch
+    //   gyro_y -> roll
+    //
+    // A saida ainda nao participa da selecao do HUD.
+    // -----------------------------------------------------
+
+    gyro_integrador u_gyro_pitch_integrador (
+        .clk        (clk),
+        .sensor_ok  (sensor_ok),
+        .dt_valid   (gyro_dt_valid),
+        .gyro_corr  (gyro_x_corr),
+        .dt_cycles  (gyro_dt_cycles),
+        .angulo_q10 (gyro_pitch_q10)
+    );
+
+    gyro_integrador u_gyro_roll_integrador (
+        .clk        (clk),
+        .sensor_ok  (sensor_ok),
+        .dt_valid   (gyro_dt_valid),
+        .gyro_corr  (gyro_y_corr),
+        .dt_cycles  (gyro_dt_cycles),
+        .angulo_q10 (gyro_roll_q10)
+    );
+
+    atitude_gyro_hud u_atitude_gyro_hud (
+        .pitch_q10 (gyro_pitch_q10),
+        .roll_q10  (gyro_roll_q10),
+        .pitch_px  (gyro_pitch_px),
+        .roll_q8   (gyro_roll_q8)
     );
 
     atitude_accel_fixa u_atitude_accel (
