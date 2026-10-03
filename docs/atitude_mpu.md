@@ -1,8 +1,8 @@
-# Atitude pelo acelerômetro no HUD
+# Atitude pelo MPU-6050 no HUD
 
-Documento evolutivo da integração do MPU-6050. O estado consolidado atual
-está na linha de desenvolvimento `dev/imu-gyro-bias-dt` e na branch documental
-`docs/consolidacao-final-hud`.
+Documento evolutivo da integração do MPU-6050. O estado consolidado descrito
+aqui incorpora a calibração do acelerômetro, correção de bias do giroscópio,
+integração temporal e fusão complementar.
 Antes da edição, `rtl/top_reticula.sv` estava igual ao commit e ao backup
 `rtl/top_reticula.sv.pre-atitude-accel.bak`. A tentativa anterior não havia
 alterado o arquivo. Os arquivos `.bak` foram preservados.
@@ -125,7 +125,7 @@ reprograme com ele plano e parado para obter uma nova referência.
 O roteiro permanece como referência para repetir a validação após mudanças.
 PASS de simulação e programação concluída não substituem a observação na placa.
 
-## Preparação do giroscópio
+## Configuração e integração do giroscópio
 
 Após a validação física da integração, o driver passou a escrever
 `GYRO_CONFIG (0x1B) = 0x00` e `ACCEL_CONFIG (0x1C) = 0x00`, depois de
@@ -143,8 +143,8 @@ A medição do driver anterior na simulação com clock stretching encontrou
 apenas a espera entre transações. Após falhas e recuperação, os intervalos
 foram maiores. O registro está em `build/intervalo-mpu/resultado.log`.
 Esse resultado é de simulação, não uma medição da placa nem garantia de
-período fixo. A futura integração do giroscópio deve usar o tempo entre
-amostras válidas e reiniciar a referência temporal após perda do sensor.
+período fixo. A integração atual do giroscópio utiliza o tempo entre amostras válidas
+e reinicia a referência temporal após perda do sensor.
 
 O HUD atualmente utiliza fusão complementar entre a referência do
 acelerômetro e a variação angular obtida pelo giroscópio. O caminho inclui

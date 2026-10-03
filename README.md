@@ -1,7 +1,6 @@
 # Display de avião
 
-Na branch `docs/consolidacao-final-hud`, derivada de
-`dev/imu-gyro-bias-dt`, SW15..SW12 = `1111` seleciona a atitude proveniente
+No estado consolidado atual, SW15..SW12 = `1111` seleciona a atitude proveniente
 do MPU-6050 após calibração do acelerômetro, calibração do bias do giroscópio
 e inicialização da fusão complementar. Joystick e switches permanecem como
 fallback. Veja [integração e validação da atitude MPU](docs/atitude_mpu.md).
@@ -77,7 +76,7 @@ os controles de cor foram removidos. Pitch, roll e heading funcionam nos dois mo
 | --- | --- |
 | `rtl/controle_modo.sv` | Recebe SW0, sincroniza e filtra a entrada, e aplica o modo entre quadros. |
 | `rtl/controle_heading.sv` | Recebe BTNU/BTND e calcula o heading em passos de 10°. |
-| `rtl/top_reticula.sv` | Interpreta SW12 a SW15 como pitch/roll simulados e fornece velocidade e altitude fixas. |
+| `rtl/top_reticula.sv` | Integra MPU-6050, fusão de atitude, joystick e fallback por switches; também fornece velocidade e altitude simuladas. |
 | `rtl/entrada_hud.sv` | Transfere o conjunto de dados do clock de 100 MHz para o de 25 MHz com confirmação. |
 | `rtl/dados_hud.sv` | Recebe os dados processados e aplica o conjunto entre quadros. |
 | `rtl/mpu6050_i2c.sv` | Inicializa o MPU-6050/GY-521 e publica acelerômetro e giroscópio dos seis eixos. |
@@ -100,15 +99,15 @@ os controles de cor foram removidos. Pitch, roll e heading funcionam nos dois mo
 Quando o caminho MPU não está ativo, SW12 ligado sozinho posiciona o
 horizonte 40 pixels acima (y=200) e SW13 ligado sozinho posiciona 40 pixels
 abaixo (y=280).
-Ambos desligados ou ambos ligados mantêm y=240. O retículo permanece fixo.
-As entradas passam por dois estágios de sincronização e a posição é aplicada
-no blanking vertical. São três posições fixas, sem movimento contínuo nem
-leitura de atitude do sensor. O retículo mantém a cor verde fixa.
+No fallback manual por switches, SW12 e SW13 iguais mantêm y=240.
+SW14 sozinho seleciona roll negativo e SW15 sozinho seleciona roll positivo;
+SW14 e SW15 iguais mantêm roll zero. O retículo permanece fixo.
 
-SW14 sozinho inclina para a esquerda; SW15 sozinho, para a direita.
-Ambos ligados ou desligados mantêm roll zero. A escada traz referências
-±10/20/30/40 que acompanham pitch e roll; são referências de simulação,
-sem calibração com sensores. BTNU aumenta heading em 10° e BTND reduz em 10°,
+A combinação SW15..SW12 = `1111` é reservada ao modo MPU e, portanto, não é
+interpretada como posição neutra dos switches. Nesse modo, pitch e roll são
+obtidos pela cadeia de calibração, integração e fusão complementar.
+
+A escada traz referências ±10/20/30/40 que acompanham pitch e roll. BTNU aumenta heading em 10° e BTND reduz em 10°,
 com retorno circular entre 0° e 350°.
 
 ## Escalas laterais
@@ -120,7 +119,7 @@ passos de 20 KT e 200 FT. Os valores atuais iniciais são 280 KT e 36000 FT,
 mostrados abaixo das barras. Esses valores são simulados.
 
 A interface aceita velocidade, altitude, deslocamento de pitch e inclinação de
-roll processados. Consulte [formatos e ligação futura do sensor](docs/entradas_hud.md).
+roll processados. Consulte [formatos e caminho atual do sensor](docs/entradas_hud.md).
 A transferência entre clocks, a calibração do acelerômetro, a calibração
 do bias do giroscópio, a integração temporal e a fusão complementar já estão
 implementadas. A orientação física dos eixos e o movimento visual de pitch e
@@ -203,10 +202,13 @@ condicionamento resistivo usado na montagem, mantendo a tensão dentro da faixa
 adotada para a entrada analógica. Conversores lógicos digitais não são usados
 para os sinais analógicos VRx/VRy.
 
-O código de identificação I²C existente foi preservado como extensão. Ele não
-comprova leitura de atitude nem integração do futuro módulo. Não é necessário
-ampliar essa parte para concluir RF-08. Target lock fica como design goal;
-GPS, longitude, localização, framebuffer e novos efeitos ficam fora desta etapa.
+A integração do MPU-6050 é uma extensão além do MVP exigido pelo trabalho.
+O driver ativo realiza identificação, configuração e aquisição de acelerômetro
+e giroscópio, e a cadeia de atitude utiliza essas amostras no HUD. O antigo
+`mma8452_i2c.sv` permanece apenas como arquivo legado.
+
+Target lock continua como design goal; GPS, longitude, localização,
+framebuffer e novos efeitos permanecem fora desta etapa.
 
 ## Especificação do trabalho
 
