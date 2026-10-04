@@ -16,6 +16,9 @@ module top_reticula (
     input  wire         vauxp10,
     input  wire         vauxn10,
 
+    // Botao do KY-023. Ativo em nivel baixo.
+    input  wire         joystick_sw_n,
+
     // LEDs temporarios para validacao do joystick.
     output wire [3:0]   JOY_LED,
 
@@ -54,6 +57,11 @@ module top_reticula (
     logic joystick_y_menos;
     logic joystick_y_mais;
 
+    logic modo_manche;
+    logic manche_calibrado;
+    logic signed [10:0] manche_pitch;
+    logic signed [9:0]  manche_roll;
+
     joystick_xadc u_joystick_xadc (
         .clk     (clk),
         .vauxp3  (vauxp3),
@@ -70,14 +78,31 @@ module top_reticula (
         .x_raw   (joystick_y_raw),
         .y_raw   (joystick_x_raw),
 
-        // Botao ainda nao esta conectado.
-        .sw_n    (1'b1),
+        .sw_n    (joystick_sw_n),
 
         .x_menos (joystick_x_menos),
         .x_mais  (joystick_x_mais),
         .y_menos (joystick_y_menos),
         .y_mais  (joystick_y_mais),
         .botao   ()
+    );
+
+    // Alterna entre atitude real do sensor e manche manual.
+    controle_modo_manche u_modo_manche (
+        .clk         (clk),
+        .botao_n     (joystick_sw_n),
+        .modo_manche (modo_manche)
+    );
+
+    // Manche analogico proporcional.
+    // Mantem a mesma orientacao fisica ja validada no KY-023.
+    controle_manche u_manche (
+        .clk       (clk),
+        .x_raw     (joystick_y_raw),
+        .y_raw     (joystick_x_raw),
+        .calibrado (manche_calibrado),
+        .pitch_cmd (manche_pitch),
+        .roll_cmd  (manche_roll)
     );
 
     wire pixel_clk;
@@ -125,14 +150,14 @@ module top_reticula (
     logic signed [10:0] fusao_pitch_px;
     logic signed [9:0]  fusao_roll_q8;
 
-    // SW15..SW12 = 1111 seleciona o MPU apos a calibracao.
-    wire modo_mpu = (horizonte_sync == 2'b11) && (roll_sync == 2'b11);
+    // No modo SENSOR, o MPU e a fonte principal sempre que estiver valido.
+    // O joystick somente assume pitch/roll quando modo_manche=1.
     wire usar_mpu =
-    modo_mpu &&
-    sensor_ok &&
-    atitude_calibrada &&
-    gyro_bias_calibrado &&
-    fusao_valida;
+        !modo_manche &&
+        sensor_ok &&
+        atitude_calibrada &&
+        gyro_bias_calibrado &&
+        fusao_valida;
 
     always_ff @(posedge clk) begin
         horizonte_meta <= sw[13:12];
@@ -142,16 +167,15 @@ module top_reticula (
         roll_sync <= roll_meta;
     end
 
-    // Pitch pela fusao do MPU; joystick e switches ficam como fallback.
-    // Joystick para cima = nariz para cima.
-    // Os switches continuam como fallback de teste.
+    // Fonte de pitch:
+    //   MANCHE -> KY-023 proporcional.
+    //   SENSOR -> fusao MPU6050.
+    //   Sensor indisponivel -> switches como fallback de bancada.
     always_comb begin
-        if (usar_mpu)
+        if (modo_manche)
+            pitch_px_entrada = manche_pitch;
+        else if (usar_mpu)
             pitch_px_entrada = fusao_pitch_px;
-        else if (joystick_x_mais)
-            pitch_px_entrada = 11'sd40;
-        else if (joystick_x_menos)
-            pitch_px_entrada = -11'sd40;
         else begin
             case (horizonte_sync)
                 2'b01: pitch_px_entrada = -11'sd40;
@@ -161,16 +185,15 @@ module top_reticula (
         end
     end
 
-    // Roll pela fusao do MPU; joystick e switches ficam como fallback.
-    // Joystick para esquerda/direita inclina o horizonte.
-    // Os switches continuam como fallback de teste.
+    // Fonte de roll:
+    //   MANCHE -> KY-023 proporcional.
+    //   SENSOR -> fusao MPU6050.
+    //   Sensor indisponivel -> switches como fallback de bancada.
     always_comb begin
-        if (usar_mpu)
+        if (modo_manche)
+            roll_q8_entrada = manche_roll;
+        else if (usar_mpu)
             roll_q8_entrada = fusao_roll_q8;
-        else if (joystick_y_menos)
-            roll_q8_entrada = -10'sd64;
-        else if (joystick_y_mais)
-            roll_q8_entrada = 10'sd64;
         else begin
             case (roll_sync)
                 2'b01: roll_q8_entrada = -10'sd64;

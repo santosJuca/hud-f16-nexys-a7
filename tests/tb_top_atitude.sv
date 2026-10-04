@@ -11,6 +11,7 @@ module tb_top_atitude;
         .clk(clk), .btn_heading(2'b00), .sw(sw), .display_mode(1'b0),
         .style_mode(1'b0),
         .vauxp3(1'b0), .vauxn3(1'b0), .vauxp10(1'b0), .vauxn10(1'b0),
+        .joystick_sw_n(1'b1),
         .i2c_sda(sda), .i2c_scl(scl)
     );
 
@@ -38,10 +39,6 @@ module tb_top_atitude;
 
     initial begin
         // Isola as entradas analogicas e I2C; usa o estimador real do top.
-        force dut.joystick_x_mais = 1'b1;
-        force dut.joystick_x_menos = 1'b0;
-        force dut.joystick_y_mais = 1'b0;
-        force dut.joystick_y_menos = 1'b1;
         force dut.u_sensor.sensor_ok = 1'b0;
         force dut.u_sensor.amostra_nova = 1'b0;
         force dut.u_sensor.accel_x = 16'sd0;
@@ -52,10 +49,10 @@ module tb_top_atitude;
         force dut.u_sensor.gyro_x = 16'sd100;
         force dut.u_sensor.gyro_y = -16'sd50;
         seleciona(4'b1111);
-        confere(40, -64);
+        confere(0, 0);
         force dut.u_sensor.sensor_ok = 1'b1;
         repeat (63) amostra();
-        confere(40, -64);
+        confere(0, 0);
         if (dut.atitude_calibrada !== 1'b0)
             $fatal(1, "calibracao antecipada");
         amostra();
@@ -64,9 +61,9 @@ module tb_top_atitude;
         // termina nesta amostra, mas a fusao ainda nao
         // recebeu uma atualizacao temporal valida.
         //
-        // Portanto o modo MPU ainda NAO deve assumir o HUD.
-        // O fallback do joystick permanece ativo.
-        confere(40, -64);
+        // Portanto o modo SENSOR ainda NAO deve assumir a fusao.
+        // Os switches permanecem como fallback de bancada.
+        confere(0, 0);
 
         if (dut.atitude_calibrada !== 1'b1)
             $fatal(1, "calibracao nao concluiu com 64 amostras");
@@ -365,59 +362,167 @@ module tb_top_atitude;
                 $signed(dut.fusao_roll_q8))
             $fatal(1, "modo MPU deixou de encaminhar a fusao");
 
-        // Somente 1111 deve sobrepor o joystick.
+        // -------------------------------------------------
+        // MODO SENSOR
+        //
+        // Com a fusao valida, os switches nao devem mais
+        // selecionar o MPU. O sensor e a fonte principal
+        // independentemente de SW15..SW12.
+        // -------------------------------------------------
+
         for (modo = 0; modo < 16; modo = modo + 1) begin
             seleciona(modo[3:0]);
-            if (dut.usar_mpu)
+
+            if (dut.usar_mpu !== 1'b1)
+                $fatal(
+                    1,
+                    "SENSOR valido deveria usar MPU para sw=%b",
+                    sw
+                );
+
             confere(
                 $signed(dut.fusao_pitch_px),
                 $signed(dut.fusao_roll_q8)
             );
-            else confere(40, -64);
         end
 
-        force dut.joystick_x_mais = 1'b0;
-        force dut.joystick_y_menos = 1'b0;
-        for (modo = 0; modo < 16; modo = modo + 1) begin
-            seleciona(modo[3:0]);
-            case (modo & 3)
-                1: pitch_esperado = -40;
-                2: pitch_esperado = 40;
-                default: pitch_esperado = 0;
-            endcase
-            case (modo >> 2)
-                1: roll_esperado = -64;
-                2: roll_esperado = 64;
-                default: roll_esperado = 0;
-            endcase
-            if (dut.usar_mpu)
-            confere(
-                $signed(dut.fusao_pitch_px),
-                $signed(dut.fusao_roll_q8)
+        $display(
+            "PASS modo SENSOR: fusao MPU independente dos switches"
+        );
+
+        // -------------------------------------------------
+        // MODO MANCHE
+        //
+        // controle_modo_manche e controle_manche possuem
+        // testes proprios. Aqui validamos o multiplexador
+        // final dentro do top.
+        // -------------------------------------------------
+
+        force dut.modo_manche = 1'b1;
+        force dut.manche_pitch = 11'sd23;
+        force dut.manche_roll  = -10'sd31;
+        #1;
+
+        if (dut.usar_mpu !== 1'b0)
+            $fatal(
+                1,
+                "MPU nao deveria comandar HUD no modo MANCHE"
             );
-            else confere(pitch_esperado, roll_esperado);
-        end
-        force dut.joystick_x_menos = 1'b1;
-        force dut.joystick_y_mais = 1'b1;
-        force dut.u_sensor.sensor_ok = 1'b0;
+
+        confere(23, -31);
+
+        force dut.manche_pitch = -11'sd40;
+        force dut.manche_roll  = 10'sd64;
+        #1;
+
         confere(-40, 64);
 
-        // Garante que os modulos realmente enxergaram a perda do sensor.
+        $display(
+            "PASS modo MANCHE: pitch/roll proporcionais assumem o HUD"
+        );
+
+        release dut.manche_pitch;
+        release dut.manche_roll;
+        release dut.modo_manche;
+
+        #1;
+
+        // Apos sair do MANCHE, volta imediatamente ao SENSOR.
+        if (dut.usar_mpu !== 1'b1)
+            $fatal(
+                1,
+                "Retorno do MANCHE deveria restaurar SENSOR"
+            );
+
+        confere(
+            $signed(dut.fusao_pitch_px),
+            $signed(dut.fusao_roll_q8)
+        );
+
+        // -------------------------------------------------
+        // PERDA DO SENSOR
+        //
+        // Em SENSOR sem MPU valido, somente os switches
+        // permanecem como fallback de bancada.
+        // -------------------------------------------------
+
+        force dut.u_sensor.sensor_ok = 1'b0;
+        #1;
+
+        if (dut.usar_mpu !== 1'b0)
+            $fatal(
+                1,
+                "MPU nao deveria ser usado apos perda do sensor"
+            );
+
+        for (modo = 0; modo < 16; modo = modo + 1) begin
+            seleciona(modo[3:0]);
+
+            case (modo & 3)
+                1: pitch_esperado = -40;
+                2: pitch_esperado =  40;
+                default: pitch_esperado = 0;
+            endcase
+
+            case (modo >> 2)
+                1: roll_esperado = -64;
+                2: roll_esperado =  64;
+                default: roll_esperado = 0;
+            endcase
+
+            confere(
+                pitch_esperado,
+                roll_esperado
+            );
+        end
+
+        $display(
+            "PASS fallback SENSOR: switches preservados quando MPU indisponivel"
+        );
+
+        // Mesmo sem MPU, o usuario ainda pode selecionar MANCHE.
+        force dut.modo_manche = 1'b1;
+        force dut.manche_pitch = 11'sd17;
+        force dut.manche_roll  = -10'sd22;
+        #1;
+
+        confere(17, -22);
+
+        $display(
+            "PASS MANCHE sem MPU: controle manual continua disponivel"
+        );
+
+        release dut.manche_pitch;
+        release dut.manche_roll;
+        release dut.modo_manche;
+
+        // Garante que os modulos realmente enxergaram
+        // a perda do sensor.
         @(posedge clk);
         #1;
 
         if (dut.gyro_bias_calibrado !== 1'b0)
-            $fatal(1, "bias do giroscopio deveria ser invalidado");
+            $fatal(
+                1,
+                "bias do giroscopio deveria ser invalidado"
+            );
 
         if (dut.gyro_dt_valid !== 1'b0 ||
             dut.gyro_dt_cycles !== 32'd0)
-            $fatal(1, "referencia temporal do giroscopio nao foi reiniciada");
+            $fatal(
+                1,
+                "referencia temporal do giroscopio nao foi reiniciada"
+            );
 
+        // Ao recuperar sensor, ele precisa calibrar novamente.
+        // Portanto neste instante o fallback continua sendo SW.
         @(negedge clk);
         force dut.u_sensor.sensor_ok = 1'b1;
-        confere(-40, 64);
+        #1;
 
-        $display("PASS top: fusao ativa no HUD, fallbacks preservados e perda do sensor");
+        confere(0, 0);
+
+        $display("PASS top: SENSOR/MANCHE, fusao, fallback e perda do sensor");
         $finish;
     end
 endmodule

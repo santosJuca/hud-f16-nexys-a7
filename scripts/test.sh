@@ -9,6 +9,8 @@ tests=(
     "reticula|tb_reticula|tests/tb_reticula.sv"
     "controle_heading|tb_controle_heading|tests/tb_controle_heading.sv"
     "controle_joystick|tb_controle_joystick|tests/tb_controle_joystick.sv"
+    "controle_manche|tb_controle_manche|tests/tb_controle_manche.sv"
+    "modo_manche|tb_modo_manche|tests/tb_modo_manche.sv"
     "horizonte|tb_horizonte|tests/tb_horizonte.sv"
     "atitude|tb_atitude|tests/tb_atitude.sv"
     "atitude_accel_fixa|tb_atitude_accel_fixa|tests/tb_atitude_accel_fixa.sv"

@@ -136,3 +136,16 @@ set_property -dict { PACKAGE_PIN H17 IOSTANDARD LVCMOS33 } [get_ports { JOY_LED[
 set_property -dict { PACKAGE_PIN K15 IOSTANDARD LVCMOS33 } [get_ports { JOY_LED[1] }]
 set_property -dict { PACKAGE_PIN J13 IOSTANDARD LVCMOS33 } [get_ports { JOY_LED[2] }]
 set_property -dict { PACKAGE_PIN N14 IOSTANDARD LVCMOS33 } [get_ports { JOY_LED[3] }]
+
+## =========================================================
+## KY-023 - Botao do manche
+## =========================================================
+## JA1 = C17
+## SW do KY-023 e ativo em nivel baixo.
+## Pull-up interno mantem SENSOR quando o botao esta solto.
+
+set_property -dict { PACKAGE_PIN C17 IOSTANDARD LVCMOS33 PULLUP TRUE } \
+    [get_ports { joystick_sw_n }]
+
+set_false_path -from [get_ports { joystick_sw_n }] \
+    -to [get_pins -hier -filter {NAME =~ u_modo_manche/btn_meta_reg*/D}]
