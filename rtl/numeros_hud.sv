@@ -314,6 +314,24 @@ module numeros_hud (
 
         // -------------------------------------------------
         // FITA DE ALTITUDE
+        //
+        // 200 ft por graduacao.
+        //
+        // A regiao central fica livre para o valor atual.
+        // Graduacoes:
+        //
+        //   y= 90 -> base + 600 ft
+        //   y=140 -> base + 400 ft
+        //   y=190 -> base + 200 ft
+        //
+        //   y=240 -> valor atual
+        //
+        //   y=290 -> base - 200 ft
+        //   y=340 -> base - 400 ft
+        //   y=390 -> base - 600 ft
+        //
+        // Assim a escala mantém proporcao constante:
+        // 50 pixels = 200 ft.
         // -------------------------------------------------
 
         else if (
@@ -326,39 +344,67 @@ module numeros_hud (
 
             for (
                 integer m = 0;
-                m < 8;
+                m < 6;
                 m = m + 1
             ) begin
 
+                marca = 0;
+                deslocamento = 0;
+
+                case (m)
+
+                    0: begin
+                        marca = 85;
+                        deslocamento = 3;
+                    end
+
+                    1: begin
+                        marca = 135;
+                        deslocamento = 2;
+                    end
+
+                    2: begin
+                        marca = 185;
+                        deslocamento = 1;
+                    end
+
+                    3: begin
+                        marca = 285;
+                        deslocamento = -1;
+                    end
+
+                    4: begin
+                        marca = 335;
+                        deslocamento = -2;
+                    end
+
+                    default: begin
+                        marca = 385;
+                        deslocamento = -3;
+                    end
+
+                endcase
+
+
                 if (
-                    (int'(pixel_y) >= 95 + 40*m) &&
-                    (int'(pixel_y) <  105 + 40*m)
+                    (int'(pixel_y) >= marca) &&
+                    (int'(pixel_y) < marca + 10)
                 ) begin
 
                     campo = 1'b1;
-                    linha =
-                        (int'(pixel_y) - 95 - 40*m) / 2;
 
-                    case (m)
-                        0: deslocamento =  4;
-                        1: deslocamento =  3;
-                        2: deslocamento =  2;
-                        3: deslocamento =  1;
-                        4: deslocamento = -1;
-                        5: deslocamento = -2;
-                        6: deslocamento = -3;
-                        default:
-                           deslocamento = -4;
-                    endcase
+                    linha =
+                        (int'(pixel_y) - marca) / 2;
 
                     valor =
                         alt_base +
                         deslocamento * 200;
+
                 end
             end
 
 
-            // Valor exato do BMP085 na janela fixa.
+            // Valor exato do BMP085 permanece fixo no centro.
             if (
                 (pixel_y >= 235) &&
                 (pixel_y < 245)
@@ -368,6 +414,7 @@ module numeros_hud (
                 linha   = (int'(pixel_y) - 235) / 2;
                 valor   = int'(altitude_ft);
                 digitos = 5;
+
             end
         end
 
@@ -396,16 +443,16 @@ module numeros_hud (
         end
 
         else if (
-            (pixel_x >= 596) &&
-            (pixel_x < 612) &&
-            (pixel_y >= 402) &&
-            (pixel_y < 412)
+            (pixel_x >= 584) &&
+            (pixel_x < 600) &&
+            (pixel_y >= 424) &&
+            (pixel_y < 434)
         ) begin
 
             campo     = 1'b1;
             unidade   = 1'b1;
-            coluna    = int'(pixel_x) - 596;
-            linha     = (int'(pixel_y) - 402) / 2;
+            coluna    = int'(pixel_x) - 584;
+            linha     = (int'(pixel_y) - 424) / 2;
             caractere = coluna / 8;
 
             if (caractere == 0)

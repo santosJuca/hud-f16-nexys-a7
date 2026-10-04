@@ -46,7 +46,8 @@ module simbologia_vga (
 
     logic altitude_barra;
     logic altitude_marcas;
-    logic graduacao_y;
+    logic graduacao_y_altitude;
+    logic graduacao_y_velocidade;
     logic velocidade_barra;
     logic velocidade_marcas;
 
@@ -421,13 +422,43 @@ marcas_inferiores =
         // Escala de altitude
         // -------------------------------------------------
 
+        // Altitude:
+        // 50 pixels representam 200 ft.
+        // A regiao central fica livre para a janela do valor atual.
         altitude_barra =
             (pixel_x >= 559) &&
             (pixel_x <= 561) &&
+            (pixel_y >= 90) &&
+            (pixel_y <= 390);
+
+        graduacao_y_altitude =
+            (
+                ((pixel_y >=  89) && (pixel_y <=  91)) ||
+                ((pixel_y >= 139) && (pixel_y <= 141)) ||
+                ((pixel_y >= 189) && (pixel_y <= 191)) ||
+                ((pixel_y >= 289) && (pixel_y <= 291)) ||
+                ((pixel_y >= 339) && (pixel_y <= 341)) ||
+                ((pixel_y >= 389) && (pixel_y <= 391))
+            );
+
+        altitude_marcas =
+            (pixel_x >= 548) &&
+            (pixel_x <= 561) &&
+            graduacao_y_altitude;
+
+        altitude_on =
+            video_on &&
+            (altitude_barra || altitude_marcas);
+
+
+        // Velocidade permanece exatamente com a geometria anterior.
+        velocidade_barra =
+            (pixel_x >= 79) &&
+            (pixel_x <= 81) &&
             (pixel_y >= 100) &&
             (pixel_y <= 380);
 
-        graduacao_y =
+        graduacao_y_velocidade =
             (
                 ((pixel_y >=  99) && (pixel_y <= 101)) ||
                 ((pixel_y >= 139) && (pixel_y <= 141)) ||
@@ -439,20 +470,14 @@ marcas_inferiores =
                 ((pixel_y >= 379) && (pixel_y <= 381))
             );
 
-        altitude_marcas =
-            (pixel_x >= 548) && (pixel_x <= 561) && graduacao_y;
-
-        altitude_on =
-            video_on &&
-            (altitude_barra || altitude_marcas);
-
-        // Escala de velocidade: espelho da altitude, com marcas para dentro.
-        velocidade_barra =
-            (pixel_x >= 79) && (pixel_x <= 81) &&
-            (pixel_y >= 100) && (pixel_y <= 380);
         velocidade_marcas =
-            (pixel_x >= 79) && (pixel_x <= 92) && graduacao_y;
-        velocidade_on = video_on && (velocidade_barra || velocidade_marcas);
+            (pixel_x >= 79) &&
+            (pixel_x <= 92) &&
+            graduacao_y_velocidade;
+
+        velocidade_on =
+            video_on &&
+            (velocidade_barra || velocidade_marcas);
 
         // -------------------------------------------------
         // Indicador de direção

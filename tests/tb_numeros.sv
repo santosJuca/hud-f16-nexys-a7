@@ -105,7 +105,7 @@ module tb_numeros;
         // Escalas arredondadas
         //
         // vel=280 -> topo = 360
-        // alt=11220 -> base=11200 -> topo=12000
+        // alt=11220 -> base=11200 -> topo=11800
         // ---------------------------------------------
 
         vel = 280;
@@ -115,11 +115,13 @@ module tb_numeros;
         digito(54, 95, 6);
         digito(62, 95, 0);
 
-        digito(572, 95, 1);
-        digito(580, 95, 2);
-        digito(588, 95, 0);
-        digito(596, 95, 0);
-        digito(604, 95, 0);
+        // Altitude:
+        // base 11200 + 600 = 11800 no topo.
+        digito(572, 85, 1);
+        digito(580, 85, 1);
+        digito(588, 85, 8);
+        digito(596, 85, 0);
+        digito(604, 85, 0);
 
 
         // ---------------------------------------------
@@ -140,6 +142,33 @@ module tb_numeros;
 
         if (!on)
             $fatal(1, "Moldura da altitude ausente");
+
+
+        // ---------------------------------------------
+        // Unidade FT reposicionada
+        // ---------------------------------------------
+
+        x = 584;
+        y = 424;
+        #1;
+
+        if (!on)
+            $fatal(
+                1,
+                "FT deve aparecer centralizado abaixo da altitude"
+            );
+
+
+        // A antiga posicao vertical de FT deve estar livre.
+        x = 584;
+        y = 402;
+        #1;
+
+        if (on)
+            $fatal(
+                1,
+                "FT ainda aparece na posicao antiga"
+            );
 
 
         // ---------------------------------------------
