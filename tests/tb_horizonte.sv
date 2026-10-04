@@ -12,6 +12,7 @@ module tb_horizonte;
         .btn_heading(2'b00),
         .sw(sw[15:12]),
         .display_mode(1'b0),
+        .style_mode(1'b0),
         .vauxp3(1'b0),
         .vauxn3(1'b0),
         .vauxp10(1'b0),

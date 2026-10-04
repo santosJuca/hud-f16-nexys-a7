@@ -11,6 +11,7 @@ module tb_vga;
         .btn_heading(2'b00),
         .sw(4'b0000),
         .display_mode(1'b0),
+        .style_mode(1'b0),
         .vauxp3(1'b0),
         .vauxn3(1'b0),
         .vauxp10(1'b0),
