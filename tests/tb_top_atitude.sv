@@ -9,6 +9,7 @@ module tb_top_atitude;
 
     top_reticula dut (
         .clk(clk), .btn_heading(2'b00), .sw(sw), .display_mode(1'b0),
+        .style_mode(1'b0),
         .vauxp3(1'b0), .vauxn3(1'b0), .vauxp10(1'b0), .vauxn10(1'b0),
         .i2c_sda(sda), .i2c_scl(scl)
     );

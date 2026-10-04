@@ -45,6 +45,21 @@ set_property -dict { PACKAGE_PIN G4 IOSTANDARD LVCMOS33 } [get_ports { i2c_sda }
 
 set_property -dict { PACKAGE_PIN H2 IOSTANDARD LVCMOS33 } [get_ports { i2c_scl }]; #JD7 - SCL
 
+## =========================================================
+## BMP085 / SEN-09694 - I2C independente
+## =========================================================
+## Ligacao fisica:
+##   JD1 = H4 = SDA
+##   JD2 = H1 = SCL
+##
+## Nao compartilha o master I2C do MPU-6050.
+
+set_property -dict { PACKAGE_PIN H4 IOSTANDARD LVCMOS33 } [get_ports { baro_sda }]; # JD1 - BMP085 SDA
+set_property -dict { PACKAGE_PIN H1 IOSTANDARD LVCMOS33 } [get_ports { baro_scl }]; # JD2 - BMP085 SCL
+
+## LED4: diagnostico de identificacao do BMP085
+set_property -dict { PACKAGE_PIN R18 IOSTANDARD LVCMOS33 } [get_ports { BARO_LED }]; # LED4 - BMP085 OK
+
 # set_property -dict { PACKAGE_PIN E17 IOSTANDARD LVCMOS33 } [get_ports { JA[8] }]; #IO_L16P_T2_A28_15 Sch=ja[8]
 
 # set_property -dict { PACKAGE_PIN F18 IOSTANDARD LVCMOS33 } [get_ports { JA[9] }]; #IO_L22N_T3_A16_15 Sch=ja[9]
@@ -80,6 +95,14 @@ set_false_path -from [get_ports {btn_heading[*]}] \
 # SW0 seleciona NORMAL (0) / DECLUTTER (1).
 set_property -dict { PACKAGE_PIN J15 IOSTANDARD LVCMOS33 } [get_ports { display_mode }]
 set_false_path -from [get_ports display_mode] -to [get_pins -hier -filter {NAME =~ u_modo/modo_meta_reg/D}]
+
+# SW1 seleciona o estilo visual.
+# Nexys-A7-100T Master XDC:
+# SW[1] = PACKAGE_PIN L16.
+set_property -dict { PACKAGE_PIN L16 IOSTANDARD LVCMOS33 }     [get_ports { style_mode }]
+
+set_false_path -from [get_ports style_mode]     -to [get_pins -hier -filter         {NAME =~ u_estilo/modo_meta_reg/D}]
+
 
 ## =========================================================
 ## SEN-09694/barometro

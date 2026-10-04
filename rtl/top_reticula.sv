@@ -8,6 +8,7 @@ module top_reticula (
     input  logic [1:0]  btn_heading,  // BTNU=+10, BTND=-10
     input  logic [15:12] sw,        // pitch e roll
     input  logic        display_mode, // SW0: 0=NORMAL, 1=DECLUTTER
+    input  logic        style_mode,   // SW1: 0=HUD atual, 1=HUD CACA
 
     // Entradas analogicas do joystick pelo JXADC.
     input  wire         vauxp3,
@@ -20,6 +21,14 @@ module top_reticula (
 
     inout  wire         i2c_sda,
     inout  wire         i2c_scl,
+
+    // BMP085 em barramento I2C independente:
+    // JD1 = SDA, JD2 = SCL.
+    inout  wire         baro_sda,
+    inout  wire         baro_scl,
+
+    // LED4 indica BMP085 identificado corretamente.
+    output wire         BARO_LED,
 
     output wire [3:0]   VGA_R,
     output wire [3:0]   VGA_G,
@@ -73,10 +82,26 @@ module top_reticula (
 
     wire pixel_clk;
     wire declutter;
+    wire estilo_caca;
+
     controle_modo u_modo (
-        .clk(pixel_clk), .display_mode(display_mode),
-        .atualizar((pixel_x == 0) && (pixel_y == 480)),
+        .clk(pixel_clk),
+        .display_mode(display_mode),
+        .atualizar(
+            (pixel_x == 0) &&
+            (pixel_y == 480)
+        ),
         .declutter(declutter)
+    );
+
+    controle_modo u_estilo (
+        .clk(pixel_clk),
+        .display_mode(style_mode),
+        .atualizar(
+            (pixel_x == 0) &&
+            (pixel_y == 480)
+        ),
+        .declutter(estilo_caca)
     );
 
     (* ASYNC_REG = "TRUE" *) logic [1:0] horizonte_meta = '0;
@@ -159,6 +184,7 @@ module top_reticula (
     wire amostra_valida;
     wire entrada_pronta;
     wire [8:0] heading_entrada;
+wire [16:0] altitude_hud_entrada;
 
     controle_heading u_heading (
         .clk         (clk),
@@ -169,7 +195,7 @@ module top_reticula (
     entrada_hud u_entrada (
         .clk_origem(clk), .clk_destino(pixel_clk),
         .valido(1'b1),
-        .dados({10'd280, 17'd36000, pitch_px_entrada, roll_q8_entrada, heading_entrada}),
+        .dados({10'd280, altitude_hud_entrada, pitch_px_entrada, roll_q8_entrada, heading_entrada}),
         .pronto(entrada_pronta),
         .valido_destino(amostra_valida), .dados_destino(amostra_pixel)
     );
@@ -199,6 +225,9 @@ module top_reticula (
     logic vsync;
 
     logic retic;
+    logic retic_caca;
+    logic retic_caca_clearance;
+    logic retic_visivel;
     logic horizonte;
     logic altitude;
     logic velocidade;
@@ -283,6 +312,155 @@ module top_reticula (
         .gyro_y    (mpu_gyro_y),
         .gyro_z    (mpu_gyro_z)
     );
+
+    // -----------------------------------------------------
+    // BMP085 / SEN-09694
+    // Barramento independente do MPU-6050.
+    // Nesta etapa valida apenas endereco 0x77 e CHIP_ID 0x55.
+    // -----------------------------------------------------
+
+    logic [7:0] baro_chip_id;
+    logic       baro_sensor_ok;
+    logic       baro_calibracao_ok;
+
+    // Coeficientes de calibracao do BMP085.
+    logic signed [15:0] baro_ac1;
+    logic signed [15:0] baro_ac2;
+    logic signed [15:0] baro_ac3;
+
+    logic        [15:0] baro_ac4;
+    logic        [15:0] baro_ac5;
+    logic        [15:0] baro_ac6;
+
+    logic signed [15:0] baro_b1;
+    logic signed [15:0] baro_b2;
+    logic signed [15:0] baro_mb;
+    logic signed [15:0] baro_mc;
+    logic signed [15:0] baro_md;
+
+    // Medidas brutas.
+    logic [15:0] baro_ut_raw;
+    logic        baro_ut_valid;
+
+    logic [18:0] baro_up_raw;
+    logic        baro_up_valid;
+
+    // Compensacao de temperatura.
+    logic signed [31:0] baro_temp_x1;
+    logic signed [31:0] baro_temp_x2;
+    logic signed [31:0] baro_b5;
+
+    logic signed [15:0] baro_temperatura_decic;
+    logic               baro_temp_calculo_ok;
+
+    // Compensacao de pressao.
+    logic signed [31:0] baro_press_b6;
+    logic signed [31:0] baro_press_b3;
+
+    logic [31:0] baro_press_b4;
+    logic [31:0] baro_press_b7;
+
+    logic [31:0] baro_pressao_base_pa;
+    logic [31:0] baro_pressao_pa;
+
+    logic baro_press_calculo_ok;
+
+
+    bmp085_i2c #(
+        .ENABLE_CALIBRATION (1'b1),
+        .ENABLE_TEMPERATURE (1'b1),
+        .ENABLE_PRESSURE    (1'b1),
+        .ENABLE_CONTINUOUS  (1'b1)
+    ) u_baro (
+        .clk          (clk),
+        .i2c_sda      (baro_sda),
+        .i2c_scl      (baro_scl),
+
+        .chip_id      (baro_chip_id),
+        .sensor_ok    (baro_sensor_ok),
+        .calibracao_ok(baro_calibracao_ok),
+
+        .ac1(baro_ac1),
+        .ac2(baro_ac2),
+        .ac3(baro_ac3),
+
+        .ac4(baro_ac4),
+        .ac5(baro_ac5),
+        .ac6(baro_ac6),
+
+        .b1(baro_b1),
+        .b2(baro_b2),
+        .mb(baro_mb),
+        .mc(baro_mc),
+        .md(baro_md),
+
+        .ut_raw  (baro_ut_raw),
+        .ut_valid(baro_ut_valid),
+
+        .up_raw  (baro_up_raw),
+        .up_valid(baro_up_valid)
+    );
+
+
+    bmp085_compensacao_seq u_baro_comp (
+        .clk(clk),
+        .amostra_valid(baro_sensor_ok && baro_calibracao_ok &&
+                       baro_ut_valid && baro_up_valid),
+        .ut_raw(baro_ut_raw), .up_raw(baro_up_raw),
+        .ac1(baro_ac1), .ac2(baro_ac2), .ac3(baro_ac3),
+        .ac4(baro_ac4), .ac5(baro_ac5), .ac6(baro_ac6),
+        .b1(baro_b1), .b2(baro_b2), .mc(baro_mc), .md(baro_md),
+        .x1(baro_temp_x1), .x2(baro_temp_x2), .b5(baro_b5),
+        .temperatura_decic(baro_temperatura_decic),
+        .b6(baro_press_b6), .b3(baro_press_b3),
+        .b4(baro_press_b4), .b7(baro_press_b7),
+        .pressao_base_pa(baro_pressao_base_pa), .pressao_pa(baro_pressao_pa),
+        .temp_calculo_ok(baro_temp_calculo_ok), .calculo_ok(baro_press_calculo_ok),
+        .pronto(), .ocupado()
+    );
+
+    // -----------------------------------------------------
+    // BMP085 -> altitude barometrica / pressure altitude
+    // -----------------------------------------------------
+    //
+    // A altitude e calculada usando P0 = 101325 Pa.
+    // O registrador abaixo inicia em 36000 ft como fallback.
+    //
+    // Depois da primeira conversao valida, mantemos a ultima
+    // altitude boa entre as novas aquisicoes do BMP085.
+    // Isso evita retornar momentaneamente a 36000 ft enquanto
+    // up_valid alterna durante o modo continuo.
+
+    logic [16:0] baro_altitude_ft_calc;
+    logic        baro_altitude_calc_ok;
+
+    logic [16:0] baro_altitude_ft_hold = 17'd36000;
+
+    bmp085_altitude u_baro_altitude (
+        .clk           (clk),
+        .pressao_pa    (baro_pressao_pa),
+        .pressao_valid (baro_press_calculo_ok),
+        .altitude_ft   (baro_altitude_ft_calc),
+        .calculo_ok    (baro_altitude_calc_ok)
+    );
+
+    always_ff @(posedge clk) begin
+        if (baro_altitude_calc_ok)
+            baro_altitude_ft_hold <= baro_altitude_ft_calc;
+    end
+
+    assign altitude_hud_entrada = baro_altitude_ft_hold;
+
+    assign BARO_LED =
+        baro_sensor_ok &&
+        baro_calibracao_ok &&
+        baro_ut_valid &&
+        baro_up_valid &&
+        baro_temp_calculo_ok &&
+        baro_press_calculo_ok &&
+        (baro_pressao_pa >= 32'd30000) &&
+        (baro_pressao_pa <= 32'd120000);
+
 
     gyro_bias_dt u_gyro_bias_dt (
         .clk         (clk),
@@ -420,6 +598,22 @@ module top_reticula (
         .reticula_on (retic)
     );
 
+    reticula_caca_vga #(
+        .ESPESSURA (2),
+        .CLEARANCE (3)
+    ) u_retic_caca (
+        .pixel_x      (pixel_x),
+        .pixel_y      (pixel_y),
+        .video_on     (video_on),
+        .reticula_on  (retic_caca),
+        .clearance_on (retic_caca_clearance)
+    );
+
+    assign retic_visivel =
+        estilo_caca ?
+        retic_caca :
+        retic;
+
     // -----------------------------------------------------
     // Simbologia
     // -----------------------------------------------------
@@ -437,6 +631,26 @@ module top_reticula (
         .velocidade_on (velocidade),
         .direcao_on   (direcao),
         .alvo_on      (alvo)
+    );
+
+    logic caca_velocidade;
+    logic caca_altitude;
+    logic caca_heading;
+    logic caca_sim;
+
+    simbologia_caca_vga u_simbologia_caca (
+        .pixel_x        (pixel_x),
+        .pixel_y        (pixel_y),
+        .video_on       (video_on),
+
+        .velocidade_kt  (velocidade_kt),
+        .altitude_ft    (altitude_ft),
+        .heading_deg    (heading_deg),
+
+        .velocidade_on  (caca_velocidade),
+        .altitude_on    (caca_altitude),
+        .heading_on     (caca_heading),
+        .sim_on         (caca_sim)
     );
 
     assign VGA_HS = hsync;
@@ -465,17 +679,58 @@ module top_reticula (
     // Compositor RGB
     // -----------------------------------------------------
 
+    // No estilo CAÇA, a attitude grid recebe somente
+    // um pequeno recorte ao redor do datum fixo.
+    // O HUD original permanece pixel a pixel inalterado.
+    wire horizonte_visivel =
+        horizonte &&
+        !(
+            estilo_caca &&
+            retic_caca_clearance
+        );
+
+    wire extras_originais =
+        altitude ||
+        velocidade ||
+        direcao ||
+        numeros;
+
+    wire extras_caca =
+        caca_velocidade ||
+        caca_altitude ||
+        caca_heading ||
+        caca_sim;
+
+    wire extras_estilo =
+        estilo_caca ?
+        extras_caca :
+        extras_originais;
+
     assign VGA_R =
-        retic                                      ? 4'h0 :
-        alvo                                       ? 4'hF :
-        (sensor_status && !declutter && !sensor_ok) ? 4'hF :
-                                                     4'h0;
+        retic_visivel                                ? 4'h0 :
+        alvo                                         ? 4'hF :
+        (
+            sensor_status &&
+            !declutter &&
+            !sensor_ok
+        )                                            ? 4'hF :
+                                                       4'h0;
 
     assign VGA_G =
-        retic                                      ? 4'hF :
-        (horizonte || (!declutter && (altitude || velocidade || direcao || numeros))) ? 4'hF :
-        (sensor_status && !declutter && sensor_ok) ? 4'hF :
-                                                     4'h0;
+        retic_visivel ? 4'hF :
+        (
+            horizonte_visivel ||
+            (
+                !declutter &&
+                extras_estilo
+            )
+        ) ? 4'hF :
+        (
+            sensor_status &&
+            !declutter &&
+            sensor_ok
+        ) ? 4'hF :
+            4'h0;
 
     assign VGA_B = 4'h0;
 

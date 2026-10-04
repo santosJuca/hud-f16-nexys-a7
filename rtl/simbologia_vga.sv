@@ -30,8 +30,10 @@ module simbologia_vga (
     logic tracos_longo;
     logic tracos_medio;
     logic tracos_curto;
-    logic signed [21:0] distancia_horizonte;
-    logic signed [21:0] deslocamento_roll;
+    logic signed [21:0] delta_x;
+    logic signed [21:0] delta_y;
+    logic signed [21:0] pitch_x_local;
+    logic signed [21:0] pitch_y_local;
     // Números da escada de pitch.
     logic pitch_numeros;
     logic pitch_campo;
@@ -44,7 +46,8 @@ module simbologia_vga (
 
     logic altitude_barra;
     logic altitude_marcas;
-    logic graduacao_y;
+    logic graduacao_y_altitude;
+    logic graduacao_y_velocidade;
     logic velocidade_barra;
     logic velocidade_marcas;
 
@@ -156,110 +159,108 @@ module simbologia_vga (
         // O horizonte representa uma referencia estabilizada no mundo.
         // Por isso sua inclinacao visual ocorre no sentido oposto ao
         // roll da aeronave, como em um horizonte artificial convencional.
-        deslocamento_roll =
-            -((($signed({12'b0, pixel_x}) - 22'sd320) *
-               22'(roll_q8)) >>> 8);
+        delta_x = $signed({12'b0, pixel_x}) - 22'sd320;
+        delta_y = $signed({12'b0, pixel_y}) -
+                  $signed({12'b0, horizonte_y});
 
-        distancia_horizonte =
-            $signed({12'b0, pixel_y}) -
-            $signed({12'b0, horizonte_y}) -
-            deslocamento_roll;
+        // Coordenadas locais Q8: rotação aproximada com escala uniforme.
+        pitch_x_local = delta_x - ((delta_y * 22'(roll_q8)) >>> 8);
+        pitch_y_local = delta_y + ((delta_x * 22'(roll_q8)) >>> 8);
 
             // -------------------------------------------------
             // Números da escada de pitch
             // 10 / 20 / 30 / 40 nos dois lados.
-            // A posição vertical usa a mesma transformação do
-            // horizonte, portanto acompanha pitch e roll.
+            // Os dois eixos usam a mesma transformação do horizonte.
             // -------------------------------------------------
 
         if (
-            ((pixel_x >= 226) && (pixel_x < 242)) ||
-            ((pixel_x >= 398) && (pixel_x < 414))
+            ((pitch_x_local >= -22'sd94) && (pitch_x_local < -22'sd78)) ||
+            ((pitch_x_local >= 22'sd78) && (pitch_x_local < 22'sd94))
         ) begin
 
-            if ((pixel_x >= 226) && (pixel_x < 242))
-                pitch_coluna = int'(pixel_x) - 226;
+            if ((pitch_x_local >= -22'sd94) && (pitch_x_local < -22'sd78))
+                pitch_coluna = int'(pitch_x_local) + 94;
             else
-                pitch_coluna = int'(pixel_x) - 398;
+                pitch_coluna = int'(pitch_x_local) - 78;
 
             // +10°
             if (
-                (distancia_horizonte >= -22'sd45) &&
-                (distancia_horizonte <= -22'sd36)
+                (pitch_y_local >= -22'sd45) &&
+                (pitch_y_local <= -22'sd36)
             ) begin
                 pitch_campo = 1'b1;
                 pitch_nivel = 1;
-                pitch_linha = int'(distancia_horizonte + 22'sd45) / 2;
+                pitch_linha = int'(pitch_y_local + 22'sd45) / 2;
             end
 
             // +20°
             else if (
-                (distancia_horizonte >= -22'sd85) &&
-                (distancia_horizonte <= -22'sd76)
+                (pitch_y_local >= -22'sd85) &&
+                (pitch_y_local <= -22'sd76)
             ) begin
                 pitch_campo = 1'b1;
                 pitch_nivel = 2;
-                pitch_linha = int'(distancia_horizonte + 22'sd85) / 2;
+                pitch_linha = int'(pitch_y_local + 22'sd85) / 2;
             end
 
             // +30°
             else if (
-                (distancia_horizonte >= -22'sd125) &&
-                (distancia_horizonte <= -22'sd116)
+                (pitch_y_local >= -22'sd125) &&
+                (pitch_y_local <= -22'sd116)
             ) begin
                 pitch_campo = 1'b1;
                 pitch_nivel = 3;
-                pitch_linha = int'(distancia_horizonte + 22'sd125) / 2;
+                pitch_linha = int'(pitch_y_local + 22'sd125) / 2;
             end
 
             // +40°
             else if (
-                (distancia_horizonte >= -22'sd165) &&
-                (distancia_horizonte <= -22'sd156)
+                (pitch_y_local >= -22'sd165) &&
+                (pitch_y_local <= -22'sd156)
             ) begin
                 pitch_campo = 1'b1;
                 pitch_nivel = 4;
-                pitch_linha = int'(distancia_horizonte + 22'sd165) / 2;
+                pitch_linha = int'(pitch_y_local + 22'sd165) / 2;
             end
 
             // -10°
             else if (
-                (distancia_horizonte >= 22'sd35) &&
-                (distancia_horizonte <= 22'sd44)
+                (pitch_y_local >= 22'sd35) &&
+                (pitch_y_local <= 22'sd44)
             ) begin
                 pitch_campo = 1'b1;
                 pitch_nivel = 1;
-                pitch_linha = int'(distancia_horizonte - 22'sd35) / 2;
+                pitch_linha = int'(pitch_y_local - 22'sd35) / 2;
             end
 
             // -20°
             else if (
-                (distancia_horizonte >= 22'sd75) &&
-                (distancia_horizonte <= 22'sd84)
+                (pitch_y_local >= 22'sd75) &&
+                (pitch_y_local <= 22'sd84)
             ) begin
                 pitch_campo = 1'b1;
                 pitch_nivel = 2;
-                pitch_linha = int'(distancia_horizonte - 22'sd75) / 2;
+                pitch_linha = int'(pitch_y_local - 22'sd75) / 2;
             end
 
             // -30°
             else if (
-                (distancia_horizonte >= 22'sd115) &&
-                (distancia_horizonte <= 22'sd124)
+                (pitch_y_local >= 22'sd115) &&
+                (pitch_y_local <= 22'sd124)
             ) begin
                 pitch_campo = 1'b1;
                 pitch_nivel = 3;
-                pitch_linha = int'(distancia_horizonte - 22'sd115) / 2;
+                pitch_linha = int'(pitch_y_local - 22'sd115) / 2;
             end
 
             // -40°
             else if (
-                (distancia_horizonte >= 22'sd155) &&
-                (distancia_horizonte <= 22'sd164)
+                (pitch_y_local >= 22'sd155) &&
+                (pitch_y_local <= 22'sd164)
             ) begin
                 pitch_campo = 1'b1;
                 pitch_nivel = 4;
-                pitch_linha = int'(distancia_horizonte - 22'sd155) / 2;
+                pitch_linha = int'(pitch_y_local - 22'sd155) / 2;
             end
 
             if (pitch_campo) begin
@@ -286,16 +287,16 @@ module simbologia_vga (
         end
 
         horizonte_esq =
-            (distancia_horizonte >= -22'sd1) &&
-            (distancia_horizonte <= 22'sd1) &&
-            (pixel_x >= 100) &&
-            (pixel_x <= 300);
+            (pitch_y_local >= -22'sd1) &&
+            (pitch_y_local <= 22'sd1) &&
+            (pitch_x_local >= -22'sd220) &&
+            (pitch_x_local <= -22'sd20);
 
         horizonte_dir =
-            (distancia_horizonte >= -22'sd1) &&
-            (distancia_horizonte <= 22'sd1) &&
-            (pixel_x >= 340) &&
-            (pixel_x <= 540);
+            (pitch_y_local >= -22'sd1) &&
+            (pitch_y_local <= 22'sd1) &&
+            (pitch_x_local >= 22'sd20) &&
+            (pitch_x_local <= 22'sd220);
 
         // -------------------------------------------------
 // Escada de pitch
@@ -309,43 +310,43 @@ module simbologia_vga (
 
 // ±10° e ±20°
 faixa_longa =
-    ((pixel_x >= 250) && (pixel_x <= 300)) ||
-    ((pixel_x >= 340) && (pixel_x <= 390));
+    ((pitch_x_local >= -22'sd70) && (pitch_x_local <= -22'sd20)) ||
+    ((pitch_x_local >= 22'sd20) && (pitch_x_local <= 22'sd70));
 
 // ±30°
 faixa_media =
-    ((pixel_x >= 265) && (pixel_x <= 300)) ||
-    ((pixel_x >= 340) && (pixel_x <= 375));
+    ((pitch_x_local >= -22'sd55) && (pitch_x_local <= -22'sd20)) ||
+    ((pitch_x_local >= 22'sd20) && (pitch_x_local <= 22'sd55));
 
 // ±40°
 faixa_curta =
-    ((pixel_x >= 278) && (pixel_x <= 300)) ||
-    ((pixel_x >= 340) && (pixel_x <= 362));
+    ((pitch_x_local >= -22'sd42) && (pitch_x_local <= -22'sd20)) ||
+    ((pitch_x_local >= 22'sd20) && (pitch_x_local <= 22'sd42));
 
 
 // Tracejado longo
 tracos_longo =
-    ((pixel_x >= 250) && (pixel_x <= 260)) ||
-    ((pixel_x >= 270) && (pixel_x <= 280)) ||
-    ((pixel_x >= 290) && (pixel_x <= 300)) ||
+    ((pitch_x_local >= -22'sd70) && (pitch_x_local <= -22'sd60)) ||
+    ((pitch_x_local >= -22'sd50) && (pitch_x_local <= -22'sd40)) ||
+    ((pitch_x_local >= -22'sd30) && (pitch_x_local <= -22'sd20)) ||
 
-    ((pixel_x >= 340) && (pixel_x <= 350)) ||
-    ((pixel_x >= 360) && (pixel_x <= 370)) ||
-    ((pixel_x >= 380) && (pixel_x <= 390));
+    ((pitch_x_local >= 22'sd20) && (pitch_x_local <= 22'sd30)) ||
+    ((pitch_x_local >= 22'sd40) && (pitch_x_local <= 22'sd50)) ||
+    ((pitch_x_local >= 22'sd60) && (pitch_x_local <= 22'sd70));
 
 // Tracejado médio
 tracos_medio =
-    ((pixel_x >= 265) && (pixel_x <= 273)) ||
-    ((pixel_x >= 283) && (pixel_x <= 291)) ||
-    ((pixel_x >= 340) && (pixel_x <= 348)) ||
-    ((pixel_x >= 358) && (pixel_x <= 366));
+    ((pitch_x_local >= -22'sd55) && (pitch_x_local <= -22'sd47)) ||
+    ((pitch_x_local >= -22'sd37) && (pitch_x_local <= -22'sd29)) ||
+    ((pitch_x_local >= 22'sd20) && (pitch_x_local <= 22'sd28)) ||
+    ((pitch_x_local >= 22'sd38) && (pitch_x_local <= 22'sd46));
 
 // Tracejado curto
 tracos_curto =
-    ((pixel_x >= 278) && (pixel_x <= 284)) ||
-    ((pixel_x >= 294) && (pixel_x <= 300)) ||
-    ((pixel_x >= 340) && (pixel_x <= 346)) ||
-    ((pixel_x >= 356) && (pixel_x <= 362));
+    ((pitch_x_local >= -22'sd42) && (pitch_x_local <= -22'sd36)) ||
+    ((pitch_x_local >= -22'sd26) && (pitch_x_local <= -22'sd20)) ||
+    ((pitch_x_local >= 22'sd20) && (pitch_x_local <= 22'sd26)) ||
+    ((pitch_x_local >= 22'sd36) && (pitch_x_local <= 22'sd42));
 
 
 // Pitch positivo
@@ -353,29 +354,29 @@ marcas_superiores =
 
     // +10°
     (faixa_longa &&
-        (distancia_horizonte >= -22'sd40) &&
-        (distancia_horizonte <= -22'sd39))
+        (pitch_y_local >= -22'sd40) &&
+        (pitch_y_local <= -22'sd39))
 
     ||
 
     // +20°
     (faixa_longa &&
-        (distancia_horizonte >= -22'sd80) &&
-        (distancia_horizonte <= -22'sd79))
+        (pitch_y_local >= -22'sd80) &&
+        (pitch_y_local <= -22'sd79))
 
     ||
 
     // +30°
     (faixa_media &&
-        (distancia_horizonte >= -22'sd120) &&
-        (distancia_horizonte <= -22'sd119))
+        (pitch_y_local >= -22'sd120) &&
+        (pitch_y_local <= -22'sd119))
 
     ||
 
     // +40°
     (faixa_curta &&
-        (distancia_horizonte >= -22'sd160) &&
-        (distancia_horizonte <= -22'sd159));
+        (pitch_y_local >= -22'sd160) &&
+        (pitch_y_local <= -22'sd159));
 
 
 // Pitch negativo
@@ -383,29 +384,29 @@ marcas_inferiores =
 
     // -10°
     (tracos_longo &&
-        (distancia_horizonte >= 22'sd40) &&
-        (distancia_horizonte <= 22'sd41))
+        (pitch_y_local >= 22'sd40) &&
+        (pitch_y_local <= 22'sd41))
 
     ||
 
     // -20°
     (tracos_longo &&
-        (distancia_horizonte >= 22'sd80) &&
-        (distancia_horizonte <= 22'sd81))
+        (pitch_y_local >= 22'sd80) &&
+        (pitch_y_local <= 22'sd81))
 
     ||
 
     // -30°
     (tracos_medio &&
-        (distancia_horizonte >= 22'sd120) &&
-        (distancia_horizonte <= 22'sd121))
+        (pitch_y_local >= 22'sd120) &&
+        (pitch_y_local <= 22'sd121))
 
     ||
 
     // -40°
     (tracos_curto &&
-        (distancia_horizonte >= 22'sd160) &&
-        (distancia_horizonte <= 22'sd161));
+        (pitch_y_local >= 22'sd160) &&
+        (pitch_y_local <= 22'sd161));
 
         horizonte_on =
             video_on &&
@@ -421,13 +422,43 @@ marcas_inferiores =
         // Escala de altitude
         // -------------------------------------------------
 
+        // Altitude:
+        // 50 pixels representam 200 ft.
+        // A regiao central fica livre para a janela do valor atual.
         altitude_barra =
             (pixel_x >= 559) &&
             (pixel_x <= 561) &&
+            (pixel_y >= 90) &&
+            (pixel_y <= 390);
+
+        graduacao_y_altitude =
+            (
+                ((pixel_y >=  89) && (pixel_y <=  91)) ||
+                ((pixel_y >= 139) && (pixel_y <= 141)) ||
+                ((pixel_y >= 189) && (pixel_y <= 191)) ||
+                ((pixel_y >= 289) && (pixel_y <= 291)) ||
+                ((pixel_y >= 339) && (pixel_y <= 341)) ||
+                ((pixel_y >= 389) && (pixel_y <= 391))
+            );
+
+        altitude_marcas =
+            (pixel_x >= 548) &&
+            (pixel_x <= 561) &&
+            graduacao_y_altitude;
+
+        altitude_on =
+            video_on &&
+            (altitude_barra || altitude_marcas);
+
+
+        // Velocidade permanece exatamente com a geometria anterior.
+        velocidade_barra =
+            (pixel_x >= 79) &&
+            (pixel_x <= 81) &&
             (pixel_y >= 100) &&
             (pixel_y <= 380);
 
-        graduacao_y =
+        graduacao_y_velocidade =
             (
                 ((pixel_y >=  99) && (pixel_y <= 101)) ||
                 ((pixel_y >= 139) && (pixel_y <= 141)) ||
@@ -439,20 +470,14 @@ marcas_inferiores =
                 ((pixel_y >= 379) && (pixel_y <= 381))
             );
 
-        altitude_marcas =
-            (pixel_x >= 548) && (pixel_x <= 561) && graduacao_y;
-
-        altitude_on =
-            video_on &&
-            (altitude_barra || altitude_marcas);
-
-        // Escala de velocidade: espelho da altitude, com marcas para dentro.
-        velocidade_barra =
-            (pixel_x >= 79) && (pixel_x <= 81) &&
-            (pixel_y >= 100) && (pixel_y <= 380);
         velocidade_marcas =
-            (pixel_x >= 79) && (pixel_x <= 92) && graduacao_y;
-        velocidade_on = video_on && (velocidade_barra || velocidade_marcas);
+            (pixel_x >= 79) &&
+            (pixel_x <= 92) &&
+            graduacao_y_velocidade;
+
+        velocidade_on =
+            video_on &&
+            (velocidade_barra || velocidade_marcas);
 
         // -------------------------------------------------
         // Indicador de direção
