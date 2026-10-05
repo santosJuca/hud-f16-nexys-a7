@@ -58,8 +58,13 @@ module simbologia_vga (
     logic direcao_cardinal;
     logic [24:0] cardinal_bitmap;
 
-    integer direcao_delta_px;
-    integer direcao_grau;
+    // Heading tape: aritmetica com largura limitada.
+    // Evita divisao/modulo integer de 32 bits no caminho pixel -> RGB.
+    logic signed [10:0] direcao_offset_grau;
+    logic signed [10:0] direcao_grau;
+    logic               direcao_alinhado;
+    logic               direcao_marca_10;
+    logic               direcao_marca_30;
 
     integer card_x_n;
     integer card_x_e;
@@ -130,8 +135,11 @@ module simbologia_vga (
             direcao_cardinal = 1'b0;
             cardinal_bitmap = '0;
 
-            direcao_delta_px = 0;
-            direcao_grau = 0;
+            direcao_offset_grau = '0;
+            direcao_grau        = '0;
+            direcao_alinhado    = 1'b0;
+            direcao_marca_10    = 1'b0;
+            direcao_marca_30    = 1'b0;
 
             card_x_n = 0;
             card_x_e = 0;
@@ -498,34 +506,98 @@ marcas_inferiores =
     (pixel_x >= 160) &&
     (pixel_x <= 480);
 
-// Heading correspondente à posição horizontal atual.
-direcao_delta_px = int'(pixel_x) - 320;
-direcao_grau = int'(heading_deg) + (direcao_delta_px / 4);
-
-// A janela visível representa somente +/-40 graus,
-// portanto um único ajuste resolve o wrap 0/359.
-if (direcao_grau < 0)
-    direcao_grau = direcao_grau + 360;
-else if (direcao_grau >= 360)
-    direcao_grau = direcao_grau - 360;
-
-// Marcas da fita.
-// A condição %4 garante que cada grau esteja alinhado
-// exatamente à grade de 4 pixels.
-direcao_marcas =
+// Somente pixels alinhados na grade de 4 pixels podem ser
+// marcas de grau. Como 320 tambem e multiplo de quatro,
+// pixel_x[1:0] substitui exatamente (pixel_x - 320) % 4.
+direcao_alinhado =
     (pixel_x >= 160) &&
     (pixel_x <= 480) &&
-    ((direcao_delta_px % 4) == 0) &&
-    ((direcao_grau % 10) == 0) &&
+    (pixel_x[1:0] == 2'b00);
+
+// Para os pixels alinhados, a divisao por quatro e exata.
+// O shift elimina o divisor integer de 32 bits do caminho VGA.
+direcao_offset_grau =
+    ($signed({1'b0, pixel_x}) - 11'sd320) >>> 2;
+
+direcao_grau =
+    $signed({2'b00, heading_deg}) +
+    direcao_offset_grau;
+
+// A janela visivel representa somente +/-40 graus,
+// portanto um unico ajuste resolve o wrap 0/359.
+if (direcao_grau < 0)
+    direcao_grau = direcao_grau + 11'sd360;
+else if (direcao_grau >= 11'sd360)
+    direcao_grau = direcao_grau - 11'sd360;
+
+// Decodificador exato das marcas.
+// Remove %10 e %30 do caminho combinacional por pixel.
+if (direcao_alinhado) begin
+    case (direcao_grau)
+
+        // Marcas principais: multiplos de 30 graus.
+        11'sd0,
+        11'sd30,
+        11'sd60,
+        11'sd90,
+        11'sd120,
+        11'sd150,
+        11'sd180,
+        11'sd210,
+        11'sd240,
+        11'sd270,
+        11'sd300,
+        11'sd330: begin
+            direcao_marca_10 = 1'b1;
+            direcao_marca_30 = 1'b1;
+        end
+
+        // Demais marcas de 10 graus.
+        11'sd10,
+        11'sd20,
+        11'sd40,
+        11'sd50,
+        11'sd70,
+        11'sd80,
+        11'sd100,
+        11'sd110,
+        11'sd130,
+        11'sd140,
+        11'sd160,
+        11'sd170,
+        11'sd190,
+        11'sd200,
+        11'sd220,
+        11'sd230,
+        11'sd250,
+        11'sd260,
+        11'sd280,
+        11'sd290,
+        11'sd310,
+        11'sd320,
+        11'sd340,
+        11'sd350:
+            direcao_marca_10 = 1'b1;
+
+        default: begin
+            direcao_marca_10 = 1'b0;
+            direcao_marca_30 = 1'b0;
+        end
+    endcase
+end
+
+direcao_marcas =
+    direcao_alinhado &&
+    direcao_marca_10 &&
     (
         (
-            ((direcao_grau % 30) == 0) &&
+            direcao_marca_30 &&
             (pixel_y >= 48) &&
             (pixel_y <= 61)
         )
         ||
         (
-            ((direcao_grau % 30) != 0) &&
+            !direcao_marca_30 &&
             (pixel_y >= 53) &&
             (pixel_y <= 61)
         )
