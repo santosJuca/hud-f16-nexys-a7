@@ -611,7 +611,7 @@ wire [16:0] altitude_hud_entrada;
     // -----------------------------------------------------
 
     reticula_vga #(
-        .ESPESSURA   (2),
+        .ESPESSURA   (1),
         .TAMANHO     (40),
         .VAO_CENTRAL (6)
     ) u_retic (
@@ -622,7 +622,7 @@ wire [16:0] altitude_hud_entrada;
     );
 
     reticula_caca_vga #(
-        .ESPESSURA (2),
+        .ESPESSURA (1),
         .CLEARANCE (3)
     ) u_retic_caca (
         .pixel_x      (pixel_x),
