@@ -1,0 +1,19 @@
+Projeto: Trabalho-display-aviao-v2
+Data: 2026-10-05
+Commit: 3849e9e9f6c965dadc8556356dcad295141aa03e
+Branch: main
+
+Bitstream:
+top_reticula.bit
+
+SHA256:
+296a11e799682ad4b3a75e203813c490d8f96548c963abd839cdca17a2170e86
+
+Origem:
+build/vivado/reticula.runs/impl_1/top_reticula.bit
+
+Observacao:
+Build final apos otimizacao de timing da fita de heading VGA.
+Caminho h_cont -> VGA_G medido anteriormente em 37.117 ns.
+Budget VGA: 40.000 ns.
+Margem medida: +2.883 ns.
