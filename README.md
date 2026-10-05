@@ -171,6 +171,11 @@ O projeto fica em `build/vivado/reticula.xpr`; o bitstream fica em
 `build/vivado/reticula.runs/impl_1/top_reticula.bit`. Também são gerados
 `build/timing_summary.rpt`, `build/utilization.rpt`, `build/drc.rpt` e
 `build/fmax.rpt` (estimativa por domínio, sem varredura de frequência).
+
+O [bitstream de 05/10/2026](bitstreams/2026-10-05/README.md) está disponível
+com SHA256 e relatório. Sua validação global de timing permanece pendente:
+há um caminho VGA sem restrição com atraso de 42,597 ns para um período de 40 ns.
+
 Para projeto manual, adicione todos os `rtl/*.sv`, o XDC e defina `top_reticula`
 como módulo principal. Remova apenas fontes antigas duplicadas, não os módulos `.sv` atuais.
 
