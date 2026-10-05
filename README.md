@@ -13,6 +13,7 @@ calibração, integração do giroscópio e fusão complementar. Joystick e swit
 permanecem como fallback manual. Heading continua controlado pelos botões;
 velocidade e altitude permanecem simuladas em 280 KT e 36000 FT.
 
+
 ## O que aparece na tela
 
 | Elemento | O que significa | Como funciona neste projeto |
