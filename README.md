@@ -161,6 +161,12 @@ scripts/test.sh
 Os testes verificam geometria, controles e um quadro VGA completo. A imagem de
 simulação fica em `build/hud.ppm`.
 
+O [CI no GitHub Actions](https://github.com/santosJuca/Trabalho-display-aviao-v2/actions/workflows/ci.yml)
+executa `scripts/test.sh` com Icarus Verilog a cada push e pull request, além de
+permitir execução manual. O log e o quadro VGA ficam disponíveis como artefatos
+por 14 dias. Esse CI verifica a simulação RTL; síntese, implementação e timing
+continuam dependendo da validação no Vivado.
+
 Com Vivado no PATH, para **Nexys A7-100T / xc7a100tcsg324-1**:
 
 ```sh

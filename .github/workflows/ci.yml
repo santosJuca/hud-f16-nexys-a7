@@ -1,0 +1,47 @@
+name: Simulacao RTL
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  simulacao:
+    name: Testes com Icarus Verilog
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Instalar Icarus Verilog
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y iverilog
+
+      - name: Executar simulacoes
+        run: |
+          mkdir -p build
+          scripts/test.sh 2>&1 | tee build/tests.log
+
+      - name: Salvar log e quadro VGA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulacao-rtl
+          path: |
+            build/tests.log
+            build/hud.ppm
+          if-no-files-found: warn
+          retention-days: 14
