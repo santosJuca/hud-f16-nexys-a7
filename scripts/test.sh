@@ -7,6 +7,9 @@ mkdir -p build/tests
 
 tests=(
     "reticula|tb_reticula|tests/tb_reticula.sv"
+    "hmc5883l_i2c|tb_hmc5883l_i2c|tests/tb_hmc5883l_i2c.sv"
+    "heading_magnetico|tb_heading_magnetico|tests/tb_heading_magnetico.sv"
+    "top_heading|tb_top_heading|tests/tb_top_heading.sv"
     "controle_heading|tb_controle_heading|tests/tb_controle_heading.sv"
     "controle_joystick|tb_controle_joystick|tests/tb_controle_joystick.sv"
     "controle_manche|tb_controle_manche|tests/tb_controle_manche.sv"
@@ -18,6 +21,9 @@ tests=(
     "gyro_integrador|tb_gyro_integrador|tests/tb_gyro_integrador.sv"
     "atitude_gyro_hud|tb_atitude_gyro_hud|tests/tb_atitude_gyro_hud.sv"
     "atitude_fusao_complementar|tb_atitude_fusao_complementar|tests/tb_atitude_fusao_complementar.sv"
+    "velocidade_inercial|tb_velocidade_inercial|tests/tb_velocidade_inercial.sv"
+    "velocidade_inercial_pipeline|tb_velocidade_inercial_pipeline|tests/tb_velocidade_inercial_pipeline.sv"
+    "velocidade_inercial_dt_real|tb_velocidade_inercial_dt_real|tests/tb_velocidade_inercial_dt_real.sv"
     "entrada_hud|tb_entrada_hud|tests/tb_entrada_hud.sv"
     "dados_hud|tb_dados_hud|tests/tb_dados_hud.sv"
     "numeros|tb_numeros|tests/tb_numeros.sv"

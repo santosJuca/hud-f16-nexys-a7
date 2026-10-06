@@ -3,7 +3,13 @@
 // Top-level do display de avião.
 // =========================================================
 
-module top_reticula (
+module top_reticula #(
+    parameter logic signed [15:0] MAG_OFFSET_X = 16'sd0,
+    parameter logic signed [15:0] MAG_OFFSET_Y = 16'sd0,
+    parameter bit MAG_TROCAR_XY = 1'b0,
+    parameter bit MAG_INVERTER_X = 1'b0,
+    parameter bit MAG_INVERTER_Y = 1'b0
+) (
     input  logic        clk,
     input  logic [1:0]  btn_heading,  // BTNU=+10, BTND=-10
     input  logic [15:12] sw,        // pitch e roll
@@ -30,8 +36,16 @@ module top_reticula (
     inout  wire         baro_sda,
     inout  wire         baro_scl,
 
+    // HMC5883L em barramento independente.
+    // JD3 = SDA / JD9 = SCL.
+    inout  wire         mag_sda,
+    inout  wire         mag_scl,
+
     // LED4 indica BMP085 identificado corretamente.
     output wire         BARO_LED,
+
+    // LD5 acende quando o HMC5883L esta operacional.
+    output wire         MAG_LED,
 
     output wire [3:0]   VGA_R,
     output wire [3:0]   VGA_G,
@@ -150,6 +164,11 @@ module top_reticula (
     logic signed [10:0] fusao_pitch_px;
     logic signed [9:0]  fusao_roll_q8;
 
+    // Velocidade inercial estimada pelo MPU6050.
+    logic [9:0] velocidade_inercial_kt;
+    logic       velocidade_inercial_calibrada;
+    logic       velocidade_inercial_valida;
+
     // No modo SENSOR, o MPU e a fonte principal sempre que estiver valido.
     // O joystick somente assume pitch/roll quando modo_manche=1.
     wire usar_mpu =
@@ -207,18 +226,26 @@ module top_reticula (
     wire amostra_valida;
     wire entrada_pronta;
     wire [8:0] heading_entrada;
+    wire [8:0] heading_manual;
+    wire [8:0] heading_magnetico_deg;
+    wire heading_magnetico_valido;
 wire [16:0] altitude_hud_entrada;
+
+wire [9:0] velocidade_hud_entrada =
+    velocidade_inercial_valida ?
+    velocidade_inercial_kt :
+    10'd280;
 
     controle_heading u_heading (
         .clk         (clk),
         .btn         (btn_heading),
-        .heading_deg (heading_entrada)
+        .heading_deg (heading_manual)
     );
     // Ordem: velocidade(10), altitude(17), pitch(11), roll(10), heading(9)..
     entrada_hud u_entrada (
         .clk_origem(clk), .clk_destino(pixel_clk),
         .valido(1'b1),
-        .dados({10'd280, altitude_hud_entrada, pitch_px_entrada, roll_q8_entrada, heading_entrada}),
+        .dados({velocidade_hud_entrada, altitude_hud_entrada, pitch_px_entrada, roll_q8_entrada, heading_entrada}),
         .pronto(entrada_pronta),
         .valido_destino(amostra_valida), .dados_destino(amostra_pixel)
     );
@@ -335,6 +362,49 @@ wire [16:0] altitude_hud_entrada;
         .gyro_y    (mpu_gyro_y),
         .gyro_z    (mpu_gyro_z)
     );
+
+    // -----------------------------------------------------
+    // HMC5883L / magnetometro
+    // -----------------------------------------------------
+
+    logic mag_sensor_ok;
+    logic mag_amostra_nova;
+
+    logic signed [15:0] mag_x;
+    logic signed [15:0] mag_y;
+    logic signed [15:0] mag_z;
+
+    hmc5883l_i2c u_magnetometro (
+        .clk          (clk),
+
+        .mag_sda      (mag_sda),
+        .mag_scl      (mag_scl),
+
+        .sensor_ok    (mag_sensor_ok),
+        .amostra_nova (mag_amostra_nova),
+
+        .mag_x        (mag_x),
+        .mag_y        (mag_y),
+        .mag_z        (mag_z)
+    );
+
+    heading_magnetico #(
+        .OFFSET_X(MAG_OFFSET_X), .OFFSET_Y(MAG_OFFSET_Y),
+        .TROCAR_XY(MAG_TROCAR_XY),
+        .INVERTER_X(MAG_INVERTER_X), .INVERTER_Y(MAG_INVERTER_Y)
+    ) u_heading_magnetico (
+        .clk(clk),
+        .sensor_ok(mag_sensor_ok && (mag_z != -16'sd4096)),
+        .amostra_nova(mag_amostra_nova),
+        .mag_x(mag_x), .mag_y(mag_y),
+        .heading_deg(heading_magnetico_deg), .valido(heading_magnetico_valido)
+    );
+
+    // O manual continua ativo; a troca chega ao HUD pela interface de quadro.
+    assign heading_entrada = mag_sensor_ok && heading_magnetico_valido ?
+        heading_magnetico_deg : heading_manual;
+    assign MAG_LED = mag_sensor_ok;
+
 
     // -----------------------------------------------------
     // BMP085 / SEN-09694
@@ -592,6 +662,35 @@ wire [16:0] altitude_hud_entrada;
         .roll_q8   (fusao_roll_q8)
     );
 
+
+    // -----------------------------------------------------
+    // Velocidade inercial estimada
+    //
+    // Valor demonstrativo derivado do acelerometro.
+    // NAO representa airspeed medida.
+    // -----------------------------------------------------
+
+    velocidade_inercial u_velocidade_inercial (
+        .clk            (clk),
+
+        .sensor_ok      (sensor_ok),
+        .amostra_nova   (amostra_nova),
+
+        // Eixo longitudinal ja validado fisicamente.
+        .accel_forward  (mpu_accel_y),
+
+        .pitch_px       (fusao_pitch_px),
+        .atitude_valida (fusao_valida),
+
+        .dt_valid       (gyro_dt_valid),
+        .dt_cycles      (gyro_dt_cycles),
+
+        .calibrado      (velocidade_inercial_calibrada),
+        .valido         (velocidade_inercial_valida),
+
+        .velocidade_kt  (velocidade_inercial_kt)
+    );
+
     // -----------------------------------------------------
     // VGA
     // -----------------------------------------------------
@@ -612,8 +711,8 @@ wire [16:0] altitude_hud_entrada;
 
     reticula_vga #(
         .ESPESSURA   (1),
-        .TAMANHO     (40),
-        .VAO_CENTRAL (6)
+        .TAMANHO     (28),
+        .VAO_CENTRAL (5)
     ) u_retic (
         .pixel_x     (pixel_x),
         .pixel_y     (pixel_y),

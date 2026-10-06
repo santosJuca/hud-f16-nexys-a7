@@ -169,7 +169,7 @@ module tb_estilos;
         // Reticulo original possui braço vertical maior.
         confere_rgb(
             320,
-            205,
+            220,
             12'h0F0,
             "original normal: reticulo original"
         );
@@ -244,23 +244,23 @@ module tb_estilos;
         // Reticulo CAÇA menor continua presente.
         confere_rgb(
             320,
-            220,
+            224,
             12'h0F0,
             "caca normal: reticulo menor"
         );
 
 
         // Novo datum CAÇA:
-        // largura total 61 px.
+        // largura total 49 px.
         confere_rgb(
-            290,
+            296,
             240,
             12'h0F0,
             "caca normal: extremo esquerdo datum"
         );
 
         confere_rgb(
-            350,
+            344,
             240,
             12'h0F0,
             "caca normal: extremo direito datum"
@@ -270,7 +270,7 @@ module tb_estilos;
         // pertence ao horizonte, mas cai dentro do
         // clearance de 3 px e deve ficar apagado.
         confere_rgb(
-            287,
+            293,
             240,
             12'h000,
             "caca normal: clearance attitude grid"
@@ -279,7 +279,7 @@ module tb_estilos;
         // Um pixel alem do clearance volta a mostrar
         // o horizonte normalmente.
         confere_rgb(
-            286,
+            292,
             240,
             12'h0F0,
             "caca normal: fim do clearance"
@@ -315,7 +315,7 @@ module tb_estilos;
         // Reticulo permanece.
         confere_rgb(
             320,
-            220,
+            224,
             12'h0F0,
             "caca declutter: reticulo preservado"
         );
@@ -358,7 +358,7 @@ module tb_estilos;
         // Reticulo original volta a ser usado.
         confere_rgb(
             320,
-            205,
+            220,
             12'h0F0,
             "original declutter: reticulo preservado"
         );

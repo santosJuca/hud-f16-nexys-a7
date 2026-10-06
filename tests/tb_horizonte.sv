@@ -53,7 +53,7 @@ module tb_horizonte;
         force dut.u_vga.h_cont=320; #1; if(dut.horizonte) $fatal(1,"Vão do horizonte");
         force dut.u_vga.h_cont=340; #1; if(!dut.horizonte) $fatal(1,"Início braço direito");
         force dut.u_vga.h_cont=541; #1; if(dut.horizonte) $fatal(1,"Limite direito");
-        force dut.u_vga.h_cont=320; force dut.u_vga.v_cont=210; #1;
+        force dut.u_vga.h_cont=320; force dut.u_vga.v_cont=220; #1;
         if(dut.retic !== 1) $fatal(1,"Retículo deve permanecer fixo");
         force dut.u_vga.h_cont=640; #1;
         if(dut.horizonte !== 0) $fatal(1,"Blanking: esperado apagado");

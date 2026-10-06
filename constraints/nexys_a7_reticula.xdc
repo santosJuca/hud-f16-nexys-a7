@@ -149,3 +149,22 @@ set_property -dict { PACKAGE_PIN C17 IOSTANDARD LVCMOS33 PULLUP TRUE } \
 
 set_false_path -from [get_ports { joystick_sw_n }] \
     -to [get_pins -hier -filter {NAME =~ u_modo_manche/btn_meta_reg*/D}]
+
+
+## =========================================================
+## Magnetometro HMC5883L
+## Barramento I2C independente
+##
+## JD3 = G1 = SDA
+## JD9 = G2 = SCL
+## =========================================================
+
+set_property -dict { PACKAGE_PIN G1 IOSTANDARD LVCMOS33 PULLUP TRUE } \
+    [get_ports { mag_sda }]
+
+set_property -dict { PACKAGE_PIN G2 IOSTANDARD LVCMOS33 PULLUP TRUE } \
+    [get_ports { mag_scl }]
+
+## LED5 = magnetometro identificado/configurado
+set_property -dict { PACKAGE_PIN V17 IOSTANDARD LVCMOS33 } \
+    [get_ports { MAG_LED }]

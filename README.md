@@ -1,17 +1,20 @@
 # Display de avião
 
-No estado consolidado atual, SW15..SW12 = `1111` seleciona a atitude proveniente
-do MPU-6050 após calibração do acelerômetro, calibração do bias do giroscópio
-e inicialização da fusão complementar. Joystick e switches permanecem como
-fallback. Veja [integração e validação da atitude MPU](docs/atitude_mpu.md).
+No modo SENSOR, a atitude vem do MPU-6050 após calibração do acelerômetro,
+do bias do giroscópio e inicialização da fusão complementar, independentemente
+de SW15..SW12. O botão do joystick alterna SENSOR/MANCHE; sem MPU válido,
+os switches fornecem o fallback de bancada. Veja [integração da atitude MPU](docs/atitude_mpu.md).
 
 Display VGA 640×480 com retículo, horizonte deslocável e inclinado, escada de
 pitch, escalas de velocidade/altitude, heading em graus com N/E/S/W e alvo fixo.
 A imagem é gerada por coordenadas, sem framebuffer, a 25 MHz (aproximadamente
 59,52 Hz). Pitch e roll podem ser fornecidos pelo MPU-6050 através da cadeia de
 calibração, integração do giroscópio e fusão complementar. Joystick e switches
-permanecem como fallback manual. Heading continua controlado pelos botões;
-velocidade e altitude permanecem simuladas em 280 KT e 36000 FT.
+permanecem como controles manuais. O HMC5883L fornece rumo magnético estimado
+plano, com fallback automático para os botões. O MPU fornece velocidade inercial
+estimada; o BMP085 fornece altitude barométrica. Sem estimativa válida de
+velocidade, o HUD usa 280 KT; a altitude inicia em 36000 FT e retém a última
+conversão válida.
 
 
 ## O que aparece na tela
@@ -21,9 +24,9 @@ velocidade e altitude permanecem simuladas em 280 KT e 36000 FT.
 | Retículo | Cruz de referência no centro da tela, com um vão no meio. Serve como referência de apontamento. | Fica parado e verde, mesmo quando o horizonte muda. O desenho está em `rtl/reticula_vga.sv`. |
 | Horizonte artificial | Linha que representa a referência do horizonte. | Sobe, desce e inclina conforme a atitude selecionada: MPU-6050 ou fallback manual. É desenhado em `rtl/simbologia_vga.sv`. |
 | Escada de pitch | Marcas que ajudam a visualizar a atitude de nariz para cima ou para baixo. | Acompanha o horizonte, com referências ±10/20/30/40. No modo MPU, a atitude vem da cadeia de estimação do sensor. |
-| Escala de velocidade | Indicação à esquerda, em nós (KT). | O valor fornecido pelo projeto é fixo em 280 KT. |
-| Escala de altitude | Indicação à direita, em pés (FT). | O valor fornecido pelo projeto é fixo em 36000 FT. |
-| Heading (rumo) | Direção em graus, acompanhada das letras N/E/S/W. | Varia pelos botões BTNU e BTND, em passos de 10°. |
+| Escala de velocidade | Indicação à esquerda, em nós (KT). | Velocidade inercial estimada pelo MPU-6050; fallback em 280 KT. |
+| Escala de altitude | Indicação à direita, em pés (FT). | Altitude barométrica pelo BMP085, com referência de 101325 Pa; inicia em 36000 FT. |
+| Heading (rumo) | Direção em graus, acompanhada das letras N/E/S/W. | Rumo magnético estimado pelo HMC5883L; BTNU/BTND mantêm o rumo manual de fallback. |
 | Marcador de alvo | Símbolo que representa um alvo na demonstração. | Tem posição fixa; ainda não rastreia nem trava um alvo. |
 | Indicador do sensor | Indica o estado da identificação do IMU conectado ao barramento I²C. | O caminho ativo utiliza o MPU-6050/GY-521 e sua disponibilidade condiciona o uso da atitude medida. |
 
@@ -39,9 +42,11 @@ fixa central; o horizonte se desloca e inclina em relação a essa referência.
 | SW13 ligado sozinho | Move o horizonte 40 pixels para baixo. |
 | SW14 ligado sozinho | Inclina o horizonte para a esquerda. |
 | SW15 ligado sozinho | Inclina o horizonte para a direita. |
-| BTNU | Aumenta o heading em 10°. |
-| BTND | Diminui o heading em 10°. |
-| SW1 a SW11 e BTNL/BTNC/BTNR | Sem função nesta versão. |
+| BTNU | Aumenta o rumo manual de fallback em 10°. |
+| BTND | Diminui o rumo manual de fallback em 10°. |
+| SW1 | Seleciona o estilo visual do HUD. |
+| Botão do joystick | Alterna SENSOR/MANCHE para pitch e roll. |
+| SW2 a SW11 e BTNL/BTNC/BTNR | Sem função nesta versão. |
 
 SW12 e SW13 iguais mantêm o horizonte centralizado na vertical. SW14 e SW15
 iguais deixam o horizonte sem inclinação. Nenhum desses controles move o retículo.
@@ -57,7 +62,7 @@ início do blanking vertical. A inicialização é NORMAL, seguida da leitura de
   de alvo. Escalas laterais, seus números, heading e indicador do sensor ficam ocultos.
 
 Esta é a definição de itens críticos adotada para a demonstração acadêmica.
-SW1..SW11 e BTNL/BTNC/BTNR ficam livres. O retículo é verde fixo;
+SW2..SW11 e BTNL/BTNC/BTNR ficam livres. O retículo é verde fixo;
 os controles de cor foram removidos. Pitch, roll e heading funcionam nos dois modos.
 
 ## Qual arquivo controla cada parte
@@ -76,8 +81,11 @@ os controles de cor foram removidos. Pitch, roll e heading funcionam nos dois mo
 | Arquivo | Responsabilidade |
 | --- | --- |
 | `rtl/controle_modo.sv` | Recebe SW0, sincroniza e filtra a entrada, e aplica o modo entre quadros. |
-| `rtl/controle_heading.sv` | Recebe BTNU/BTND e calcula o heading em passos de 10°. |
-| `rtl/top_reticula.sv` | Integra MPU-6050, fusão de atitude, joystick e fallback por switches; também fornece velocidade e altitude simuladas. |
+| `rtl/controle_heading.sv` | Recebe BTNU/BTND e mantém o rumo manual em passos de 10°. |
+| `rtl/hmc5883l_i2c.sv` | Identifica/configura o HMC5883L e publica X/Y/Z após STOP válido. |
+| `rtl/heading_magnetico.sv` | Calcula rumo plano por CORDIC, com offsets e orientação parametrizáveis. |
+| `rtl/velocidade_inercial.sv` | Calcula velocidade inercial estimada a partir do acelerômetro e do intervalo entre amostras. |
+| `rtl/top_reticula.sv` | Integra os sensores, o joystick e os controles manuais, selecionando os dados enviados ao HUD. |
 | `rtl/entrada_hud.sv` | Transfere o conjunto de dados do clock de 100 MHz para o de 25 MHz com confirmação. |
 | `rtl/dados_hud.sv` | Recebe os dados processados e aplica o conjunto entre quadros. |
 | `rtl/mpu6050_i2c.sv` | Inicializa o MPU-6050/GY-521 e publica acelerômetro e giroscópio dos seis eixos. |
@@ -104,12 +112,33 @@ No fallback manual por switches, SW12 e SW13 iguais mantêm y=240.
 SW14 sozinho seleciona roll negativo e SW15 sozinho seleciona roll positivo;
 SW14 e SW15 iguais mantêm roll zero. O retículo permanece fixo.
 
-A combinação SW15..SW12 = `1111` é reservada ao modo MPU e, portanto, não é
-interpretada como posição neutra dos switches. Nesse modo, pitch e roll são
-obtidos pela cadeia de calibração, integração e fusão complementar.
+Com MPU válido no modo SENSOR, pitch e roll vêm da cadeia de calibração,
+integração e fusão complementar. Os switches só assumem quando essa cadeia
+está indisponível; no modo MANCHE, o joystick comanda pitch e roll.
 
-A escada traz referências ±10/20/30/40 que acompanham pitch e roll. BTNU aumenta heading em 10° e BTND reduz em 10°,
+A escada traz referências ±10/20/30/40 que acompanham pitch e roll. BTNU aumenta o rumo manual em 10° e BTND reduz em 10°,
 com retorno circular entre 0° e 350°.
+
+## Rumo magnético estimado
+
+O HMC5883L usa I²C independente: **SDA em JD3/G1**, **SCL em JD9/G2**, alimentação
+em **3,3 V** e GND comum. **MAG_LED em LED5/V17** indica identificação/configuração
+do sensor, não calibração nem precisão do rumo. O XDC usa LVCMOS33 e pull-ups
+internos em SDA/SCL; conferir os pull-ups externos do módulo na montagem.
+
+O rumo magnético estimado assume o HUD somente após uma amostra e cálculo válidos.
+Falha de comunicação, vetor zero ou overflow devolvem o controle ao rumo manual.
+BTNU/BTND continuam atualizando esse valor mesmo enquanto o HMC está selecionado.
+A troca é aplicada entre quadros por `entrada_hud` e `dados_hud`.
+
+Os parâmetros `MAG_OFFSET_X/Y` começam em zero. `MAG_TROCAR_XY`,
+`MAG_INVERTER_X` e `MAG_INVERTER_Y` começam desativados. Esses valores precisam
+ser ajustados à montagem e à calibração física; a orientação do HMC ainda não foi
+validada na placa. O cálculo é plano, sem compensação de inclinação ou declinação
+geográfica. Veja [cálculo, limites e testes do HMC](docs/hmc5883l.md).
+
+Nesta execução a Nexys A7 estava desligada: não houve teste físico nem programação
+da FPGA. Simulação e implementação não comprovam precisão absoluta do sensor.
 
 ## Escalas laterais
 
@@ -117,7 +146,9 @@ A escala de velocidade fica à esquerda (x=80), espelhada em relação à altitu
 à direita (x=560). As duas têm oito marcas, espaçadas a cada 40 pixels, entre
 y=100 e y=380. As marcas apontam para o centro da tela. São verdes e têm rótulos numéricos, com
 passos de 20 KT e 200 FT. Os valores atuais iniciais são 280 KT e 36000 FT,
-mostrados abaixo das barras. Esses valores são simulados.
+mostrados abaixo das barras até as estimativas ficarem disponíveis. A velocidade
+inercial estimada é demonstrativa, sujeita a deriva, e não mede velocidade em
+relação ao ar.
 
 A interface aceita velocidade, altitude, deslocamento de pitch e inclinação de
 roll processados. Consulte [formatos e caminho atual do sensor](docs/entradas_hud.md).
@@ -158,7 +189,8 @@ Na raiz do repositório, com Icarus Verilog instalado:
 scripts/test.sh
 ```
 
-Os testes verificam geometria, controles e um quadro VGA completo. A imagem de
+Os testes verificam geometria, controles, um quadro VGA completo, protocolo do
+HMC, cálculo do rumo e integração I²C → HUD com fallback manual. A imagem de
 simulação fica em `build/hud.ppm`.
 
 O [CI no GitHub Actions](https://github.com/santosJuca/Trabalho-display-aviao-v2/actions/workflows/ci.yml)
@@ -178,9 +210,10 @@ O projeto fica em `build/vivado/reticula.xpr`; o bitstream fica em
 `build/timing_summary.rpt`, `build/utilization.rpt`, `build/drc.rpt` e
 `build/fmax.rpt` (estimativa por domínio, sem varredura de frequência).
 
-O [bitstream de 05/10/2026](bitstreams/2026-10-05/README.md) está disponível
-com SHA256 e relatório. Sua validação global de timing permanece pendente:
-há um caminho VGA sem restrição com atraso de 42,597 ns para um período de 40 ns.
+O [bitstream com HMC5883L](bitstreams/2026-10-05_hmc5883l/README.md) inclui SHA256,
+fontes identificadas e relatórios pós-route: WNS +0,138 ns, TNS 0, WHS +0,024 ns
+e THS 0. Foi gerado sem programar a placa. Os bitstreams anteriores permanecem
+arquivados com seus próprios relatórios e limitações.
 
 Para projeto manual, adicione todos os `rtl/*.sv`, o XDC e defina `top_reticula`
 como módulo principal. Remova apenas fontes antigas duplicadas, não os módulos `.sv` atuais.

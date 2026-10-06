@@ -4,10 +4,10 @@
 // Referencia fixa da aeronave para o estilo CAÇA.
 //
 // Geometria:
-//   largura total  = 61 px
-//   altura total   = 41 px
+//   largura total  = 49 px
+//   altura total   = 33 px
 //   espessura      = 2 px
-//   vao central    = 13 x 13 px
+//   vao central    = 11 x 11 px
 //
 // O simbolo permanece FIXO no centro da tela.
 // Nao representa Flight Path Marker.
@@ -34,16 +34,16 @@ module reticula_caca_vga #(
     localparam int CX = H_RES / 2;
     localparam int CY = V_RES / 2;
 
-    // 61 px: CX-30 .. CX+30
-    localparam int HALF_W = 30;
+    // 49 px: CX-24 .. CX+24
+    localparam int HALF_W = 24;
 
-    // 41 px: CY-20 .. CY+20
-    localparam int HALF_H = 20;
+    // 33 px: CY-16 .. CY+16
+    localparam int HALF_H = 16;
 
-    // Gap de 13 px:
-    // CX-6 .. CX+6
-    // CY-6 .. CY+6
-    localparam int GAP_HALF = 6;
+    // Gap de 11 px:
+    // CX-5 .. CX+5
+    // CY-5 .. CY+5
+    localparam int GAP_HALF = 5;
 
     logic horizontal_esq;
     logic horizontal_dir;
