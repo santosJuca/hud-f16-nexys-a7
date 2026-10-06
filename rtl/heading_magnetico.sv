@@ -12,7 +12,8 @@ module heading_magnetico #(
     input logic amostra_nova,
     input logic signed [15:0] mag_x, mag_y,
     output logic [8:0] heading_deg = 9'd0,
-    output logic valido = 1'b0
+    output logic valido = 1'b0,
+    output logic atualizado = 1'b0
 );
     typedef enum logic [2:0] {IDLE, MAPA, PREPARA, ROTACIONA, NORMALIZA, PUBLICA} estado_t;
     estado_t estado = IDLE;
@@ -47,6 +48,7 @@ module heading_magnetico #(
     endfunction
 
     always_ff @(posedge clk) begin
+        atualizado <= 1'b0;
         if (!sensor_ok) begin
             valido <= 1'b0;
             estado <= IDLE;
@@ -104,6 +106,7 @@ module heading_magnetico #(
                     estado <= PUBLICA;
                 end
                 PUBLICA: begin
+                    atualizado <= 1'b1;
                     heading_deg <= normalizado[25:16] >= 10'd360 ? 9'd0 : normalizado[24:16];
                     valido <= 1'b1;
                     estado <= IDLE;

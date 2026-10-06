@@ -5,12 +5,12 @@ module tb_heading_magnetico;
     logic signed [15:0] x=0,y=0;
     wire [8:0] heading[0:3];
     wire [3:0] valido;
-    heading_magnetico dut(clk,ok,nova,x,y,heading[0],valido[0]);
+    heading_magnetico dut(clk,ok,nova,x,y,heading[0],valido[0],);
     heading_magnetico #(.OFFSET_X(16'sd100),.OFFSET_Y(-16'sd200),
-        .TROCAR_XY(1),.INVERTER_X(1)) ajustado(clk,ok,nova,x,y,heading[1],valido[1]);
+        .TROCAR_XY(1),.INVERTER_X(1)) ajustado(clk,ok,nova,x,y,heading[1],valido[1],);
     heading_magnetico #(.OFFSET_X(-16'sd32768),.OFFSET_Y(16'sd32767),
-        .INVERTER_X(1),.INVERTER_Y(1)) extremos(clk,ok,nova,x,y,heading[2],valido[2]);
-    heading_magnetico #(.INVERTER_Y(1)) invertido(clk,ok,nova,x,y,heading[3],valido[3]);
+        .INVERTER_X(1),.INVERTER_Y(1)) extremos(clk,ok,nova,x,y,heading[2],valido[2],);
+    heading_magnetico #(.INVERTER_Y(1)) invertido(clk,ok,nova,x,y,heading[3],valido[3],);
     integer casos=0;
     task automatic confere(input integer idx,ex,ey);
         real graus;

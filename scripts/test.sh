@@ -6,6 +6,10 @@ cd "$(dirname "$0")/.."
 mkdir -p build/tests
 
 tests=(
+    "heading_fusao|tb_heading_fusao|tests/tb_heading_fusao.sv"
+    "projecao_vertical|tb_projecao_vertical|tests/tb_projecao_vertical.sv"
+    "estado_vertical|tb_estado_vertical|tests/tb_estado_vertical.sv"
+    "top_fusao_sensores|tb_top_fusao_sensores|tests/tb_top_fusao_sensores.sv"
     "reticula|tb_reticula|tests/tb_reticula.sv"
     "hmc5883l_i2c|tb_hmc5883l_i2c|tests/tb_hmc5883l_i2c.sv"
     "heading_magnetico|tb_heading_magnetico|tests/tb_heading_magnetico.sv"

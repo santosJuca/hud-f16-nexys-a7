@@ -11,10 +11,11 @@ A imagem é gerada por coordenadas, sem framebuffer, a 25 MHz (aproximadamente
 59,52 Hz). Pitch e roll podem ser fornecidos pelo MPU-6050 através da cadeia de
 calibração, integração do giroscópio e fusão complementar. Joystick e switches
 permanecem como controles manuais. O HMC5883L fornece rumo magnético estimado
-plano, com fallback automático para os botões. O MPU fornece velocidade inercial
-estimada; o BMP085 fornece altitude barométrica. Sem estimativa válida de
-velocidade, o HUD usa 280 KT; a altitude inicia em 36000 FT e retém a última
-conversão válida.
+plano, combinado ao gyro Z por filtro complementar e com fallback para os botões.
+O MPU fornece velocidade inercial estimada; BMP085 e MPU alimentam a altitude
+estimada/fusionada e a velocidade vertical estimada. Sem estimativa válida de
+velocidade, o HUD usa 280 KT; a altitude inicia em 36000 FT até a primeira
+referência barométrica. Veja [arquitetura e limites da fusão](docs/fusao_sensores.md).
 
 
 ## O que aparece na tela
@@ -25,8 +26,8 @@ conversão válida.
 | Horizonte artificial | Linha que representa a referência do horizonte. | Sobe, desce e inclina conforme a atitude selecionada: MPU-6050 ou fallback manual. É desenhado em `rtl/simbologia_vga.sv`. |
 | Escada de pitch | Marcas que ajudam a visualizar a atitude de nariz para cima ou para baixo. | Acompanha o horizonte, com referências ±10/20/30/40. No modo MPU, a atitude vem da cadeia de estimação do sensor. |
 | Escala de velocidade | Indicação à esquerda, em nós (KT). | Velocidade inercial estimada pelo MPU-6050; fallback em 280 KT. |
-| Escala de altitude | Indicação à direita, em pés (FT). | Altitude barométrica pelo BMP085, com referência de 101325 Pa; inicia em 36000 FT. |
-| Heading (rumo) | Direção em graus, acompanhada das letras N/E/S/W. | Rumo magnético estimado pelo HMC5883L; BTNU/BTND mantêm o rumo manual de fallback. |
+| Escala de altitude | Indicação à direita, em pés (FT). | Altitude estimada/fusionada de BMP085 e MPU; referência barométrica de 101325 Pa e fallback inicial de 36000 FT. |
+| Heading (rumo) | Direção em graus, acompanhada das letras N/E/S/W. | Rumo magnético estimado por gyro Z + HMC5883L; fallback magnético ou manual por BTNU/BTND. |
 | Marcador de alvo | Símbolo que representa um alvo na demonstração. | Tem posição fixa; ainda não rastreia nem trava um alvo. |
 | Indicador do sensor | Indica o estado da identificação do IMU conectado ao barramento I²C. | O caminho ativo utiliza o MPU-6050/GY-521 e sua disponibilidade condiciona o uso da atitude medida. |
 
@@ -84,6 +85,9 @@ os controles de cor foram removidos. Pitch, roll e heading funcionam nos dois mo
 | `rtl/controle_heading.sv` | Recebe BTNU/BTND e mantém o rumo manual em passos de 10°. |
 | `rtl/hmc5883l_i2c.sv` | Identifica/configura o HMC5883L e publica X/Y/Z após STOP válido. |
 | `rtl/heading_magnetico.sv` | Calcula rumo plano por CORDIC, com offsets e orientação parametrizáveis. |
+| `rtl/heading_fusao.sv` | Combina gyro Z e rumo magnético com wrap circular e validade. |
+| `rtl/projecao_vertical.sv` | Projeta XYZ na vertical usando pitch/roll, até ±30°. |
+| `rtl/estado_vertical.sv` | Estima altitude e velocidade vertical com referência barométrica. |
 | `rtl/velocidade_inercial.sv` | Calcula velocidade inercial estimada a partir do acelerômetro e do intervalo entre amostras. |
 | `rtl/top_reticula.sv` | Integra os sensores, o joystick e os controles manuais, selecionando os dados enviados ao HUD. |
 | `rtl/entrada_hud.sv` | Transfere o conjunto de dados do clock de 100 MHz para o de 25 MHz com confirmação. |
@@ -126,8 +130,9 @@ em **3,3 V** e GND comum. **MAG_LED em LED5/V17** indica identificação/configu
 do sensor, não calibração nem precisão do rumo. O XDC usa LVCMOS33 e pull-ups
 internos em SDA/SCL; conferir os pull-ups externos do módulo na montagem.
 
-O rumo magnético estimado assume o HUD somente após uma amostra e cálculo válidos.
-Falha de comunicação, vetor zero ou overflow devolvem o controle ao rumo manual.
+O HUD prefere o rumo fusionado quando válido; sem fusão, usa o cálculo magnético
+válido e, por último, o rumo manual. Falha de comunicação, vetor zero ou overflow
+magnético desabilitam a fusão e devolvem o controle ao rumo manual.
 BTNU/BTND continuam atualizando esse valor mesmo enquanto o HMC está selecionado.
 A troca é aplicada entre quadros por `entrada_hud` e `dados_hud`.
 
@@ -190,7 +195,8 @@ scripts/test.sh
 ```
 
 Os testes verificam geometria, controles, um quadro VGA completo, protocolo do
-HMC, cálculo do rumo e integração I²C → HUD com fallback manual. A imagem de
+HMC, cálculo e fusão do rumo, projeção/estado vertical e integração I²C → HUD
+com fallback manual. A imagem de
 simulação fica em `build/hud.ppm`.
 
 O [CI no GitHub Actions](https://github.com/santosJuca/Trabalho-display-aviao-v2/actions/workflows/ci.yml)
@@ -231,7 +237,7 @@ Com a placa correta ligada por USB:
 vivado -mode batch -source scripts/program_board.tcl
 ```
 
-A programação é volátil. A versão consolidada foi programada na Nexys A7-100T
+A programação é volátil. A versão anterior à fusão de sensores foi programada na Nexys A7-100T
 e validada fisicamente quanto à estabilidade VGA, pitch, roll, seleção MPU,
 fallbacks e modos de exibição.
 

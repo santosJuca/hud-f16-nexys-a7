@@ -229,6 +229,9 @@ module top_reticula #(
     wire [8:0] heading_manual;
     wire [8:0] heading_magnetico_deg;
     wire heading_magnetico_valido;
+    wire heading_magnetico_atualizado;
+    wire [8:0] heading_fusionado_deg;
+    wire heading_fusionado_valido;
 wire [16:0] altitude_hud_entrada;
 
 wire [9:0] velocidade_hud_entrada =
@@ -397,12 +400,20 @@ wire [9:0] velocidade_hud_entrada =
         .sensor_ok(mag_sensor_ok && (mag_z != -16'sd4096)),
         .amostra_nova(mag_amostra_nova),
         .mag_x(mag_x), .mag_y(mag_y),
-        .heading_deg(heading_magnetico_deg), .valido(heading_magnetico_valido)
+        .heading_deg(heading_magnetico_deg), .valido(heading_magnetico_valido),
+        .atualizado(heading_magnetico_atualizado)
     );
 
     // O manual continua ativo; a troca chega ao HUD pela interface de quadro.
-    assign heading_entrada = mag_sensor_ok && heading_magnetico_valido ?
-        heading_magnetico_deg : heading_manual;
+    heading_fusao u_heading_fusao (
+        .clk(clk), .sensor_ok(sensor_ok), .amostra_nova(amostra_nova),
+        .gyro_z(mpu_gyro_z), .dt_valid(gyro_dt_valid), .dt_cycles(gyro_dt_cycles),
+        .mag_valido(mag_sensor_ok && heading_magnetico_valido),
+        .mag_atualizado(heading_magnetico_atualizado), .heading_mag(heading_magnetico_deg),
+        .heading_deg(heading_fusionado_deg), .valido(heading_fusionado_valido), .atualizado()
+    );
+    assign heading_entrada = heading_fusionado_valido ? heading_fusionado_deg :
+        mag_sensor_ok && heading_magnetico_valido ? heading_magnetico_deg : heading_manual;
     assign MAG_LED = mag_sensor_ok;
 
 
@@ -542,7 +553,22 @@ wire [9:0] velocidade_hud_entrada =
             baro_altitude_ft_hold <= baro_altitude_ft_calc;
     end
 
-    assign altitude_hud_entrada = baro_altitude_ft_hold;
+    wire [16:0] altitude_fusionada_ft;
+    wire signed [13:0] vel_vertical_fpm;
+    wire vertical_valido, vertical_altitude_disponivel;
+    estado_vertical u_estado_vertical (
+        .clk(clk), .sensor_ok(sensor_ok), .atitude_valida(fusao_valida),
+        .accel_x(mpu_accel_x), .accel_y(mpu_accel_y), .accel_z(mpu_accel_z),
+        .pitch_q10(fusao_pitch_q10), .roll_q10(fusao_roll_q10),
+        .dt_valid(gyro_dt_valid), .dt_cycles(gyro_dt_cycles),
+        .baro_ok(baro_sensor_ok && baro_calibracao_ok),
+        .baro_nova(baro_altitude_calc_ok), .altitude_baro_ft(baro_altitude_ft_calc),
+        .altitude_ft(altitude_fusionada_ft), .vel_vertical_fpm(vel_vertical_fpm),
+        .valido(vertical_valido), .altitude_disponivel(vertical_altitude_disponivel),
+        .calibrado(), .atualizado()
+    );
+    assign altitude_hud_entrada = vertical_altitude_disponivel ?
+        altitude_fusionada_ft : baro_altitude_ft_hold;
 
     assign BARO_LED =
         baro_sensor_ok &&
@@ -586,12 +612,25 @@ wire [9:0] velocidade_hud_entrada =
     // A saida ainda nao participa da selecao do HUD.
     // -----------------------------------------------------
 
+    // Separa a subtracao do bias dos DSPs; preserva dt e os dois eixos juntos.
+    logic signed [16:0] gyro_x_integracao = 0, gyro_y_integracao = 0;
+    logic [31:0] gyro_dt_integracao = 0;
+    logic gyro_dt_integracao_valid = 0;
+    always_ff @(posedge clk) begin
+        gyro_dt_integracao_valid <= sensor_ok && gyro_dt_valid;
+        if (sensor_ok && gyro_dt_valid) begin
+            gyro_x_integracao <= gyro_x_corr;
+            gyro_y_integracao <= gyro_y_corr;
+            gyro_dt_integracao <= gyro_dt_cycles;
+        end
+    end
+
     gyro_integrador u_gyro_pitch_integrador (
         .clk        (clk),
         .sensor_ok  (sensor_ok),
-        .dt_valid   (gyro_dt_valid),
-        .gyro_corr  (gyro_x_corr),
-        .dt_cycles  (gyro_dt_cycles),
+        .dt_valid   (gyro_dt_integracao_valid),
+        .gyro_corr  (gyro_x_integracao),
+        .dt_cycles  (gyro_dt_integracao),
         .angulo_q10 (gyro_pitch_q10),
         .angulo_valid (gyro_pitch_atualizado)
     );
@@ -599,9 +638,9 @@ wire [9:0] velocidade_hud_entrada =
     gyro_integrador u_gyro_roll_integrador (
         .clk        (clk),
         .sensor_ok  (sensor_ok),
-        .dt_valid   (gyro_dt_valid),
-        .gyro_corr  (gyro_y_corr),
-        .dt_cycles  (gyro_dt_cycles),
+        .dt_valid   (gyro_dt_integracao_valid),
+        .gyro_corr  (gyro_y_integracao),
+        .dt_cycles  (gyro_dt_integracao),
         .angulo_q10 (gyro_roll_q10),
         .angulo_valid (gyro_roll_atualizado)
     );
