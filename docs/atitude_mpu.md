@@ -1,5 +1,10 @@
 # Atitude pelo MPU-6050 no HUD
 
+> **REGISTRO HISTÓRICO:** evolução da atitude e observações físicas anteriores à fusão heading/vertical.
+> Seleção por switches, quantidades de testes e timing abaixo pertencem às etapas
+> registradas. Para o estado atual, consulte [arquitetura](arquitetura.md),
+> [testes](testes.md) e [validação da fusão](validacao_fusao_sensores.md).
+
 Documento evolutivo da integração do MPU-6050. O estado consolidado descrito
 aqui incorpora a calibração do acelerômetro, correção de bias do giroscópio,
 integração temporal e fusão complementar.

@@ -1,7 +1,7 @@
 # Entradas do HUD
 
-O topo conserva os pinos existentes. O ponto de substituição da simulação é a
-instância `u_entrada`, em `rtl/top_reticula.sv`. Não acrescente os barramentos abaixo
+O topo conserva os pinos existentes. A ligação entre estimadores e display é a
+instância `u_entrada`, em [top_reticula](../rtl/top_reticula.sv). Não acrescente os barramentos abaixo
 ao topo físico: eles são conexões internas entre o processamento e o display.
 
 | Entrada de dados_hud | Formato | Significado |
@@ -10,6 +10,8 @@ ao topo físico: eles são conexões internas entre o processamento e o display.
 | altitude_ft_in | unsigned [16:0] | Pés inteiros, limitado a 0..99999 |
 | pitch_px_in | signed [10:0] | Deslocamento vertical do horizonte, limitado a -80..80 pixels |
 | roll_q8_in | signed [9:0] | Inclinação em pixels por 256 pixels horizontais, limitada a -128..128 |
+| heading_deg_in | unsigned [8:0] | Rumo inteiro 0..359°; valores maiores são saturados em 359 |
+| atualizar_quadro | 1 bit | Publica o buffer no início do blanking vertical |
 | dados_validos | 1 bit | Amostra completa disponível na borda de clk |
 | clk | 25 MHz | Mesmo clock de pixel do display |
 
@@ -43,10 +45,9 @@ leitor do sensor a 100 MHz
 ```
 
 A ponte `entrada_hud.sv` já transfere uma amostra completa de 100 para 25 MHz
-com requisição e confirmação. Para trocar a simulação, altere `.dados` e `.valido`
-de `u_entrada`. A transferência atual inclui velocidade, altitude, pitch, roll e heading,
-totalizando o conjunto atômico utilizado pelo HUD. Consulte `rtl/entrada_hud.sv`
-para a concatenação versionada e suas larguras. Esses sinais devem ser síncronos ao clock de
+com requisição e confirmação. Os estimadores alimentam `.dados` de `u_entrada`; `.valido` permanece em 1 no top. A transferência atual inclui velocidade, altitude, pitch, roll e heading,
+totalizando 57 bits. A concatenação, do bit mais alto ao mais baixo, é
+velocidade [56:47], altitude [46:30], pitch [29:19], roll [18:9] e heading [8:0]. Esses sinais devem ser síncronos ao clock de
 100 MHz. A amostra é aceita quando valido e entrada_pronta estão em 1 na borda.
 Se usar um pulso, aguarde entrada_pronta; se mantiver valido em 1, a ponte captura
 sucessivamente o conjunto mais recente. Não envie um pulso isolado enquanto
@@ -61,8 +62,10 @@ calibração, correção do giroscópio, integração e fusão antes da convers�
 as unidades usadas pelo HUD.
 
 O giroscópio fornece velocidade angular, não ângulo pronto. Aceleração bruta
-inclui gravidade. Velocidade do avião em nós e altitude em pés precisam de uma
-fonte própria ou de um estimador apropriado; nesta versão continuam simuladas.
+inclui gravidade. A velocidade é inercial estimada; a altitude usa o estado vertical
+referenciado ao BMP085. Os valores demonstrativos só permanecem quando ainda não
+há fonte utilizável. Seleção, retenção e limites estão na [arquitetura](arquitetura.md)
+e na [fusão de sensores](fusao_sensores.md).
 
 ## Números exibidos
 
@@ -73,12 +76,14 @@ no centro vertical y=240. Os rótulos de cima para baixo são 350..210 KT e
 A fonte 3x5 é ampliada duas vezes, com supressão de zeros à esquerda. Rótulos
 fora da faixa ficam vazios; os valores atuais são saturados por dados_hud.
 
-SW12/SW13 continuam escolhendo horizonte acima/abaixo/centralizado. Na fonte
-simulada, SW14/SW15 selecionam roll negativo/positivo; ambos iguais dão roll zero. O retículo é verde fixo e SW0 seleciona o modo de exibição.
+No fallback SENSOR sem MPU utilizável, SW12/SW13 escolhem horizonte
+acima/abaixo/centralizado e SW14/SW15 selecionam roll negativo/positivo; ambos
+iguais dão roll zero. No modo MANCHE, o joystick fornece a atitude. O retículo é verde fixo e SW0 seleciona o modo de exibição.
 
 ## Verificar
 
 Execute `bash scripts/test.sh`. Os testes cobrem dez glifos, composição decimal,
 espaçamento, limites numéricos, transferência entre clocks, buffer de amostras, mudança entre quadros,
 pitch, roll positivo/negativo e preservação das escalas. O teste integrado gera
-`build/hud.ppm`. Gere um novo bitstream e confira leitura dos números no monitor.
+`build/hud.ppm`. A leitura física dos números no monitor deve ser verificada
+em uma etapa de bancada separada; esta revisão não programa a FPGA.

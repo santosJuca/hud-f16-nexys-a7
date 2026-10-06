@@ -37,8 +37,9 @@ estado = wrap_0_360(predito + erro / 32)
 
 O truncamento da correção é simétrico. De 359° para 1°, o erro é +2°; de 1°
 para 359°, é −2°. A saída inteira trunca a fração. O ganho 1/32 permite resposta
-rápida do gyro e converge para a referência magnética em cerca de 32 atualizações
-(aproximadamente 0,32 s a 100 Hz). A constante de tempo depende da taxa de amostras;
+rápida do gyro. Para uma referência constante, a resposta ideal reduz cerca de
+63% do erro em 32 atualizações e cerca de 95% em 95 atualizações (aproximadamente
+0,32 s e 0,95 s a 100 Hz, antes dos efeitos de quantização). A constante de tempo depende da taxa de amostras;
 a referência magnética mais recente pode ser usada por mais de uma atualização.
 Não há correção contínua a cada clock: o filtro só muda após integração válida.
 Predição, diferença circular, ganho e normalização são separados por registros.

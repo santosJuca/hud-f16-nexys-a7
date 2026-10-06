@@ -95,3 +95,10 @@ movimento real no HUD. Os offsets começam em zero. O resultado é rumo magnéti
 estimado **plano**, sem compensação de inclinação ou declinação geográfica.
 MAG_LED indica identificação/configuração, não calibração ou precisão.
 A velocidade permanece descrita como velocidade inercial estimada.
+
+## Identificação no acervo
+
+Data do pacote: 05/10/2026. Fontes e artefatos publicados na `main` em
+`de80521704b04bc6029f99fae43a71ad09780658`; `FONTES_SHA256.txt` identifica as fontes
+exatas usadas antes da publicação. Esta versão antecede a fusão heading/vertical.
+**PENDENTE DE VALIDAÇÃO FÍSICA**. Veja o [catálogo](../README.md) para a versão de fusão.

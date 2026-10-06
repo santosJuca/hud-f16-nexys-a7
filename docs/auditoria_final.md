@@ -1,5 +1,10 @@
 # Auditoria Final — HUD Aeronáutico em FPGA
 
+> **REGISTRO HISTÓRICO:** auditoria de 03/10/2026, anterior à integração atual dos sensores.
+> Seleção por switches, quantidades de testes e timing abaixo pertencem às etapas
+> registradas. Para o estado atual, consulte [arquitetura](arquitetura.md),
+> [testes](testes.md) e [validação da fusão](validacao_fusao_sensores.md).
+
 ## 1. Identificação
 
 - Projeto: Display de avião / HUD acadêmico

@@ -33,3 +33,16 @@ Para conferir a integridade, execute nesta pasta:
 ```sh
 sha256sum -c SHA256SUMS
 ```
+
+## Metadados e limites históricos
+
+A branch de geração não está registrada neste pacote; o commit-fonte acima é a
+referência reprodutível. Trata-se do HUD anterior ao HMC e à fusão heading/vertical.
+Este arquivo específico está **PENDENTE DE VALIDAÇÃO FÍSICA**; observações de outras
+versões não o aprovam. O hash reconferido de `top_reticula.bit` é:
+
+```text
+6926266a1f9256e418b258cbc993e5d43ca181b51bc161b3626861e59c7ef211
+```
+
+Consulte o [catálogo](../README.md) para versões posteriores e a política de publicação.
