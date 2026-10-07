@@ -411,3 +411,4 @@ buzzer foi atribuído e nenhuma conexão à placa foi feita nesta etapa.
 
 Arquitetura, fontes, controles, fases do pouso, thresholds completos, escalas,
 limitações e testes estão em [modos, alertas e buzzer](docs/modos_alertas_buzzer.md).
+Resultados de simulação, timing e bitstream: [validação dos modos e alertas](docs/validacao_modos_alertas.md).
