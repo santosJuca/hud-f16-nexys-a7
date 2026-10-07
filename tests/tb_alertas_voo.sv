@@ -13,7 +13,7 @@ module tb_alertas_voo;
     alertas_voo dut(.*);
     task automatic confere(input integer sev, code);
         repeat(2) @(negedge clk); checks++;
-        if(severity!=sev || causa!=code) $fatal(1,"Roll=%0d pitch=%0d: obtido=%0d/%0d esperado=%0d/%0d",roll_q10,pitch_q10,severity,causa,sev,code);
+        if(severity !== 2'(sev) || causa !== 3'(code)) $fatal(1,"Roll=%0d pitch=%0d: obtido=%0d/%0d esperado=%0d/%0d",roll_q10,pitch_q10,severity,causa,sev,code);
     endtask
     initial begin
         @(negedge clk); reset=0; confere(0,0);

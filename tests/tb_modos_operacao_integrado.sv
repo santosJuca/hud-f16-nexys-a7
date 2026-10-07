@@ -15,7 +15,7 @@ module tb_modos_operacao_integrado;
     integer checks=0;
     task automatic check(input logic ok,input string nome);
         checks++;
-        if(!ok) $fatal(1,"%s: modo=%0d v=%0d h=%0d meta=%h",nome,dut.hud_metadados[1:0],dut.velocidade_kt,dut.altitude_ft,dut.hud_metadados);
+        if(ok !== 1'b1) $fatal(1,"%s: modo=%0d v=%0d h=%0d meta=%h",nome,dut.hud_metadados[1:0],dut.velocidade_kt,dut.altitude_ft,dut.hud_metadados);
     endtask
     task quadro;
         repeat(100) @(negedge clk);
