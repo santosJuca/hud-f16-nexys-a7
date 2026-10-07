@@ -7,8 +7,9 @@ module tb_top_atitude;
     integer modo;
     integer pitch_esperado, roll_esperado;
 
-    top_reticula dut (
-        .clk(clk), .btn_heading(2'b00), .sw(sw), .display_mode(1'b0),
+    // Regressao da configuracao anterior; modos novos tem banco integrado proprio.
+    top_reticula #(.MODOS_OPERACIONAIS(1'b0)) dut (
+        .operacao_sw(2'b00),.ack_btn(1'b0),.clk(clk), .btn_heading(2'b00), .sw(sw), .display_mode(1'b0),
         .style_mode(1'b0),
         .vauxp3(1'b0), .vauxn3(1'b0), .vauxp10(1'b0), .vauxn10(1'b0),
         .joystick_sw_n(1'b1),

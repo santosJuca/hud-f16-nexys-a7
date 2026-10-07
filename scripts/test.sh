@@ -6,6 +6,14 @@ cd "$(dirname "$0")/.."
 mkdir -p build/tests
 
 tests=(
+    "modo_operacao|tb_modo_operacao|tests/tb_modo_operacao.sv"
+    "simulador_voo|tb_simulador_voo|tests/tb_simulador_voo.sv"
+    "simulador_pouso|tb_simulador_pouso|tests/tb_simulador_pouso.sv"
+    "alertas_voo|tb_alertas_voo|tests/tb_alertas_voo.sv"
+    "buzzer_driver|tb_buzzer_driver|tests/tb_buzzer_driver.sv"
+    "fontes_operacao|tb_fontes_operacao|tests/tb_fontes_operacao.sv"
+    "alertas_vga|tb_alertas_vga|tests/tb_alertas_vga.sv"
+    "modos_operacao_integrado|tb_modos_operacao_integrado|tests/tb_modos_operacao_integrado.sv"
     "heading_fusao|tb_heading_fusao|tests/tb_heading_fusao.sv"
     "projecao_vertical|tb_projecao_vertical|tests/tb_projecao_vertical.sv"
     "estado_vertical|tb_estado_vertical|tests/tb_estado_vertical.sv"

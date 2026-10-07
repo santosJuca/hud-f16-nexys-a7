@@ -5,8 +5,9 @@ module tb_modos;
     tri1 sda,scl;
     wire [3:0] r,g,b;
     wire hs,vs;
-    top_reticula dut (
-        .clk(clk),
+    // Regressao da configuracao anterior; modos novos tem banco integrado proprio.
+    top_reticula #(.MODOS_OPERACIONAIS(1'b0)) dut (
+        .operacao_sw(2'b00),.ack_btn(1'b0),.clk(clk),
         .btn_heading(2'b00),
         .sw(4'b0000),
         .display_mode(btn),

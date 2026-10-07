@@ -17,8 +17,9 @@ module tb_estilos;
     wire hs;
     wire vs;
 
-    top_reticula dut (
-        .clk(clk),
+    // Regressao da configuracao anterior; modos novos tem banco integrado proprio.
+    top_reticula #(.MODOS_OPERACIONAIS(1'b0)) dut (
+        .operacao_sw(2'b00),.ack_btn(1'b0),.clk(clk),
 
         .btn_heading(2'b00),
 

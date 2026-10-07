@@ -4,6 +4,10 @@
 // =========================================================
 
 module top_reticula #(
+    parameter bit MODOS_OPERACIONAIS = 1'b1,
+    parameter integer OPERACAO_DEBOUNCE = 10_000_000,
+    parameter integer OPERACAO_TICK = 5_000_000,
+    parameter integer OPERACAO_ACK = 1_000_000,
     parameter logic signed [15:0] MAG_OFFSET_X = 16'sd0,
     parameter logic signed [15:0] MAG_OFFSET_Y = 16'sd0,
     parameter bit MAG_TROCAR_XY = 1'b0,
@@ -11,6 +15,8 @@ module top_reticula #(
     parameter bit MAG_INVERTER_Y = 1'b0
 ) (
     input  logic        clk,
+    input wire [1:0] operacao_sw, // SW3:SW2
+    input wire ack_btn, // BTNC; audio logico, sem pino de buzzer.
     input  logic [1:0]  btn_heading,  // BTNU=+10, BTND=-10
     input  logic [15:12] sw,        // pitch e roll
     input  logic        display_mode, // SW0: 0=NORMAL, 1=DECLUTTER
@@ -222,7 +228,9 @@ module top_reticula #(
         end
     end
 
-    wire [56:0] amostra_pixel;
+    wire [88:0] amostra_completa;
+    wire [56:0] amostra_pixel = amostra_completa[56:0];
+    wire [31:0] hud_metadados;
     wire amostra_valida;
     wire entrada_pronta;
     wire [8:0] heading_entrada;
@@ -245,17 +253,27 @@ wire [9:0] velocidade_hud_entrada =
         .heading_deg (heading_manual)
     );
     // Ordem: velocidade(10), altitude(17), pitch(11), roll(10), heading(9)..
-    entrada_hud u_entrada (
+    wire [56:0] dados_operacao;
+    wire [31:0] metadados_operacao;
+    wire buzzer_out;
+    logic [3:0] inicio_operacao = 0;
+    wire reset_operacao = !inicio_operacao[3];
+    always_ff @(posedge clk) inicio_operacao <= {inicio_operacao[2:0],1'b1};
+    wire [88:0] pacote_hud = MODOS_OPERACIONAIS ? {metadados_operacao,dados_operacao} :
+        {32'd0,velocidade_hud_entrada,altitude_hud_entrada,pitch_px_entrada,roll_q8_entrada,heading_entrada};
+    entrada_hud #(.WIDTH(89)) u_entrada (
         .clk_origem(clk), .clk_destino(pixel_clk),
         .valido(1'b1),
-        .dados({velocidade_hud_entrada, altitude_hud_entrada, pitch_px_entrada, roll_q8_entrada, heading_entrada}),
+        .dados(pacote_hud),
         .pronto(entrada_pronta),
-        .valido_destino(amostra_valida), .dados_destino(amostra_pixel)
+        .valido_destino(amostra_valida), .dados_destino(amostra_completa)
     );
-    dados_hud u_dados (
+    dados_hud #(.INICIAL_V(MODOS_OPERACIONAIS ? 0 : 280),
+        .INICIAL_H(MODOS_OPERACIONAIS ? 0 : 36000)) u_dados (
         .clk(pixel_clk),
         .atualizar_quadro((pixel_x == 0) && (pixel_y == 480)),
         .dados_validos(amostra_valida),
+        .metadados_in(amostra_completa[88:57]),.metadados(hud_metadados),
         .velocidade_kt_in(amostra_pixel[56:47]),
         .altitude_ft_in(amostra_pixel[46:30]),
         .pitch_px_in($signed(amostra_pixel[29:19])),
@@ -860,14 +878,43 @@ wire [9:0] velocidade_hud_entrada =
         caca_velocidade ||
         caca_altitude ||
         caca_heading ||
-        caca_sim;
+        (caca_sim && (!MODOS_OPERACIONAIS || hud_metadados[8]));
 
     wire extras_estilo =
         estilo_caca ?
         extras_caca :
         extras_originais;
 
+    generate if (MODOS_OPERACIONAIS) begin : g_operacao
+    operacao_hud #(.TICK_CYCLES(OPERACAO_TICK),.DEBOUNCE_CYCLES(OPERACAO_DEBOUNCE),
+        .ACK_CYCLES(OPERACAO_ACK)) u_operacao (
+        .clk(clk),.reset(reset_operacao),.switches(operacao_sw),.ack(ack_btn),
+        .fontes_validas({(heading_fusionado_valido || (mag_sensor_ok && heading_magnetico_valido)),
+                         (baro_sensor_ok && baro_calibracao_ok),
+                         (sensor_ok && atitude_calibrada && gyro_bias_calibrado && fusao_valida)}),
+        .novas_amostras({heading_magnetico_atualizado,baro_altitude_calc_ok,fusao_atualizar}),
+        .pitch_real_q10(fusao_pitch_q10),.roll_real_q10(fusao_roll_q10),
+        .pitch_real_px(fusao_pitch_px),.roll_real_q8(fusao_roll_q8),
+        .pitch_fallback_px(pitch_px_entrada),.roll_fallback_q8(roll_q8_entrada),
+        .altitude_real_ft(altitude_hud_entrada),.heading_real_deg(heading_entrada),
+        .heading_manual_deg(heading_manual),.vertical_real_fpm(vel_vertical_fpm),
+        .vertical_real_valido(vertical_valido),.dados(dados_operacao),
+        .metadados(metadados_operacao),.buzzer_out(buzzer_out));
+    end else begin : g_legado
+        assign dados_operacao=0; assign metadados_operacao=0; assign buzzer_out=0;
+    end endgenerate
+
+    wire overlay_on;
+    wire [11:0] overlay_rgb;
+    generate if (MODOS_OPERACIONAIS) begin : g_overlay
+    alertas_vga u_alertas_vga(.pixel_x(pixel_x),.pixel_y(pixel_y),.video_on(video_on),
+        .metadados(hud_metadados),.on(overlay_on),.rgb(overlay_rgb));
+    end else begin : g_sem_overlay
+        assign overlay_on=0; assign overlay_rgb=0;
+    end endgenerate
+
     assign VGA_R =
+        (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[11:8] :
         retic_visivel                                ? 4'h0 :
         alvo                                         ? 4'hF :
         (
@@ -878,6 +925,7 @@ wire [9:0] velocidade_hud_entrada =
                                                        4'h0;
 
     assign VGA_G =
+        (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[7:4] :
         retic_visivel ? 4'hF :
         (
             horizonte_visivel ||
@@ -893,6 +941,6 @@ wire [9:0] velocidade_hud_entrada =
         ) ? 4'hF :
             4'h0;
 
-    assign VGA_B = 4'h0;
+    assign VGA_B = (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[3:0] : 4'h0;
 
 endmodule

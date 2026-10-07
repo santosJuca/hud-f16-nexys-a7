@@ -168,3 +168,11 @@ set_property -dict { PACKAGE_PIN G2 IOSTANDARD LVCMOS33 PULLUP TRUE } \
 ## LED5 = magnetometro identificado/configurado
 set_property -dict { PACKAGE_PIN V17 IOSTANDARD LVCMOS33 } \
     [get_ports { MAG_LED }]
+
+## Modos operacionais e ACK: Master XDC Nexys-A7-100T.
+set_property -dict { PACKAGE_PIN M13 IOSTANDARD LVCMOS33 } [get_ports { operacao_sw[0] }]
+set_property -dict { PACKAGE_PIN R15 IOSTANDARD LVCMOS33 } [get_ports { operacao_sw[1] }]
+set_property -dict { PACKAGE_PIN N17 IOSTANDARD LVCMOS33 } [get_ports { ack_btn }]
+set_false_path -from [get_ports {operacao_sw[*]}] -to [get_pins -hier -filter {NAME =~ *u_operacao/u_modo/meta_reg*/D}]
+set_false_path -from [get_ports ack_btn] -to [get_pins -hier -filter {NAME =~ *u_operacao/u_buzzer/ack_meta_reg/D}]
+# buzzer_out permanece interno; nenhuma saida eletrica foi atribuida.
