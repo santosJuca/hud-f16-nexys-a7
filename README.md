@@ -1,9 +1,9 @@
 # Display de avião
 
-No modo SENSOR, a atitude vem do MPU-6050 após calibração do acelerômetro,
-do bias do giroscópio e inicialização da fusão complementar, independentemente
-de SW15..SW12. O botão do joystick alterna SENSOR/MANCHE; sem MPU válido,
-os switches fornecem o fallback de bancada. Veja [integração da atitude MPU](docs/atitude_mpu.md).
+A configuração padrão oferece SOLO, VOO e POUSO em SW3:SW2. Atitude física
+válida tem prioridade; no VOO/POUSO, a cadeia SENSOR/MANCHE permanece disponível
+como fallback identificado. SOLO usa somente fontes físicas válidas e velocidade
+comandada em zero. Veja [modos operacionais e alertas](docs/modos_alertas_buzzer.md).
 
 Display VGA 640×480 com retículo, horizonte deslocável e inclinado, escada de
 pitch, escalas de velocidade/altitude, heading em graus com N/E/S/W e alvo fixo.
@@ -12,10 +12,10 @@ A imagem é gerada por coordenadas, sem framebuffer, a 25 MHz (aproximadamente
 calibração, integração do giroscópio e fusão complementar. Joystick e switches
 permanecem como controles manuais. O HMC5883L fornece rumo magnético estimado
 plano, combinado ao gyro Z por filtro complementar e com fallback para os botões.
-O MPU fornece velocidade inercial estimada; BMP085 e MPU alimentam a altitude
-estimada/fusionada e a velocidade vertical estimada. Sem estimativa válida de
-velocidade, o HUD usa 280 KT; a altitude inicia em 36000 FT até a primeira
-referência barométrica. Veja [arquitetura e limites da fusão](docs/fusao_sensores.md).
+BMP085 e MPU alimentam a altitude estimada/fusionada e a velocidade vertical
+estimada. Velocidade e altitude de VOO/POUSO são simuladas; SOLO não usa os
+fallbacks antigos. A velocidade inercial estimada e os valores iniciais de
+280 KT/36000 FT permanecem apenas na configuração legada. Veja [arquitetura e limites da fusão](docs/fusao_sensores.md).
 
 
 ## O que aparece na tela
@@ -25,8 +25,8 @@ referência barométrica. Veja [arquitetura e limites da fusão](docs/fusao_sens
 | Retículo | Cruz de referência no centro da tela, com um vão no meio. Serve como referência de apontamento. | Fica parado e verde, mesmo quando o horizonte muda. O desenho está em `rtl/reticula_vga.sv`. |
 | Horizonte artificial | Linha que representa a referência do horizonte. | Sobe, desce e inclina conforme a atitude selecionada: MPU-6050 ou fallback manual. É desenhado em `rtl/simbologia_vga.sv`. |
 | Escada de pitch | Marcas que ajudam a visualizar a atitude de nariz para cima ou para baixo. | Acompanha o horizonte, com referências ±10/20/30/40. No modo MPU, a atitude vem da cadeia de estimação do sensor. |
-| Escala de velocidade | Indicação à esquerda, em nós (KT). | Velocidade inercial estimada pelo MPU-6050; fallback em 280 KT. |
-| Escala de altitude | Indicação à direita, em pés (FT). | Altitude estimada/fusionada de BMP085 e MPU; referência barométrica de 101325 Pa e fallback inicial de 36000 FT. |
+| Escala de velocidade | Indicação à esquerda, em nós (KT). | Zero em SOLO; perfil simulado em VOO/POUSO. |
+| Escala de altitude | Indicação à direita, em pés (FT). | Física válida em SOLO; simulada em VOO/POUSO. ALT BAD indica indisponibilidade. |
 | Heading (rumo) | Direção em graus, acompanhada das letras N/E/S/W. | Rumo magnético estimado por gyro Z + HMC5883L; fallback magnético ou manual por BTNU/BTND. |
 | Marcador de alvo | Símbolo que representa um alvo na demonstração. | Tem posição fixa; ainda não rastreia nem trava um alvo. |
 | Indicador do sensor | Indica o estado da identificação do IMU conectado ao barramento I²C. | O caminho ativo utiliza o MPU-6050/GY-521 e sua disponibilidade condiciona o uso da atitude medida. |
@@ -46,10 +46,12 @@ fixa central; o horizonte se desloca e inclina em relação a essa referência.
 | BTNU | Aumenta o rumo manual de fallback em 10°. |
 | BTND | Diminui o rumo manual de fallback em 10°. |
 | SW1 | Seleciona o estilo visual do HUD. |
-| Botão do joystick | Alterna SENSOR/MANCHE para pitch e roll. |
-| SW2 a SW11 e BTNL/BTNC/BTNR | Sem função nesta versão. |
+| Botão do joystick | Alterna SENSOR/MANCHE na cadeia de fallback de pitch/roll. |
+| SW3:SW2 | Seleciona SOLO/VOO/POUSO; 11 sinaliza modo inválido em SOLO. |
+| BTNC | Reconhece e silencia o áudio do alerta atual. |
+| SW4 a SW11 e BTNL/BTNR | Sem função nesta versão. |
 
-SW12 e SW13 iguais mantêm o horizonte centralizado na vertical. SW14 e SW15
+No fallback de VOO/POUSO ou na configuração legada, SW12 e SW13 iguais mantêm o horizonte centralizado na vertical. SW14 e SW15
 iguais deixam o horizonte sem inclinação. Nenhum desses controles move o retículo.
 
 ## Modos NORMAL / DECLUTTER (RF-08)
@@ -60,10 +62,11 @@ início do blanking vertical. A inicialização é NORMAL, seguida da leitura de
 
 - **NORMAL:** todos os símbolos e o indicador de identificação do sensor.
 - **DECLUTTER:** retículo, horizonte com referências de pitch/roll e marcador
-  de alvo. Escalas laterais, seus números, heading e indicador do sensor ficam ocultos.
+  de alvo, além dos avisos de modo/validade e alertas. Escalas laterais, seus
+  números, heading e indicador antigo do sensor ficam ocultos.
 
 Esta é a definição de itens críticos adotada para a demonstração acadêmica.
-SW2..SW11 e BTNL/BTNC/BTNR ficam livres. O retículo é verde fixo;
+SW4..SW11 e BTNL/BTNR ficam livres. O retículo é verde fixo;
 os controles de cor foram removidos. Pitch, roll e heading funcionam nos dois modos.
 
 ## Qual arquivo controla cada parte
@@ -109,16 +112,17 @@ os controles de cor foram removidos. Pitch, roll e heading funcionam nos dois mo
 
 ## Atitude e fallback manual
 
-Quando o caminho MPU não está ativo, SW12 ligado sozinho posiciona o
+Em VOO/POUSO sem MPU válido, ou na configuração legada, SW12 ligado sozinho posiciona o
 horizonte 40 pixels acima (y=200) e SW13 ligado sozinho posiciona 40 pixels
 abaixo (y=280).
 No fallback manual por switches, SW12 e SW13 iguais mantêm y=240.
 SW14 sozinho seleciona roll negativo e SW15 sozinho seleciona roll positivo;
 SW14 e SW15 iguais mantêm roll zero. O retículo permanece fixo.
 
-Com MPU válido no modo SENSOR, pitch e roll vêm da cadeia de calibração,
-integração e fusão complementar. Os switches só assumem quando essa cadeia
-está indisponível; no modo MANCHE, o joystick comanda pitch e roll.
+Com MPU válido, pitch e roll vêm da cadeia de calibração, integração e fusão
+complementar. No fallback de VOO/POUSO, SENSOR utiliza switches e MANCHE utiliza
+joystick. SOLO sinaliza indisponibilidade em vez de substituir sensores por
+comandos. MODOS_OPERACIONAIS=0 preserva a seleção anterior para regressão.
 
 A escada traz referências ±10/20/30/40 que acompanham pitch e roll. BTNU aumenta o rumo manual em 10° e BTND reduz em 10°,
 com retorno circular entre 0° e 350°.
@@ -131,8 +135,9 @@ do sensor, não calibração nem precisão do rumo. O XDC usa LVCMOS33 e pull-up
 internos em SDA/SCL; conferir os pull-ups externos do módulo na montagem.
 
 O HUD prefere o rumo fusionado quando válido; sem fusão, usa o cálculo magnético
-válido e, por último, o rumo manual. Falha de comunicação, vetor zero ou overflow
-magnético desabilitam a fusão e devolvem o controle ao rumo manual.
+válido. No VOO/POUSO, falha de comunicação, vetor zero ou overflow magnético
+permitem fallback manual identificado. SOLO indica HDG BAD quando não há fonte
+física válida.
 BTNU/BTND continuam atualizando esse valor mesmo enquanto o HMC está selecionado.
 A troca é aplicada entre quadros por `entrada_hud` e `dados_hud`.
 
@@ -150,10 +155,10 @@ da FPGA. Simulação e implementação não comprovam precisão absoluta do sens
 A escala de velocidade fica à esquerda (x=80), espelhada em relação à altitude
 à direita (x=560). As duas têm oito marcas, espaçadas a cada 40 pixels, entre
 y=100 e y=380. As marcas apontam para o centro da tela. São verdes e têm rótulos numéricos, com
-passos de 20 KT e 200 FT. Os valores atuais iniciais são 280 KT e 36000 FT,
-mostrados abaixo das barras até as estimativas ficarem disponíveis. A velocidade
-inercial estimada é demonstrativa, sujeita a deriva, e não mede velocidade em
-relação ao ar.
+passos de 20 KT e 200 FT. Os valores dependem do modo operacional. SOLO inicia
+em zero e sinaliza campos físicos indisponíveis; VOO inicia em 280 KT/36000 FT
+simulados. A velocidade inercial da configuração anterior é demonstrativa,
+sujeita a deriva, e não mede velocidade em relação ao ar.
 
 A interface aceita velocidade, altitude, deslocamento de pitch e inclinação de
 roll processados. Consulte [formatos e caminho atual do sensor](docs/entradas_hud.md).
@@ -359,3 +364,50 @@ target_lock 	| In 	|	Quando pressionado, fixa a posição do alvo relativo ao ho
 display_mode 	| In 	|	Seleciona modo normal ou declutter
 hsync / vsync 	| Out 	|	Sincronismo horizontal e vertical VGA
 rgb 		| Out 	|	Sinal RGB conectado ao conector VGA da Nexys A7
+
+## Modos operacionais
+
+A configuração padrão usa **SW3:SW2** para selecionar o comportamento dos dados,
+independentemente de SW0 (NORMAL/DECLUTTER) e SW1 (original/CAÇA).
+
+| SW3:SW2 | Modo | Dados |
+| --- | --- | --- |
+| 00 | SOLO / GND | Atitude, heading e altitude físicos quando válidos; velocidade 0 kt |
+| 01 | VOO / FLT | 280±5 kt e 36000±50 ft simulados; atitude física quando válida |
+| 10 | POUSO / LDG | Aproximação de 1500 ft até a pista simulada e desaceleração até zero |
+| 11 | Reservado | Comportamento de SOLO com modo inválido sinalizado |
+
+Fontes indisponíveis são indicadas no HUD. SOLO não usa silenciosamente os valores
+280 kt/36000 ft de fallback. Nos modos simulados, a atitude física tem prioridade;
+se falhar, manche/switches podem fornecer fallback explicitamente identificado.
+
+| Alerta didático | CAUTION | WARNING |
+| --- | --- | --- |
+| Roll | abs ≥15° | abs ≥25° |
+| Pitch | abs ≥10° | abs ≥15° |
+| Roll no pouso abaixo de 200 ft, antes do toque | abs ≥8° | abs ≥12° |
+
+Há histerese e alertas contextuais de velocidade/descida no pouso. Os comparadores
+usam graus Q10 antes da saturação visual. Não representam limites certificados.
+
+| Severity | Significado |
+| --- | --- |
+| 00 | NONE |
+| 01 | INFO |
+| 10 | CAUTION |
+| 11 | WARNING |
+
+A maior severidade controla o áudio e o aviso principal. WARNING/CAUTION continuam
+visíveis em DECLUTTER. **BTNC** reconhece o alerta e silencia o áudio; a indicação
+visual permanece. Aumento de severidade cancela ACK; fim dos alertas limpa ACK.
+
+### Buzzer
+
+O RTL implementa somente `buzzer_out`, um envelope para buzzer ativo: INFO de
+100 ms a cada 5 s, CAUTION de 250 ms ligado/750 ms desligado e WARNING de
+200 ms ligado/200 ms desligado. O sinal permanece interno, com indicador no HUD.
+**A implementação elétrica será feita posteriormente.** Nenhum pino externo de
+buzzer foi atribuído e nenhuma conexão à placa foi feita nesta etapa.
+
+Arquitetura, fontes, controles, fases do pouso, thresholds completos, escalas,
+limitações e testes estão em [modos, alertas e buzzer](docs/modos_alertas_buzzer.md).
