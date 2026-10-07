@@ -2,28 +2,33 @@
 
 Validação em 7 de outubro de 2026, na branch `feat/modos-alertas`, com Vivado
 2026.1 (build 6511674), top `top_reticula` e FPGA `xc7a100tcsg324-1`.
-Fontes funcionais: commit `dd90b130d7d4a0305607043d1d49a3c0f9fe605f`.
+Fontes funcionais: commit `0d37afc2411509170f5f01f025eff844caf541ff`.
+Continuação do HEAD auditado `8c8e66c`: módulos existentes preservados; warning de
+pitch agora libera abaixo de 12°, com testes ampliados de fronteiras, tempos e ACK.
 Os dois comentários locais sobre orientação do HMC5883L foram preservados e
 estavam presentes no build. Não alteram o circuito. `QWEN.md` continua não rastreado.
-O manifesto SHA256 em `build/modos-audit/source-manifest.json` foi conferido
+O manifesto SHA256 em `build/continuacao-20261007-102309/source-manifest.json` foi conferido
 após o build, sem mudanças nos arquivos RTL, XDC, scripts e testes registrados.
 
 ## Testes
 
 `./scripts/test.sh` completou os 54 bancos, com a mensagem
 `===== TODOS OS TESTES PASSARAM =====` e `TEST EXIT = 0`.
-Após o ajuste de posição do alerta visual e o reforço das verificações de valores
-indefinidos, os oito novos bancos foram repetidos: `NEW TEST EXIT = 0`.
-Os 46 bancos anteriores não dependem desse overlay.
+Antes da regressão completa, os oito bancos operacionais também passaram
+isoladamente. `tb_alertas_voo` executa 175 verificações, incluindo ambos os sinais,
+fronteiras inteiras e um passo Q10 abaixo dos limiares. Os simuladores rejeitam
+saídas indefinidas; o pouso confere a duração das fases e a parada aos 130 s.
+Nenhum banco antigo foi alterado nesta continuação.
 
 Os bancos antigos que instanciam o top selecionam explicitamente
 `MODOS_OPERACIONAIS=0`, preservando suas verificações das fontes legadas.
 O gerador de quadros antigo usa a mesma configuração. O padrão novo é testado por
-`tb_modos_operacao_integrado` (36 verificações), além dos bancos de fontes e overlay.
+`tb_modos_operacao_integrado` (39 verificações, incluindo escalada de CAUTION para WARNING após ACK), além dos bancos de fontes e overlay.
 Isso mantém cobertura de compatibilidade; não equivale a executar as expectativas
 de valores iniciais legados na configuração nova de SOLO.
 
-Logs: `build/modos-audit/regression.log` e `build/modos-audit/new-tests-final.log`.
+Logs: `build/continuacao-20261007-102309/regression.log`; execuções isoladas em `build/continuacao-20261007-102309/*-test.log`.
+Matriz anterior à edição: `build/continuacao-20261007-102309/matriz-auditoria.md`.
 
 | Teste | Banco | Resultado |
 | --- | --- | --- |
@@ -91,9 +96,9 @@ erros de DRC antes da escrita do bitstream.
 
 | Métrica | Resultado |
 | --- | --- |
-| WNS | +0,653 ns |
+| WNS | +0,398 ns |
 | TNS | 0,000 ns |
-| WHS | +0,019 ns |
+| WHS | +0,020 ns |
 | THS | 0,000 ns |
 | WPWS | +4,020 ns |
 | TPWS | 0,000 ns |
@@ -107,20 +112,19 @@ interfaces. Não foram inventados delays para eliminar os avisos.
 
 ## Recursos
 
-Comparação com `build/modos-audit/utilization-before.rpt`, preservado antes do build:
+Comparação com `build/continuacao-20261007-102309/utilization-before.rpt`, preservado antes do build:
 
 | Recurso | Antes | Atual | Diferença |
 | --- | ---: | ---: | ---: |
-| LUT | 10858 | 11587 (18,28%) | +729 (+6,7%) |
-| FF | 6263 | 6528 (5,15%) | +265 (+4,2%) |
+| LUT | 11587 | 11583 (18,27%) | -4 |
+| FF | 6528 | 6528 (5,15%) | 0 |
 | BRAM | 0 | 0 | 0 |
-| DSP | 32 | 30 (12,50%) | -2 |
+| DSP | 30 | 30 (12,50%) | 0 |
 | XADC | 1 | 1 | 0 |
 | BUFG | 2 | 2 | 0 |
 
-O crescimento de LUT e FF é compatível com os simuladores, alertas, temporizadores
-e textos adicionados. A redução de DSP acompanha a remoção pela síntese de lógica
-sem consumidor nesta configuração; o RTL legado permanece disponível.
+O build atual usa quatro LUTs a menos que o anterior. Os demais recursos
+permaneceram iguais; não houve crescimento inesperado.
 
 ## Avisos e limitações
 
@@ -145,18 +149,18 @@ Os limites dos alertas são didáticos. O ACK não é cancelado por mudança de 
 na mesma severidade. A velocidade vertical alimenta a lógica quando válida, mas
 não ganhou indicador numérico dedicado no HUD.
 
-A auditoria adicional do checkpoint roteado terminou com `ROUTED_AUDIT=PASS`: 145
+A auditoria adicional do checkpoint roteado terminou com `ROUTED_AUDIT=PASS`: 138
 células no caminho hierárquico do buzzer, SW2=M13, SW3=R15, BTNC=N17 e nenhuma
-porta física de buzzer. Log: `build/modos-audit/verify-routed-console.log`.
+porta física de buzzer. Log: `build/continuacao-20261007-102309/verify-routed-console.log`.
 
 ## Artefato
 
 - Arquivo: `build/vivado/reticula.runs/impl_1/top_reticula.bit`
 - Tamanho: 3825992 bytes.
-- Timestamp: `2026-10-07 09:19:18.924655594 -0300`.
-- SHA256: `d196d85636b9208163c7799a293732208fab6eaa2a7affa1658529ef861494a4`.
+- Timestamp: `2026-10-07 15:01:50.281456324 -0300`.
+- SHA256: `f945ca6156f2f72cb089878be2936de1bb318759a5934719cd1fa01d65b391e5`.
 
-O timestamp é posterior ao início do build (`2026-10-07T12:14:12.604986+00:00`).
+O timestamp é posterior ao início do build (`2026-10-07T17:56:51.157209+00:00`).
 A presença do arquivo foi conferida junto ao sucesso de `write_bitstream` e ao
 exit code do Vivado; não foi usada isoladamente como prova de build válido.
 
