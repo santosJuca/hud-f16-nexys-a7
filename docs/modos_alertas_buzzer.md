@@ -86,7 +86,7 @@ abaixo são didáticos. Não são GPWS, stall warning ou proteção de envelope.
 | Condição | CAUTION entra | WARNING entra | Saída por histerese |
 | --- | --- | --- | --- |
 | Roll em VOO/POUSO | abs ≥15° | abs ≥25° | Caution <12°; warning <22° |
-| Pitch em VOO/POUSO | abs ≥10° | abs ≥15° | Caution <8°; warning <13° |
+| Pitch em VOO/POUSO | abs ≥10° | abs ≥15° | Caution <8°; warning <12° |
 | Roll em POUSO abaixo de 200 ft, antes do toque | abs ≥8° | abs ≥12° | Caution <6°; warning <10° |
 | Velocidade em POUSO, 10<ALT<200 ft, antes do toque | ≥155 ou ≤100 kt | ≥175 ou ≤85 kt | Caution sai em 105<V<150; warning em 90<V<170 |
 | Sink em POUSO, 50<ALT<500 ft, VSI válido | ≤−1500 ft/min | ≤−2000 ft/min | Caution >−1300; warning >−1800 |

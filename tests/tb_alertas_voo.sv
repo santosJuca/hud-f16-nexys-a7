@@ -15,8 +15,56 @@ module tb_alertas_voo;
         repeat(2) @(negedge clk); checks++;
         if(severity !== 2'(sev) || causa !== 3'(code)) $fatal(1,"Roll=%0d pitch=%0d: obtido=%0d/%0d esperado=%0d/%0d",roll_q10,pitch_q10,severity,causa,sev,code);
     endtask
+    task automatic atitude(input bit eixo_pitch, input integer angulo_q10, sev);
+        roll_q10=eixo_pitch ? 0 : angulo_q10;
+        pitch_q10=eixo_pitch ? angulo_q10 : 0;
+        confere(sev,sev==0 ? 0 : eixo_pitch ? 2 : 1);
+        if(alert_roll !== (!eixo_pitch && sev!=0) ||
+           alert_pitch !== (eixo_pitch && sev!=0))
+            $fatal(1,"Eixo pitch=%b Q10=%0d: flags roll/pitch=%b/%b severity esperada=%0d",
+                eixo_pitch,angulo_q10,alert_roll,alert_pitch,sev);
+    endtask
     initial begin
         @(negedge clk); reset=0; confere(0,0);
+        for(int sinal=-1;sinal<=1;sinal+=2) begin
+            // Inclui 14/15/16/24/25/26 graus e os dois sentidos.
+            for(int graus=0;graus<=26;graus++)
+                atitude(0,sinal*graus*1024,graus>=25 ? 3 : graus>=15 ? 2 : 0);
+            atitude(0,sinal*25*1024,3);
+            atitude(0,sinal*22*1024,3);
+            atitude(0,sinal*(22*1024-1),2);
+            atitude(0,sinal*21*1024,2);
+            atitude(0,sinal*12*1024,2);
+            atitude(0,sinal*(12*1024-1),0);
+            atitude(0,0,0);
+            atitude(0,sinal*(15*1024-1),0);
+            atitude(0,sinal*15*1024,2);
+            atitude(0,sinal*(25*1024-1),2);
+            atitude(0,sinal*25*1024,3);
+            atitude(0,0,0);
+            // Inclui 9/10/11/14/15/16 graus; warning libera abaixo de 12.
+            for(int graus=0;graus<=16;graus++)
+                atitude(1,sinal*graus*1024,graus>=15 ? 3 : graus>=10 ? 2 : 0);
+            atitude(1,sinal*15*1024,3);
+            atitude(1,sinal*13*1024,3);
+            atitude(1,sinal*12*1024,3);
+            atitude(1,sinal*(12*1024-1),2);
+            atitude(1,sinal*11*1024,2);
+            atitude(1,sinal*8*1024,2);
+            atitude(1,sinal*(8*1024-1),0);
+            atitude(1,0,0);
+            atitude(1,sinal*(10*1024-1),0);
+            atitude(1,sinal*10*1024,2);
+            atitude(1,sinal*(15*1024-1),2);
+            atitude(1,sinal*15*1024,3);
+            atitude(1,0,0);
+        end
+        roll_q10=25*1024; pitch_q10=-10*1024; confere(3,1);
+        if({alert_roll,alert_pitch} !== 2'b11) $fatal(1,"Roll warning/pitch caution perdeu flags");
+        roll_q10=0; pitch_q10=0; confere(0,0);
+        roll_q10=-15*1024; pitch_q10=15*1024; confere(3,2);
+        if({alert_roll,alert_pitch} !== 2'b11) $fatal(1,"Pitch warning/roll caution perdeu flags");
+        roll_q10=0; pitch_q10=0; confere(0,0);
         roll_q10=15*1024; confere(2,1);
         roll_q10=12*1024; confere(2,1);
         roll_q10=12*1024-1; confere(0,0);
@@ -28,8 +76,8 @@ module tb_alertas_voo;
         pitch_q10=-8*1024; confere(2,2);
         pitch_q10=-8*1024+1; confere(0,0);
         pitch_q10=15*1024; confere(3,2);
-        pitch_q10=13*1024; confere(3,2);
-        pitch_q10=13*1024-1; confere(2,2);
+        pitch_q10=12*1024; confere(3,2);
+        pitch_q10=12*1024-1; confere(2,2);
         roll_q10=25*1024; confere(3,1);
         if(!alert_roll || !alert_pitch) $fatal(1,"Flags simultaneas perdidas");
         pitch_q10=0; roll_q10=32'sh80000000; confere(3,1);

@@ -1,7 +1,8 @@
 // Limiares didaticos. Angulos em graus Q10, altitude em ft, VSI em ft/min.
 module alertas_voo #(
     parameter integer ROLL_CAUTION=15, ROLL_WARNING=25, ROLL_HYST=3,
-    parameter integer PITCH_CAUTION=10, PITCH_WARNING=15, PITCH_HYST=2
+    parameter integer PITCH_CAUTION=10, PITCH_WARNING=15, PITCH_HYST=2,
+    parameter integer PITCH_WARNING_HYST=3
 )(
     input logic clk, reset,
     input logic [1:0] modo,
@@ -47,7 +48,7 @@ module alertas_voo #(
             pc<=modo!=0 && att_valid && (ap>=33'(PITCH_CAUTION*1024) ||
                 (mesmo_modo && pc && ap>=33'((PITCH_CAUTION-PITCH_HYST)*1024)));
             pw<=modo!=0 && att_valid && (ap>=33'(PITCH_WARNING*1024) ||
-                (mesmo_modo && pw && ap>=33'((PITCH_WARNING-PITCH_HYST)*1024)));
+                (mesmo_modo && pw && ap>=33'((PITCH_WARNING-PITCH_WARNING_HYST)*1024)));
             sc<=speed_context && (velocidade_kt>=155 || velocidade_kt<=100 ||
                 (mesmo_modo && sc && (velocidade_kt>=150 || velocidade_kt<=105)));
             sw<=speed_context && (velocidade_kt>=175 || velocidade_kt<=85 ||
