@@ -8,7 +8,7 @@ module tb_alertas_vga;
     initial begin
         for(int sev=1;sev<=3;sev++) begin
             metadados[10:9]=2'(sev); metadados[13:11]=1; pontos=0;
-            for(int y=10;y<32;y++) for(int x=278;x<324;x++) begin
+            for(int y=10;y<32;y++) for(int x=438;x<484;x++) begin
                 pixel_x=10'(x);pixel_y=10'(y); #1;
                 if(on) begin
                     pontos++;
@@ -17,8 +17,16 @@ module tb_alertas_vga;
             end
             if(pontos<30) $fatal(1,"Texto severity=%0d nao desenhado",sev);
         end
+        // A fita de heading do estilo CACA ocupa a regiao central superior.
+        for(int causa=1;causa<=7;causa++) begin
+            metadados[13:11]=3'(causa);
+            for(int y=20;y<46;y++) for(int x=290;x<350;x++) begin
+                pixel_x=10'(x);pixel_y=10'(y);#1;
+                if(on) $fatal(1,"Overlay sobre heading: causa=%0d pixel=%0d,%0d",causa,x,y);
+            end
+        end
         video_on=0;
-        for(int y=0;y<120;y++) for(int x=0;x<340;x++) begin
+        for(int y=0;y<120;y++) for(int x=0;x<500;x++) begin
             pixel_x=10'(x);pixel_y=10'(y);#1;
             if(on || rgb!=0) $fatal(1,"Blanking: pixel=%0d,%0d",x,y);
         end

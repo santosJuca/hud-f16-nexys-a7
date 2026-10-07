@@ -73,7 +73,7 @@ module alertas_vga(
             (!metadados[5] && texto("HDG BAD",20,90)) |
             (metadados[15] && texto("ACK    ",20,102)) |
             (metadados[2] && texto("MODE   ",62,42));
-        alerta_on=metadados[10:9]!=0 && (texto(nome_nivel,280,12) | texto(nome_causa,280,24));
+        alerta_on=metadados[10:9]!=0 && (texto(nome_nivel,440,12) | texto(nome_causa,440,24));
         on=0; rgb=0;
         if(video_on) begin
             if(alerta_on) begin

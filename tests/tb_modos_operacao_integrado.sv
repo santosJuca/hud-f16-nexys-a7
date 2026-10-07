@@ -62,7 +62,7 @@ module tb_modos_operacao_integrado;
         check(!dut.buzzer_out && dut.hud_metadados[15] && dut.hud_metadados[10:9]==3,"ACK preserva visual");
         for(int estilo=0;estilo<2;estilo++) begin
             style_mode=1'(estilo); display_mode=1; quadro();
-            force dut.u_vga.h_cont=280; force dut.u_vga.v_cont=12; #2;
+            force dut.u_vga.h_cont=440; force dut.u_vga.v_cont=12; #2;
             check({r,g,b}==12'hF00,"WARNING visivel em DECLUTTER nos dois estilos");
             force dut.u_vga.h_cont=700; #2; check({r,g,b}==0,"blanking");
             force dut.u_vga.h_cont=100; force dut.u_vga.v_cont=100;
