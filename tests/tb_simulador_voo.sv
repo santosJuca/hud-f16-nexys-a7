@@ -7,9 +7,12 @@ module tb_simulador_voo;
     simulador_voo dut(.*);
     initial begin
         repeat(2) @(negedge clk); reset=0;
+        if(velocidade_kt !== 10'd280 || altitude_ft !== 17'd36000)
+            $fatal(1,"Inicial: velocidade=%0d altitude=%0d esperado=280/36000",velocidade_kt,altitude_ft);
         v=velocidade_kt; h=altitude_ft;
         for(int i=0;i<2000;i++) begin
             tick=1; @(negedge clk); tick=0;
+            if((^{velocidade_kt,altitude_ft}) === 1'bx) $fatal(1,"Tick=%0d: saida indefinida",i);
             if(velocidade_kt<275 || velocidade_kt>285 || altitude_ft<35950 || altitude_ft>36050)
                 $fatal(1,"Tick=%0d: velocidade=%0d altitude=%0d fora da faixa",i,velocidade_kt,altitude_ft);
             if(velocidade_kt>v+1 || velocidade_kt<v-1 || altitude_ft>h+1 || altitude_ft<h-1)

@@ -8,9 +8,16 @@ module tb_simulador_pouso;
     simulador_pouso dut(.*);
     initial begin
         repeat(2) @(negedge clk); reset=0;
+        if({fase,velocidade_kt,altitude_ft} !== {3'd0,10'd160,17'd1500})
+            $fatal(1,"Inicial: fase=%0d v=%0d h=%0d esperado=0/160/1500",fase,velocidade_kt,altitude_ft);
         v=160; h=1500; f=0;
         for(int i=0;i<3000;i++) begin
             tick=1; @(negedge clk); tick=0;
+            if((^{fase,velocidade_kt,altitude_ft,vertical_fpm}) === 1'bx)
+                $fatal(1,"Tick=%0d: saida indefinida",i);
+            // 20 ticks/s: 50 s approach, 46 s final, 8 s flare, 1 s touchdown.
+            if(fase !== 3'(i<999 ? 0 : i<1919 ? 1 : i<2079 ? 2 : i<2099 ? 3 : 4))
+                $fatal(1,"Tick=%0d: fase=%0d fora do tempo esperado",i+1,fase);
             if(fase>4 || fase<f || fase>f+1) $fatal(1,"Fase=%0d anterior=%0d",fase,f);
             vistos[fase]=1;
             if(velocidade_kt>v || altitude_ft>h || int'(velocidade_kt)<v-1 || int'(altitude_ft)<h-1)
@@ -20,6 +27,8 @@ module tb_simulador_pouso;
             if(fase==1 && vertical_fpm!=-600) $fatal(1,"VSI final incorreto");
             if(fase==2 && vertical_fpm!=-300) $fatal(1,"VSI flare incorreto");
             v=velocidade_kt; h=altitude_ft; f=fase;
+            if(i==2599 && (velocidade_kt!==0 || altitude_ft!==0))
+                $fatal(1,"130 s: esperado pouso encerrado em 0 kt/0 ft");
             @(negedge clk);
             if(velocidade_kt!=v || altitude_ft!=h) $fatal(1,"Sem tick: dados mudaram");
         end

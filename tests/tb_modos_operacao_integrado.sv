@@ -56,8 +56,14 @@ module tb_modos_operacao_integrado;
         check(dut.horizonte_y==260 && dut.hud_metadados[8] && !dut.hud_metadados[7],"VOO atitude fisica");
         force dut.modo_manche=1; force dut.manche_pitch=-40;
         quadro(); check(dut.horizonte_y==260,"sensor valido tem prioridade no VOO");
+        force dut.fusao_roll_q10=15360; quadro();
+        check(dut.hud_metadados[10:9]==2 && dut.buzzer_out,"ROLL CAUTION/audio");
+        ack_btn=1; repeat(20) @(negedge clk); quadro();
+        check(!dut.buzzer_out && dut.hud_metadados[15] && dut.hud_metadados[10:9]==2,"ACK preserva CAUTION");
         force dut.fusao_roll_q10=30720; quadro();
         check(dut.hud_metadados[10:9]==3 && dut.hud_metadados[13:11]==1 && dut.buzzer_out,"ROLL WARNING/audio");
+        check(!dut.hud_metadados[15],"escalada cancela ACK com botao mantido");
+        ack_btn=0; repeat(20) @(negedge clk);
         ack_btn=1; repeat(20) @(negedge clk); quadro();
         check(!dut.buzzer_out && dut.hud_metadados[15] && dut.hud_metadados[10:9]==3,"ACK preserva visual");
         for(int estilo=0;estilo<2;estilo++) begin
