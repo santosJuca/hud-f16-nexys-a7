@@ -8,6 +8,7 @@ mkdir -p build/tests
 tests=(
     "modo_operacao|tb_modo_operacao|tests/tb_modo_operacao.sv"
     "simulador_voo|tb_simulador_voo|tests/tb_simulador_voo.sv"
+    "mira_joystick|tb_mira_joystick|tests/tb_mira_joystick.sv"
     "simulador_pouso|tb_simulador_pouso|tests/tb_simulador_pouso.sv"
     "alertas_voo|tb_alertas_voo|tests/tb_alertas_voo.sv"
     "buzzer_driver|tb_buzzer_driver|tests/tb_buzzer_driver.sv"

@@ -49,10 +49,14 @@ module operacao_hud #(
     wire [2:0] valido=fontes_validas & recentes;
     wire [9:0] velocidade_voo,velocidade_pouso;
     wire [16:0] altitude_voo,altitude_pouso;
+    wire [8:0] heading_voo;
     wire signed [13:0] vsi_pouso;
     wire [2:0] fase;
     simulador_voo u_voo(.clk(clk),.reset(reset),.enable(modo==1),.tick(tick),
-        .velocidade_kt(velocidade_voo),.altitude_ft(altitude_voo));
+        .attitude_valid(valido[0]),.pitch_q10(pitch_real_q10),.roll_q10(roll_real_q10),
+        .heading_ref_deg(valido[2] ? heading_real_deg : heading_manual_deg),
+        .heading_ref_valid(1'b1),.velocidade_kt(velocidade_voo),
+        .altitude_ft(altitude_voo),.heading_deg(heading_voo));
     simulador_pouso u_pouso(.clk(clk),.reset(reset),.enable(modo==2),.tick(tick),
         .fase(fase),.velocidade_kt(velocidade_pouso),.altitude_ft(altitude_pouso),.vertical_fpm(vsi_pouso));
     logic [9:0] v;
@@ -78,6 +82,10 @@ module operacao_hud #(
             vsi_valid=modo==2;
             if(!valido[0]) begin pitch=pitch_fallback_px; roll=roll_fallback_q8; fallback=1; end
             if(!valido[2]) begin hdg=heading_manual_deg; fallback=1; end
+            if(modo==1) begin
+                hdg=heading_voo;
+                if(!valido[2]) fallback=1;
+            end
         end
     end
     wire [1:0] severity;

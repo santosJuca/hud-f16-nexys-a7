@@ -8,8 +8,12 @@ module top_reticula #(
     parameter integer OPERACAO_DEBOUNCE = 10_000_000,
     parameter integer OPERACAO_TICK = 5_000_000,
     parameter integer OPERACAO_ACK = 1_000_000,
+    parameter integer MIRA_TICK = 5_000_000,
+    parameter integer MIRA_DEBOUNCE = 1_000_000,
     parameter logic signed [15:0] MAG_OFFSET_X = 16'sd0,
     parameter logic signed [15:0] MAG_OFFSET_Y = 16'sd0,
+    // HMC5883L alinhado fisicamente ao referencial do HUD.
+    // Sem troca ou inversao de eixos.
     parameter bit MAG_TROCAR_XY = 1'b0,
     parameter bit MAG_INVERTER_X = 1'b0,
     parameter bit MAG_INVERTER_Y = 1'b0
@@ -77,10 +81,9 @@ module top_reticula #(
     logic joystick_y_menos;
     logic joystick_y_mais;
 
-    logic modo_manche;
-    logic manche_calibrado;
-    logic signed [10:0] manche_pitch;
-    logic signed [9:0]  manche_roll;
+    logic [9:0] mira_x_origem;
+    logic [8:0] mira_y_origem;
+    logic mira_lock_origem;
 
     joystick_xadc u_joystick_xadc (
         .clk     (clk),
@@ -107,22 +110,9 @@ module top_reticula #(
         .botao   ()
     );
 
-    // Alterna entre atitude real do sensor e manche manual.
-    controle_modo_manche u_modo_manche (
-        .clk         (clk),
-        .botao_n     (joystick_sw_n),
-        .modo_manche (modo_manche)
-    );
-
-    // Manche analogico proporcional.
-    // Mantem a mesma orientacao fisica ja validada no KY-023.
-    controle_manche u_manche (
-        .clk       (clk),
-        .x_raw     (joystick_y_raw),
-        .y_raw     (joystick_x_raw),
-        .calibrado (manche_calibrado),
-        .pitch_cmd (manche_pitch),
-        .roll_cmd  (manche_roll)
+    mira_joystick #(.TICK_CYCLES(MIRA_TICK),.DEBOUNCE_CYCLES(MIRA_DEBOUNCE)) u_mira (
+        .clk(clk),.x_raw(joystick_y_raw),.y_raw(joystick_x_raw),.sw_n(joystick_sw_n),
+        .x(mira_x_origem),.y(mira_y_origem),.locked(mira_lock_origem)
     );
 
     wire pixel_clk;
@@ -158,6 +148,9 @@ module top_reticula #(
     wire [9:0] velocidade_kt;
     wire [16:0] altitude_ft;
     wire [8:0] heading_deg;
+    wire [9:0] mira_x;
+    wire [8:0] mira_y;
+    wire mira_lock;
     logic signed [10:0] pitch_px_entrada;
     logic signed [9:0] roll_q8_entrada;
     logic sensor_ok;
@@ -175,10 +168,8 @@ module top_reticula #(
     logic       velocidade_inercial_calibrada;
     logic       velocidade_inercial_valida;
 
-    // No modo SENSOR, o MPU e a fonte principal sempre que estiver valido.
-    // O joystick somente assume pitch/roll quando modo_manche=1.
+    // O MPU e a fonte principal sempre que estiver valido; o joystick move a mira.
     wire usar_mpu =
-        !modo_manche &&
         sensor_ok &&
         atitude_calibrada &&
         gyro_bias_calibrado &&
@@ -192,14 +183,9 @@ module top_reticula #(
         roll_sync <= roll_meta;
     end
 
-    // Fonte de pitch:
-    //   MANCHE -> KY-023 proporcional.
-    //   SENSOR -> fusao MPU6050.
-    //   Sensor indisponivel -> switches como fallback de bancada.
+    // O joystick controla somente a mira; atitude usa o MPU ou switches de bancada.
     always_comb begin
-        if (modo_manche)
-            pitch_px_entrada = manche_pitch;
-        else if (usar_mpu)
+        if (usar_mpu)
             pitch_px_entrada = fusao_pitch_px;
         else begin
             case (horizonte_sync)
@@ -210,14 +196,8 @@ module top_reticula #(
         end
     end
 
-    // Fonte de roll:
-    //   MANCHE -> KY-023 proporcional.
-    //   SENSOR -> fusao MPU6050.
-    //   Sensor indisponivel -> switches como fallback de bancada.
     always_comb begin
-        if (modo_manche)
-            roll_q8_entrada = manche_roll;
-        else if (usar_mpu)
+        if (usar_mpu)
             roll_q8_entrada = fusao_roll_q8;
         else begin
             case (roll_sync)
@@ -228,8 +208,9 @@ module top_reticula #(
         end
     end
 
-    wire [88:0] amostra_completa;
-    wire [56:0] amostra_pixel = amostra_completa[56:0];
+    // 109 bits: 89 existentes + X/Y/LOCK da mira.
+    wire [108:0] amostra_completa;
+    wire [56:0] amostra_pixel = amostra_completa[76:20];
     wire [31:0] hud_metadados;
     wire amostra_valida;
     wire entrada_pronta;
@@ -259,9 +240,11 @@ wire [9:0] velocidade_hud_entrada =
     logic [3:0] inicio_operacao = 0;
     wire reset_operacao = !inicio_operacao[3];
     always_ff @(posedge clk) inicio_operacao <= {inicio_operacao[2:0],1'b1};
-    wire [88:0] pacote_hud = MODOS_OPERACIONAIS ? {metadados_operacao,dados_operacao} :
-        {32'd0,velocidade_hud_entrada,altitude_hud_entrada,pitch_px_entrada,roll_q8_entrada,heading_entrada};
-    entrada_hud #(.WIDTH(89)) u_entrada (
+    wire [108:0] pacote_hud = MODOS_OPERACIONAIS ?
+        {metadados_operacao,dados_operacao,mira_lock_origem,mira_y_origem,mira_x_origem} :
+        {32'd0,velocidade_hud_entrada,altitude_hud_entrada,pitch_px_entrada,roll_q8_entrada,
+         heading_entrada,mira_lock_origem,mira_y_origem,mira_x_origem};
+    entrada_hud #(.WIDTH(109)) u_entrada (
         .clk_origem(clk), .clk_destino(pixel_clk),
         .valido(1'b1),
         .dados(pacote_hud),
@@ -273,16 +256,19 @@ wire [9:0] velocidade_hud_entrada =
         .clk(pixel_clk),
         .atualizar_quadro((pixel_x == 0) && (pixel_y == 480)),
         .dados_validos(amostra_valida),
-        .metadados_in(amostra_completa[88:57]),.metadados(hud_metadados),
+        .metadados_in(amostra_completa[108:77]),.metadados(hud_metadados),
         .velocidade_kt_in(amostra_pixel[56:47]),
         .altitude_ft_in(amostra_pixel[46:30]),
         .pitch_px_in($signed(amostra_pixel[29:19])),
         .roll_q8_in($signed(amostra_pixel[18:9])),
         .heading_deg_in(amostra_pixel[8:0]),
+        .mira_x_in(amostra_completa[9:0]),
+        .mira_y_in(amostra_completa[18:10]),
+        .mira_lock_in(amostra_completa[19]),
         .velocidade_kt(velocidade_kt), .altitude_ft(altitude_ft),
         .horizonte_y(horizonte_y),
         .roll_q8(roll_q8),
-        .heading_deg(heading_deg)
+        .heading_deg(heading_deg),.mira_x(mira_x),.mira_y(mira_y),.mira_lock(mira_lock)
     );
 
     wire numeros;
@@ -304,6 +290,8 @@ wire [9:0] velocidade_hud_entrada =
     logic velocidade;
     logic direcao;
     logic alvo;
+    logic mira_on;
+    logic [11:0] mira_rgb;
 
     // -----------------------------------------------------
     // GY-521 / MPU-6050
@@ -832,6 +820,11 @@ wire [9:0] velocidade_hud_entrada =
         .sim_on         (caca_sim)
     );
 
+    mira_caca_vga u_mira_caca (
+        .pixel_x(pixel_x),.pixel_y(pixel_y),.video_on(video_on && estilo_caca),
+        .mira_x(mira_x),.mira_y(mira_y),.locked(mira_lock),.on(mira_on),.rgb(mira_rgb)
+    );
+
     assign VGA_HS = hsync;
     assign VGA_VS = vsync;
 
@@ -908,13 +901,14 @@ wire [9:0] velocidade_hud_entrada =
     wire [11:0] overlay_rgb;
     generate if (MODOS_OPERACIONAIS) begin : g_overlay
     alertas_vga u_alertas_vga(.pixel_x(pixel_x),.pixel_y(pixel_y),.video_on(video_on),
-        .metadados(hud_metadados),.on(overlay_on),.rgb(overlay_rgb));
+        .metadados(hud_metadados),.aim_locked(mira_lock),.on(overlay_on),.rgb(overlay_rgb));
     end else begin : g_sem_overlay
         assign overlay_on=0; assign overlay_rgb=0;
     end endgenerate
 
     assign VGA_R =
         (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[11:8] :
+        (MODOS_OPERACIONAIS && mira_on) ? mira_rgb[11:8] :
         retic_visivel                                ? 4'h0 :
         alvo                                         ? 4'hF :
         (
@@ -926,6 +920,7 @@ wire [9:0] velocidade_hud_entrada =
 
     assign VGA_G =
         (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[7:4] :
+        (MODOS_OPERACIONAIS && mira_on) ? mira_rgb[7:4] :
         retic_visivel ? 4'hF :
         (
             horizonte_visivel ||
@@ -941,6 +936,7 @@ wire [9:0] velocidade_hud_entrada =
         ) ? 4'hF :
             4'h0;
 
-    assign VGA_B = (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[3:0] : 4'h0;
+    assign VGA_B = (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[3:0] :
+        (MODOS_OPERACIONAIS && mira_on) ? mira_rgb[3:0] : 4'h0;
 
 endmodule

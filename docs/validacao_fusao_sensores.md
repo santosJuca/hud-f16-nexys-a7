@@ -106,7 +106,7 @@ Modificados:
 - `scripts/test.sh`: quatro bancos novos.
 - `README.md`: arquitetura, fontes dos dados e limitações.
 
-`QWEN.md` foi preservado e não integra o commit. A `main` não foi alterada.
+A `main` não foi alterada.
 Os arquivos anteriores e o projeto Vivado da base estão em
 `build/fusao_sensores_audit/before/`; a tentativa com timing negativo está em
 `build/fusao_sensores_audit/attempt1/`. Esses backups locais não são versionados.

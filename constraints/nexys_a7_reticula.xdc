@@ -138,17 +138,18 @@ set_property -dict { PACKAGE_PIN J13 IOSTANDARD LVCMOS33 } [get_ports { JOY_LED[
 set_property -dict { PACKAGE_PIN N14 IOSTANDARD LVCMOS33 } [get_ports { JOY_LED[3] }]
 
 ## =========================================================
-## KY-023 - Botao do manche
+## KY-023 - Botao LOCK/UNLOCK da mira
 ## =========================================================
 ## JA1 = C17
-## SW do KY-023 e ativo em nivel baixo.
-## Pull-up interno mantem SENSOR quando o botao esta solto.
+## SW do KY-023 e ativo em nivel baixo: contato entre JA1/SW e GND.
+## PULLUP interno mantem nivel alto solto; usar somente logica de 3,3 V.
+## Para um KY-023 alimentado, VCC deve ser 3,3 V e GND comum com a FPGA.
 
 set_property -dict { PACKAGE_PIN C17 IOSTANDARD LVCMOS33 PULLUP TRUE } \
     [get_ports { joystick_sw_n }]
 
 set_false_path -from [get_ports { joystick_sw_n }] \
-    -to [get_pins -hier -filter {NAME =~ u_modo_manche/btn_meta_reg*/D}]
+    -to [get_pins -hier -filter {NAME =~ u_mira/button_sync_reg*/D}]
 
 
 ## =========================================================

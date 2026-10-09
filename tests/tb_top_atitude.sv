@@ -391,54 +391,15 @@ module tb_top_atitude;
             "PASS modo SENSOR: fusao MPU independente dos switches"
         );
 
-        // -------------------------------------------------
-        // MODO MANCHE
-        //
-        // controle_modo_manche e controle_manche possuem
-        // testes proprios. Aqui validamos o multiplexador
-        // final dentro do top.
-        // -------------------------------------------------
-
-        force dut.modo_manche = 1'b1;
-        force dut.manche_pitch = 11'sd23;
-        force dut.manche_roll  = -10'sd31;
+        // Joystick desloca a mira e nao altera a atitude selecionada.
+        force dut.joystick_x_raw = 12'd4095;
+        force dut.joystick_y_raw = 12'd0;
         #1;
-
-        if (dut.usar_mpu !== 1'b0)
-            $fatal(
-                1,
-                "MPU nao deveria comandar HUD no modo MANCHE"
-            );
-
-        confere(23, -31);
-
-        force dut.manche_pitch = -11'sd40;
-        force dut.manche_roll  = 10'sd64;
-        #1;
-
-        confere(-40, 64);
-
-        $display(
-            "PASS modo MANCHE: pitch/roll proporcionais assumem o HUD"
-        );
-
-        release dut.manche_pitch;
-        release dut.manche_roll;
-        release dut.modo_manche;
-
-        #1;
-
-        // Apos sair do MANCHE, volta imediatamente ao SENSOR.
         if (dut.usar_mpu !== 1'b1)
-            $fatal(
-                1,
-                "Retorno do MANCHE deveria restaurar SENSOR"
-            );
-
-        confere(
-            $signed(dut.fusao_pitch_px),
-            $signed(dut.fusao_roll_q8)
-        );
+            $fatal(1,"Movimento do joystick alterou a selecao do MPU");
+        confere($signed(dut.fusao_pitch_px),$signed(dut.fusao_roll_q8));
+        release dut.joystick_x_raw;
+        release dut.joystick_y_raw;
 
         // -------------------------------------------------
         // PERDA DO SENSOR
@@ -481,21 +442,13 @@ module tb_top_atitude;
             "PASS fallback SENSOR: switches preservados quando MPU indisponivel"
         );
 
-        // Mesmo sem MPU, o usuario ainda pode selecionar MANCHE.
-        force dut.modo_manche = 1'b1;
-        force dut.manche_pitch = 11'sd17;
-        force dut.manche_roll  = -10'sd22;
+        // Sem MPU, o joystick continua sem comandar atitude; ficam os switches.
+        force dut.joystick_x_raw = 12'd4095;
+        force dut.joystick_y_raw = 12'd0;
         #1;
-
-        confere(17, -22);
-
-        $display(
-            "PASS MANCHE sem MPU: controle manual continua disponivel"
-        );
-
-        release dut.manche_pitch;
-        release dut.manche_roll;
-        release dut.modo_manche;
+        confere(pitch_esperado,roll_esperado);
+        release dut.joystick_x_raw;
+        release dut.joystick_y_raw;
 
         // Garante que os modulos realmente enxergaram
         // a perda do sensor.
@@ -523,7 +476,7 @@ module tb_top_atitude;
 
         confere(0, 0);
 
-        $display("PASS top: SENSOR/MANCHE, fusao, fallback e perda do sensor");
+        $display("PASS top: SENSOR, joystick independente, fusao, fallback e perda do sensor");
         $finish;
     end
 endmodule

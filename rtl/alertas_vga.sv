@@ -3,6 +3,7 @@ module alertas_vga(
     input logic [9:0] pixel_x,pixel_y,
     input logic video_on,
     input logic [31:0] metadados,
+    input logic aim_locked,
     output logic on,
     output logic [11:0] rgb
 );
@@ -47,7 +48,7 @@ module alertas_vga(
             end
         end
     endfunction
-    logic [55:0] nome_modo,nome_causa,nome_nivel;
+    logic [55:0] nome_modo,nome_causa,nome_nivel,nome_mira;
     logic status_on,alerta_on;
     always_comb begin
         case(metadados[1:0])
@@ -65,6 +66,7 @@ module alertas_vga(
             3: nome_nivel="WARNING"; 2: nome_nivel="CAUTION";
             1: nome_nivel="INFO   "; default: nome_nivel="       ";
         endcase
+        nome_mira=aim_locked ? "LOCK   " : "UNLOCK ";
         status_on=texto(nome_modo,20,42) |
             (metadados[8] && texto("SIM    ",20,54)) |
             (metadados[7] && texto("FALLBK ",62,54)) |
@@ -72,6 +74,7 @@ module alertas_vga(
             (!metadados[4] && texto("ALT BAD",20,78)) |
             (!metadados[5] && texto("HDG BAD",20,90)) |
             (metadados[15] && texto("ACK    ",20,102)) |
+            texto(nome_mira,20,114) |
             (metadados[2] && texto("MODE   ",62,42));
         alerta_on=metadados[10:9]!=0 && (texto(nome_nivel,440,12) | texto(nome_causa,440,24));
         on=0; rgb=0;

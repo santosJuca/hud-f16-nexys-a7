@@ -6,7 +6,7 @@ Fontes funcionais: commit `0d37afc2411509170f5f01f025eff844caf541ff`.
 Continuação do HEAD auditado `8c8e66c`: módulos existentes preservados; warning de
 pitch agora libera abaixo de 12°, com testes ampliados de fronteiras, tempos e ACK.
 Os dois comentários locais sobre orientação do HMC5883L foram preservados e
-estavam presentes no build. Não alteram o circuito. `QWEN.md` continua não rastreado.
+estavam presentes no build. Não alteram o circuito.
 O manifesto SHA256 em `build/continuacao-20261007-102309/source-manifest.json` foi conferido
 após o build, sem mudanças nos arquivos RTL, XDC, scripts e testes registrados.
 

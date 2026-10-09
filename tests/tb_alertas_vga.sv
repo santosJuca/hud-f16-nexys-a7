@@ -1,11 +1,27 @@
 `timescale 1ns/1ps
 module tb_alertas_vga;
+    logic aim_locked=0;
     logic [9:0] pixel_x=0,pixel_y=0; logic video_on=1;
     logic [31:0] metadados=32'h78;
     wire on; wire [11:0] rgb;
     integer pontos;
     alertas_vga dut(.*);
+    integer lock_pixels;
     initial begin
+        // Estado da mira continua legivel fora da area central de heading.
+        metadados=0; aim_locked=1; lock_pixels=0;
+        for(int y=114;y<121;y++) for(int x=20;x<62;x++) begin
+            pixel_x=10'(x); pixel_y=10'(y); #1;
+            if(on && rgb==12'h0F0) lock_pixels++;
+        end
+        if(lock_pixels<20) $fatal(1,"Texto LOCK não foi desenhado");
+        aim_locked=0; lock_pixels=0;
+        for(int y=114;y<121;y++) for(int x=20;x<62;x++) begin
+            pixel_x=10'(x); pixel_y=10'(y); #1;
+            if(on && rgb==12'h0F0) lock_pixels++;
+        end
+        if(lock_pixels<20) $fatal(1,"Texto UNLOCK não foi desenhado");
+
         for(int sev=1;sev<=3;sev++) begin
             metadados[10:9]=2'(sev); metadados[13:11]=1; pontos=0;
             for(int y=10;y<32;y++) for(int x=438;x<484;x++) begin

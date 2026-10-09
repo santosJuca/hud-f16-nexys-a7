@@ -73,13 +73,12 @@ module tb_top_heading;
         quadro(90);
         botao(1); entrada(90);
         if(dut.heading_manual!=20) $fatal(1,"botao manual parou durante HMC valido");
-        force dut.modo_manche=1'b1;
-        force dut.manche_pitch=11'sd23; force dut.manche_roll=-10'sd31;
+        force dut.joystick_x_raw=12'd4095; force dut.joystick_y_raw=12'd0;
         #1;
-        if(dut.pitch_px_entrada!=23 || dut.roll_q8_entrada!=-31)
-            $fatal(1,"HMC interferiu no MANCHE");
+        if(dut.pitch_px_entrada!=-40 || dut.roll_q8_entrada!=-64)
+            $fatal(1,"Joystick interferiu na atitude de fallback");
         entrada(90);
-        release dut.modo_manche; release dut.manche_pitch; release dut.manche_roll;
+        release dut.joystick_x_raw; release dut.joystick_y_raw;
         force dut.sensor_ok=1'b1; force dut.atitude_calibrada=1'b1;
         force dut.gyro_bias_calibrado=1'b1; force dut.fusao_valida=1'b1;
         force dut.fusao_pitch_px=-11'sd12; force dut.fusao_roll_q8=10'sd17;
@@ -103,7 +102,7 @@ module tb_top_heading;
         #10_000; presente=1;
         wait(led); entrada(10);
         wait(dut.heading_magnetico_valido); entrada(180); quadro(180);
-        $display("PASS top: I2C real -> CORDIC -> CDC -> HUD; fallback, botoes, perdas, recuperacao, SENSOR/MANCHE e estabilidade de quadro");
+        $display("PASS top: rumo magnético e CDC; joystick independente, botoes, perdas, recuperacao e estabilidade de quadro");
         $finish;
     end
     initial begin #20_000_000; $fatal(1,"timeout top heading"); end
