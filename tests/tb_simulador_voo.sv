@@ -20,7 +20,7 @@ module tb_simulador_voo;
         repeat(quantidade) um_tick();
     endtask
 
-    integer altitude_inicio, altitude_subida, velocidade_inicio, velocidade_subida;
+    integer altitude_inicio, altitude_subida, velocidade_inicio, velocidade_subida, heading_inicio;
     initial begin
         repeat(2) @(negedge clk); reset=0;
         um_tick();
@@ -51,14 +51,17 @@ module tb_simulador_voo;
         ticks(8);
         if (heading_deg<358) $fatal(1,"Wrap 0->359 não ocorreu: %0d",heading_deg);
 
-        altitude_inicio=altitude_ft; velocidade_inicio=velocidade_kt;
+        altitude_inicio=altitude_ft; velocidade_inicio=velocidade_kt; heading_inicio=heading_deg;
         attitude_valid=0; pitch_q10=32'sd15360; roll_q10=32'sd46080;
         ticks(20);
         if (altitude_ft!=altitude_inicio || velocidade_kt!=velocidade_inicio)
             $fatal(1,"Perda MPU moveu estado: alt %0d->%0d vel %0d->%0d",
                 altitude_inicio,altitude_ft,velocidade_inicio,velocidade_kt);
+        if (heading_deg!=heading_inicio)
+            $fatal(1,"Perda MPU moveu heading: %0d->%0d",heading_inicio,heading_deg);
         attitude_valid=1; ticks(2);
         if (altitude_ft<=altitude_inicio) $fatal(1,"Recuperação MPU não retomou dinâmica");
+        if (heading_deg==heading_inicio) $fatal(1,"Recuperação MPU não retomou heading");
         if (velocidade_kt<100 || velocidade_kt>600 || altitude_ft>60000)
             $fatal(1,"Saturação: velocidade=%0d altitude=%0d",velocidade_kt,altitude_ft);
         $display("PASS voo: pitch, altitude, velocidade suave, heading circular e perda/recuperação MPU");
