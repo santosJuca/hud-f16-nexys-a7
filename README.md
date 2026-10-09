@@ -232,6 +232,10 @@ As constraints atuais ainda deixam seis entradas I²C sem input delay, 12 contro
 
 Não há diretório `.github/workflows/` neste checkout. Arquivos e subdiretórios concretos podem ser listados com `rg --files`. A pasta `build/` é local e contém resultados/experimentos de desenvolvimento; não é parte da hierarquia-fonte versionada descrita acima.
 
+## Documentação técnica
+
+Os guias detalhados de [arquitetura](docs/arquitetura.md), [pinagem](docs/pinagem.md), [sensores](docs/sensores.md), [testes](docs/testes.md), [timing e recursos](docs/timing_recursos.md) e [próximas etapas](docs/roadmap.md) complementam este README. O [índice de documentação](docs/README.md) reúne esses arquivos e o [catálogo de bitstreams](bitstreams/README.md). O [estudo de vídeo auxiliar](docs/vga_auxiliar.md) é histórico e não descreve uma função implementada.
+
 ## Próximos passos
 
 1. Programar a versão mais recente e validar VGA, modos, marcadores e cores na Nexys A7-100T.
