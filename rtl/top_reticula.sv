@@ -910,7 +910,7 @@ wire [9:0] velocidade_hud_entrada =
         (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[11:8] :
         (MODOS_OPERACIONAIS && mira_on) ? mira_rgb[11:8] :
         retic_visivel                                ? 4'h0 :
-        alvo                                         ? 4'hF :
+        (!estilo_caca && alvo)                      ? 4'hF :
         (
             sensor_status &&
             !declutter &&

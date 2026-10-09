@@ -175,6 +175,13 @@ module tb_estilos;
             "original normal: reticulo original"
         );
 
+        confere_rgb(
+            444,
+            156,
+            12'hF00,
+            "original normal: alvo vermelho preservado"
+        );
+
         $display(
             "PASS estilo 00: HUD original NORMAL"
         );
@@ -250,6 +257,13 @@ module tb_estilos;
             "caca normal: reticulo menor"
         );
 
+        confere_rgb(
+            444,
+            156,
+            12'h000,
+            "caca normal: alvo vermelho oculto"
+        );
+
 
         // Novo datum CAÇA:
         // largura total 49 px.
@@ -321,12 +335,12 @@ module tb_estilos;
             "caca declutter: reticulo preservado"
         );
 
-        // Marcador de alvo permanece vermelho.
+        // O marcador de alvo do estilo NORMAL fica oculto no CAÇA.
         confere_rgb(
             444,
             156,
-            12'hF00,
-            "caca declutter: alvo preservado"
+            12'h000,
+            "caca declutter: alvo oculto"
         );
 
         $display(
@@ -362,6 +376,13 @@ module tb_estilos;
             220,
             12'h0F0,
             "original declutter: reticulo preservado"
+        );
+
+        confere_rgb(
+            444,
+            156,
+            12'hF00,
+            "original declutter: alvo vermelho preservado"
         );
 
         // Alvo permanece.
