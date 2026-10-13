@@ -25,23 +25,31 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Instalar Icarus Verilog
+      - name: Instalar simuladores
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y iverilog
+          sudo apt-get install --no-install-recommends -y iverilog verilator make g++
+
+      - name: Registrar versoes
+        run: |
+          iverilog -V
+          vvp -V
+          verilator --version
+          g++ --version
 
       - name: Executar simulacoes
         run: |
           mkdir -p build
           scripts/test.sh 2>&1 | tee build/tests.log
 
-      - name: Salvar log e quadro VGA
+      - name: Salvar log e capturas VGA
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: simulacao-rtl
           path: |
             build/tests.log
-            build/hud.ppm
+            build/*.ppm
+            build/tests/*.ppm
           if-no-files-found: warn
           retention-days: 14
