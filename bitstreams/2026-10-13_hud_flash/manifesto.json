@@ -1,0 +1,79 @@
+{
+  "data": "2026-10-13",
+  "timezone": "America/Sao_Paulo",
+  "branch": "feat/modos-alertas",
+  "commit_base": "fc2a687285777ab7e577a4f5cb95ef7de0582866",
+  "arvore_com_alteracoes_locais": true,
+  "snapshot_fontes": "coletado apos o build, durante auditoria; pinagem comparada com DCP",
+  "ferramenta": "Vivado 2026.1",
+  "fpga": "xc7a100tcsg324-1",
+  "top": "top_reticula",
+  "bitstream_sha256": "c0e1b616700b3cd91042c17221559bf0e68215dac8a44f9a677ce0ad79615ab0",
+  "timing": {
+    "WNS_ns": 0.48,
+    "WHS_ns": 0.037
+  },
+  "drc": {
+    "erros": 0,
+    "avisos": 55
+  },
+  "testes_digitais": [
+    {
+      "teste": "controle_joystick",
+      "estado": "PASS",
+      "log": "controle_joystick.log"
+    },
+    {
+      "teste": "mira_joystick",
+      "estado": "PASS",
+      "log": "mira_joystick.log"
+    },
+    {
+      "teste": "vertical_integrado",
+      "estado": "PASS",
+      "log": "vertical_integrado.log"
+    },
+    {
+      "teste": "bmp_i2c",
+      "estado": "PASS",
+      "log": "bmp_i2c.log"
+    },
+    {
+      "teste": "hmc_i2c",
+      "estado": "PASS",
+      "log": "hmc_i2c.log"
+    },
+    {
+      "teste": "buzzer",
+      "estado": "PASS",
+      "log": "buzzer.log"
+    },
+    {
+      "teste": "fontes_operacao",
+      "estado": "PASS",
+      "log": "fontes_operacao.log"
+    },
+    {
+      "teste": "modos_integrados",
+      "estado": "PASS",
+      "log": "modos_integrados.log"
+    },
+    {
+      "teste": "mpu_i2c",
+      "estado": "PASS",
+      "log": "mpu_i2c.log"
+    }
+  ],
+  "bancada_relato_operador": {
+    "boot_flash": true,
+    "vga_estavel": true,
+    "joystick_quatro_sentidos_normal_caca": true,
+    "joystick_repouso_limites_lock": true,
+    "mpu_ld4_atitude_sem_att_bad": true,
+    "bmp_ld5_sem_alt_bad": true,
+    "hmc_ld6_sem_hdg_bad_rumo_responde": true,
+    "buzzer_warning_ack_btnc": true
+  },
+  "medicoes_eletricas": "nao fornecidas; divisores, niveis I2C, resistor de base e alimentacao buzzer pendentes",
+  "flash_original_backup_sha256": "b52dcf59ceb12d79d43e35e973c9db680746b86da4db5fa7b3c4fd7a74463cb2"
+}

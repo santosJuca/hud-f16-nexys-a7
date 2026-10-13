@@ -11,7 +11,7 @@ module tb_horizonte;
     top_reticula #(.MODOS_OPERACIONAIS(1'b0)) dut (
         .operacao_sw(2'b00),.ack_btn(1'b0),.clk(clk),
         .btn_heading(2'b00),
-        .sw(sw[15:12]),
+        .sw({sw[15:12],3'b000}),
         .display_mode(1'b0),
         .style_mode(1'b0),
         .vauxp3(1'b0),
@@ -60,8 +60,8 @@ module tb_horizonte;
         if(dut.horizonte !== 0) $fatal(1,"Blanking: esperado apagado");
     endtask
     initial begin
-        testar(2'b00,240); testar(2'b01,200);
-        testar(2'b10,280); testar(2'b11,240);
+        testar(2'b00,240); testar(2'b01,180);
+        testar(2'b10,300); testar(2'b11,240);
         release dut.u_vga.h_cont; release dut.u_vga.v_cont;
         $display("PASS horizonte: quatro combinações, atualização entre quadros, bordas, vão e retículo fixo");
         $finish;

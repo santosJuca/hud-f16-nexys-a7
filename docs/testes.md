@@ -1,6 +1,6 @@
 # Testes e validação
 
-O script [`scripts/test.sh`](../scripts/test.sh) contém 55 entradas de regressão e executa Icarus Verilog (`iverilog` e `vvp`). Ele compila cada testbench contra os módulos de `rtl/*.sv` e `tests/xadc_stub.sv`.
+O script [`scripts/test.sh`](../scripts/test.sh) contém 55 entradas de regressão. Usa Icarus Verilog (`iverilog` e `vvp`) e, quando disponível, Verilator nos testes raster exaustivos `roll` e `vga`, sem reduzir os vetores. Sem Verilator, esses dois casos recorrem ao Icarus. Cada testbench é compilado contra `rtl/*.sv` e `tests/xadc_stub.sv`.
 
 ```sh
 ./scripts/test.sh
@@ -18,4 +18,4 @@ O teste do simulador de voo verifica estabilidade do heading durante invalidaç�
 
 O README do artefato `bitstreams/2026-10-08_hud_caca_marker` registra a regressão completa como PASS, síntese e implementação roteada aprovadas, WNS/WHS positivos e bitstream gerado. Essa associação é a documentação disponível para o build. A regressão não exercita placa, cabeamento, tensão, calibração magnética nem qualidade da imagem em monitor.
 
-Na versão atual, a programação da Nexys A7-100T e a validação integrada de VGA, joystick e sensores permanecem pendentes. Consulte o [roteiro de prioridades](roadmap.md) antes da bancada.
+O operador relatou programação e validação integrada da versão de demonstração; esses resultados estão resumidos em [`entrega_demo.md`](entrega_demo.md), sem fotos, vídeos ou medições anexadas para conferência independente. A regressão deste script continua sendo simulação, não evidência de bancada. Consulte o [roteiro de prioridades](roadmap.md) para as pendências de caracterização e documentação física.

@@ -1,0 +1,2 @@
+PASS buzzer: cadencias, debounce, ACK, escalada, fim, enable e reset
+/home/santojuca/Downloads/Trabalho-display-aviao-v2/tests/tb_buzzer_driver.sv:37: $finish called at 1280000 (1ps)

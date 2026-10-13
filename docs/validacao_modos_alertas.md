@@ -143,8 +143,10 @@ permaneceram iguais; não houve crescimento inesperado.
   de timescale. Os testes terminaram sem falhas. Não foram encontrados avisos finais
   de implicit nets, width mismatch, múltiplos drivers ou latches na revisão dos logs.
 
-As imagens de demonstração foram produzidas por simulação com entradas controladas;
-não são capturas de uma FPGA programada. A nova versão ainda precisa de teste físico.
+As imagens de demonstração registradas neste relatório foram produzidas por
+simulação com entradas controladas; não são capturas de uma FPGA programada. À
+época do relatório, a versão ainda precisava de teste físico. Ensaios posteriores
+informados pelo operador estão em [`entrega_demo.md`](entrega_demo.md).
 Os limites dos alertas são didáticos. O ACK não é cancelado por mudança de causa
 na mesma severidade. A velocidade vertical alimenta a lógica quando válida, mas
 não ganhou indicador numérico dedicado no HUD.

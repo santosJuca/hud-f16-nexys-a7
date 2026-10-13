@@ -17,6 +17,8 @@ module tb_roll;
         centro_y,
         roll,
         9'd0,
+        10'd430,
+        9'd180,
         h,
         a,
         d,

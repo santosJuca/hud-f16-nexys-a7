@@ -20,6 +20,7 @@ module simulador_voo #(
 );
     localparam integer ALT_MIN_Q8 = ALTITUDE_MIN * 256;
     localparam integer ALT_MAX_Q8 = ALTITUDE_MAX * 256;
+    localparam integer VELOCIDADE_PASSO_Q8 = 256; // 1 kt por tick
     localparam logic signed [17:0] HDG_TURN_Q8 = 18'sd92160;
 
     logic signed [31:0] altitude_q8 = ALTITUDE_INICIAL * 256;
@@ -28,13 +29,14 @@ module simulador_voo #(
     logic heading_iniciado = 0;
     logic signed [31:0] pitch_limit_q10, roll_limit_q10;
     logic signed [31:0] altitude_delta_q8;
+    logic signed [31:0] altitude_delta_q8_reg = 0;
     logic [15:0] roll_abs_q10;
     logic [15:0] roll_abs_reg = 16'd0;
     logic roll_neg_reg = 1'b0;
     logic [10:0] roll_div32;
     logic [26:0] roll_div5_mult;
     logic signed [9:0] heading_delta_q8 = 10'sd0;
-    logic signed [17:0] heading_next_q8;
+    logic signed [17:0] heading_next_q8_reg = 18'sd0;
 
     function automatic signed [17:0] wrap_heading(input logic signed [17:0] value);
         if (value >= HDG_TURN_Q8) wrap_heading = value - HDG_TURN_Q8;
@@ -61,8 +63,6 @@ module simulador_voo #(
             ? 16'(-roll_limit_q10) : 16'(roll_limit_q10);
         roll_div32 = roll_abs_reg >> 5;
         roll_div5_mult = roll_div32 * 16'd52429;
-        heading_next_q8 = wrap_heading(heading_q8 +
-            ((attitude_valid) ? heading_delta_q8 : 18'sd0));
     end
 
     // Pipeline independente do tick de 20 Hz.
@@ -80,6 +80,17 @@ module simulador_voo #(
                 ? -$signed({1'b0, roll_div5_mult[26:18]})
                 :  $signed({1'b0, roll_div5_mult[26:18]});
         end
+    end
+
+    always_ff @(posedge clk) begin
+        if (reset || !enable) altitude_delta_q8_reg <= 0;
+        else altitude_delta_q8_reg <= altitude_delta_q8;
+    end
+
+    always_ff @(posedge clk) begin
+        if (reset || !enable) heading_next_q8_reg <= 18'sd0;
+        else heading_next_q8_reg <= wrap_heading(heading_q8 +
+            (attitude_valid ? heading_delta_q8 : 18'sd0));
     end
 
     always_ff @(posedge clk) begin
@@ -102,20 +113,20 @@ module simulador_voo #(
                     heading_deg <= 0;
                 end
             end else if (attitude_valid) begin
-                heading_q8 <= heading_next_q8;
+                heading_q8 <= heading_next_q8_reg;
             end
 
             if (attitude_valid) begin
-                if (altitude_delta_q8 != 0) begin
-                    altitude_q8 <= altitude_q8 + altitude_delta_q8;
-                    if (altitude_delta_q8 > 0 && velocidade_q8 > VELOCIDADE_MIN * 256)
-                        velocidade_q8 <= velocidade_q8 - 1;
-                    else if (altitude_delta_q8 < 0 && velocidade_q8 < VELOCIDADE_MAX * 256)
-                        velocidade_q8 <= velocidade_q8 + 1;
+                if (altitude_delta_q8_reg != 0) begin
+                    altitude_q8 <= altitude_q8 + altitude_delta_q8_reg;
+                    if (altitude_delta_q8_reg > 0 && velocidade_q8 > VELOCIDADE_MIN * 256)
+                        velocidade_q8 <= velocidade_q8 - VELOCIDADE_PASSO_Q8;
+                    else if (altitude_delta_q8_reg < 0 && velocidade_q8 < VELOCIDADE_MAX * 256)
+                        velocidade_q8 <= velocidade_q8 + VELOCIDADE_PASSO_Q8;
                 end else if (velocidade_q8 < VELOCIDADE_CRUZEIRO * 256) begin
-                    velocidade_q8 <= velocidade_q8 + 1;
+                    velocidade_q8 <= velocidade_q8 + VELOCIDADE_PASSO_Q8;
                 end else if (velocidade_q8 > VELOCIDADE_CRUZEIRO * 256) begin
-                    velocidade_q8 <= velocidade_q8 - 1;
+                    velocidade_q8 <= velocidade_q8 - VELOCIDADE_PASSO_Q8;
                 end
             end
 
@@ -127,8 +138,8 @@ module simulador_voo #(
             altitude_ft <= 17'(altitude_q8 >>> 8);
             velocidade_kt <= 10'(velocidade_q8 >>> 8);
             if (heading_iniciado)
-                heading_deg <= (heading_next_q8 + 18'sd128 >= HDG_TURN_Q8) ?
-                    9'd0 : 9'((heading_next_q8 + 18'sd128) >>> 8);
+                heading_deg <= (heading_next_q8_reg + 18'sd128 >= HDG_TURN_Q8) ?
+                    9'd0 : 9'((heading_next_q8_reg + 18'sd128) >>> 8);
         end
     end
 endmodule

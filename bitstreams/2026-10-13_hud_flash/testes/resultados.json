@@ -1,0 +1,47 @@
+[
+  {
+    "teste": "controle_joystick",
+    "estado": "PASS",
+    "log": "controle_joystick.log"
+  },
+  {
+    "teste": "mira_joystick",
+    "estado": "PASS",
+    "log": "mira_joystick.log"
+  },
+  {
+    "teste": "vertical_integrado",
+    "estado": "PASS",
+    "log": "vertical_integrado.log"
+  },
+  {
+    "teste": "bmp_i2c",
+    "estado": "PASS",
+    "log": "bmp_i2c.log"
+  },
+  {
+    "teste": "hmc_i2c",
+    "estado": "PASS",
+    "log": "hmc_i2c.log"
+  },
+  {
+    "teste": "buzzer",
+    "estado": "PASS",
+    "log": "buzzer.log"
+  },
+  {
+    "teste": "fontes_operacao",
+    "estado": "PASS",
+    "log": "fontes_operacao.log"
+  },
+  {
+    "teste": "modos_integrados",
+    "estado": "PASS",
+    "log": "modos_integrados.log"
+  },
+  {
+    "teste": "mpu_i2c",
+    "estado": "PASS",
+    "log": "mpu_i2c.log"
+  }
+]

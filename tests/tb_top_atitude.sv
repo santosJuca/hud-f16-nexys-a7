@@ -2,7 +2,7 @@
 module tb_top_atitude;
     logic clk = 0;
     always #5 clk = ~clk;
-    logic [15:12] sw = 0;
+    logic [15:9] sw = 0;
     tri1 sda, scl;
     integer modo;
     integer pitch_esperado, roll_esperado;
@@ -27,7 +27,7 @@ module tb_top_atitude;
 
     task automatic seleciona(input logic [3:0] valor);
         @(negedge clk);
-        sw = valor;
+        sw[15:12] = valor;
         repeat (3) @(negedge clk);
     endtask
 
@@ -364,32 +364,34 @@ module tb_top_atitude;
             $fatal(1, "modo MPU deixou de encaminhar a fusao");
 
         // -------------------------------------------------
-        // MODO SENSOR
-        //
-        // Com a fusao valida, os switches nao devem mais
-        // selecionar o MPU. O sensor e a fonte principal
-        // independentemente de SW15..SW12.
+        // SW15..12=1111 seleciona o MPU; os outros estados
+        // preservam comandos manuais mesmo com o sensor válido.
         // -------------------------------------------------
 
         for (modo = 0; modo < 16; modo = modo + 1) begin
             seleciona(modo[3:0]);
-
-            if (dut.usar_mpu !== 1'b1)
-                $fatal(
-                    1,
-                    "SENSOR valido deveria usar MPU para sw=%b",
-                    sw
-                );
-
-            confere(
-                $signed(dut.fusao_pitch_px),
-                $signed(dut.fusao_roll_q8)
-            );
+            if (modo == 15) begin
+                if (dut.usar_mpu !== 1'b1)
+                    $fatal(1,"SW15..12=1111 deveria selecionar MPU");
+                confere($signed(dut.fusao_pitch_px),$signed(dut.fusao_roll_q8));
+            end else begin
+                if (dut.usar_mpu !== 1'b0)
+                    $fatal(1,"Comando manual deveria ter prioridade para sw=%b",sw);
+                case (modo & 3)
+                    1: pitch_esperado=-60;
+                    2: pitch_esperado=60;
+                    default: pitch_esperado=0;
+                endcase
+                case (modo >> 2)
+                    1: roll_esperado=-112;
+                    2: roll_esperado=112;
+                    default: roll_esperado=0;
+                endcase
+                confere(pitch_esperado,roll_esperado);
+            end
         end
 
-        $display(
-            "PASS modo SENSOR: fusao MPU independente dos switches"
-        );
+        $display("PASS seleção MPU/manual pelos switches 15..12");
 
         // Joystick desloca a mira e nao altera a atitude selecionada.
         force dut.joystick_x_raw = 12'd4095;
@@ -421,14 +423,14 @@ module tb_top_atitude;
             seleciona(modo[3:0]);
 
             case (modo & 3)
-                1: pitch_esperado = -40;
-                2: pitch_esperado =  40;
+                1: pitch_esperado = -60;
+                2: pitch_esperado =  60;
                 default: pitch_esperado = 0;
             endcase
 
             case (modo >> 2)
-                1: roll_esperado = -64;
-                2: roll_esperado =  64;
+                1: roll_esperado = -112;
+                2: roll_esperado =  112;
                 default: roll_esperado = 0;
             endcase
 

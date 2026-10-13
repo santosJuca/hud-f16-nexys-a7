@@ -9,6 +9,9 @@ tests=(
     "modo_operacao|tb_modo_operacao|tests/tb_modo_operacao.sv"
     "simulador_voo|tb_simulador_voo|tests/tb_simulador_voo.sv"
     "mira_joystick|tb_mira_joystick|tests/tb_mira_joystick.sv"
+    "marcador_joystick|tb_marcador_joystick|tests/tb_marcador_joystick.sv"
+    "marcador_integrado|tb_marcador_integrado|tests/tb_marcador_integrado.sv"
+    "captura_marcador|tb_captura_marcador|tests/tb_captura_marcador.sv"
     "simulador_pouso|tb_simulador_pouso|tests/tb_simulador_pouso.sv"
     "alertas_voo|tb_alertas_voo|tests/tb_alertas_voo.sv"
     "buzzer_driver|tb_buzzer_driver|tests/tb_buzzer_driver.sv"
@@ -69,14 +72,26 @@ for spec in "${tests[@]}"; do
     echo
     echo "===== TESTE: $nome ====="
 
-    iverilog -g2012 \
-        -s "$top" \
-        -o "build/tests/$nome" \
-        tests/xadc_stub.sv \
-        rtl/*.sv \
-        "$fonte"
+    if [[ "$nome" =~ ^(roll|vga)$ ]] && command -v verilator >/dev/null 2>&1; then
+        # Exhaustive raster sweeps are much faster in Verilator; keep every vector.
+        verilator --binary --timing -Wno-fatal \
+            --top-module "$top" \
+            --Mdir "build/tests/${nome}_verilator" \
+            tests/xadc_stub.sv \
+            rtl/*.sv \
+            "$fonte"
 
-    vvp "build/tests/$nome"
+        "build/tests/${nome}_verilator/V${top}"
+    else
+        iverilog -g2012 \
+            -s "$top" \
+            -o "build/tests/$nome" \
+            tests/xadc_stub.sv \
+            rtl/*.sv \
+            "$fonte"
+
+        vvp "build/tests/$nome"
+    fi
 done
 
 echo

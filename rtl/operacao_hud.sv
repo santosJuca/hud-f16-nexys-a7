@@ -11,7 +11,9 @@ module operacao_hud #(
     input logic [1:0] switches,
     input logic ack,
     input logic [2:0] fontes_validas, novas_amostras,
+    input logic attitude_manual_valid,
     input logic signed [31:0] pitch_real_q10,roll_real_q10,
+    input logic signed [31:0] pitch_manual_q10,roll_manual_q10,
     input logic signed [10:0] pitch_real_px,pitch_fallback_px,
     input logic signed [9:0] roll_real_q8,roll_fallback_q8,
     input logic [16:0] altitude_real_ft,
@@ -47,13 +49,31 @@ module operacao_hud #(
         end
     end
     wire [2:0] valido=fontes_validas & recentes;
+    wire signed [31:0] pitch_fallback_q10_next = attitude_manual_valid ?
+        pitch_manual_q10 : (fontes_validas[0] ? pitch_real_q10 : 32'sd0);
+    wire signed [31:0] roll_fallback_q10_next = attitude_manual_valid ?
+        roll_manual_q10 : (fontes_validas[0] ? roll_real_q10 : 32'sd0);
+    logic signed [31:0] pitch_fallback_q10 = 0;
+    logic signed [31:0] roll_fallback_q10 = 0;
+    always_ff @(posedge clk) begin
+        if (reset) begin
+            pitch_fallback_q10 <= 0;
+            roll_fallback_q10 <= 0;
+        end else begin
+            pitch_fallback_q10 <= pitch_fallback_q10_next;
+            roll_fallback_q10 <= roll_fallback_q10_next;
+        end
+    end
+    wire signed [31:0] pitch_operacao_q10 = valido[0] ? pitch_real_q10 : pitch_fallback_q10;
+    wire signed [31:0] roll_operacao_q10 = valido[0] ? roll_real_q10 : roll_fallback_q10;
     wire [9:0] velocidade_voo,velocidade_pouso;
     wire [16:0] altitude_voo,altitude_pouso;
     wire [8:0] heading_voo;
     wire signed [13:0] vsi_pouso;
     wire [2:0] fase;
     simulador_voo u_voo(.clk(clk),.reset(reset),.enable(modo==1),.tick(tick),
-        .attitude_valid(valido[0]),.pitch_q10(pitch_real_q10),.roll_q10(roll_real_q10),
+        .attitude_valid(valido[0] || attitude_manual_valid),
+        .pitch_q10(pitch_operacao_q10),.roll_q10(roll_operacao_q10),
         .heading_ref_deg(valido[2] ? heading_real_deg : heading_manual_deg),
         .heading_ref_valid(1'b1),.velocidade_kt(velocidade_voo),
         .altitude_ft(altitude_voo),.heading_deg(heading_voo));
@@ -69,11 +89,13 @@ module operacao_hud #(
     always_comb begin
         v=0; h=valido[1] ? altitude_real_ft : 17'd0;
         hdg=valido[2] ? heading_real_deg : 9'd0;
-        pitch=valido[0] ? pitch_real_px : 11'sd0;
-        roll=valido[0] ? roll_real_q8 : 10'sd0;
+        pitch=attitude_manual_valid ? pitch_fallback_px :
+            valido[0] ? pitch_real_px : 11'sd0;
+        roll=attitude_manual_valid ? roll_fallback_q8 :
+            valido[0] ? roll_real_q8 : 10'sd0;
         vsi=vertical_real_fpm;
         h_valid=valido[1]; vsi_valid=vertical_real_valido && valido[0] && valido[1];
-        fallback=0;
+        fallback=attitude_manual_valid;
         if(modo!=0) begin
             v=modo==1 ? velocidade_voo : velocidade_pouso;
             h=modo==1 ? altitude_voo : altitude_pouso;
@@ -90,13 +112,15 @@ module operacao_hud #(
     end
     wire [1:0] severity;
     wire [2:0] causa;
-    wire ar,ap,aspeed,ah,ak,asensor;
+    wire ar,ap,aspeed,astall,ah,ak,asensor;
     alertas_voo u_alertas(.clk(clk),.reset(reset),.modo(modo),.modo_invalido(modo_invalido),
-        .fase_pouso(fase),.roll_q10(roll_real_q10),.pitch_q10(pitch_real_q10),
+        .fase_pouso(fase),.roll_q10(roll_operacao_q10),.pitch_q10(pitch_operacao_q10),
         .velocidade_kt(v),.altitude_ft(h),.vertical_fpm(vsi),
-        .att_valid(valido[0]),.alt_valid(h_valid),.heading_valid(valido[2]),.vertical_valid(vsi_valid),
+        .att_valid(valido[0]),.attitude_alert_valid(valido[0] || attitude_manual_valid),
+        .alt_valid(h_valid),.heading_valid(valido[2]),.vertical_valid(vsi_valid),
         .severity(severity),.causa(causa),.alert_roll(ar),.alert_pitch(ap),
-        .alert_speed(aspeed),.alert_altitude(ah),.alert_sink(ak),.alert_sensor(asensor));
+        .alert_speed(aspeed),.alert_stall(astall),.alert_altitude(ah),
+        .alert_sink(ak),.alert_sensor(asensor));
     wire reconhecido;
     buzzer_driver #(.DEBOUNCE_CYCLES(ACK_CYCLES)) u_buzzer(
         .clk(clk),.reset(reset),.severity(severity),.ack(ack),.enable(1'b1),
@@ -111,7 +135,8 @@ module operacao_hud #(
             fase_reg<=modo==2 ? fase : 3'd0;
         end
     end
-    // 24:19 flags SENSOR/SINK/ALT/SPEED/PITCH/ROLL; 18:16 fase; 15 ACK; 14 som.
+    // 25 STALL; 24:19 flags SENSOR/SINK/ALT/SPEED/PITCH/ROLL; 18:16 fase; 15 ACK; 14 som.
     // 13:11 causa; 10:9 severity; 8 SIM; 7 fallback; 6:3 VSI/HDG/ALT/ATT validos.
-    assign metadados={7'd0,asensor,ak,ah,aspeed,ap,ar,fase_reg,reconhecido,buzzer_out,causa,severity,estado};
+    assign metadados={6'd0,astall,asensor,ak,ah,aspeed,ap,ar,fase_reg,
+                       reconhecido,buzzer_out,causa,severity,estado};
 endmodule

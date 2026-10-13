@@ -21,6 +21,8 @@ simbologia_vga dut (
     centro,
     10'sd0,
     heading,
+    10'd430,
+    9'd180,
     horizonte,
     altitude,
     direcao,

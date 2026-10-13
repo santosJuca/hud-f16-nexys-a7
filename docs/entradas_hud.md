@@ -8,12 +8,12 @@ ao topo físico: eles são conexões internas entre o processamento e o display.
 | --- | --- | --- |
 | velocidade_kt_in | unsigned [9:0] | Nós inteiros, limitado a 0..999 |
 | altitude_ft_in | unsigned [16:0] | Pés inteiros, limitado a 0..99999 |
-| pitch_px_in | signed [10:0] | Deslocamento vertical do horizonte, limitado a -80..80 pixels |
+| pitch_px_in | signed [10:0] | Deslocamento vertical do horizonte, limitado a -160..160 pixels (4 px/°, ±40°) |
 | roll_q8_in | signed [9:0] | Inclinação em pixels por 256 pixels horizontais, limitada a -128..128 |
 | dados_validos | 1 bit | Amostra completa disponível na borda de clk |
 | clk | 25 MHz | Mesmo clock de pixel do display |
 
-Um pitch positivo desloca o horizonte para baixo (convenção de nariz para cima).
+Um pitch positivo desloca o horizonte para baixo (convenção de nariz para cima). O limite de ±160 px posiciona o horizonte entre y=80 e y=400, mantendo-o dentro do raster sem reduzir a escala de 4 px/°.
 Roll positivo representa banco positivo da aeronave. A referência de horizonte
 é desenhada com rotação visual oposta: `roll_q8=64` corresponde à inclinação
 1/4 e, com horizonte centralizado, em x=192 a linha fica 32 pixels abaixo do
@@ -73,8 +73,10 @@ no centro vertical y=240. Os rótulos de cima para baixo são 350..210 KT e
 A fonte 3x5 é ampliada duas vezes, com supressão de zeros à esquerda. Rótulos
 fora da faixa ficam vazios; os valores atuais são saturados por dados_hud.
 
-SW12/SW13 continuam escolhendo horizonte acima/abaixo/centralizado. Na fonte
-simulada, SW14/SW15 selecionam roll negativo/positivo; ambos iguais dão roll zero. O retículo é verde fixo e SW0 seleciona o modo de exibição.
+SW13:SW12 seleciona pitch manual e SW15:SW14 seleciona roll manual. Em cada
+par, `00`/`11` representam zero e `01`/`10` selecionam os sentidos negativo e
+positivo. Esses comandos têm prioridade, salvo `SW15..12=1111` com SW9 desligado,
+que seleciona o MPU. O retículo é verde fixo e SW0 seleciona o modo de exibição.
 
 ## Verificar
 

@@ -2,10 +2,11 @@
 module tb_modos_operacao_integrado;
     logic clk=0; always #5 clk=~clk;
     logic [1:0] operacao_sw=0; logic ack_btn=0,display_mode=0,style_mode=0;
+    logic [15:9] sw=7'b1111000;
     tri1 sda,scl,bsda,bscl,msda,mscl;
     wire [3:0] r,g,b;
     top_reticula #(.OPERACAO_DEBOUNCE(4),.OPERACAO_TICK(20),.OPERACAO_ACK(2)) dut(
-        .clk(clk),.operacao_sw(operacao_sw),.ack_btn(ack_btn),.btn_heading(2'b0),.sw(4'b0),
+        .clk(clk),.operacao_sw(operacao_sw),.ack_btn(ack_btn),.btn_heading(2'b0),.sw(sw),
         .display_mode(display_mode),.style_mode(style_mode),
         .vauxp3(1'b0),.vauxn3(1'b0),.vauxp10(1'b0),.vauxn10(1'b0),.joystick_sw_n(1'b1),
         .i2c_sda(sda),.i2c_scl(scl),.baro_sda(bsda),.baro_scl(bscl),.mag_sda(msda),.mag_scl(mscl),
@@ -52,7 +53,7 @@ module tb_modos_operacao_integrado;
         check(dut.horizonte_y==260 && dut.roll_q8>40 && dut.roll_q8<50,"atitude real");
         check(dut.hud_metadados[6:3]==15,"validade das fontes");
         modo(1);
-        check(dut.velocidade_kt>=275 && dut.velocidade_kt<=285 && dut.altitude_ft>=35950,"VOO simulado");
+        check(dut.velocidade_kt>=270 && dut.velocidade_kt<=280 && dut.altitude_ft>=35950,"VOO simulado");
         check(dut.horizonte_y==260 && dut.hud_metadados[8] && !dut.hud_metadados[7],"VOO atitude fisica");
         force dut.joystick_x_raw=12'd4095; force dut.joystick_y_raw=12'd0;
         quadro(); check(dut.horizonte_y==260,"joystick não interfere na atitude do VOO");
@@ -81,6 +82,16 @@ module tb_modos_operacao_integrado;
         modo(1); force dut.sensor_ok=0; quadro();
         check(dut.hud_metadados[7] && !dut.hud_metadados[3] && dut.hud_metadados[24],"fallback explicito VOO");
         check(dut.horizonte_y==240,"fallback explícito sem comando do joystick");
+        sw=7'b1010001; repeat(4) @(negedge clk); quadro();
+        check(dut.horizonte_y==300 && dut.roll_q8==112,"comandos manuais de pitch/roll chegam ao HUD");
+        check(dut.hud_metadados[10:9]==3 && dut.hud_metadados[13:11]==1,
+            "roll manual dispara warning angular");
+        repeat(4000) @(negedge clk); quadro();
+        check(dut.velocidade_kt<=100 && dut.hud_metadados[21] &&
+              dut.hud_metadados[10:9]==3,"baixa velocidade simulada ativa aviso SPEED");
+        sw[11]=1; sw[10]=1; repeat(4) @(negedge clk);
+        check(!dut.magnetometro_habilitado && !dut.barometro_habilitado &&
+              !dut.atitude_mpu_habilitada,"SW11/SW10/SW9 desabilitam suas fontes");
         force dut.reset_operacao=1; quadro();
         check(dut.hud_metadados[1:0]==0 && !dut.buzzer_out,"reset integrado");
         release dut.reset_operacao;

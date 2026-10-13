@@ -10,20 +10,24 @@ Este mapa foi conferido contra o top [top_reticula](../rtl/top_reticula.sv) e o 
 | SW1 | L16 | HUD original (`0`) / CAÇA (`1`) |
 | SW2 | M13 | Bit 0 de modo: SOLO `00`, VOO `01`, POUSO `10`; `11` inválido |
 | SW3 | R15 | Bit 1 de modo (`SW3:SW2`) |
-| SW4–SW11 | Não declarados no top/XDC | Sem uso |
-| SW12 | H6 | Fallback de pitch combinado com SW13 |
-| SW13 | U12 | Fallback de pitch combinado com SW12 |
-| SW14 | U11 | Fallback de roll combinado com SW15 |
-| SW15 | V10 | Fallback de roll combinado com SW14 |
+| SW4–SW8 | Não declarados no top/XDC | Sem uso |
+| SW9 | U8, LVCMOS18 | SW ligado desativa o uso da atitude MPU e seleciona comandos manuais |
+| SW10 | R16, LVCMOS33 | SW ligado desativa o uso da fonte barométrica |
+| SW11 | T13, LVCMOS33 | SW ligado desativa o uso da fonte magnética |
+| SW12 | H6 | Bit menos significativo do comando de pitch |
+| SW13 | U12 | Bit mais significativo do comando de pitch |
+| SW14 | U11 | Bit menos significativo do comando de roll |
+| SW15 | V10 | Bit mais significativo do comando de roll |
 | BTNU | M18 | Incrementa heading manual em 10° |
 | BTND | P18 | Decrementa heading manual em 10° |
 | BTNC | N17 | ACK lógico do alerta/buzzer interno |
+| Buzzer | JC7/E7, LVCMOS33 | Saída lógica para o estágio transistorizado |
 | BTNL, BTNR | Não declarados no top/XDC | Sem uso |
 | KY-023, eixo X | JXADC1/7, VAUX3, A13/A14 | Entrada analógica para a mira móvel |
 | KY-023, eixo Y | JXADC2/8, VAUX10, A15/A16 | Entrada analógica para a mira móvel; orientação configurada no top |
-| KY-023, botão SW | JA1, C17 | Ativo baixo; alterna LOCK/UNLOCK |
+| KY-023, botão SW | JC1, K1 | Ativo baixo; alterna LOCK/UNLOCK |
 
-SW12/SW13 codificam pitch e SW14/SW15 codificam roll; em cada par, estados iguais representam zero e estados diferentes selecionam um dos sentidos. No top operacional, esses sinais são fallback quando a cadeia MPU não está selecionada, em VOO/POUSO. SOLO não apresenta esse fallback como medição real. O estado e a prioridade detalhada estão no RTL de `operacao_hud` e `top_reticula`.
+SW12/SW13 codificam pitch e SW14/SW15 codificam roll; `00`/`11` representam zero e `01`/`10` selecionam os sentidos. `SW15..12=1111` seleciona o MPU quando SW9 está desligado; nos demais estados os comandos manuais têm prioridade. Eles aparecem no HUD também em SOLO. Em VOO/POUSO, os valores manuais alimentam ainda os alertas angulares e a velocidade simulada. SW9–SW11 são sincronizados e desativam as fontes MPU, barométrica e magnética no RTL; os drivers continuam fazendo aquisição nos barramentos.
 
 ## LEDs
 
@@ -33,11 +37,12 @@ SW12/SW13 codificam pitch e SW14/SW15 codificam roll; em cada par, estados iguai
 | LD1 | K15 | Diagnóstico de movimento X+ do joystick |
 | LD2 | J13 | Diagnóstico de movimento Y− do joystick |
 | LD3 | N14 | Diagnóstico de movimento Y+ do joystick |
-| LD4 | R18 | Estado de identificação/leitura válida do BMP085, conforme `BARO_LED` |
-| LD5 | V17 | Estado de identificação/configuração do HMC5883L, não sua calibração |
-| LD6–LD15 | Não declarados no top/XDC | Sem uso |
+| LD4 | R18 | MPU-6050 habilitado e identificado, conforme `GYRO_LED` (giroscópio e acelerômetro) |
+| LD5 | V17 | Estado de identificação/leitura válida do BMP085, conforme `BARO_LED` |
+| LD6 | U17 | Estado de identificação/configuração do HMC5883L, não sua calibração |
+| LD7–LD15 | Não declarados no top/XDC | Sem uso |
 
-Não há LED dedicado para modo, LOCK, alerta ou buzzer. `buzzer_out` é lógico e não está ligado a um pino físico.
+Não há LED dedicado para modo, LOCK, alerta ou buzzer. `buzzer_out` é lógico e está atribuído a JC7/E7 para o estágio transistorizado.
 
 ## Sensores e VGA
 

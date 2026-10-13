@@ -10,15 +10,17 @@ alterado o arquivo. Os arquivos `.bak` foram preservados.
 ## Seleção e calibração
 
 O `top` conecta `amostra_nova` do driver ao estimador `atitude_accel_fixa`.
-Pitch e roll do sensor são usados somente quando `SW15..SW12 = 1111`,
-`sensor_ok = 1` e a calibração terminou. Em qualquer outra condição,
-permanece a prioridade anterior: joystick, depois switches.
-Com `1111` e sensor indisponível, os pares de switches são neutros e o
-joystick continua funcionando.
+Pitch e roll do sensor são selecionados somente quando `SW15..SW12 = 1111`,
+SW9 está desligado, `sensor_ok = 1` e a calibração/fusão terminou. Qualquer
+outro estado de SW15..SW12 seleciona os comandos manuais; SW9 ligado também
+desativa a cadeia MPU e força essa fonte. O joystick continua controlando a
+mira, não a atitude.
 
 A calibração usa as primeiras 64 amostras válidas, independentemente dos
-switches. Mantenha o GY-521 parado e aproximadamente plano após programar
-ou religar a placa. Selecionar o modo MPU não reinicia a calibração.
+switches SW15..12. Mantenha o GY-521 parado e aproximadamente plano após
+programar ou religar a placa. Selecionar `1111` não reinicia a calibração.
+Desativar a cadeia pelo SW9 reinicia seus estados; ao reativá-la, aguarde nova
+calibração.
 A perda de `sensor_ok` invalida a calibração e retorna ao fallback;
 na recuperação, o estimador coleta outras 64 amostras.
 
@@ -38,9 +40,9 @@ verifica sinais, saturação e perda do sensor. O segundo verifica leitura,
 publicação conjunta dos eixos, pulso único, NACK, clock stretching,
 timeout, recuperação e identificação `0x70`.
 
-O novo `tb_top_atitude` passou com o estimador real: 16 combinações de
-switches, prioridade do joystick, fallback dos switches, 64 amostras de
-calibração, atualização somente por pulso e perda/recuperação do sensor.
+O `tb_top_atitude` cobre as 16 combinações dos switches: `1111` seleciona a
+fusão MPU e os demais estados selecionam pitch/roll manuais, além de calibração,
+atualização por amostra e perda/recuperação do sensor.
 As saídas do driver e os sinais digitais do joystick são forçados neste
 teste para isolar a seleção. Ele não simula a aquisição analógica do XADC.
 
@@ -114,13 +116,17 @@ reprograme com ele plano e parado para obter uma nova referência.
 ## Roteiro de teste físico
 
 1. Com o sensor plano e parado desde a programação, aguarde a calibração.
-2. Ligue SW12, SW13, SW14 e SW15. Incline lentamente o sensor: frente para
-   baixo deve produzir pitch negativo; trás para baixo, positivo; direita
-   para baixo deve produzir roll positivo; esquerda para baixo, negativo.
-3. Mova o joystick no modo MPU já calibrado: ele não deve alterar pitch/roll.
-4. Desligue um dos quatro switches e confirme o retorno ao joystick.
-   Com joystick neutro, confira as posições de teste dos switches.
-5. Confira SW0 e BTNU/BTND nos dois modos e a estabilidade da imagem VGA.
+2. Deixe SW9 desligado e ligue SW15..SW12 para `1111`. Incline lentamente o
+   sensor: frente para baixo deve produzir pitch negativo; trás para baixo,
+   positivo; direita para baixo, roll positivo; esquerda para baixo, negativo.
+3. Para comandos manuais, selecione outro estado em SW15..SW12. `SW13:SW12`
+   comanda pitch e `SW15:SW14` roll; pares iguais são neutros. SW9 ligado força
+   atitude manual.
+4. Selecione VOO ou POUSO para conferir os avisos angulares. Em VOO, manter
+   pitch manual positivo também reduz a velocidade simulada: abaixo de 120 kt
+   aparece SPEED CAUTION e a 100 kt ou menos aparece STALL WARNING. O aviso é
+   didático e não detecta estol aerodinâmico.
+5. Confira o joystick (mira), SW0, BTNU/BTND e a estabilidade da imagem VGA.
 
 O roteiro permanece como referência para repetir a validação após mudanças.
 PASS de simulação e programação concluída não substituem a observação na placa.

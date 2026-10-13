@@ -20,9 +20,9 @@ module top_reticula #(
 ) (
     input  logic        clk,
     input wire [1:0] operacao_sw, // SW3:SW2
-    input wire ack_btn, // BTNC; audio logico, sem pino de buzzer.
+    input wire ack_btn, // BTNC; reconhecimento de alerta.
     input  logic [1:0]  btn_heading,  // BTNU=+10, BTND=-10
-    input  logic [15:12] sw,        // pitch e roll
+    input  logic [15:9]  sw,        // SW9-11 fontes; SW12-15 atitude manual
     input  logic        display_mode, // SW0: 0=NORMAL, 1=DECLUTTER
     input  logic        style_mode,   // SW1: 0=HUD atual, 1=HUD CACA
 
@@ -51,11 +51,17 @@ module top_reticula #(
     inout  wire         mag_sda,
     inout  wire         mag_scl,
 
-    // LED4 indica BMP085 identificado corretamente.
+    // LED4 indica o MPU-6050 habilitado e identificado.
+    output wire         GYRO_LED,
+
+    // LED5 indica o BMP085 calibrado e com leituras validas.
     output wire         BARO_LED,
 
-    // LD5 acende quando o HMC5883L esta operacional.
+    // LD6 acende quando o HMC5883L esta operacional.
     output wire         MAG_LED,
+
+    // Saida logica para o transistor do buzzer em JC7.
+    output wire         buzzer_out,
 
     output wire [3:0]   VGA_R,
     output wire [3:0]   VGA_G,
@@ -75,6 +81,8 @@ module top_reticula #(
 
     logic [11:0] joystick_x_raw;
     logic [11:0] joystick_y_raw;
+    // Corrige o sentido vertical da montagem atual, antes da calibracao.
+    wire [11:0] joystick_vertical_raw = 12'd4095 - joystick_x_raw;
 
     logic joystick_x_menos;
     logic joystick_x_mais;
@@ -84,6 +92,8 @@ module top_reticula #(
     logic [9:0] mira_x_origem;
     logic [8:0] mira_y_origem;
     logic mira_lock_origem;
+    logic [9:0] alvo_x_origem;
+    logic [8:0] alvo_y_origem;
 
     joystick_xadc u_joystick_xadc (
         .clk     (clk),
@@ -97,9 +107,9 @@ module top_reticula #(
 
     controle_joystick u_controle_joystick (
         .clk     (clk),
-        // Orientacao observada na placa: frente aumenta X; direita aumenta Y.
+        // Eixos trocados e sentido vertical corrigido para a montagem atual.
         .x_raw   (joystick_y_raw),
-        .y_raw   (joystick_x_raw),
+        .y_raw   (joystick_vertical_raw),
 
         .sw_n    (joystick_sw_n),
 
@@ -110,14 +120,31 @@ module top_reticula #(
         .botao   ()
     );
 
-    mira_joystick #(.TICK_CYCLES(MIRA_TICK),.DEBOUNCE_CYCLES(MIRA_DEBOUNCE)) u_mira (
-        .clk(clk),.x_raw(joystick_y_raw),.y_raw(joystick_x_raw),.sw_n(joystick_sw_n),
-        .x(mira_x_origem),.y(mira_y_origem),.locked(mira_lock_origem)
-    );
-
     wire pixel_clk;
     wire declutter;
     wire estilo_caca;
+    (* ASYNC_REG = "TRUE" *) logic estilo_caca_meta = 1'b0;
+    (* ASYNC_REG = "TRUE" *) logic estilo_caca_sync = 1'b0;
+    always_ff @(posedge clk) begin
+        estilo_caca_meta <= estilo_caca;
+        estilo_caca_sync <= estilo_caca_meta;
+    end
+
+    mira_joystick #(.TICK_CYCLES(MIRA_TICK),.DEBOUNCE_CYCLES(MIRA_DEBOUNCE)) u_mira (
+        .clk(clk),.x_raw(joystick_y_raw),.y_raw(joystick_vertical_raw),.sw_n(joystick_sw_n),
+        .enable(estilo_caca_sync),.reset(reset_operacao),
+        .x(mira_x_origem),.y(mira_y_origem),.locked(mira_lock_origem)
+    );
+
+    mira_joystick #(
+        .TICK_CYCLES(MIRA_TICK), .DEBOUNCE_CYCLES(MIRA_DEBOUNCE),
+        .X_MIN(24), .X_MAX(615), .Y_MIN(24), .Y_MAX(455),
+        .INITIAL_X(430), .INITIAL_Y(180)
+    ) u_marcador_joystick (
+        .clk(clk), .x_raw(joystick_y_raw), .y_raw(joystick_vertical_raw), .sw_n(1'b1),
+        .enable(!estilo_caca_sync), .reset(reset_operacao),
+        .x(alvo_x_origem), .y(alvo_y_origem), .locked()
+    );
 
     controle_modo u_modo (
         .clk(pixel_clk),
@@ -143,6 +170,8 @@ module top_reticula #(
     (* ASYNC_REG = "TRUE" *) logic [1:0] horizonte_sync = '0;
     (* ASYNC_REG = "TRUE" *) logic [1:0] roll_meta = '0;
     (* ASYNC_REG = "TRUE" *) logic [1:0] roll_sync = '0;
+    (* ASYNC_REG = "TRUE" *) logic [2:0] fonte_desabilitada_meta = '0;
+    (* ASYNC_REG = "TRUE" *) logic [2:0] fonte_desabilitada_sync = '0;
     wire [9:0] horizonte_y;
     wire signed [9:0] roll_q8;
     wire [9:0] velocidade_kt;
@@ -150,6 +179,8 @@ module top_reticula #(
     wire [8:0] heading_deg;
     wire [9:0] mira_x;
     wire [8:0] mira_y;
+    wire [9:0] alvo_x;
+    wire [8:0] alvo_y;
     wire mira_lock;
     logic signed [10:0] pitch_px_entrada;
     logic signed [9:0] roll_q8_entrada;
@@ -168,8 +199,18 @@ module top_reticula #(
     logic       velocidade_inercial_calibrada;
     logic       velocidade_inercial_valida;
 
-    // O MPU e a fonte principal sempre que estiver valido; o joystick move a mira.
-    wire usar_mpu =
+    wire atitude_mpu_habilitada = !fonte_desabilitada_sync[0];
+    wire barometro_habilitado = !fonte_desabilitada_sync[1];
+    wire magnetometro_habilitado = !fonte_desabilitada_sync[2];
+    wire modo_atitude_manual = !atitude_mpu_habilitada ||
+        ({roll_sync, horizonte_sync} != 4'b1111);
+    wire signed [31:0] pitch_manual_q10 = horizonte_sync == 2'b01 ? -32'sd15360 :
+        horizonte_sync == 2'b10 ? 32'sd15360 : 32'sd0;
+    wire signed [31:0] roll_manual_q10 = roll_sync == 2'b01 ? -32'sd26096 :
+        roll_sync == 2'b10 ? 32'sd26096 : 32'sd0;
+
+    // SW15..12=1111 seleciona o MPU; os demais estados comandam pitch/roll.
+    wire usar_mpu = !modo_atitude_manual &&
         sensor_ok &&
         atitude_calibrada &&
         gyro_bias_calibrado &&
@@ -181,6 +222,8 @@ module top_reticula #(
 
         roll_meta <= sw[15:14];
         roll_sync <= roll_meta;
+        fonte_desabilitada_meta <= sw[11:9];
+        fonte_desabilitada_sync <= fonte_desabilitada_meta;
     end
 
     // O joystick controla somente a mira; atitude usa o MPU ou switches de bancada.
@@ -189,8 +232,8 @@ module top_reticula #(
             pitch_px_entrada = fusao_pitch_px;
         else begin
             case (horizonte_sync)
-                2'b01: pitch_px_entrada = -11'sd40;
-                2'b10: pitch_px_entrada =  11'sd40;
+                2'b01: pitch_px_entrada = -11'sd60;
+                2'b10: pitch_px_entrada =  11'sd60;
                 default: pitch_px_entrada = 11'sd0;
             endcase
         end
@@ -201,16 +244,16 @@ module top_reticula #(
             roll_q8_entrada = fusao_roll_q8;
         else begin
             case (roll_sync)
-                2'b01: roll_q8_entrada = -10'sd64;
-                2'b10: roll_q8_entrada =  10'sd64;
+                2'b01: roll_q8_entrada = -10'sd112;
+                2'b10: roll_q8_entrada =  10'sd112;
                 default: roll_q8_entrada = 10'sd0;
             endcase
         end
     end
 
-    // 109 bits: 89 existentes + X/Y/LOCK da mira.
-    wire [108:0] amostra_completa;
-    wire [56:0] amostra_pixel = amostra_completa[76:20];
+    // Pacote atômico com dados do HUD, mira CAÇA e alvo manual.
+    wire [127:0] amostra_completa;
+    wire [56:0] amostra_pixel = amostra_completa[95:39];
     wire [31:0] hud_metadados;
     wire amostra_valida;
     wire entrada_pronta;
@@ -236,15 +279,14 @@ wire [9:0] velocidade_hud_entrada =
     // Ordem: velocidade(10), altitude(17), pitch(11), roll(10), heading(9)..
     wire [56:0] dados_operacao;
     wire [31:0] metadados_operacao;
-    wire buzzer_out;
     logic [3:0] inicio_operacao = 0;
     wire reset_operacao = !inicio_operacao[3];
     always_ff @(posedge clk) inicio_operacao <= {inicio_operacao[2:0],1'b1};
-    wire [108:0] pacote_hud = MODOS_OPERACIONAIS ?
-        {metadados_operacao,dados_operacao,mira_lock_origem,mira_y_origem,mira_x_origem} :
+    wire [127:0] pacote_hud = MODOS_OPERACIONAIS ?
+        {metadados_operacao,dados_operacao,mira_lock_origem,mira_y_origem,mira_x_origem,alvo_y_origem,alvo_x_origem} :
         {32'd0,velocidade_hud_entrada,altitude_hud_entrada,pitch_px_entrada,roll_q8_entrada,
-         heading_entrada,mira_lock_origem,mira_y_origem,mira_x_origem};
-    entrada_hud #(.WIDTH(109)) u_entrada (
+         heading_entrada,mira_lock_origem,mira_y_origem,mira_x_origem,alvo_y_origem,alvo_x_origem};
+    entrada_hud #(.WIDTH(128)) u_entrada (
         .clk_origem(clk), .clk_destino(pixel_clk),
         .valido(1'b1),
         .dados(pacote_hud),
@@ -256,19 +298,22 @@ wire [9:0] velocidade_hud_entrada =
         .clk(pixel_clk),
         .atualizar_quadro((pixel_x == 0) && (pixel_y == 480)),
         .dados_validos(amostra_valida),
-        .metadados_in(amostra_completa[108:77]),.metadados(hud_metadados),
+        .metadados_in(amostra_completa[127:96]),.metadados(hud_metadados),
         .velocidade_kt_in(amostra_pixel[56:47]),
         .altitude_ft_in(amostra_pixel[46:30]),
         .pitch_px_in($signed(amostra_pixel[29:19])),
         .roll_q8_in($signed(amostra_pixel[18:9])),
         .heading_deg_in(amostra_pixel[8:0]),
-        .mira_x_in(amostra_completa[9:0]),
-        .mira_y_in(amostra_completa[18:10]),
-        .mira_lock_in(amostra_completa[19]),
+        .mira_x_in(amostra_completa[28:19]),
+        .mira_y_in(amostra_completa[37:29]),
+        .mira_lock_in(amostra_completa[38]),
+        .alvo_x_in(amostra_completa[9:0]),
+        .alvo_y_in(amostra_completa[18:10]),
         .velocidade_kt(velocidade_kt), .altitude_ft(altitude_ft),
         .horizonte_y(horizonte_y),
         .roll_q8(roll_q8),
-        .heading_deg(heading_deg),.mira_x(mira_x),.mira_y(mira_y),.mira_lock(mira_lock)
+        .heading_deg(heading_deg),.mira_x(mira_x),.mira_y(mira_y),.mira_lock(mira_lock),
+        .alvo_x(alvo_x),.alvo_y(alvo_y)
     );
 
     wire numeros;
@@ -403,7 +448,7 @@ wire [9:0] velocidade_hud_entrada =
         .INVERTER_X(MAG_INVERTER_X), .INVERTER_Y(MAG_INVERTER_Y)
     ) u_heading_magnetico (
         .clk(clk),
-        .sensor_ok(mag_sensor_ok && (mag_z != -16'sd4096)),
+        .sensor_ok(magnetometro_habilitado && mag_sensor_ok && (mag_z != -16'sd4096)),
         .amostra_nova(mag_amostra_nova),
         .mag_x(mag_x), .mag_y(mag_y),
         .heading_deg(heading_magnetico_deg), .valido(heading_magnetico_valido),
@@ -412,15 +457,17 @@ wire [9:0] velocidade_hud_entrada =
 
     // O manual continua ativo; a troca chega ao HUD pela interface de quadro.
     heading_fusao u_heading_fusao (
-        .clk(clk), .sensor_ok(sensor_ok), .amostra_nova(amostra_nova),
+        .clk(clk), .sensor_ok(sensor_ok && atitude_mpu_habilitada), .amostra_nova(amostra_nova),
         .gyro_z(mpu_gyro_z), .dt_valid(gyro_dt_valid), .dt_cycles(gyro_dt_cycles),
-        .mag_valido(mag_sensor_ok && heading_magnetico_valido),
+        .mag_valido(magnetometro_habilitado && mag_sensor_ok && heading_magnetico_valido),
         .mag_atualizado(heading_magnetico_atualizado), .heading_mag(heading_magnetico_deg),
         .heading_deg(heading_fusionado_deg), .valido(heading_fusionado_valido), .atualizado()
     );
     assign heading_entrada = heading_fusionado_valido ? heading_fusionado_deg :
-        mag_sensor_ok && heading_magnetico_valido ? heading_magnetico_deg : heading_manual;
-    assign MAG_LED = mag_sensor_ok;
+        magnetometro_habilitado && mag_sensor_ok && heading_magnetico_valido ?
+        heading_magnetico_deg : heading_manual;
+    assign MAG_LED = magnetometro_habilitado && mag_sensor_ok;
+    assign GYRO_LED = atitude_mpu_habilitada && sensor_ok;
 
 
     // -----------------------------------------------------
@@ -514,7 +561,7 @@ wire [9:0] velocidade_hud_entrada =
 
     bmp085_compensacao_seq u_baro_comp (
         .clk(clk),
-        .amostra_valid(baro_sensor_ok && baro_calibracao_ok &&
+        .amostra_valid(barometro_habilitado && baro_sensor_ok && baro_calibracao_ok &&
                        baro_ut_valid && baro_up_valid),
         .ut_raw(baro_ut_raw), .up_raw(baro_up_raw),
         .ac1(baro_ac1), .ac2(baro_ac2), .ac3(baro_ac3),
@@ -555,7 +602,7 @@ wire [9:0] velocidade_hud_entrada =
     );
 
     always_ff @(posedge clk) begin
-        if (baro_altitude_calc_ok)
+        if (barometro_habilitado && baro_altitude_calc_ok)
             baro_altitude_ft_hold <= baro_altitude_ft_calc;
     end
 
@@ -563,21 +610,23 @@ wire [9:0] velocidade_hud_entrada =
     wire signed [13:0] vel_vertical_fpm;
     wire vertical_valido, vertical_altitude_disponivel;
     estado_vertical u_estado_vertical (
-        .clk(clk), .sensor_ok(sensor_ok), .atitude_valida(fusao_valida),
+        .clk(clk), .sensor_ok(sensor_ok && atitude_mpu_habilitada),
+        .atitude_valida(fusao_valida),
         .accel_x(mpu_accel_x), .accel_y(mpu_accel_y), .accel_z(mpu_accel_z),
         .pitch_q10(fusao_pitch_q10), .roll_q10(fusao_roll_q10),
         .dt_valid(gyro_dt_valid), .dt_cycles(gyro_dt_cycles),
-        .baro_ok(baro_sensor_ok && baro_calibracao_ok),
-        .baro_nova(baro_altitude_calc_ok), .altitude_baro_ft(baro_altitude_ft_calc),
+        .baro_ok(barometro_habilitado && baro_sensor_ok && baro_calibracao_ok),
+        .baro_nova(barometro_habilitado && baro_altitude_calc_ok),
+        .altitude_baro_ft(baro_altitude_ft_calc),
         .altitude_ft(altitude_fusionada_ft), .vel_vertical_fpm(vel_vertical_fpm),
         .valido(vertical_valido), .altitude_disponivel(vertical_altitude_disponivel),
         .calibrado(), .atualizado()
     );
-    assign altitude_hud_entrada = vertical_altitude_disponivel ?
-        altitude_fusionada_ft : baro_altitude_ft_hold;
+    assign altitude_hud_entrada = !barometro_habilitado ? 17'd0 :
+        vertical_altitude_disponivel ? altitude_fusionada_ft : baro_altitude_ft_hold;
 
     assign BARO_LED =
-        baro_sensor_ok &&
+        barometro_habilitado && baro_sensor_ok &&
         baro_calibracao_ok &&
         baro_ut_valid &&
         baro_up_valid &&
@@ -589,7 +638,7 @@ wire [9:0] velocidade_hud_entrada =
 
     gyro_bias_dt u_gyro_bias_dt (
         .clk         (clk),
-        .sensor_ok   (sensor_ok),
+        .sensor_ok   (sensor_ok && atitude_mpu_habilitada),
         .amostra_nova(amostra_nova),
 
         .gyro_x      (mpu_gyro_x),
@@ -623,8 +672,8 @@ wire [9:0] velocidade_hud_entrada =
     logic [31:0] gyro_dt_integracao = 0;
     logic gyro_dt_integracao_valid = 0;
     always_ff @(posedge clk) begin
-        gyro_dt_integracao_valid <= sensor_ok && gyro_dt_valid;
-        if (sensor_ok && gyro_dt_valid) begin
+        gyro_dt_integracao_valid <= sensor_ok && atitude_mpu_habilitada && gyro_dt_valid;
+        if (sensor_ok && atitude_mpu_habilitada && gyro_dt_valid) begin
             gyro_x_integracao <= gyro_x_corr;
             gyro_y_integracao <= gyro_y_corr;
             gyro_dt_integracao <= gyro_dt_cycles;
@@ -633,7 +682,7 @@ wire [9:0] velocidade_hud_entrada =
 
     gyro_integrador u_gyro_pitch_integrador (
         .clk        (clk),
-        .sensor_ok  (sensor_ok),
+        .sensor_ok  (sensor_ok && atitude_mpu_habilitada),
         .dt_valid   (gyro_dt_integracao_valid),
         .gyro_corr  (gyro_x_integracao),
         .dt_cycles  (gyro_dt_integracao),
@@ -643,7 +692,7 @@ wire [9:0] velocidade_hud_entrada =
 
     gyro_integrador u_gyro_roll_integrador (
         .clk        (clk),
-        .sensor_ok  (sensor_ok),
+        .sensor_ok  (sensor_ok && atitude_mpu_habilitada),
         .dt_valid   (gyro_dt_integracao_valid),
         .gyro_corr  (gyro_y_integracao),
         .dt_cycles  (gyro_dt_integracao),
@@ -660,7 +709,7 @@ wire [9:0] velocidade_hud_entrada =
 
     atitude_accel_fixa u_atitude_accel (
         .clk         (clk),
-        .sensor_ok   (sensor_ok),
+        .sensor_ok   (sensor_ok && atitude_mpu_habilitada),
         .amostra_nova(amostra_nova),
         .accel_x     (mpu_accel_x),
         .accel_y     (mpu_accel_y),
@@ -681,7 +730,7 @@ wire [9:0] velocidade_hud_entrada =
     ) u_fusao_atitude (
         .clk             (clk),
 
-        .sensor_ok       (sensor_ok),
+        .sensor_ok       (sensor_ok && atitude_mpu_habilitada),
         .accel_calibrado (atitude_calibrada),
         .gyro_calibrado  (gyro_bias_calibrado),
 
@@ -718,7 +767,7 @@ wire [9:0] velocidade_hud_entrada =
     velocidade_inercial u_velocidade_inercial (
         .clk            (clk),
 
-        .sensor_ok      (sensor_ok),
+        .sensor_ok      (sensor_ok && atitude_mpu_habilitada),
         .amostra_nova   (amostra_nova),
 
         // Eixo longitudinal ja validado fisicamente.
@@ -789,6 +838,8 @@ wire [9:0] velocidade_hud_entrada =
         .horizonte_y  (horizonte_y),
         .roll_q8      (roll_q8),
         .heading_deg  (heading_deg),
+        .alvo_x       (alvo_x),
+        .alvo_y       (alvo_y),
         .pixel_x      (pixel_x),
         .pixel_y      (pixel_y),
         .video_on     (video_on),
@@ -882,11 +933,16 @@ wire [9:0] velocidade_hud_entrada =
     operacao_hud #(.TICK_CYCLES(OPERACAO_TICK),.DEBOUNCE_CYCLES(OPERACAO_DEBOUNCE),
         .ACK_CYCLES(OPERACAO_ACK)) u_operacao (
         .clk(clk),.reset(reset_operacao),.switches(operacao_sw),.ack(ack_btn),
-        .fontes_validas({(heading_fusionado_valido || (mag_sensor_ok && heading_magnetico_valido)),
-                         (baro_sensor_ok && baro_calibracao_ok),
-                         (sensor_ok && atitude_calibrada && gyro_bias_calibrado && fusao_valida)}),
-        .novas_amostras({heading_magnetico_atualizado,baro_altitude_calc_ok,fusao_atualizar}),
+        .fontes_validas({(heading_fusionado_valido ||
+                          (magnetometro_habilitado && mag_sensor_ok && heading_magnetico_valido)),
+                         (barometro_habilitado && baro_sensor_ok && baro_calibracao_ok),
+                         (!modo_atitude_manual && sensor_ok && atitude_calibrada &&
+                          gyro_bias_calibrado && fusao_valida)}),
+        .novas_amostras({(magnetometro_habilitado && heading_magnetico_atualizado),
+                         (barometro_habilitado && baro_altitude_calc_ok),fusao_atualizar}),
+        .attitude_manual_valid(modo_atitude_manual),
         .pitch_real_q10(fusao_pitch_q10),.roll_real_q10(fusao_roll_q10),
+        .pitch_manual_q10(pitch_manual_q10),.roll_manual_q10(roll_manual_q10),
         .pitch_real_px(fusao_pitch_px),.roll_real_q8(fusao_roll_q8),
         .pitch_fallback_px(pitch_px_entrada),.roll_fallback_q8(roll_q8_entrada),
         .altitude_real_ft(altitude_hud_entrada),.heading_real_deg(heading_entrada),

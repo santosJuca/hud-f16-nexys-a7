@@ -1,0 +1,67 @@
+INFO: [Common 17-3922] A valid Vivado Design Suite BASIC license has been detected. Your current license is active and will expire on 04-sep-2027.
+#-----------------------------------------------------------
+# Vivado v2026.1 (64-bit)
+# SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+# IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+# SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+# Start of session at: Tue Oct 13 00:18:28 2026
+# Process ID         : 366601
+# Current directory  : /home/santojuca/Downloads/Trabalho-display-aviao-v2
+# Command line       : vivado -mode batch -source scripts/program_board.tcl -log build/joystick_vertical_program.log -journal build/joystick_vertical_program.jou
+# Log file           : /home/santojuca/Downloads/Trabalho-display-aviao-v2/build/joystick_vertical_program.log
+# Journal file       : /home/santojuca/Downloads/Trabalho-display-aviao-v2/build/joystick_vertical_program.jou
+# Running On         : santojuca-System-Product-Name
+# Platform           : Ubuntu
+# Operating System   : Ubuntu 24.04.5 LTS
+# Processor Detail   : AMD Ryzen 7 5700X3D 8-Core Processor
+# CPU Frequency      : 3193.458 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 33553 MB
+# Swap memory        : 8589 MB
+# Total Virtual      : 42143 MB
+# Available Virtual  : 29533 MB
+#-----------------------------------------------------------
+source scripts/program_board.tcl
+# set root [file normalize [file join [file dirname [info script]] ..]]
+# set bitstream [file join $root build vivado reticula.runs impl_1 top_reticula.bit]
+# if {![file exists $bitstream]} { error "Gere o bitstream antes de programar a placa" }
+# open_hw_manager
+# connect_hw_server -allow_non_jtag
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-2222] Launching hw_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+****** Xilinx hw_server v2026.1
+  **** Build date : May 29 2026 at 20:56:35
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+
+INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:0
+INFO: [Labtools 27-3417] Launching cs_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+****** Xilinx cs_server v2026.1
+  **** Build Info : #60 | 2026-06-15 19:15 UTC | a9691a9
+    ** Copyright 2017-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+
+
+# open_hw_target
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210292AD34F5A
+# set devices [get_hw_devices -filter {PART == "xc7a100t"}]
+# if {[llength $devices] != 1} { error "Esperada uma única FPGA xc7a100t conectada" }
+# set device [lindex $devices 0]
+# current_hw_device $device
+# refresh_hw_device $device
+INFO: [Labtools 27-1434] Device xc7a100t (JTAG device index = 0) is programmed with a design that has no supported soft debug core(s) in it.
+# set_property PROGRAM.FILE $bitstream $device
+# program_hw_devices $device
+INFO: [Labtools 27-3164] End of startup status: HIGH
+# refresh_hw_device $device
+INFO: [Labtools 27-1434] Device xc7a100t (JTAG device index = 0) is programmed with a design that has no supported soft debug core(s) in it.
+# puts "PROGRAM_DONE=[get_property REGISTER.IR.BIT5_DONE $device]"
+PROGRAM_DONE=1
+# close_hw_manager
+INFO: [Common 17-206] Exiting Vivado at Tue Oct 13 00:18:39 2026...

@@ -4,10 +4,10 @@ Este documento descreve as conexões do top atual, conferidas em `rtl/top_reticu
 
 | Dispositivo | Conexão atual | Uso no HUD | Limites conhecidos |
 | --- | --- | --- | --- |
-| MPU-6050 | I²C independente: SDA JD8/G4, SCL JD7/H2 | Accel/gyro para atitude, gyro Z e entradas da estimação vertical | A cadeia de leitura, validade, calibração e fusão tem testes RTL; integração física da versão atual pendente |
-| BMP085 | I²C independente: SDA JD1/H4, SCL JD2/H1 | Temperatura/pressão compensadas e altitude barométrica | Verificação de identificação e cálculos em simulação; funcionamento físico atual pendente |
-| HMC5883L | I²C independente: SDA JD3/G1, SCL JD9/G2 | Rumo magnético planar combinado com gyro Z | Sem compensação de inclinação/declinação; calibração e orientação física pendentes |
-| KY-023 | Eixos em VAUX3 e VAUX10 via JXADC; botão em JA1/C17 | Movimento da mira em CAÇA e LOCK/UNLOCK | Centro calibrado na inicialização; orientação, faixa analógica e estabilidade aguardam bancada |
+| MPU-6050 | I²C independente: SDA JD8/G4, SCL JD7/H2 | Accel/gyro para atitude, gyro Z e entradas da estimação vertical | Testes RTL e relato de 13/10: LD4 aceso, ATT BAD ausente e inclinações corretas; precisão não medida |
+| BMP085 | I²C independente: SDA JD1/H4, SCL JD2/H1 | Temperatura/pressão compensadas e altitude barométrica | Identificação/cálculos em simulação; LD5 aceso e ALT BAD ausente relatados em 13/10; altitude absoluta não caracterizada |
+| HMC5883L | I²C independente: SDA JD3/G1, SCL JD9/G2 | Rumo magnético planar combinado com gyro Z | LD6 aceso e rumo respondendo à rotação relatados em 13/10; sem compensação de inclinação/declinação e precisão não medida |
+| KY-023 | Eixos em VAUX3 e VAUX10 via JXADC; botão em JC1/K1 | Movimento da mira em CAÇA e LOCK/UNLOCK | Quatro sentidos, repouso, limites e LOCK/UNLOCK relatados em 13/10; valores dos divisores e faixa analógica não medidos |
 
 ## Alimentação e níveis
 
@@ -17,7 +17,7 @@ Os dois eixos do KY-023 usam pares diferenciais de canais auxiliares XADC: VAUX3
 
 ## Seleção e fallback
 
-No top operacional, a atitude principal vem da cadeia MPU quando sua validade permite; SW12–SW15 fornecem fallback de bancada em VOO/POUSO quando a atitude MPU não está selecionada. O heading tem caminho magnético fusionado e ajuste manual por BTNU/BTND; a seleção por modo/validade é implementada na política operacional. Em SOLO, um fallback não deve ser interpretado como leitura de sensor.
+SW15..SW12=`1111` seleciona a atitude MPU se SW9 estiver desligado; os demais estados selecionam comandos manuais em qualquer modo. SW9 ligado força o modo manual e desativa o processamento da cadeia MPU. SW10 e SW11 desativam o uso do barômetro e magnetômetro; os drivers seguem consultando os sensores. Atitude manual não deve ser interpretada como leitura física. O heading também dispõe de ajuste manual por BTNU/BTND.
 
 VOO e POUSO também simulam grandezas de voo conforme a política operacional; isso não transforma sensores simulados em dados físicos. O heading do HMC é magnético/plano, sem compensação de inclinação ou declinação. A velocidade inercial experimental não é selecionada como velocidade operacional nem mede velocidade no ar.
 

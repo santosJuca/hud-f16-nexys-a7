@@ -1,8 +1,0 @@
-Fmax estimada por domínio; não é uma busca de frequência com nova implementação.
-Caminhos entre domínios e I/O devem ser avaliados no timing_summary.rpt.
-sys_clk_pin: período=10.000 ns, frequência=100.000 MHz, slack=0.138 ns, Fmax estimada=101.399 MHz
-  Início: u_baro_altitude/pressao_trabalho_reg[26]/C
-  Fim: u_baro_altitude/dividend_reg0_i_21_psdsp/D
-pixel_clk: período=40.000 ns, frequência=25.000 MHz, slack=29.714 ns, Fmax estimada=97.220 MHz
-  Início: u_vga/v_cont_reg[5]/C
-  Fim: u_dados/altitude_ft_reg[14]/CE

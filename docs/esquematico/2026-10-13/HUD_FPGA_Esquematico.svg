@@ -1,0 +1,822 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="891mm" viewBox="0 0 1680 3564"><rect width="100%" height="100%" fill="white"/>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="22" y="22" width="1636" height="1144" rx="0" fill="white" stroke="#172b3a" stroke-width="2"/>
+<text x="55" y="74" font-family="DejaVu Sans" font-size="18" fill="#0067a5" font-weight="700" text-anchor="start">HUD FPGA  /  ESQUEMÁTICO ELÉTRICO</text>
+<text x="55" y="120" font-family="DejaVu Sans" font-size="32" fill="#172b3a" font-weight="700" text-anchor="start">Sensores, joystick e saída de alerta</text>
+<text x="55" y="151" font-family="DejaVu Sans" font-size="16" fill="#526575" font-weight="400" text-anchor="start">Pinagem XDC/DCP conferida. Montagem e funcionamento relatados; valores externos e tensões ainda não medidos.</text>
+<path d="M55 169 L1625 169" fill="none" stroke="#172b3a" stroke-width="1" stroke-linecap="round"/>
+<text x="55" y="1129" font-family="DejaVu Sans" font-size="13" fill="#526575" font-weight="400" text-anchor="start">Nexys A7-100T  •  xc7a100tcsg324-1  •  Rev. 13/10/2026 | XDC/DCP + Digilent | bancada relatada pelo operador</text>
+<text x="1625" y="1129" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="700" text-anchor="end">FOLHA 1 / 3</text>
+<rect x="1175" y="202" width="450" height="600" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="1193" y="234" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">U1  •  FPGA Artix-7</text>
+<rect x="690" y="202" width="430" height="72" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="708" y="234" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">U2  •  OSCILADOR ONBOARD</text>
+<text x="708" y="260" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">100 MHz → clk / E3</text>
+<polyline points="1120,238 1148,238 1148,310 1175,310" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1200" y="270" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="700" text-anchor="start">PORTA RTL</text>
+<text x="1375" y="270" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="700" text-anchor="start">PAD FPGA</text>
+<text x="1490" y="270" font-family="DejaVu Sans" font-size="13" fill="#526575" font-weight="700" text-anchor="start">CONECTOR</text>
+<path d="M1175 310 L1195 310" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="315" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">clk</text>
+<text x="1375" y="315" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">E3</text>
+<text x="1490" y="315" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">100 MHz</text>
+<path d="M1175 349 L1195 349" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="354" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">i2c_sda</text>
+<text x="1375" y="354" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">G4</text>
+<text x="1490" y="354" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">JD8</text>
+<path d="M1195 364 L1605 364" fill="none" stroke="#c8d5de" stroke-width="1" stroke-linecap="round"/>
+<path d="M1175 388 L1195 388" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="393" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">i2c_scl</text>
+<text x="1375" y="393" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">H2</text>
+<text x="1490" y="393" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">JD7</text>
+<path d="M1175 427 L1195 427" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="432" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">baro_sda</text>
+<text x="1375" y="432" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">H4</text>
+<text x="1490" y="432" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">JD1</text>
+<path d="M1195 442 L1605 442" fill="none" stroke="#c8d5de" stroke-width="1" stroke-linecap="round"/>
+<path d="M1175 466 L1195 466" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="471" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">baro_scl</text>
+<text x="1375" y="471" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">H1</text>
+<text x="1490" y="471" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">JD2</text>
+<path d="M1175 505 L1195 505" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="510" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">mag_sda</text>
+<text x="1375" y="510" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">G1</text>
+<text x="1490" y="510" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">JD3</text>
+<path d="M1195 520 L1605 520" fill="none" stroke="#c8d5de" stroke-width="1" stroke-linecap="round"/>
+<path d="M1175 544 L1195 544" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="549" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">mag_scl</text>
+<text x="1375" y="549" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">G2</text>
+<text x="1490" y="549" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">JD9</text>
+<path d="M1175 583 L1195 583" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="588" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">vauxp3</text>
+<text x="1375" y="588" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">A13</text>
+<text x="1490" y="588" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">JXADC1</text>
+<path d="M1175 622 L1195 622" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="627" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">vauxn3</text>
+<text x="1375" y="627" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">A14</text>
+<text x="1490" y="627" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">JXADC7</text>
+<path d="M1175 661 L1195 661" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="666" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">vauxp10</text>
+<text x="1375" y="666" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">A15</text>
+<text x="1490" y="666" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">JXADC2</text>
+<path d="M1195 676 L1605 676" fill="none" stroke="#c8d5de" stroke-width="1" stroke-linecap="round"/>
+<path d="M1175 700 L1195 700" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="705" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">vauxn10</text>
+<text x="1375" y="705" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">A16</text>
+<text x="1490" y="705" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">JXADC8</text>
+<path d="M1175 739 L1195 739" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="744" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">joystick_sw_n</text>
+<text x="1375" y="744" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">K1</text>
+<text x="1490" y="744" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">JC1</text>
+<path d="M1175 778 L1195 778" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1200" y="783" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">buzzer_out</text>
+<text x="1375" y="783" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">E7</text>
+<text x="1490" y="783" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">JC7</text>
+<rect x="55" y="210" width="485" height="190" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="73" y="242" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">J1  •  PMOD JD</text>
+<text x="73" y="268" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">Header 2×6; 3 I²C masters use independent contacts</text>
+<text x="78" y="298" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="400" text-anchor="start">JD1/H4 BMP085 SDA</text>
+<text x="78" y="328" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="400" text-anchor="start">JD2/H1 BMP085 SCL</text>
+<text x="78" y="358" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="400" text-anchor="start">JD3/G1 HMC5883L SDA</text>
+<text x="273" y="298" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="400" text-anchor="start">JD7/H2 MPU SCL</text>
+<text x="273" y="328" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="400" text-anchor="start">JD8/G4 MPU SDA</text>
+<text x="273" y="358" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="400" text-anchor="start">JD9/G2 HMC SCL</text>
+<text x="482" y="278" font-family="DejaVu Sans" font-size="12" fill="#0067a5" font-weight="700" text-anchor="middle">JD</text>
+<circle cx="464" cy="286" r="7" fill="#dbeef8" stroke="#0067a5" stroke-width="1.5"/>
+<text x="464" y="289" font-family="DejaVu Sans" font-size="8" fill="#172b3a" font-weight="700" text-anchor="middle">1</text>
+<circle cx="464" cy="302" r="7" fill="#dbeef8" stroke="#0067a5" stroke-width="1.5"/>
+<text x="464" y="305" font-family="DejaVu Sans" font-size="8" fill="#172b3a" font-weight="700" text-anchor="middle">2</text>
+<circle cx="464" cy="318" r="7" fill="#dbeef8" stroke="#0067a5" stroke-width="1.5"/>
+<text x="464" y="321" font-family="DejaVu Sans" font-size="8" fill="#172b3a" font-weight="700" text-anchor="middle">3</text>
+<circle cx="464" cy="334" r="7" fill="white" stroke="#526575" stroke-width="1.5"/>
+<text x="464" y="337" font-family="DejaVu Sans" font-size="8" fill="#172b3a" font-weight="700" text-anchor="middle">4</text>
+<circle cx="464" cy="350" r="7" fill="white" stroke="#526575" stroke-width="1.5"/>
+<text x="464" y="353" font-family="DejaVu Sans" font-size="8" fill="#172b3a" font-weight="700" text-anchor="middle">5</text>
+<circle cx="464" cy="366" r="7" fill="white" stroke="#526575" stroke-width="1.5"/>
+<text x="464" y="369" font-family="DejaVu Sans" font-size="8" fill="#172b3a" font-weight="700" text-anchor="middle">6</text>
+<circle cx="505" cy="286" r="7" fill="#dbeef8" stroke="#0067a5" stroke-width="1.5"/>
+<text x="505" y="289" font-family="DejaVu Sans" font-size="8" fill="#172b3a" font-weight="700" text-anchor="middle">7</text>
+<circle cx="505" cy="302" r="7" fill="#dbeef8" stroke="#0067a5" stroke-width="1.5"/>
+<text x="505" y="305" font-family="DejaVu Sans" font-size="8" fill="#172b3a" font-weight="700" text-anchor="middle">8</text>
+<circle cx="505" cy="318" r="7" fill="#dbeef8" stroke="#0067a5" stroke-width="1.5"/>
+<text x="505" y="321" font-family="DejaVu Sans" font-size="8" fill="#172b3a" font-weight="700" text-anchor="middle">9</text>
+<circle cx="505" cy="334" r="7" fill="white" stroke="#526575" stroke-width="1.5"/>
+<text x="505" y="337" font-family="DejaVu Sans" font-size="8" fill="#172b3a" font-weight="700" text-anchor="middle">10</text>
+<circle cx="505" cy="350" r="7" fill="white" stroke="#526575" stroke-width="1.5"/>
+<text x="505" y="353" font-family="DejaVu Sans" font-size="8" fill="#172b3a" font-weight="700" text-anchor="middle">11</text>
+<circle cx="505" cy="366" r="7" fill="white" stroke="#526575" stroke-width="1.5"/>
+<text x="505" y="369" font-family="DejaVu Sans" font-size="8" fill="#172b3a" font-weight="700" text-anchor="middle">12</text>
+<text x="421" y="391" font-family="DejaVu Sans" font-size="9" fill="#526575" font-weight="400" text-anchor="start">5/11 GND • 6/12 3V3</text>
+<path d="M540 349 L770 349" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="550" y="341" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">JD8 / 8  •  i2c_sda</text>
+<path d="M770 349 L782 349" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="782" y="340" width="68" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M850 349 L862 349" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="816.0" y="335" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R6  200 Ω</text>
+<path d="M862 349 L1175 349" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1175" cy="349" r="5" fill="#0067a5"/>
+<path d="M540 388 L770 388" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="550" y="380" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">JD7 / 7  •  i2c_scl</text>
+<path d="M770 388 L782 388" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="782" y="379" width="68" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M850 388 L862 388" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="816.0" y="374" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R2  200 Ω</text>
+<path d="M862 388 L1175 388" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1175" cy="388" r="5" fill="#0067a5"/>
+<path d="M540 427 L770 427" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="550" y="419" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">JD1 / 1  •  baro_sda</text>
+<path d="M770 427 L782 427" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="782" y="418" width="68" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M850 427 L862 427" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="816.0" y="413" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R1  200 Ω</text>
+<path d="M862 427 L1175 427" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1175" cy="427" r="5" fill="#0067a5"/>
+<path d="M540 466 L770 466" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="550" y="458" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">JD2 / 2  •  baro_scl</text>
+<path d="M770 466 L782 466" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="782" y="457" width="68" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M850 466 L862 466" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="816.0" y="452" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R5  200 Ω</text>
+<path d="M862 466 L1175 466" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1175" cy="466" r="5" fill="#0067a5"/>
+<path d="M540 505 L770 505" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="550" y="497" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">JD3 / 3  •  mag_sda</text>
+<path d="M770 505 L782 505" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="782" y="496" width="68" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M850 505 L862 505" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="816.0" y="491" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R9  200 Ω</text>
+<path d="M862 505 L1175 505" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1175" cy="505" r="5" fill="#0067a5"/>
+<path d="M540 544 L770 544" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="550" y="536" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">JD9 / 9  •  mag_scl</text>
+<path d="M770 544 L782 544" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="782" y="535" width="68" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M850 544 L862 544" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="816.0" y="530" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R10  200 Ω</text>
+<path d="M862 544 L1175 544" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1175" cy="544" r="5" fill="#0067a5"/>
+<rect x="55" y="430" width="485" height="145" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="73" y="462" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">J2  •  JXADC</text>
+<text x="73" y="488" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">KY-023 analog axes; differential inputs, not GPIO</text>
+<text x="78" y="510" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">X → VAUX3: +A13 / −A14  (JXADC 1 / 7)</text>
+<text x="78" y="540" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">Y → VAUX10: +A15 / −A16 (JXADC 2 / 8)</text>
+<text x="78" y="566" font-family="DejaVu Sans" font-size="12" fill="#526575" font-weight="400" text-anchor="start">Top: horizontal = VAUX10; vertical = 4095 - VAUX3.</text>
+<rect x="55" y="585" width="485" height="95" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="73" y="617" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">J3  •  PMOD JC</text>
+<text x="73" y="643" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">JC1 contact 1 → KY-023 SW; active-low input</text>
+<text x="78" y="670" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">K1  •  joystick_sw_n  •  PULLUP TRUE no XDC</text>
+<rect x="55" y="710" width="485" height="100" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="73" y="742" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">JC7  •  SAÍDA PARA BUZZER</text>
+<text x="73" y="768" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">E7 / buzzer_out; 2N2222A externo (folha 3)</text>
+<path d="M540 583 L1175 583" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="720" y="576" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">VAUXP3 X+</text>
+<circle cx="1175" cy="583" r="5" fill="#0067a5"/>
+<path d="M540 622 L1175 622" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="720" y="615" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">VAUXN3 X−</text>
+<circle cx="1175" cy="622" r="5" fill="#0067a5"/>
+<path d="M540 661 L1175 661" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="720" y="654" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">VAUXP10 Y+</text>
+<circle cx="1175" cy="661" r="5" fill="#0067a5"/>
+<path d="M540 700 L1175 700" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="720" y="693" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">VAUXN10 Y−</text>
+<circle cx="1175" cy="700" r="5" fill="#0067a5"/>
+<path d="M540 739 L770 739" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="550" y="731" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">JC1 SW</text>
+<path d="M770 739 L782 739" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="782" y="730" width="68" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M850 739 L862 739" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="816.0" y="725" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R17  200 Ω</text>
+<path d="M862 739 L1175 739" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1175" cy="739" r="5" fill="#0067a5"/>
+<path d="M540 778 L770 778" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="550" y="770" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">JC7 buzzer</text>
+<path d="M770 778 L782 778" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="782" y="769" width="68" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M850 778 L862 778" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="816.0" y="764" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R18  200 Ω</text>
+<path d="M862 778 L1175 778" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1175" cy="778" r="5" fill="#0067a5"/>
+<rect x="55" y="835" width="485" height="216" rx="6" fill="white" stroke="#0067a5" stroke-width="2"/>
+<text x="75" y="865" font-family="DejaVu Sans" font-size="17" fill="#172b3a" font-weight="700" text-anchor="start">PROTEÇÕES ONBOARD A GND</text>
+<text x="85" y="892" font-family="DejaVu Sans" font-size="12" fill="#b3261e" font-weight="700" text-anchor="start">D1 / canais usados</text>
+<text x="115" y="909" font-family="DejaVu Sans" font-size="10" fill="#0067a5" font-weight="700" text-anchor="middle">JD1</text>
+<path d="M115 913 L115 920" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<polygon points="109,931 121,931 115,920" fill="white" stroke="#0067a5" stroke-width="1.5"/>
+<path d="M108 920 L122 920" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M115 931 L115 940" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="165" y="909" font-family="DejaVu Sans" font-size="10" fill="#0067a5" font-weight="700" text-anchor="middle">JD2</text>
+<path d="M165 913 L165 920" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<polygon points="159,931 171,931 165,920" fill="white" stroke="#0067a5" stroke-width="1.5"/>
+<path d="M158 920 L172 920" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M165 931 L165 940" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="215" y="909" font-family="DejaVu Sans" font-size="10" fill="#0067a5" font-weight="700" text-anchor="middle">JD3</text>
+<path d="M215 913 L215 920" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<polygon points="209,931 221,931 215,920" fill="white" stroke="#0067a5" stroke-width="1.5"/>
+<path d="M208 920 L222 920" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M215 931 L215 940" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M115 940 L215 940" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M165 940 L165 946" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M153 946 L177 946" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M157 952 L173 952" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="310" y="892" font-family="DejaVu Sans" font-size="12" fill="#b3261e" font-weight="700" text-anchor="start">D2 / canais usados</text>
+<text x="340" y="909" font-family="DejaVu Sans" font-size="10" fill="#0067a5" font-weight="700" text-anchor="middle">JD7</text>
+<path d="M340 913 L340 920" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<polygon points="334,931 346,931 340,920" fill="white" stroke="#0067a5" stroke-width="1.5"/>
+<path d="M333 920 L347 920" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M340 931 L340 940" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="390" y="909" font-family="DejaVu Sans" font-size="10" fill="#0067a5" font-weight="700" text-anchor="middle">JD8</text>
+<path d="M390 913 L390 920" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<polygon points="384,931 396,931 390,920" fill="white" stroke="#0067a5" stroke-width="1.5"/>
+<path d="M383 920 L397 920" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M390 931 L390 940" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="440" y="909" font-family="DejaVu Sans" font-size="10" fill="#0067a5" font-weight="700" text-anchor="middle">JD9</text>
+<path d="M440 913 L440 920" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<polygon points="434,931 446,931 440,920" fill="white" stroke="#0067a5" stroke-width="1.5"/>
+<path d="M433 920 L447 920" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M440 931 L440 940" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M340 940 L440 940" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M390 940 L390 946" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M378 946 L402 946" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M382 952 L398 952" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="85" y="982" font-family="DejaVu Sans" font-size="12" fill="#b3261e" font-weight="700" text-anchor="start">D5 / canais usados</text>
+<text x="115" y="999" font-family="DejaVu Sans" font-size="10" fill="#0067a5" font-weight="700" text-anchor="middle">JC1</text>
+<path d="M115 1003 L115 1010" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<polygon points="109,1021 121,1021 115,1010" fill="white" stroke="#0067a5" stroke-width="1.5"/>
+<path d="M108 1010 L122 1010" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M115 1021 L115 1030" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M115 1030 L115 1030" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M115 1030 L115 1036" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M103 1036 L127 1036" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M107 1042 L123 1042" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="310" y="982" font-family="DejaVu Sans" font-size="12" fill="#b3261e" font-weight="700" text-anchor="start">D6 / canais usados</text>
+<text x="340" y="999" font-family="DejaVu Sans" font-size="10" fill="#0067a5" font-weight="700" text-anchor="middle">JC7</text>
+<path d="M340 1003 L340 1010" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<polygon points="334,1021 346,1021 340,1010" fill="white" stroke="#0067a5" stroke-width="1.5"/>
+<path d="M333 1010 L347 1010" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M340 1021 L340 1030" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M340 1030 L340 1030" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M340 1030 L340 1036" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M328 1036 L352 1036" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M332 1042 L348 1042" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<rect x="585" y="835" width="1040" height="216" rx="6" fill="#fff9e9" stroke="#c18a00" stroke-width="2"/>
+<text x="610" y="874" font-family="DejaVu Sans" font-size="20" fill="#c18a00" font-weight="700" text-anchor="start">PENDÊNCIAS ELÉTRICAS EXTERNAS</text>
+<text x="610" y="909" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">I²C: funcionamento relatado; confirmar tensões e pull-ups dos breakouts. Barramentos separados.</text>
+<text x="610" y="939" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">XADC: IOSTANDARD LVCMOS33 não define faixa analógica. Conferir os divisores e o limite de 1 V.</text>
+<text x="610" y="969" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">Joystick: quatro sentidos, repouso, limites e LOCK/UNLOCK relatados. Valores dos divisores pendentes.</text>
+<text x="610" y="999" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="400" text-anchor="start">Buzzer: JC7/E7 → resistor de base → 2N2222A; áudio e ACK relatados; tensão e resistor pendentes.</text>
+<text x="610" y="1027" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">PMOD JD/JC: resistores em série de 200 Ω; arrays D1/D2 e D5/D6 ligados ao GND (canais usados representados).</text>
+<g transform="translate(0 1188)">
+<rect width="100%" height="100%" fill="white"/>
+<rect x="22" y="22" width="1636" height="1144" rx="0" fill="white" stroke="#172b3a" stroke-width="2"/>
+<text x="55" y="74" font-family="DejaVu Sans" font-size="18" fill="#0067a5" font-weight="700" text-anchor="start">HUD FPGA  /  ESQUEMÁTICO ELÉTRICO</text>
+<text x="55" y="120" font-family="DejaVu Sans" font-size="32" fill="#172b3a" font-weight="700" text-anchor="start">Controles da placa, LEDs e vídeo VGA</text>
+<text x="55" y="151" font-family="DejaVu Sans" font-size="16" fill="#526575" font-weight="400" text-anchor="start">XDC: 48 pads únicos; clock 100 MHz / pixel_clk ÷4; constraints comentadas não são ativas.</text>
+<path d="M55 169 L1625 169" fill="none" stroke="#172b3a" stroke-width="1" stroke-linecap="round"/>
+<text x="55" y="1129" font-family="DejaVu Sans" font-size="13" fill="#526575" font-weight="400" text-anchor="start">Nexys A7-100T  •  xc7a100tcsg324-1  •  Rev. 13/10/2026 | XDC/DCP + Digilent | bancada relatada pelo operador</text>
+<text x="1625" y="1129" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="700" text-anchor="end">FOLHA 2 / 3</text>
+<rect x="55" y="205" width="630" height="550" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="73" y="237" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">U1  •  FPGA Artix-7</text>
+<text x="80" y="284" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">ENTRADAS DE CONTROLE  •  PACKAGE_PIN / RECURSO</text>
+<text x="80" y="320" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">display_mode</text>
+<text x="325" y="320" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">J15</text>
+<text x="420" y="320" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">SW0</text>
+<path d="M685 315 L710 315" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="349" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">style_mode</text>
+<text x="325" y="349" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">L16</text>
+<text x="420" y="349" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">SW1</text>
+<path d="M685 344 L710 344" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="378" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">operacao_sw[0]</text>
+<text x="325" y="378" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">M13</text>
+<text x="420" y="378" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">SW2</text>
+<path d="M685 373 L710 373" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="407" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">operacao_sw[1]</text>
+<text x="325" y="407" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">R15</text>
+<text x="420" y="407" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">SW3</text>
+<path d="M685 402 L710 402" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="436" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">sw[9]</text>
+<text x="325" y="436" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">U8</text>
+<text x="420" y="436" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">SW9 · LVCMOS18</text>
+<path d="M685 431 L710 431" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="465" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">sw[10]</text>
+<text x="325" y="465" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">R16</text>
+<text x="420" y="465" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">SW10</text>
+<path d="M685 460 L710 460" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="494" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">sw[11]</text>
+<text x="325" y="494" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">T13</text>
+<text x="420" y="494" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">SW11</text>
+<path d="M685 489 L710 489" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="523" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">sw[12]</text>
+<text x="325" y="523" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">H6</text>
+<text x="420" y="523" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">SW12</text>
+<path d="M685 518 L710 518" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="552" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">sw[13]</text>
+<text x="325" y="552" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">U12</text>
+<text x="420" y="552" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">SW13</text>
+<path d="M685 547 L710 547" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="581" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">sw[14]</text>
+<text x="325" y="581" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">U11</text>
+<text x="420" y="581" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">SW14</text>
+<path d="M685 576 L710 576" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="610" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">sw[15]</text>
+<text x="325" y="610" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">V10</text>
+<text x="420" y="610" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">SW15</text>
+<path d="M685 605 L710 605" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="639" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">btn_heading[0]</text>
+<text x="325" y="639" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">M18</text>
+<text x="420" y="639" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">BTNU</text>
+<path d="M685 634 L710 634" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="668" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">btn_heading[1]</text>
+<text x="325" y="668" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">P18</text>
+<text x="420" y="668" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">BTND</text>
+<path d="M685 663 L710 663" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="697" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">ack_btn</text>
+<text x="325" y="697" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">N17</text>
+<text x="420" y="697" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">BTNC</text>
+<path d="M685 692 L710 692" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="80" y="731" font-family="DejaVu Sans" font-size="12" fill="#526575" font-weight="400" text-anchor="start">BTNU/BTND/BTNC: série R51/R53/R55; pull-down R63/R61/R62; todos 10 kΩ.</text>
+<text x="80" y="750" font-family="DejaVu Sans" font-size="12" fill="#526575" font-weight="400" text-anchor="start">SW0–3/SW9–15: resistores de 10 kΩ; SW9 usa o banco de 1,8 V.</text>
+<rect x="735" y="205" width="340" height="270" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="753" y="237" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">S1–S15  •  SWITCHES</text>
+<text x="753" y="263" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">Recursos onboard Nexys A7</text>
+<path d="M755 295 L777 295" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M777 295 L790 290" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<path d="M790 290 L807 295" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<text x="815" y="299" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">SW0</text>
+<text x="920" y="299" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="400" text-anchor="start">J15</text>
+<path d="M755 311 L777 311" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M777 311 L790 306" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<path d="M790 306 L807 311" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<text x="815" y="315" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">SW1</text>
+<text x="920" y="315" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="400" text-anchor="start">L16</text>
+<path d="M755 327 L777 327" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M777 327 L790 322" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<path d="M790 322 L807 327" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<text x="815" y="331" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">SW2</text>
+<text x="920" y="331" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="400" text-anchor="start">M13</text>
+<path d="M755 343 L777 343" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M777 343 L790 338" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<path d="M790 338 L807 343" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<text x="815" y="347" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">SW3</text>
+<text x="920" y="347" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="400" text-anchor="start">R15</text>
+<path d="M755 359 L777 359" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M777 359 L790 354" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<path d="M790 354 L807 359" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<text x="815" y="363" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">SW9</text>
+<text x="920" y="363" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="400" text-anchor="start">U8</text>
+<path d="M755 375 L777 375" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M777 375 L790 370" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<path d="M790 370 L807 375" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<text x="815" y="379" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">SW10</text>
+<text x="920" y="379" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="400" text-anchor="start">R16</text>
+<path d="M755 391 L777 391" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M777 391 L790 386" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<path d="M790 386 L807 391" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<text x="815" y="395" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">SW11</text>
+<text x="920" y="395" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="400" text-anchor="start">T13</text>
+<path d="M755 407 L777 407" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M777 407 L790 402" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<path d="M790 402 L807 407" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<text x="815" y="411" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">SW12</text>
+<text x="920" y="411" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="400" text-anchor="start">H6</text>
+<path d="M755 423 L777 423" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M777 423 L790 418" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<path d="M790 418 L807 423" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<text x="815" y="427" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">SW13</text>
+<text x="920" y="427" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="400" text-anchor="start">U12</text>
+<path d="M755 439 L777 439" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M777 439 L790 434" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<path d="M790 434 L807 439" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<text x="815" y="443" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">SW14</text>
+<text x="920" y="443" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="400" text-anchor="start">U11</text>
+<path d="M755 455 L777 455" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M777 455 L790 450" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<path d="M790 450 L807 455" fill="none" stroke="#172b3a" stroke-width="2" stroke-linecap="round"/>
+<text x="815" y="459" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">SW15</text>
+<text x="920" y="459" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="400" text-anchor="start">V10</text>
+<rect x="1098" y="205" width="527" height="250" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="1116" y="237" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">BTNU / BTND / BTNC</text>
+<text x="1116" y="263" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">Contatos integrados na placa; entradas digitais</text>
+<circle cx="1140" cy="290" r="17" fill="white" stroke="#0067a5" stroke-width="3"/>
+<text x="1175" y="295" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="700" text-anchor="start">BTNU</text>
+<text x="1355" y="295" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">FPGA M18</text>
+<circle cx="1140" cy="338" r="17" fill="white" stroke="#0067a5" stroke-width="3"/>
+<text x="1175" y="343" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="700" text-anchor="start">BTND</text>
+<text x="1355" y="343" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">FPGA P18</text>
+<circle cx="1140" cy="386" r="17" fill="white" stroke="#0067a5" stroke-width="3"/>
+<text x="1175" y="391" font-family="DejaVu Sans" font-size="16" fill="#172b3a" font-weight="700" text-anchor="start">BTNC</text>
+<text x="1355" y="391" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">FPGA N17</text>
+<rect x="735" y="485" width="890" height="270" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="753" y="517" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">LD0–LD6  •  INDICADORES DA PLACA</text>
+<text x="753" y="543" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">LEDs onboard são cargas da placa; resistores existentes ficam no circuito Nexys.</text>
+<text x="765" y="560" font-family="DejaVu Sans" font-size="12" fill="#172b3a" font-weight="700" text-anchor="start">JOY_LED[0]  /  H17</text>
+<path d="M765 592 L771 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M771 592 L783 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="783" y="583" width="58" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M841 592 L853 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="812.0" y="578" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R33  330 Ω</text>
+<path d="M853 592 L868 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<polygon points="868,580 868,604 885,592" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M888 580 L888 604" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M877 577 L887 567" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M887 567 L887 573" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M887 567 L881 567" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M888 592 L892 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M892 592 L892 613" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M883 613 L901 613" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M886 618 L898 618" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="896" y="597" font-family="DejaVu Sans" font-size="12" fill="#b3261e" font-weight="700" text-anchor="start">LD0 / X−</text>
+<text x="973" y="560" font-family="DejaVu Sans" font-size="12" fill="#172b3a" font-weight="700" text-anchor="start">JOY_LED[1]  /  K15</text>
+<path d="M973 592 L979 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M979 592 L991 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="991" y="583" width="58" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1049 592 L1061 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1020.0" y="578" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R34  330 Ω</text>
+<path d="M1061 592 L1076 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<polygon points="1076,580 1076,604 1093,592" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1096 580 L1096 604" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1085 577 L1095 567" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1095 567 L1095 573" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1095 567 L1089 567" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1096 592 L1100 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1100 592 L1100 613" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1091 613 L1109 613" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1094 618 L1106 618" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="1104" y="597" font-family="DejaVu Sans" font-size="12" fill="#b3261e" font-weight="700" text-anchor="start">LD1 / X+</text>
+<text x="1181" y="560" font-family="DejaVu Sans" font-size="12" fill="#172b3a" font-weight="700" text-anchor="start">JOY_LED[2]  /  J13</text>
+<path d="M1181 592 L1187 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1187 592 L1199 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="1199" y="583" width="58" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1257 592 L1269 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1228.0" y="578" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R36  330 Ω</text>
+<path d="M1269 592 L1284 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<polygon points="1284,580 1284,604 1301,592" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1304 580 L1304 604" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1293 577 L1303 567" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1303 567 L1303 573" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1303 567 L1297 567" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1304 592 L1308 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1308 592 L1308 613" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1299 613 L1317 613" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1302 618 L1314 618" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="1312" y="597" font-family="DejaVu Sans" font-size="12" fill="#b3261e" font-weight="700" text-anchor="start">LD2 / Y−</text>
+<text x="1389" y="560" font-family="DejaVu Sans" font-size="12" fill="#172b3a" font-weight="700" text-anchor="start">JOY_LED[3]  /  N14</text>
+<path d="M1389 592 L1395 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1395 592 L1407 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="1407" y="583" width="58" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1465 592 L1477 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1436.0" y="578" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R39  330 Ω</text>
+<path d="M1477 592 L1492 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<polygon points="1492,580 1492,604 1509,592" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1512 580 L1512 604" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1501 577 L1511 567" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1511 567 L1511 573" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1511 567 L1505 567" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1512 592 L1516 592" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1516 592 L1516 613" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1507 613 L1525 613" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1510 618 L1522 618" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="1520" y="597" font-family="DejaVu Sans" font-size="12" fill="#b3261e" font-weight="700" text-anchor="start">LD3 / Y+</text>
+<text x="765" y="642" font-family="DejaVu Sans" font-size="12" fill="#172b3a" font-weight="700" text-anchor="start">GYRO_LED  /  R18</text>
+<path d="M765 674 L771 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M771 674 L783 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="783" y="665" width="58" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M841 674 L853 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="812.0" y="660" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R41  330 Ω</text>
+<path d="M853 674 L868 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<polygon points="868,662 868,686 885,674" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M888 662 L888 686" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M877 659 L887 649" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M887 649 L887 655" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M887 649 L881 649" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M888 674 L892 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M892 674 L892 695" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M883 695 L901 695" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M886 700 L898 700" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="896" y="679" font-family="DejaVu Sans" font-size="12" fill="#b3261e" font-weight="700" text-anchor="start">LD4 / MPU</text>
+<text x="973" y="642" font-family="DejaVu Sans" font-size="12" fill="#172b3a" font-weight="700" text-anchor="start">BARO_LED  /  V17</text>
+<path d="M973 674 L979 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M979 674 L991 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="991" y="665" width="58" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1049 674 L1061 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1020.0" y="660" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R44  330 Ω</text>
+<path d="M1061 674 L1076 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<polygon points="1076,662 1076,686 1093,674" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1096 662 L1096 686" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1085 659 L1095 649" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1095 649 L1095 655" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1095 649 L1089 649" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1096 674 L1100 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1100 674 L1100 695" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1091 695 L1109 695" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1094 700 L1106 700" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="1104" y="679" font-family="DejaVu Sans" font-size="12" fill="#b3261e" font-weight="700" text-anchor="start">LD5 / BMP</text>
+<text x="1181" y="642" font-family="DejaVu Sans" font-size="12" fill="#172b3a" font-weight="700" text-anchor="start">MAG_LED  /  U17</text>
+<path d="M1181 674 L1187 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1187 674 L1199 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="1199" y="665" width="58" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1257 674 L1269 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1228.0" y="660" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R47  330 Ω</text>
+<path d="M1269 674 L1284 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<polygon points="1284,662 1284,686 1301,674" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1304 662 L1304 686" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1293 659 L1303 649" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1303 649 L1303 655" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1303 649 L1297 649" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1304 674 L1308 674" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1308 674 L1308 695" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1299 695 L1317 695" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<path d="M1302 700 L1314 700" fill="none" stroke="#0067a5" stroke-width="2" stroke-linecap="round"/>
+<text x="1312" y="679" font-family="DejaVu Sans" font-size="12" fill="#b3261e" font-weight="700" text-anchor="start">LD6 / HMC</text>
+<rect x="55" y="790" width="1570" height="315" rx="6" fill="white" stroke="#172b3a" stroke-width="2"/>
+<text x="80" y="827" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">J2  •  VGA ANALÓGICO DE-15  /  DAC RESISTIVO ONBOARD</text>
+<text x="80" y="854" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">R/G/B: R0=4 kΩ, R1=2 kΩ, R2=1 kΩ, R3=510 Ω; rede e resistor de sincronismo conforme Digilent, folha 2.</text>
+<text x="85" y="920" font-family="DejaVu Sans" font-size="17" fill="#b3261e" font-weight="700" text-anchor="start">VGA_R[0:3]</text>
+<path d="M440 962 L440 1081" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="85" y="967" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">VGA_R[0]</text>
+<text x="195" y="967" font-family="DejaVu Sans" font-size="14" fill="#b3261e" font-weight="700" text-anchor="start">A3</text>
+<path d="M235 962 L250 962" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M250 962 L262 962" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="262" y="953" width="71" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M333 962 L345 962" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="297.5" y="948" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R111  4 kΩ</text>
+<path d="M345 962 L440 962" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="440" cy="962" r="5" fill="#0067a5"/>
+<text x="85" y="1002" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">VGA_R[1]</text>
+<text x="195" y="1002" font-family="DejaVu Sans" font-size="14" fill="#b3261e" font-weight="700" text-anchor="start">B4</text>
+<path d="M235 997 L250 997" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M250 997 L262 997" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="262" y="988" width="71" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M333 997 L345 997" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="297.5" y="983" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R112  2 kΩ</text>
+<path d="M345 997 L440 997" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="440" cy="997" r="5" fill="#0067a5"/>
+<text x="85" y="1037" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">VGA_R[2]</text>
+<text x="195" y="1037" font-family="DejaVu Sans" font-size="14" fill="#b3261e" font-weight="700" text-anchor="start">C5</text>
+<path d="M235 1032 L250 1032" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M250 1032 L262 1032" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="262" y="1023" width="71" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M333 1032 L345 1032" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="297.5" y="1018" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R113  1 kΩ</text>
+<path d="M345 1032 L440 1032" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="440" cy="1032" r="5" fill="#0067a5"/>
+<text x="85" y="1072" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">VGA_R[3]</text>
+<text x="195" y="1072" font-family="DejaVu Sans" font-size="14" fill="#b3261e" font-weight="700" text-anchor="start">A4</text>
+<path d="M235 1067 L250 1067" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M250 1067 L262 1067" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="262" y="1058" width="71" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M333 1067 L345 1067" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="297.5" y="1053" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R115  510 Ω</text>
+<path d="M345 1067 L440 1067" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="440" cy="1067" r="5" fill="#0067a5"/>
+<path d="M440 1081 L490 1081" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="497" y="1086" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">J2 pin 1 / RED</text>
+<text x="585" y="920" font-family="DejaVu Sans" font-size="17" fill="#b3261e" font-weight="700" text-anchor="start">VGA_G[0:3]</text>
+<path d="M940 962 L940 1081" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="585" y="967" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">VGA_G[0]</text>
+<text x="695" y="967" font-family="DejaVu Sans" font-size="14" fill="#b3261e" font-weight="700" text-anchor="start">C6</text>
+<path d="M735 962 L750 962" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M750 962 L762 962" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="762" y="953" width="71" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M833 962 L845 962" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="797.5" y="948" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R116  4 kΩ</text>
+<path d="M845 962 L940 962" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="940" cy="962" r="5" fill="#0067a5"/>
+<text x="585" y="1002" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">VGA_G[1]</text>
+<text x="695" y="1002" font-family="DejaVu Sans" font-size="14" fill="#b3261e" font-weight="700" text-anchor="start">A5</text>
+<path d="M735 997 L750 997" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M750 997 L762 997" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="762" y="988" width="71" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M833 997 L845 997" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="797.5" y="983" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R117  2 kΩ</text>
+<path d="M845 997 L940 997" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="940" cy="997" r="5" fill="#0067a5"/>
+<text x="585" y="1037" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">VGA_G[2]</text>
+<text x="695" y="1037" font-family="DejaVu Sans" font-size="14" fill="#b3261e" font-weight="700" text-anchor="start">B6</text>
+<path d="M735 1032 L750 1032" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M750 1032 L762 1032" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="762" y="1023" width="71" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M833 1032 L845 1032" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="797.5" y="1018" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R119  1 kΩ</text>
+<path d="M845 1032 L940 1032" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="940" cy="1032" r="5" fill="#0067a5"/>
+<text x="585" y="1072" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">VGA_G[3]</text>
+<text x="695" y="1072" font-family="DejaVu Sans" font-size="14" fill="#b3261e" font-weight="700" text-anchor="start">A6</text>
+<path d="M735 1067 L750 1067" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M750 1067 L762 1067" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="762" y="1058" width="71" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M833 1067 L845 1067" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="797.5" y="1053" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R120  510 Ω</text>
+<path d="M845 1067 L940 1067" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="940" cy="1067" r="5" fill="#0067a5"/>
+<path d="M940 1081 L990 1081" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="997" y="1086" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">J2 pin 2 / GREEN</text>
+<text x="1085" y="920" font-family="DejaVu Sans" font-size="17" fill="#b3261e" font-weight="700" text-anchor="start">VGA_B[0:3]</text>
+<path d="M1440 962 L1440 1081" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1085" y="967" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">VGA_B[0]</text>
+<text x="1195" y="967" font-family="DejaVu Sans" font-size="14" fill="#b3261e" font-weight="700" text-anchor="start">B7</text>
+<path d="M1235 962 L1250 962" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1250 962 L1262 962" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="1262" y="953" width="71" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1333 962 L1345 962" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1297.5" y="948" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R122  4 kΩ</text>
+<path d="M1345 962 L1440 962" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1440" cy="962" r="5" fill="#0067a5"/>
+<text x="1085" y="1002" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">VGA_B[1]</text>
+<text x="1195" y="1002" font-family="DejaVu Sans" font-size="14" fill="#b3261e" font-weight="700" text-anchor="start">C7</text>
+<path d="M1235 997 L1250 997" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1250 997 L1262 997" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="1262" y="988" width="71" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1333 997 L1345 997" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1297.5" y="983" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R123  2 kΩ</text>
+<path d="M1345 997 L1440 997" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1440" cy="997" r="5" fill="#0067a5"/>
+<text x="1085" y="1037" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">VGA_B[2]</text>
+<text x="1195" y="1037" font-family="DejaVu Sans" font-size="14" fill="#b3261e" font-weight="700" text-anchor="start">D7</text>
+<path d="M1235 1032 L1250 1032" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1250 1032 L1262 1032" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="1262" y="1023" width="71" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1333 1032 L1345 1032" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1297.5" y="1018" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R125  1 kΩ</text>
+<path d="M1345 1032 L1440 1032" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1440" cy="1032" r="5" fill="#0067a5"/>
+<text x="1085" y="1072" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">VGA_B[3]</text>
+<text x="1195" y="1072" font-family="DejaVu Sans" font-size="14" fill="#b3261e" font-weight="700" text-anchor="start">D8</text>
+<path d="M1235 1067 L1250 1067" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1250 1067 L1262 1067" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="1262" y="1058" width="71" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1333 1067 L1345 1067" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1297.5" y="1053" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R126  510 Ω</text>
+<path d="M1345 1067 L1440 1067" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1440" cy="1067" r="5" fill="#0067a5"/>
+<path d="M1440 1081 L1490 1081" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1497" y="1086" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">J2 pin 3 / BLUE</text>
+<text x="80" y="891" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">VGA_HS / B11</text>
+<path d="M195 886 L210 886" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M210 886 L222 886" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="222" y="877" width="54" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M276 886 L288 886" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="249.0" y="872" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R127  100 Ω</text>
+<path d="M288 886 L310 886" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="320" y="891" font-family="DejaVu Sans" font-size="13" fill="#0067a5" font-weight="700" text-anchor="start">J2 / 13</text>
+<text x="870" y="891" font-family="DejaVu Sans" font-size="13" fill="#172b3a" font-weight="700" text-anchor="start">VGA_VS / B12</text>
+<path d="M985 886 L1000 886" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1000 886 L1012 886" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="1012" y="877" width="54" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1066 886 L1078 886" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1039.0" y="872" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">R128  100 Ω</text>
+<path d="M1078 886 L1100 886" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1110" y="891" font-family="DejaVu Sans" font-size="13" fill="#0067a5" font-weight="700" text-anchor="start">J2 / 14</text>
+<text x="80" y="1100" font-family="DejaVu Sans" font-size="11" fill="#526575" font-weight="400" text-anchor="start">J2: GND nos contatos 5, 6, 7, 8 e 10 (retorno VGA onboard).</text>
+</g><g transform="translate(0 2376)">
+<rect width="100%" height="100%" fill="white"/>
+<rect x="22" y="22" width="1636" height="1144" rx="0" fill="white" stroke="#172b3a" stroke-width="2"/>
+<text x="55" y="74" font-family="DejaVu Sans" font-size="18" fill="#0067a5" font-weight="700" text-anchor="start">HUD FPGA  /  ESQUEMÁTICO ELÉTRICO</text>
+<text x="55" y="120" font-family="DejaVu Sans" font-size="32" fill="#172b3a" font-weight="700" text-anchor="start">Montagem externa na protoboard</text>
+<text x="55" y="151" font-family="DejaVu Sans" font-size="16" fill="#526575" font-weight="400" text-anchor="start">Circuitos relatados em bancada. VCC dos módulos: 3,3 V informado; valores de resistores e tensões não medidos.</text>
+<path d="M55 169 L1625 169" fill="none" stroke="#172b3a" stroke-width="1" stroke-linecap="round"/>
+<text x="55" y="1129" font-family="DejaVu Sans" font-size="13" fill="#526575" font-weight="400" text-anchor="start">Nexys A7-100T  •  xc7a100tcsg324-1  •  Rev. 13/10/2026 | XDC/DCP + Digilent | bancada relatada pelo operador</text>
+<text x="1625" y="1129" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="700" text-anchor="end">FOLHA 3 / 3</text>
+<rect x="55" y="200" width="900" height="560" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="73" y="232" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">KY-023  •  DOIS DIVISORES INDEPENDENTES</text>
+<text x="73" y="258" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">Alimentação em JC6; GND em JC5; referências negativas no mesmo GND</text>
+<rect x="80" y="300" width="230" height="430" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="98" y="332" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">J4  •  KY-023</text>
+<text x="98" y="355" font-family="DejaVu Sans" font-size="13" fill="#526575" font-weight="400" text-anchor="start">Pinos pelos nomes</text>
+<text x="98" y="380" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">VCC / +5V</text>
+<path d="M310 375 L360 375" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="370" y="380" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">3V3 / JC6</text>
+<text x="98" y="420" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">GND</text>
+<path d="M310 415 L355 415" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M355 415 L355 425" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M340 425 L370 425" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M345 431 L365 431" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M350 437 L360 437" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="98" y="475" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">VRx</text>
+<path d="M310 470 L450 470" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M450 470 L462 470" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="462" y="461" width="76" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M538 470 L550 470" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="500.0" y="456" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">RX1  valor NI</text>
+<path d="M550 470 L625 470" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="625" cy="470" r="5" fill="#0067a5"/>
+<path d="M625 470 L765 470" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="775" y="475" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">JXADC1 / A13</text>
+<path d="M625 470 L625 480" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="617" y="480" width="16" height="42" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M625 522 L625 535" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="643" y="499" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="start">RX2</text>
+<text x="643" y="518" font-family="DejaVu Sans" font-size="12" fill="#526575" font-weight="400" text-anchor="start">valor NI</text>
+<path d="M625 535 L625 545" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M610 545 L640 545" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M615 551 L635 551" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M620 557 L630 557" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="98" y="610" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">VRy</text>
+<path d="M310 605 L450 605" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M450 605 L462 605" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="462" y="596" width="76" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M538 605 L550 605" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="500.0" y="591" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">RY1  valor NI</text>
+<path d="M550 605 L625 605" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="625" cy="605" r="5" fill="#0067a5"/>
+<path d="M625 605 L765 605" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="775" y="610" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">JXADC2 / A15</text>
+<path d="M625 605 L625 615" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="617" y="615" width="16" height="42" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M625 657 L625 670" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="643" y="634" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="start">RY2</text>
+<text x="643" y="653" font-family="DejaVu Sans" font-size="12" fill="#526575" font-weight="400" text-anchor="start">valor NI</text>
+<path d="M625 670 L625 680" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M610 680 L640 680" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M615 686 L635 686" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M620 692 L630 692" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M310 710 L800 710" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="98" y="715" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">SW</text>
+<text x="810" y="715" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">JC1 / K1</text>
+<text x="98" y="750" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">JXADC7 / A14 e JXADC8 / A16 → GND comum. Entradas positivas: faixa de conversão 0 a 1 V.</text>
+<text x="80" y="280" font-family="DejaVu Sans" font-size="12" fill="#526575" font-weight="400" text-anchor="start">NI = não informado. Cada eixo mantém seu próprio ponto central; somente GND é compartilhado.</text>
+<rect x="990" y="200" width="635" height="560" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="1008" y="232" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">Q1  •  BUZZER ATIVO / 2N2222A</text>
+<text x="1008" y="258" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">Controle em JC7; estágio externo relatado pelo operador</text>
+<text x="1010" y="288" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">V_BUZ: tensão nominal não informada</text>
+<text x="1400" y="308" font-family="DejaVu Sans" font-size="13" fill="#0067a5" font-weight="700" text-anchor="start">V_BUZ</text>
+<path d="M1435 315 L1435 345" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="1403" y="345" width="64" height="55" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<text x="1435" y="379" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="700" text-anchor="middle">BZ1</text>
+<text x="1480" y="355" font-family="DejaVu Sans" font-size="16" fill="#b3261e" font-weight="700" text-anchor="start">+</text>
+<text x="1480" y="400" font-family="DejaVu Sans" font-size="16" fill="#0067a5" font-weight="700" text-anchor="start">−</text>
+<path d="M1435 400 L1435 455" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1390" cy="505" r="56" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1365 472 L1365 538" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1365 488 L1435 455" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1365 522 L1435 555" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1435 555 L1435 595" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<polygon points="1404,540 1414,527 1425,550" fill="#0067a5"/>
+<path d="M1435 595 L1435 605" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1420 605 L1450 605" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1425 611 L1445 611" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1430 617 L1440 617" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1340" y="493" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">B</text>
+<text x="1450" y="450" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">C</text>
+<text x="1450" y="570" font-family="DejaVu Sans" font-size="15" fill="#b3261e" font-weight="700" text-anchor="start">E</text>
+<path d="M1010 505 L1110 505" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<path d="M1110 505 L1122 505" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<rect x="1122" y="496" width="76" height="18" rx="0" fill="white" stroke="#0067a5" stroke-width="2"/>
+<path d="M1198 505 L1210 505" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1160.0" y="491" font-family="DejaVu Sans" font-size="13" fill="#b3261e" font-weight="700" text-anchor="middle">RB  valor NI</text>
+<path d="M1210 505 L1365 505" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1010" y="480" font-family="DejaVu Sans" font-size="14" fill="#0067a5" font-weight="700" text-anchor="start">JC7 / E7</text>
+<text x="1010" y="675" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">Emissor → GND; coletor → negativo do buzzer.</text>
+<text x="1010" y="705" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">Diotec TO-92: face plana à frente, E / B / C.</text>
+<text x="1010" y="735" font-family="DejaVu Sans" font-size="14" fill="#526575" font-weight="400" text-anchor="start">Positivo → V_BUZ; tensão e resistor RB ainda pendentes.</text>
+<rect x="55" y="800" width="500" height="285" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="73" y="832" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">MPU-6050 / GY-521</text>
+<text x="73" y="858" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">Barramento I²C independente</text>
+<text x="75" y="895" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">SDA</text>
+<path d="M143 890 L270 890" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="280" y="895" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">JD8 / G4</text>
+<text x="75" y="930" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">SCL</text>
+<path d="M143 925 L270 925" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="280" y="930" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">JD7 / H2</text>
+<text x="75" y="965" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">VCC</text>
+<path d="M143 960 L270 960" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="280" y="965" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">3V3 relatado</text>
+<text x="75" y="1000" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">GND</text>
+<path d="M143 995 L270 995" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="280" y="1000" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">GND comum</text>
+<text x="75" y="1040" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">AD0 → GND; endereço 0x68</text>
+<text x="75" y="1070" font-family="DejaVu Sans" font-size="12" fill="#526575" font-weight="400" text-anchor="start">Pull-ups do breakout: presença e valores não medidos.</text>
+<rect x="590" y="800" width="500" height="285" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="608" y="832" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">BMP085 / SEN-09694</text>
+<text x="608" y="858" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">Barramento I²C independente</text>
+<text x="610" y="895" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">SDA</text>
+<path d="M678 890 L805 890" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="815" y="895" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">JD1 / H4</text>
+<text x="610" y="930" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">SCL</text>
+<path d="M678 925 L805 925" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="815" y="930" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">JD2 / H1</text>
+<text x="610" y="965" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">VCC</text>
+<path d="M678 960 L805 960" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="815" y="965" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">3V3 relatado</text>
+<text x="610" y="1000" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">GND</text>
+<path d="M678 995 L805 995" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="815" y="1000" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">GND comum</text>
+<text x="610" y="1040" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">EOC e XCLR não utilizados</text>
+<text x="610" y="1070" font-family="DejaVu Sans" font-size="12" fill="#526575" font-weight="400" text-anchor="start">Pull-ups do breakout: presença e valores não medidos.</text>
+<rect x="1125" y="800" width="500" height="285" rx="8" fill="#fff" stroke="#172b3a" stroke-width="2"/>
+<text x="1143" y="832" font-family="DejaVu Sans" font-size="21" fill="#172b3a" font-weight="700" text-anchor="start">HMC5883L</text>
+<text x="1143" y="858" font-family="DejaVu Sans" font-size="15" fill="#526575" font-weight="400" text-anchor="start">Barramento I²C independente</text>
+<text x="1145" y="895" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">SDA</text>
+<path d="M1213 890 L1340 890" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1350" y="895" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">JD3 / G1</text>
+<text x="1145" y="930" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">SCL</text>
+<path d="M1213 925 L1340 925" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1350" y="930" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">JD9 / G2</text>
+<text x="1145" y="965" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">VCC</text>
+<path d="M1213 960 L1340 960" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1350" y="965" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">3V3 relatado</text>
+<text x="1145" y="1000" font-family="DejaVu Sans" font-size="15" fill="#172b3a" font-weight="400" text-anchor="start">GND</text>
+<path d="M1213 995 L1340 995" fill="none" stroke="#0067a5" stroke-width="3" stroke-linecap="round"/>
+<text x="1350" y="1000" font-family="DejaVu Sans" font-size="15" fill="#0067a5" font-weight="700" text-anchor="start">GND comum</text>
+<text x="1145" y="1040" font-family="DejaVu Sans" font-size="14" fill="#172b3a" font-weight="400" text-anchor="start">DRDY não utilizado</text>
+<text x="1145" y="1070" font-family="DejaVu Sans" font-size="12" fill="#526575" font-weight="400" text-anchor="start">Pull-ups do breakout: presença e valores não medidos.</text>
+</g></svg>

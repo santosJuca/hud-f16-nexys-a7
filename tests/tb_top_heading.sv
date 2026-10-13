@@ -5,7 +5,7 @@ module tb_top_heading;
     always #5 clk=~clk;
     tri1 sda,scl,mpu_sda,mpu_scl,baro_sda,baro_scl;
     logic [1:0] btn=0;
-    logic [15:12] sw=4'b0101;
+    logic [15:9] sw=7'b0101000;
     wire led;
     logic presente=0;
     logic signed [15:0] mx=0,my=1000,mz=100;
@@ -62,7 +62,7 @@ module tb_top_heading;
         force dut.u_vga.h_cont=10'd0; force dut.u_vga.v_cont=10'd0;
         botao(1); entrada(10); quadro(10);
         if(led) $fatal(1,"MAG_LED aceso sem HMC");
-        if(dut.pitch_px_entrada !== -11'sd40 || dut.roll_q8_entrada !== -10'sd64)
+        if(dut.pitch_px_entrada !== -11'sd60 || dut.roll_q8_entrada !== -10'sd112)
             $fatal(1,"fallback de atitude alterado pelo HMC ausente");
         // Aguarda fim da tentativa ausente antes de oferecer o dispositivo.
         @(posedge sda); wait(scl===1); #100; presente=1;
@@ -75,10 +75,11 @@ module tb_top_heading;
         if(dut.heading_manual!=20) $fatal(1,"botao manual parou durante HMC valido");
         force dut.joystick_x_raw=12'd4095; force dut.joystick_y_raw=12'd0;
         #1;
-        if(dut.pitch_px_entrada!=-40 || dut.roll_q8_entrada!=-64)
+        if(dut.pitch_px_entrada!=-60 || dut.roll_q8_entrada!=-112)
             $fatal(1,"Joystick interferiu na atitude de fallback");
         entrada(90);
         release dut.joystick_x_raw; release dut.joystick_y_raw;
+        sw=7'b1111000; repeat(3) @(negedge clk);
         force dut.sensor_ok=1'b1; force dut.atitude_calibrada=1'b1;
         force dut.gyro_bias_calibrado=1'b1; force dut.fusao_valida=1'b1;
         force dut.fusao_pitch_px=-11'sd12; force dut.fusao_roll_q8=10'sd17;

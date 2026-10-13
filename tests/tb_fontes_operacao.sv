@@ -2,8 +2,10 @@
 module tb_fontes_operacao;
     logic clk=0; always #5 clk=~clk;
     logic reset=1,ack=0; logic [1:0] switches=0;
+    logic attitude_manual_valid=0;
     logic [2:0] fontes_validas=7,novas_amostras=0;
     logic signed [31:0] pitch_real_q10=0,roll_real_q10=0;
+    logic signed [31:0] pitch_manual_q10=0,roll_manual_q10=0;
     logic signed [10:0] pitch_real_px=0,pitch_fallback_px=40;
     logic signed [9:0] roll_real_q8=0,roll_fallback_q8=64;
     logic [16:0] altitude_real_ft=1234;

@@ -16,20 +16,22 @@ performance de aeronave nem sistemas de proteção certificados.
 | BTNC | ACK do áudio | N17 |
 | SW0 / SW1 | Declutter / estilo | J15 / L16 |
 | BTNU / BTND | Heading manual de fallback | M18 / P18 |
-| Botão KY-023 | Seleção do fallback SENSOR/MANCHE | JA1/C17 |
-| SW12–15 | Atitude discreta de fallback | Pinagem anterior preservada |
+| Botão KY-023 | LOCK/UNLOCK da mira no estilo CAÇA | JC1/K1 |
+| SW15..12 | Atitude manual; `1111` seleciona MPU se SW9 estiver desligado | H6/U12/U11/V10 |
+| SW9/SW10/SW11 | Desativam uso da atitude MPU/barômetro/magnetômetro quando ligados | U8/R16/T13 |
 
 A atribuição foi conferida no Master XDC Nexys-A7-100T da Digilent.
 O vetor SW3:SW2 é sincronizado e precisa ficar estável por 100 ms. O ACK usa
 sincronização e debounce de 10 ms. A mudança visual é aplicada entre quadros.
-Não foi atribuído pino externo para buzzer.
+`buzzer_out` está atribuído a JC7/E7 em `LVCMOS33` e destina-se ao estágio
+transistorizado externo.
 
 ## Fontes por modo
 
 | Modo | Velocidade | Altitude | Pitch/roll | Heading |
 | --- | --- | --- | --- | --- |
 | SOLO | 0 kt comandado | Estimativa real barométrica/fusionada válida | Fusão MPU válida | Fusão/magnetômetro válido |
-| VOO | 280 ±5 kt simulados | 36000 ±50 ft simulados | Físicos quando válidos | Real quando válido; manual como fallback |
+| VOO | Parte de 280 kt e varia 1 kt/tick conforme pitch | 36000 ft iniciais, varia conforme pitch | MPU válida ou switches manuais | Real quando válido; manual como fallback |
 | POUSO | Perfil simulado | Altura relativa à pista simulada | Físicos quando válidos | Real quando válido; manual como fallback |
 
 Em SOLO, campos sem fonte válida recebem zero e indicação explícita ATT BAD,
@@ -37,12 +39,12 @@ ALT BAD ou HDG BAD. Zero não significa medição válida. Não aparecem os fall
 antigos de 280 kt e 36000 ft como se fossem medições físicas. A velocidade de
 SOLO é um valor de cenário, não uma medição de airspeed.
 
-Em VOO/POUSO, atitude física válida tem prioridade mesmo se o botão do joystick
-estiver em MANCHE. Quando a atitude física não está disponível, a cadeia de
-fallback existente fornece manche ou switches, com FALLBK e SENSOR. O heading
-manual também é identificado como fallback quando a referência real falha.
-Os alertas angulares são suspensos para atitude física inválida; SENSOR continua
-ativo. O manche preserva sua função no fallback e na configuração legada.
+SW15..12 em `1111` escolhe atitude MPU, desde que SW9 esteja desligado. Qualquer
+outro estado escolhe os comandos manuais, mesmo com MPU válido; SW9 ligado também
+força essa fonte. Os valores manuais são exibidos no HUD em SOLO e VOO/POUSO. Em
+VOO/POUSO, comandos manuais alimentam os alertas angulares e a dinâmica do
+simulador; FALLBK e ATT BAD continuam identificando que não é atitude física.
+O heading manual também serve de fallback quando a referência real não está válida.
 
 A validade inclui identificação/calibração dos módulos existentes e recebimento
 de primeira amostra. Sem nova amostra, expira após 250 ms para atitude, 1 s para
@@ -81,20 +83,25 @@ para a barométrica no toque, evitando misturar referências.
 
 Os limiares angulares usam graus Q10 da fusão, antes da conversão para pixels e
 inclinação Q8 do renderer. Um grau corresponde a 1024 unidades Q10. Os valores
-abaixo são didáticos. Não são GPWS, stall warning ou proteção de envelope.
+abaixo são didáticos. Não são GPWS nem proteção de envelope.
 
 | Condição | CAUTION entra | WARNING entra | Saída por histerese |
 | --- | --- | --- | --- |
 | Roll em VOO/POUSO | abs ≥15° | abs ≥25° | Caution <12°; warning <22° |
 | Pitch em VOO/POUSO | abs ≥10° | abs ≥15° | Caution <8°; warning <12° |
 | Roll em POUSO abaixo de 200 ft, antes do toque | abs ≥8° | abs ≥12° | Caution <6°; warning <10° |
+| Baixa velocidade simulada em VOO | ≤120 kt (SPEED) | ≤100 kt (STALL) | Caution sai acima de 125; STALL sai acima de 105 |
 | Velocidade em POUSO, 10<ALT<200 ft, antes do toque | ≥155 ou ≤100 kt | ≥175 ou ≤85 kt | Caution sai em 105<V<150; warning em 90<V<170 |
 | Sink em POUSO, 50<ALT<500 ft, VSI válido | ≤−1500 ft/min | ≤−2000 ft/min | Caution >−1300; warning >−1800 |
 
 As flags são registradas a 100 MHz; a histerese é de amplitude, sem tempo mínimo
 adicional para disparo. Mudança de modo limpa a memória de histerese anterior.
 SOLO inibe os alertas de atitude/velocidade de voo. TOUCHDOWN/ROLLOUT inibem
-speed/sink, para a redução normal de velocidade não gerar falso alerta.
+speed/sink, para a redução normal de velocidade não gerar falso alerta. Em VOO,
+o aviso SPEED permanece como CAUTION até 120 kt; a 100 kt ou menos o WARNING é
+identificado como STALL. Esse STALL é didático e baseado somente na velocidade
+simulada. Não há sensor de airspeed nem cálculo de ângulo de ataque nesta
+plataforma, portanto ele não detecta estol aerodinâmico.
 
 | Severity | Nome | Uso |
 | --- | --- | --- |
@@ -104,7 +111,7 @@ speed/sink, para a redução normal de velocidade não gerar falso alerta.
 | 11 | WARNING | Limite maior ou fonte necessária inválida em SOLO |
 
 WARNING > CAUTION > INFO. As flags individuais permanecem disponíveis.
-Desempate visual por severidade: ROLL, PITCH, SPEED, SINK, SENSOR. INFO usa MODE
+Desempate visual por severidade: ROLL, PITCH, STALL, SPEED, SINK, SENSOR. INFO usa MODE
 antes de ALT. Uma falha secundária continua indicada pelos rótulos de validade.
 O VSI usado nos alertas de POUSO é o da trajetória simulada, não o movimento
 vertical físico da bancada.
@@ -146,11 +153,10 @@ e silencia o áudio, mantendo alerta visual. Escalada de severidade cancela ACK;
 NONE limpa ACK. Manter BTNC pressionado não reconhece novos alertas repetidamente.
 Troca de causa com a mesma severidade não cancela ACK nesta versão.
 
-`buzzer_out` é sinal **interno ao top**, ligado a um pequeno indicador âmbar no
-HUD para observabilidade e retenção da lógica na síntese. Não existe porta de
-buzzer sem constraint nem atribuição a JA2. O indicador ACK mostra reconhecimento.
-A implementação elétrica está pendente. Nenhuma corrente, acionamento direto,
-transistor ou conexão física foi definido nesta etapa.
+`buzzer_out` sai pelo pino JC7/E7 (`LVCMOS33`) para acionar o estágio
+transistorizado externo. Os testes cobrem a lógica RTL; a saída física ainda
+precisa ser validada com o bitstream correspondente e a montagem elétrica. O
+indicador ACK mostra reconhecimento.
 
 ## Regressão e configuração anterior
 

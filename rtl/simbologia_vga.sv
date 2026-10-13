@@ -11,6 +11,8 @@ module simbologia_vga (
     input  logic [9:0] horizonte_y, // Centro limitado a 160..320.
     input  logic signed [9:0] roll_q8, // Inclinação: pixels por 256 pixels em X.
     input  logic [8:0] heading_deg,
+    input  logic [9:0] alvo_x,
+    input  logic [8:0] alvo_y,
     output logic       horizonte_on,
     output logic       altitude_on,
     output logic       direcao_on,
@@ -80,8 +82,6 @@ module simbologia_vga (
     logic alvo_inf_esq;
     logic alvo_inf_dir;
 
-    localparam int ALVO_X = 430;
-    localparam int ALVO_Y = 180;
     localparam int ALVO_M = 24;
     localparam int CANTO  = 10;
     function automatic logic [14:0] glifo_pitch(input integer codigo);
@@ -694,68 +694,68 @@ card_x_w = posicao_cardinal(270, int'(heading_deg));
         alvo_sup_esq =
             (
                 (
-                    (pixel_x >= ALVO_X - ALVO_M) &&
-                    (pixel_x <= ALVO_X - ALVO_M + CANTO) &&
-                    (pixel_y >= ALVO_Y - ALVO_M) &&
-                    (pixel_y <= ALVO_Y - ALVO_M + 1)
+                    (pixel_x >= alvo_x - ALVO_M) &&
+                    (pixel_x <= alvo_x - ALVO_M + CANTO) &&
+                    (pixel_y >= alvo_y - ALVO_M) &&
+                    (pixel_y <= alvo_y - ALVO_M + 1)
                 )
                 ||
                 (
-                    (pixel_x >= ALVO_X - ALVO_M) &&
-                    (pixel_x <= ALVO_X - ALVO_M + 1) &&
-                    (pixel_y >= ALVO_Y - ALVO_M) &&
-                    (pixel_y <= ALVO_Y - ALVO_M + CANTO)
+                    (pixel_x >= alvo_x - ALVO_M) &&
+                    (pixel_x <= alvo_x - ALVO_M + 1) &&
+                    (pixel_y >= alvo_y - ALVO_M) &&
+                    (pixel_y <= alvo_y - ALVO_M + CANTO)
                 )
             );
 
         alvo_sup_dir =
             (
                 (
-                    (pixel_x >= ALVO_X + ALVO_M - CANTO) &&
-                    (pixel_x <= ALVO_X + ALVO_M) &&
-                    (pixel_y >= ALVO_Y - ALVO_M) &&
-                    (pixel_y <= ALVO_Y - ALVO_M + 1)
+                    (pixel_x >= alvo_x + ALVO_M - CANTO) &&
+                    (pixel_x <= alvo_x + ALVO_M) &&
+                    (pixel_y >= alvo_y - ALVO_M) &&
+                    (pixel_y <= alvo_y - ALVO_M + 1)
                 )
                 ||
                 (
-                    (pixel_x >= ALVO_X + ALVO_M - 1) &&
-                    (pixel_x <= ALVO_X + ALVO_M) &&
-                    (pixel_y >= ALVO_Y - ALVO_M) &&
-                    (pixel_y <= ALVO_Y - ALVO_M + CANTO)
+                    (pixel_x >= alvo_x + ALVO_M - 1) &&
+                    (pixel_x <= alvo_x + ALVO_M) &&
+                    (pixel_y >= alvo_y - ALVO_M) &&
+                    (pixel_y <= alvo_y - ALVO_M + CANTO)
                 )
             );
 
         alvo_inf_esq =
             (
                 (
-                    (pixel_x >= ALVO_X - ALVO_M) &&
-                    (pixel_x <= ALVO_X - ALVO_M + CANTO) &&
-                    (pixel_y >= ALVO_Y + ALVO_M - 1) &&
-                    (pixel_y <= ALVO_Y + ALVO_M)
+                    (pixel_x >= alvo_x - ALVO_M) &&
+                    (pixel_x <= alvo_x - ALVO_M + CANTO) &&
+                    (pixel_y >= alvo_y + ALVO_M - 1) &&
+                    (pixel_y <= alvo_y + ALVO_M)
                 )
                 ||
                 (
-                    (pixel_x >= ALVO_X - ALVO_M) &&
-                    (pixel_x <= ALVO_X - ALVO_M + 1) &&
-                    (pixel_y >= ALVO_Y + ALVO_M - CANTO) &&
-                    (pixel_y <= ALVO_Y + ALVO_M)
+                    (pixel_x >= alvo_x - ALVO_M) &&
+                    (pixel_x <= alvo_x - ALVO_M + 1) &&
+                    (pixel_y >= alvo_y + ALVO_M - CANTO) &&
+                    (pixel_y <= alvo_y + ALVO_M)
                 )
             );
 
         alvo_inf_dir =
             (
                 (
-                    (pixel_x >= ALVO_X + ALVO_M - CANTO) &&
-                    (pixel_x <= ALVO_X + ALVO_M) &&
-                    (pixel_y >= ALVO_Y + ALVO_M - 1) &&
-                    (pixel_y <= ALVO_Y + ALVO_M)
+                    (pixel_x >= alvo_x + ALVO_M - CANTO) &&
+                    (pixel_x <= alvo_x + ALVO_M) &&
+                    (pixel_y >= alvo_y + ALVO_M - 1) &&
+                    (pixel_y <= alvo_y + ALVO_M)
                 )
                 ||
                 (
-                    (pixel_x >= ALVO_X + ALVO_M - 1) &&
-                    (pixel_x <= ALVO_X + ALVO_M) &&
-                    (pixel_y >= ALVO_Y + ALVO_M - CANTO) &&
-                    (pixel_y <= ALVO_Y + ALVO_M)
+                    (pixel_x >= alvo_x + ALVO_M - 1) &&
+                    (pixel_x <= alvo_x + ALVO_M) &&
+                    (pixel_y >= alvo_y + ALVO_M - CANTO) &&
+                    (pixel_y <= alvo_y + ALVO_M)
                 )
             );
 

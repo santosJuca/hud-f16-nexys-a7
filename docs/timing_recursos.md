@@ -1,6 +1,6 @@
 # Timing e recursos do build de 08/10/2026
 
-Os valores desta página vêm dos relatórios versionados em [`bitstreams/2026-10-08_hud_caca_marker/`](../bitstreams/2026-10-08_hud_caca_marker/), associados pelo README daquela pasta ao bitstream `top_reticula.bit`, à branch `feat/modos-alertas` e ao Vivado 2026.1 (build 6511674). O repositório não contém um manifesto de hashes de todas as fontes daquele build; portanto, não se afirma identidade criptográfica entre cada fonte e os relatórios.
+Os valores desta página vêm dos relatórios versionados em [`bitstreams/2026-10-08_hud_caca_marker/`](https://github.com/santosJuca/Trabalho-display-aviao-v2/blob/11343bb/bitstreams/2026-10-08_hud_caca_marker/), associados pelo README daquela pasta ao bitstream `top_reticula.bit`, à branch `feat/modos-alertas` e ao Vivado 2026.1 (build 6511674). O repositório não contém um manifesto de hashes de todas as fontes daquele build; portanto, não se afirma identidade criptográfica entre cada fonte e os relatórios.
 
 | Métrica | Relatório | Valor |
 | --- | --- | ---: |
@@ -24,4 +24,4 @@ O pior caminho de setup reportado tem 15 níveis lógicos; o detalhe está em `t
 
 ## Proveniência e validação
 
-O catálogo em [`bitstreams/README.md`](../bitstreams/README.md) identifica a versão, hash e status físico. O bitstream foi sintetizado, roteado e gerado, mas não foi programado na FPGA. A validação física integrada continua pendente. Builds de 05/10, 06/10 e 07/10 têm conjuntos e resultados diferentes e não são usados como fonte das métricas desta página.
+O catálogo em [`bitstreams/README.md`](../bitstreams/README.md) identifica a versão, hash e status físico. Os resultados de síntese, roteamento e geração desta página não são validação física. À época deste registro, não havia ensaios físicos; resultados posteriores informados pelo operador estão em [`entrega_demo.md`](entrega_demo.md). Builds de 05/10, 06/10 e 07/10 têm conjuntos e resultados diferentes e não são usados como fonte das métricas desta página.

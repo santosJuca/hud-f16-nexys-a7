@@ -3,7 +3,7 @@ module tb_top_fusao_sensores;
     logic clk=0; always #5 clk=~clk;
     tri1 sda,scl,bsda,bscl,msda,mscl;
     // Regressao da configuracao anterior; modos novos tem banco integrado proprio.
-    top_reticula #(.MODOS_OPERACIONAIS(1'b0)) dut(.operacao_sw(2'b00),.ack_btn(1'b0),.clk(clk),.btn_heading(2'b0),.sw(4'b0),
+    top_reticula #(.MODOS_OPERACIONAIS(1'b0)) dut(.operacao_sw(2'b00),.ack_btn(1'b0),.clk(clk),.btn_heading(2'b0),.sw(7'b1111000),
         .display_mode(1'b0),.style_mode(1'b0),.vauxp3(1'b0),.vauxn3(1'b0),
         .vauxp10(1'b0),.vauxn10(1'b0),.joystick_sw_n(1'b1),
         .i2c_sda(sda),.i2c_scl(scl),.baro_sda(bsda),.baro_scl(bscl),

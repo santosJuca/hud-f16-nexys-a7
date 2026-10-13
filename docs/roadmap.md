@@ -11,4 +11,4 @@ O escopo atual é validar a montagem e registrar evidências do bitstream existe
 7. **Revisar constraints externas com evidência.** Usar especificações dos módulos e medições para decidir input/output delays; não inserir valores estimados sem fonte.
 8. **Preparar apresentação e relatório acadêmico.** Separar resultados de simulação, implementação e teste físico.
 
-O bitstream de 08/10 tem implementação roteada e slack interno positivo, mas a margem é pequena e a placa ainda não foi programada com essa versão. Nenhum resultado físico deve ser registrado como concluído até a execução e anotação dos testes.
+No momento em que este roadmap histórico foi escrito, o bitstream de 08/10 ainda não tinha sido programado. Depois disso, o operador relatou ensaios físicos; consulte [`entrega_demo.md`](entrega_demo.md) para o estado posterior, evidências disponíveis e pendências. Este roadmap não substitui esse registro.

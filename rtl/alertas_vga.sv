@@ -56,7 +56,9 @@ module alertas_vga(
             2: nome_modo="LDG    ";
             default: nome_modo="GND    ";
         endcase
-        case(metadados[13:11])
+        if(metadados[25] && metadados[13:11]==3)
+            nome_causa="STALL  ";
+        else case(metadados[13:11])
             1: nome_causa="ROLL   "; 2: nome_causa="PITCH  ";
             3: nome_causa="SPEED  "; 4: nome_causa="SINK   ";
             5: nome_causa="SENSOR "; 6: nome_causa="ALT    ";

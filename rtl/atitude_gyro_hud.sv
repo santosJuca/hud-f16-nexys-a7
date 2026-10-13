@@ -46,10 +46,10 @@ module atitude_gyro_hud (
         // Q10 -> pixels = / 256.
         pitch_calc = pitch_q10 >>> 8;
 
-        if (pitch_calc > 32'sd80)
-            pitch_px = 11'sd80;
-        else if (pitch_calc < -32'sd80)
-            pitch_px = -11'sd80;
+        if (pitch_calc > 32'sd160)
+            pitch_px = 11'sd160;
+        else if (pitch_calc < -32'sd160)
+            pitch_px = -11'sd160;
         else
             pitch_px = pitch_calc[10:0];
 

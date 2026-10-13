@@ -52,13 +52,23 @@ module tb_atitude_gyro_hud;
             $signed(roll_q8) < -45)
             $fatal(1, "roll -10 graus incorreto: %0d", $signed(roll_q8));
 
-        // Saturacao de pitch.
-        pitch_q10 = 32'sd30720; // +30 graus
+        // +30 graus pitch devem conservar 4 px/grau.
+        pitch_q10 = 32'sd30720;
         roll_q10 = 0;
         #1;
 
-        if ($signed(pitch_px) !== 80)
-            $fatal(1, "pitch deveria saturar em +80");
+        if ($signed(pitch_px) !== 120)
+            $fatal(1, "pitch +30 graus deveria resultar em +120 px, obtido %0d", $signed(pitch_px));
+
+        // A escala chega a +/-40 graus e satura além desse limite.
+        pitch_q10 = -32'sd40960;
+        #1;
+        if ($signed(pitch_px) !== -160)
+            $fatal(1, "pitch -40 graus deveria resultar em -160 px");
+        pitch_q10 = 32'sd51200;
+        #1;
+        if ($signed(pitch_px) !== 160)
+            $fatal(1, "pitch acima de +40 graus deveria saturar em +160 px");
 
         // Saturacao de roll.
         pitch_q10 = 0;

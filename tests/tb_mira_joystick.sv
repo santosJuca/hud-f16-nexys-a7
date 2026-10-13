@@ -3,6 +3,7 @@ module tb_mira_joystick;
     logic clk=0; always #5 clk=~clk;
     logic [11:0] x_raw=2048, y_raw=2048;
     logic sw_n=1;
+    logic enable=1, reset=0;
     wire [9:0] x;
     wire [8:0] y;
     wire locked;

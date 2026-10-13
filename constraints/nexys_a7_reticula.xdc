@@ -37,7 +37,7 @@ set_property -dict { PACKAGE_PIN B12 IOSTANDARD LVCMOS33 } [get_ports { VGA_VS }
 
 set_property -dict { PACKAGE_PIN G4 IOSTANDARD LVCMOS33 } [get_ports { i2c_sda }]; #JD8 - SDA
 
-# set_property -dict { PACKAGE_PIN D18 IOSTANDARD LVCMOS33 } [get_ports { JA[2] }]; #IO_L21N_T3_DQS_A18_15 Sch=ja[2]
+set_property -dict { PACKAGE_PIN E7 IOSTANDARD LVCMOS33 } [get_ports { buzzer_out }]; # JC7
 
 # set_property -dict { PACKAGE_PIN E18 IOSTANDARD LVCMOS33 } [get_ports { JA[3] }]; #IO_L21P_T3_DQS_15 Sch=ja[3]
 
@@ -57,8 +57,11 @@ set_property -dict { PACKAGE_PIN H2 IOSTANDARD LVCMOS33 } [get_ports { i2c_scl }
 set_property -dict { PACKAGE_PIN H4 IOSTANDARD LVCMOS33 } [get_ports { baro_sda }]; # JD1 - BMP085 SDA
 set_property -dict { PACKAGE_PIN H1 IOSTANDARD LVCMOS33 } [get_ports { baro_scl }]; # JD2 - BMP085 SCL
 
-## LED4: diagnostico de identificacao do BMP085
-set_property -dict { PACKAGE_PIN R18 IOSTANDARD LVCMOS33 } [get_ports { BARO_LED }]; # LED4 - BMP085 OK
+## LED4: MPU-6050 habilitado e identificado
+set_property -dict { PACKAGE_PIN R18 IOSTANDARD LVCMOS33 } [get_ports { GYRO_LED }]; # LED4 - MPU-6050 OK
+
+## LED5: diagnostico do BMP085
+set_property -dict { PACKAGE_PIN V17 IOSTANDARD LVCMOS33 } [get_ports { BARO_LED }]; # LED5 - BMP085 OK
 
 # set_property -dict { PACKAGE_PIN E17 IOSTANDARD LVCMOS33 } [get_ports { JA[8] }]; #IO_L16P_T2_A28_15 Sch=ja[8]
 
@@ -70,6 +73,15 @@ set_property -dict { PACKAGE_PIN R18 IOSTANDARD LVCMOS33 } [get_ports { BARO_LED
 # https://github.com/Digilent/digilent-xdc/blob/master/Nexys-A7-100T-Master.xdc
 
 # Entradas manuais assíncronas: exceção somente até o primeiro estágio.
+
+# SW9 desativa a cadeia de atitude MPU (Bank 34 usa LVCMOS18).
+set_property -dict { PACKAGE_PIN U8 IOSTANDARD LVCMOS18 } [get_ports { sw[9] }]
+# SW10 desativa a fonte barométrica.
+set_property -dict { PACKAGE_PIN R16 IOSTANDARD LVCMOS33 } [get_ports { sw[10] }]
+# SW11 desativa a fonte magnética.
+set_property -dict { PACKAGE_PIN T13 IOSTANDARD LVCMOS33 } [get_ports { sw[11] }]
+set_false_path -from [get_ports {sw[9] sw[10] sw[11]}] \
+    -to [get_pins -hier -filter {NAME =~ fonte_desabilitada_meta_reg*/D}]
 
 # SW12/SW13: Master XDC Nexys-A7-100T, H6/U12, ambos LVCMOS33.
 set_property -dict { PACKAGE_PIN H6 IOSTANDARD LVCMOS33 } [get_ports { sw[12] }]
@@ -140,12 +152,12 @@ set_property -dict { PACKAGE_PIN N14 IOSTANDARD LVCMOS33 } [get_ports { JOY_LED[
 ## =========================================================
 ## KY-023 - Botao LOCK/UNLOCK da mira
 ## =========================================================
-## JA1 = C17
-## SW do KY-023 e ativo em nivel baixo: contato entre JA1/SW e GND.
+## JC1 = K1
+## SW do KY-023 e ativo em nivel baixo: contato entre JC1/SW e GND.
 ## PULLUP interno mantem nivel alto solto; usar somente logica de 3,3 V.
 ## Para um KY-023 alimentado, VCC deve ser 3,3 V e GND comum com a FPGA.
 
-set_property -dict { PACKAGE_PIN C17 IOSTANDARD LVCMOS33 PULLUP TRUE } \
+set_property -dict { PACKAGE_PIN K1 IOSTANDARD LVCMOS33 PULLUP TRUE } \
     [get_ports { joystick_sw_n }]
 
 set_false_path -from [get_ports { joystick_sw_n }] \
@@ -166,8 +178,8 @@ set_property -dict { PACKAGE_PIN G1 IOSTANDARD LVCMOS33 PULLUP TRUE } \
 set_property -dict { PACKAGE_PIN G2 IOSTANDARD LVCMOS33 PULLUP TRUE } \
     [get_ports { mag_scl }]
 
-## LED5 = magnetometro identificado/configurado
-set_property -dict { PACKAGE_PIN V17 IOSTANDARD LVCMOS33 } \
+## LED6 = magnetometro identificado/configurado
+set_property -dict { PACKAGE_PIN U17 IOSTANDARD LVCMOS33 } \
     [get_ports { MAG_LED }]
 
 ## Modos operacionais e ACK: Master XDC Nexys-A7-100T.
@@ -176,4 +188,3 @@ set_property -dict { PACKAGE_PIN R15 IOSTANDARD LVCMOS33 } [get_ports { operacao
 set_property -dict { PACKAGE_PIN N17 IOSTANDARD LVCMOS33 } [get_ports { ack_btn }]
 set_false_path -from [get_ports {operacao_sw[*]}] -to [get_pins -hier -filter {NAME =~ *u_operacao/u_modo/meta_reg*/D}]
 set_false_path -from [get_ports ack_btn] -to [get_pins -hier -filter {NAME =~ *u_operacao/u_buzzer/ack_meta_reg/D}]
-# buzzer_out permanece interno; nenhuma saida eletrica foi atribuida.
