@@ -47,6 +47,7 @@ tests=(
     "modo|tb_modo|tests/tb_modo.sv"
     "modos|tb_modos|tests/tb_modos.sv"
     "estilos|tb_estilos|tests/tb_estilos.sv"
+    "frames_estilos|tb_frames_estilos|tests/tb_frames_estilos.sv"
     "top_atitude|tb_top_atitude|tests/tb_top_atitude.sv"
     "vga|tb_vga|tests/tb_vga.sv"
     "bmp085_calibracao|tb_bmp085_calibracao|tests/tb_bmp085_calibracao.sv"

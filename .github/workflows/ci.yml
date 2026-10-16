@@ -43,5 +43,7 @@ jobs:
           path: |
             build/tests.log
             build/hud.ppm
+            build/hud_original_pitch_roll.ppm
+            build/hud_caca_pitch_roll.ppm
           if-no-files-found: warn
           retention-days: 14

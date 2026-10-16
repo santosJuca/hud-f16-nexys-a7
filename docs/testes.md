@@ -1,6 +1,6 @@
 # Testes e validação
 
-O script [`scripts/test.sh`](../scripts/test.sh) contém 55 entradas de regressão. Usa Icarus Verilog (`iverilog` e `vvp`) e, quando disponível, Verilator nos testes raster exaustivos `roll` e `vga`, sem reduzir os vetores. Sem Verilator, esses dois casos recorrem ao Icarus. Cada testbench é compilado contra `rtl/*.sv` e `tests/xadc_stub.sv`.
+O script [`scripts/test.sh`](../scripts/test.sh) contém 59 entradas de regressão. Usa Icarus Verilog (`iverilog` e `vvp`) e, quando disponível, Verilator nos testes raster exaustivos `roll` e `vga`, sem reduzir os vetores. Sem Verilator, esses dois casos recorrem ao Icarus. Cada testbench é compilado contra `rtl/*.sv` e `tests/xadc_stub.sv`.
 
 ```sh
 ./scripts/test.sh
