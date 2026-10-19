@@ -14,3 +14,7 @@ A pasta [2026-10-13_hud_flash](2026-10-13_hud_flash/README.md) contém a versão
 O build foi gerado com alterações locais sobre `fc2a687`. O snapshot foi coletado depois do build; esse commit-base sozinho não reproduz o bitstream.
 
 As quatro versões antigas foram retiradas da árvore atual e preservadas em cópia local. Continuam disponíveis no [histórico anterior](https://github.com/santosJuca/Trabalho-display-aviao-v2/tree/11343bb/bitstreams). A cópia completa da Flash original está preservada localmente no pacote de entrega e em `build/`.
+
+## Magnetômetro calibrado em 19/10/2026
+
+[Bitstream e relatórios da versão calibrada](2026-10-19_mag_calibrado/README.md), com joystick em JA1, buzzer em JC10 e perfil medido do HMC5883L.

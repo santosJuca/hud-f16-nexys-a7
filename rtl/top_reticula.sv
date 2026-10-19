@@ -16,7 +16,9 @@ module top_reticula #(
     // Sem troca ou inversao de eixos.
     parameter bit MAG_TROCAR_XY = 1'b0,
     parameter bit MAG_INVERTER_X = 1'b0,
-    parameter bit MAG_INVERTER_Y = 1'b0
+    parameter bit MAG_INVERTER_Y = 1'b0,
+    parameter logic [12:0] MAG_GAIN_X_Q12 = 13'd4096,
+    parameter logic [12:0] MAG_GAIN_Y_Q12 = 13'd4096
 ) (
     input  logic        clk,
     input wire [1:0] operacao_sw, // SW3:SW2
@@ -449,6 +451,7 @@ wire [9:0] velocidade_hud_entrada =
 
     heading_magnetico #(
         .OFFSET_X(MAG_OFFSET_X), .OFFSET_Y(MAG_OFFSET_Y),
+        .GAIN_X_Q12(MAG_GAIN_X_Q12), .GAIN_Y_Q12(MAG_GAIN_Y_Q12),
         .TROCAR_XY(MAG_TROCAR_XY),
         .INVERTER_X(MAG_INVERTER_X), .INVERTER_Y(MAG_INVERTER_Y)
     ) u_heading_magnetico (

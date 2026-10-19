@@ -5,7 +5,10 @@ module heading_magnetico #(
     parameter logic signed [15:0] OFFSET_Y = 16'sd0,
     parameter bit TROCAR_XY = 1'b0,
     parameter bit INVERTER_X = 1'b0,
-    parameter bit INVERTER_Y = 1'b0
+    parameter bit INVERTER_Y = 1'b0,
+    // Ganho positivo Q12: 4096 = 1; limite < 2 preserva a largura do CORDIC.
+    parameter logic [12:0] GAIN_X_Q12 = 13'd4096,
+    parameter logic [12:0] GAIN_Y_Q12 = 13'd4096
 )(
     input logic clk,
     input logic sensor_ok,
@@ -20,6 +23,8 @@ module heading_magnetico #(
     logic signed [17:0] corrigido_x = 0, corrigido_y = 0;
     wire signed [17:0] eixo_x = TROCAR_XY ? corrigido_y : corrigido_x;
     wire signed [17:0] eixo_y = TROCAR_XY ? corrigido_x : corrigido_y;
+    wire [12:0] ganho_x = TROCAR_XY ? GAIN_Y_Q12 : GAIN_X_Q12;
+    wire [12:0] ganho_y = TROCAR_XY ? GAIN_X_Q12 : GAIN_Y_Q12;
     logic signed [31:0] x = 0, y = 0;
     logic signed [25:0] angulo = 0;
     logic [25:0] normalizado = 0;
@@ -67,8 +72,8 @@ module heading_magnetico #(
                 MAPA: begin
                     // 12 bits fracionarios preservam precisao em vetores pequenos.
                     // 32 bits cobrem offsets extremos e o ganho do CORDIC.
-                    x <= $signed(INVERTER_X ? -eixo_x : eixo_x) * 32'sd4096;
-                    y <= $signed(INVERTER_Y ? -eixo_y : eixo_y) * 32'sd4096;
+                    x <= $signed(INVERTER_X ? -eixo_x : eixo_x) * $signed({1'b0,ganho_x});
+                    y <= $signed(INVERTER_Y ? -eixo_y : eixo_y) * $signed({1'b0,ganho_y});
                     estado <= PREPARA;
                 end
                 PREPARA: begin
