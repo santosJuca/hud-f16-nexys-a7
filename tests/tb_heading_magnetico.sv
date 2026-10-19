@@ -3,14 +3,20 @@ module tb_heading_magnetico;
     logic clk=0, ok=1, nova=0;
     always #5 clk=~clk;
     logic signed [15:0] x=0,y=0;
-    wire [8:0] heading[0:3];
-    wire [3:0] valido;
+    wire [8:0] heading[0:5];
+    wire [5:0] valido;
     heading_magnetico dut(clk,ok,nova,x,y,heading[0],valido[0],);
     heading_magnetico #(.OFFSET_X(16'sd100),.OFFSET_Y(-16'sd200),
         .TROCAR_XY(1),.INVERTER_X(1)) ajustado(clk,ok,nova,x,y,heading[1],valido[1],);
     heading_magnetico #(.OFFSET_X(-16'sd32768),.OFFSET_Y(16'sd32767),
         .INVERTER_X(1),.INVERTER_Y(1)) extremos(clk,ok,nova,x,y,heading[2],valido[2],);
     heading_magnetico #(.INVERTER_Y(1)) invertido(clk,ok,nova,x,y,heading[3],valido[3],);
+    heading_magnetico #(.OFFSET_X(-16'sd8),.OFFSET_Y(-16'sd148),
+        .GAIN_X_Q12(13'd3935),.GAIN_Y_Q12(13'd4270))
+        calibrado(clk,ok,nova,x,y,heading[4],valido[4],);
+    heading_magnetico #(.OFFSET_X(-16'sd8),.OFFSET_Y(-16'sd148),
+        .GAIN_X_Q12(13'd3935),.GAIN_Y_Q12(13'd4270),.TROCAR_XY(1),.INVERTER_X(1))
+        calibrado_montagem(clk,ok,nova,x,y,heading[5],valido[5],);
     integer casos=0;
     task automatic confere(input integer idx,ex,ey);
         real graus;
@@ -36,6 +42,8 @@ module tb_heading_magnetico;
         repeat(24) @(negedge clk);
         confere(0,vx,vy); confere(1,-(vy+200),vx-100);
         confere(2,-(vx+32768),-(vy-32767)); confere(3,vx,-vy);
+        confere(4,(vx+8)*3935,(vy+148)*4270);
+        confere(5,-(vy+148)*4270,(vx+8)*3935);
         casos=casos+1;
     endtask
     integer vx,vy;
@@ -68,7 +76,7 @@ module tb_heading_magnetico;
         @(negedge clk); ok=1;
         repeat(25) @(negedge clk);
         if(valido) $fatal(1,"calculo interrompido publicou rumo");
-        $display("PASS heading: %0d vetores em 4 configuracoes; cardeais, quadrantes, wrap, offsets, limites e perda",casos);
+        $display("PASS heading: %0d vetores em 6 configuracoes; cardeais, quadrantes, wrap, offsets, limites e perda",casos);
         $finish;
     end
     initial begin #1_000_000; $fatal(1,"timeout heading"); end
