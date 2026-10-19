@@ -25,7 +25,7 @@ Este mapa foi conferido contra o top [top_reticula](../rtl/top_reticula.sv) e o 
 | BTNL, BTNR | Não declarados no top/XDC | Sem uso |
 | KY-023, eixo X | JXADC1/7, VAUX3, A13/A14 | Entrada analógica para a mira móvel |
 | KY-023, eixo Y | JXADC2/8, VAUX10, A15/A16 | Entrada analógica para a mira móvel; orientação configurada no top |
-| KY-023, botão SW | JC1, K1 | Ativo baixo; alterna LOCK/UNLOCK |
+| KY-023, botão SW | JA1, C17 | Ativo baixo; alterna LOCK/UNLOCK |
 
 SW12/SW13 codificam pitch e SW14/SW15 codificam roll; `00`/`11` representam zero e `01`/`10` selecionam os sentidos. `SW15..12=1111` seleciona o MPU quando SW9 está desligado; nos demais estados os comandos manuais têm prioridade. Eles aparecem no HUD também em SOLO. Em VOO/POUSO, os valores manuais alimentam ainda os alertas angulares e a velocidade simulada. SW9–SW11 são sincronizados e desativam as fontes MPU, barométrica e magnética no RTL; os drivers continuam fazendo aquisição nos barramentos.
 

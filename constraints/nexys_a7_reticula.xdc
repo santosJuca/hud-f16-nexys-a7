@@ -152,16 +152,16 @@ set_property -dict { PACKAGE_PIN N14 IOSTANDARD LVCMOS33 } [get_ports { JOY_LED[
 ## =========================================================
 ## KY-023 - Botao LOCK/UNLOCK da mira
 ## =========================================================
-## JC1 = K1
-## SW do KY-023 e ativo em nivel baixo: contato entre JC1/SW e GND.
+## JA1 = C17
+## SW do KY-023 e ativo em nivel baixo: contato entre JA1/SW e GND.
 ## PULLUP interno mantem nivel alto solto; usar somente logica de 3,3 V.
 ## Para um KY-023 alimentado, VCC deve ser 3,3 V e GND comum com a FPGA.
 
-set_property -dict { PACKAGE_PIN K1 IOSTANDARD LVCMOS33 PULLUP TRUE } \
+set_property -dict { PACKAGE_PIN C17 IOSTANDARD LVCMOS33 PULLUP TRUE } \
     [get_ports { joystick_sw_n }]
 
 set_false_path -from [get_ports { joystick_sw_n }] \
-    -to [get_pins -hier -filter {NAME =~ u_mira/button_sync_reg*/D}]
+    -to [get_pins -hier -filter {NAME =~ u_mira/button_sync_reg*/D || NAME =~ u_marcador_joystick/button_sync_reg*/D}]
 
 
 ## =========================================================

@@ -7,7 +7,7 @@ Este documento descreve as conexões do top atual, conferidas em `rtl/top_reticu
 | MPU-6050 | I²C independente: SDA JD8/G4, SCL JD7/H2 | Accel/gyro para atitude, gyro Z e entradas da estimação vertical | Testes RTL e relato de 13/10: LD4 aceso, ATT BAD ausente e inclinações corretas; precisão não medida |
 | BMP085 | I²C independente: SDA JD1/H4, SCL JD2/H1 | Temperatura/pressão compensadas e altitude barométrica | Identificação/cálculos em simulação; LD5 aceso e ALT BAD ausente relatados em 13/10; altitude absoluta não caracterizada |
 | HMC5883L | I²C independente: SDA JD3/G1, SCL JD9/G2 | Rumo magnético planar combinado com gyro Z | LD6 aceso e rumo respondendo à rotação relatados em 13/10; sem compensação de inclinação/declinação e precisão não medida |
-| KY-023 | Eixos em VAUX3 e VAUX10 via JXADC; botão em JC1/K1 | Movimento da mira em CAÇA e LOCK/UNLOCK | Função relatada em 13/10; teste posterior com resistores de 27 kΩ relatou leituras acima de 1 V. Topologia/valores finais não documentados; faixa elétrica não validada |
+| KY-023 | Eixos em VAUX3 e VAUX10 via JXADC; botão em JA1/C17 | Movimento da mira em CAÇA e LOCK/UNLOCK | Função relatada em 13/10; teste posterior com resistores de 27 kΩ relatou leituras acima de 1 V. Topologia/valores finais não documentados; faixa elétrica não validada |
 
 ## Alimentação e níveis
 

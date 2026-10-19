@@ -16,7 +16,7 @@ performance de aeronave nem sistemas de proteção certificados.
 | BTNC | ACK do áudio | N17 |
 | SW0 / SW1 | Declutter / estilo | J15 / L16 |
 | BTNU / BTND | Heading manual de fallback | M18 / P18 |
-| Botão KY-023 | LOCK/UNLOCK da mira no estilo CAÇA | JC1/K1 |
+| Botão KY-023 | LOCK/UNLOCK no estilo ativo, NORMAL ou CAÇA | JA1/C17 |
 | SW15..12 | Atitude manual; `1111` seleciona MPU se SW9 estiver desligado | H6/U12/U11/V10 |
 | SW9/SW10/SW11 | Desativam uso da atitude MPU/barômetro/magnetômetro quando ligados | U8/R16/T13 |
 

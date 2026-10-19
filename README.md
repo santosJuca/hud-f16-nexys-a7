@@ -1,10 +1,16 @@
 # HUD aeronáutico em FPGA
 
+## Atualização de 19/10/2026
+
+Joystick com velocidade fixa de 4 pixels por atualização nos dois sentidos e LOCK independente em NORMAL e CAÇA. O botão SW está em JA1/C17; o buzzer permanece em JC10/E6. O operador confirmou o funcionamento na placa após a programação JTAG desta correção. A Flash ainda contém a versão anterior. A confirmação funcional não substitui a medição elétrica das entradas XADC.
+
+O registro abaixo conserva a referência da demonstração de 13/10 e suas pendências; os testes novos estão em [docs/testes.md](docs/testes.md).
+
 ## Montagem validada em 13/10/2026
 
 O operador confirmou boot pela Flash, VGA estável, joystick nos quatro sentidos
 em NORMAL e CAÇA, repouso/limites/LOCK, MPU sem ATT BAD, indicadores do BMP085 e
-HMC5883L e buzzer silenciado por BTNC. SW do joystick está em JC1/K1. O buzzer
+HMC5883L e buzzer silenciado por BTNC. SW do joystick está em JA1/C17. O buzzer
 foi remanejado de JC7/E7 para JC10/E6; o vertical do joystick é invertido no top.
 
 A versão preservada está em
@@ -110,9 +116,9 @@ Nos pares SW13:SW12 e SW15:SW14, `00` e `11` produzem zero; `01` e `10` comandam
 | BTNC | N17 | ACK do alerta: silencia a saída lógica do buzzer enquanto o alerta reconhecido permanecer na mesma severidade; sincronização/debounce | Lógica validada; saída agora mapeada para JC10/E6. Teste físico após a mudança pendente |
 | BTNL | — | Não declarado nem mapeado | Não utilizado |
 | BTNR | — | Não declarado nem mapeado | Não utilizado |
-| KY-023, eixo ligado a VAUX3 | JXADC, VAUX3 diferencial | Canal é amostrado pelo XADC; depois do período de calibração do centro, deadzone 180 e movimento limitado da mira | Quatro sentidos relatados como corretos em 13/10; teste posterior relatou >1 V, acima da faixa nominal unipolar |
+| KY-023, eixo ligado a VAUX3 | JXADC, VAUX3 diferencial | Canal é amostrado pelo XADC; depois do período de calibração do centro, limiar efetivo de movimento de 436 contagens e passo fixo de 4 pixels | Quatro sentidos relatados como corretos em 13/10; teste posterior relatou >1 V, acima da faixa nominal unipolar |
 | KY-023, eixo ligado a VAUX10 | JXADC, VAUX10 diferencial | Segundo canal XADC; a associação X/Y é trocada no top para corresponder à orientação configurada | Orientação funcional relatada em 13/10; tensão do eixo e valores/topologia dos resistores ainda não caracterizados |
-| KY-023, botão SW | JC1, K1; entrada ativa baixa com pull-up no XDC | Pressionamento alterna LOCK/UNLOCK; sincronização e debounce de 10 ms. LOCK congela a mira | Simulação coberta; operador relatou LOCK/UNLOCK aprovados fisicamente |
+| KY-023, botão SW | JA1, C17; entrada ativa baixa com pull-up no XDC | Pressionamento alterna LOCK/UNLOCK no estilo ativo; sincronização e debounce de 10 ms. LOCK congela a mira | Simulação coberta; operador relatou LOCK/UNLOCK aprovados fisicamente |
 
 O joystick calibra o centro durante a inicialização; mantenha-o solto nesse período. A posição é atualizada em ticks lentos, limitada à região interna da tela. A deadzone e os limites reduzem deriva, mas calibração e estabilidade analógica precisam ser avaliadas na montagem real.
 
@@ -140,7 +146,7 @@ As linhas XDC usam `LVCMOS33`; isso descreve o padrão elétrico dos pinos FPGA,
 | MPU-6050 / GY-521 | I²C independente: SDA JD8/G4, SCL JD7/H2 | Acelerômetro e giroscópio de seis eixos; atitude, gyro Z e parte da estimação vertical | Driver com identificação, leitura e recuperação; operador confirmou inclinações e ausência de ATT BAD em 13/10 |
 | BMP085 / SEN-09694 | I²C independente: SDA JD1/H4, SCL JD2/H1 | Pressão/temperatura compensadas, altitude barométrica e entrada para estado vertical | Sem pull-up interno no XDC; CHIP_ID `0x55`. LD5 aceso e ALT BAD ausente relatados em 13/10; precisão não medida |
 | HMC5883L | I²C independente: SDA JD3/G1, SCL JD9/G2 | Vetor magnético e heading plano; combinado ao gyro Z, com rumo manual de fallback | XDC habilita pull-up interno; confirmar pull-ups externos do módulo. Offset/orientação atuais são padrão, sem calibração física confirmada |
-| KY-023 | Eixos em JXADC: VAUX3 (A13/A14) e VAUX10 (A15/A16); botão em JC1/K1 | Mira móvel e LOCK/UNLOCK | XADC interno e calibração inicial; quatro sentidos, centro, limites e LOCK/UNLOCK relatados em 13/10; faixa elétrica não medida |
+| KY-023 | Eixos em JXADC: VAUX3 (A13/A14) e VAUX10 (A15/A16); botão em JA1/C17 | Mira móvel e LOCK/UNLOCK | XADC interno e calibração inicial; quatro sentidos, centro, limites e LOCK/UNLOCK relatados em 13/10; faixa elétrica não medida |
 
 O XDC declara três barramentos I²C separados, com seis linhas: MPU, BMP085 e HMC5883L, cada um com SDA/SCL próprios. SDA/SCL são linhas open-drain no RTL. O diagrama de montagem, alimentação do módulo e eventuais resistores externos precisa ser conferido com os módulos específicos usados pelo grupo; a constraint sozinha não confirma a tensão efetivamente aplicada.
 

@@ -1,6 +1,6 @@
 # Testes e validação
 
-O script [`scripts/test.sh`](../scripts/test.sh) contém 60 entradas de regressão. Usa Icarus Verilog (`iverilog` e `vvp`) e, quando disponível, Verilator nos testes raster exaustivos `roll` e `vga`, sem reduzir os vetores. Sem Verilator, esses dois casos recorrem ao Icarus. Cada testbench é compilado contra `rtl/*.sv` e `tests/xadc_stub.sv`.
+O script [`scripts/test.sh`](../scripts/test.sh) contém 62 entradas de regressão. Usa Icarus Verilog (`iverilog` e `vvp`) e, quando disponível, Verilator nos testes raster exaustivos `roll` e `vga`, sem reduzir os vetores. Sem Verilator, esses dois casos recorrem ao Icarus. Cada testbench é compilado contra `rtl/*.sv` e `tests/xadc_stub.sv`.
 
 ```sh
 ./scripts/test.sh
@@ -23,3 +23,9 @@ O teste do simulador de voo verifica estabilidade do heading durante invalidaç�
 O README do artefato `bitstreams/2026-10-08_hud_caca_marker` registra a regressão completa como PASS, síntese e implementação roteada aprovadas, WNS/WHS positivos e bitstream gerado. Essa associação é a documentação disponível para o build. A regressão não exercita placa, cabeamento, tensão, calibração magnética nem qualidade da imagem em monitor.
 
 O operador relatou programação e validação integrada da versão de demonstração; esses resultados estão resumidos em [`entrega_demo.md`](entrega_demo.md), sem fotos, vídeos ou medições anexadas para conferência independente. A regressão deste script continua sendo simulação, não evidência de bancada. Consulte o [roteiro de prioridades](roadmap.md) para as pendências de caracterização e documentação física.
+
+## Joystick: atualização de 19/10/2026
+
+Movimento fixo de 4 pixels por atualização, com limiar efetivo preservado. O botão SW usa JA1/C17 e alterna LOCK no estilo ativo, NORMAL ou CAÇA. Os testes `tb_joystick_start_threshold` e `tb_top_joystick_lock` cobrem limiar, sentidos independentes, passo uniforme e trava até o domínio de vídeo.
+
+O usuário confirmou o funcionamento na placa após programação JTAG. Bitstream testado: SHA256 `5578f5b54978d8d54821e463f6aca6bb1ca93feac583fdeb3efe62afb39dcc17`. A Flash ainda contém a versão anterior.
