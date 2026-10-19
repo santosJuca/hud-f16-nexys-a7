@@ -970,6 +970,25 @@ wire [9:0] velocidade_hud_entrada =
         assign overlay_on=0; assign overlay_rgb=0;
     end endgenerate
 
+    // P1: mascara de pixels do HUD para futuro chaveamento RGB analogico.
+    // Sinal interno intencionalmente sem pinagem: hardware externo e clock
+    // de origem de video ainda nao estao definidos/validados.
+    // Nao deriva a mascara do RGB, pois um futuro elemento preto pode ser opaco.
+    wire hud_mask;
+    hud_pixel_mask u_hud_pixel_mask (
+        .video_on        (video_on),
+        .declutter       (declutter),
+        .estilo_caca     (estilo_caca),
+        .alerta_on       (MODOS_OPERACIONAIS && overlay_on),
+        .mira_on         (MODOS_OPERACIONAIS && mira_on),
+        .reticula_on     (retic_visivel),
+        .alvo_on         (alvo),
+        .sensor_status_on(sensor_status),
+        .horizonte_on    (horizonte_visivel),
+        .extras_on       (extras_estilo),
+        .mask_on         (hud_mask)
+    );
+
     assign VGA_R =
         (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[11:8] :
         (MODOS_OPERACIONAIS && mira_on) ? mira_rgb[11:8] :
