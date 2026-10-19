@@ -7,13 +7,13 @@ Este documento descreve as conexões do top atual, conferidas em `rtl/top_reticu
 | MPU-6050 | I²C independente: SDA JD8/G4, SCL JD7/H2 | Accel/gyro para atitude, gyro Z e entradas da estimação vertical | Testes RTL e relato de 13/10: LD4 aceso, ATT BAD ausente e inclinações corretas; precisão não medida |
 | BMP085 | I²C independente: SDA JD1/H4, SCL JD2/H1 | Temperatura/pressão compensadas e altitude barométrica | Identificação/cálculos em simulação; LD5 aceso e ALT BAD ausente relatados em 13/10; altitude absoluta não caracterizada |
 | HMC5883L | I²C independente: SDA JD3/G1, SCL JD9/G2 | Rumo magnético planar combinado com gyro Z | LD6 aceso e rumo respondendo à rotação relatados em 13/10; sem compensação de inclinação/declinação e precisão não medida |
-| KY-023 | Eixos em VAUX3 e VAUX10 via JXADC; botão em JC1/K1 | Movimento da mira em CAÇA e LOCK/UNLOCK | Quatro sentidos, repouso, limites e LOCK/UNLOCK relatados em 13/10; valores dos divisores e faixa analógica não medidos |
+| KY-023 | Eixos em VAUX3 e VAUX10 via JXADC; botão em JA1/C17 | Movimento da mira em CAÇA e LOCK/UNLOCK | Função relatada em 13/10; teste posterior com resistores de 27 kΩ relatou leituras acima de 1 V. Topologia/valores finais não documentados; faixa elétrica não validada |
 
 ## Alimentação e níveis
 
 O XDC especifica `LVCMOS33` para sinais digitais e configura pull-up interno em SDA/SCL do HMC e na entrada do botão do joystick. O BMP e o MPU não têm pull-up indicado no XDC. Verifique a placa breakout, seus reguladores, pull-ups e tensão de sinal antes de conectar. Use terra comum. Não derive a tensão efetiva do módulo apenas do `IOSTANDARD`.
 
-Os dois eixos do KY-023 usam pares diferenciais de canais auxiliares XADC: VAUX3 (JXADC1/7, A13/A14) e VAUX10 (JXADC2/8, A15/A16). A faixa analógica permitida depende da configuração e do dispositivo FPGA; a montagem elétrica precisa respeitá-la. O stub de simulação não valida o ADC físico.
+Os dois eixos do KY-023 usam pares diferenciais de canais auxiliares XADC: VAUX3 (JXADC1/7, A13/A14) e VAUX10 (JXADC2/8, A15/A16). O top configura conversão unipolar, nominalmente 0–1 V. Foi relatado valor superior a 1 V em testes com resistores de 27 kΩ, sem registro da topologia completa ou dos pontos exatos de medição. Não conectar a rede ao XADC até confirmar os divisores e medir a tensão em JXADC1/JXADC2. A resistência de fonte também pode afetar o tempo de aquisição do conversor. O stub de simulação não valida o ADC físico.
 
 ## Seleção e fallback
 

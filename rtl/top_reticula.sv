@@ -60,7 +60,7 @@ module top_reticula #(
     // LD6 acende quando o HMC5883L esta operacional.
     output wire         MAG_LED,
 
-    // Saida logica para o transistor do buzzer em JC7.
+    // Saida logica para o transistor do buzzer em JC10.
     output wire         buzzer_out,
 
     output wire [3:0]   VGA_R,
@@ -91,7 +91,9 @@ module top_reticula #(
 
     logic [9:0] mira_x_origem;
     logic [8:0] mira_y_origem;
-    logic mira_lock_origem;
+    wire mira_lock_origem;
+    logic mira_caca_lock_origem;
+    logic alvo_lock_origem;
     logic [9:0] alvo_x_origem;
     logic [8:0] alvo_y_origem;
 
@@ -130,20 +132,23 @@ module top_reticula #(
         estilo_caca_sync <= estilo_caca_meta;
     end
 
-    mira_joystick #(.TICK_CYCLES(MIRA_TICK),.DEBOUNCE_CYCLES(MIRA_DEBOUNCE)) u_mira (
+    assign mira_lock_origem = estilo_caca_sync ? mira_caca_lock_origem : alvo_lock_origem;
+
+    mira_joystick #(.TICK_CYCLES(MIRA_TICK),.DEBOUNCE_CYCLES(MIRA_DEBOUNCE),
+        .FIXED_STEP(4)) u_mira (
         .clk(clk),.x_raw(joystick_y_raw),.y_raw(joystick_vertical_raw),.sw_n(joystick_sw_n),
         .enable(estilo_caca_sync),.reset(reset_operacao),
-        .x(mira_x_origem),.y(mira_y_origem),.locked(mira_lock_origem)
+        .x(mira_x_origem),.y(mira_y_origem),.locked(mira_caca_lock_origem)
     );
 
     mira_joystick #(
         .TICK_CYCLES(MIRA_TICK), .DEBOUNCE_CYCLES(MIRA_DEBOUNCE),
         .X_MIN(24), .X_MAX(615), .Y_MIN(24), .Y_MAX(455),
-        .INITIAL_X(430), .INITIAL_Y(180)
+        .INITIAL_X(430), .INITIAL_Y(180), .FIXED_STEP(4)
     ) u_marcador_joystick (
-        .clk(clk), .x_raw(joystick_y_raw), .y_raw(joystick_vertical_raw), .sw_n(1'b1),
+        .clk(clk), .x_raw(joystick_y_raw), .y_raw(joystick_vertical_raw), .sw_n(joystick_sw_n),
         .enable(!estilo_caca_sync), .reset(reset_operacao),
-        .x(alvo_x_origem), .y(alvo_y_origem), .locked()
+        .x(alvo_x_origem), .y(alvo_y_origem), .locked(alvo_lock_origem)
     );
 
     controle_modo u_modo (

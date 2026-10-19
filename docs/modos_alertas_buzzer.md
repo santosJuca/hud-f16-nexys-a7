@@ -16,15 +16,18 @@ performance de aeronave nem sistemas de proteção certificados.
 | BTNC | ACK do áudio | N17 |
 | SW0 / SW1 | Declutter / estilo | J15 / L16 |
 | BTNU / BTND | Heading manual de fallback | M18 / P18 |
-| Botão KY-023 | LOCK/UNLOCK da mira no estilo CAÇA | JC1/K1 |
+| Botão KY-023 | LOCK/UNLOCK no estilo ativo, NORMAL ou CAÇA | JA1/C17 |
 | SW15..12 | Atitude manual; `1111` seleciona MPU se SW9 estiver desligado | H6/U12/U11/V10 |
 | SW9/SW10/SW11 | Desativam uso da atitude MPU/barômetro/magnetômetro quando ligados | U8/R16/T13 |
 
 A atribuição foi conferida no Master XDC Nexys-A7-100T da Digilent.
 O vetor SW3:SW2 é sincronizado e precisa ficar estável por 100 ms. O ACK usa
 sincronização e debounce de 10 ms. A mudança visual é aplicada entre quadros.
-`buzzer_out` está atribuído a JC7/E7 em `LVCMOS33` e destina-se ao estágio
-transistorizado externo.
+`buzzer_out` está atribuído a JC10/E6 em `LVCMOS33` e destina-se ao estágio
+transistorizado externo. O usuário informou a ligação JC10 → resistor de base
+de 1,2 kΩ → 2N2222A, emissor ao GND comum, coletor ao negativo do buzzer e
+positivo do buzzer em 3,3 V. Esta pinagem substitui JC7/E7; o teste físico após
+a mudança ainda está pendente.
 
 ## Fontes por modo
 
@@ -153,7 +156,7 @@ e silencia o áudio, mantendo alerta visual. Escalada de severidade cancela ACK;
 NONE limpa ACK. Manter BTNC pressionado não reconhece novos alertas repetidamente.
 Troca de causa com a mesma severidade não cancela ACK nesta versão.
 
-`buzzer_out` sai pelo pino JC7/E7 (`LVCMOS33`) para acionar o estágio
+`buzzer_out` sai pelo pino JC10/E6 (`LVCMOS33`) para acionar o estágio
 transistorizado externo. Os testes cobrem a lógica RTL; a saída física ainda
 precisa ser validada com o bitstream correspondente e a montagem elétrica. O
 indicador ACK mostra reconhecimento.

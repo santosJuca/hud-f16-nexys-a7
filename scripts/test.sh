@@ -11,6 +11,8 @@ tests=(
     "mira_joystick|tb_mira_joystick|tests/tb_mira_joystick.sv"
     "hud_joystick_vertical|tb_hud_joystick_vertical|tests/tb_hud_joystick_vertical.sv"
     "marcador_joystick|tb_marcador_joystick|tests/tb_marcador_joystick.sv"
+    "joystick_start_threshold|tb_joystick_start_threshold|tests/tb_joystick_start_threshold.sv"
+    "top_joystick_lock|tb_top_joystick_lock|tests/tb_top_joystick_lock.sv"
     "marcador_integrado|tb_marcador_integrado|tests/tb_marcador_integrado.sv"
     "captura_marcador|tb_captura_marcador|tests/tb_captura_marcador.sv"
     "simulador_pouso|tb_simulador_pouso|tests/tb_simulador_pouso.sv"

@@ -11,6 +11,7 @@ module mira_joystick #(
     parameter integer INITIAL_Y = 240,
     parameter integer MAX_STEP = 8,
     parameter integer PASSO_SHIFT = 8,
+    parameter integer FIXED_STEP = 0,
     parameter integer DEBOUNCE_CYCLES = 1_000_000
 ) (
     input logic clk,
@@ -35,6 +36,10 @@ module mira_joystick #(
     localparam integer STEP_W =
         MAX_STEP > 0 ? $clog2(MAX_STEP + 1) : 1;
 
+    // Preserva o limiar efetivo do passo proporcional original.
+    localparam integer START_THRESHOLD = DEADZONE +
+        (FIXED_STEP > 0 ? (1 << PASSO_SHIFT) - 1 : 0);
+
     logic [11:0] dx, dy;
     logic [11:0] step_x_calc, step_y_calc;
 
@@ -51,10 +56,12 @@ module mira_joystick #(
         dy = (y_raw >= center_y) ?
             (y_raw - center_y) : (center_y - y_raw);
 
-        step_x_calc = (dx <= DEADZONE) ?
-            12'd0 : ((dx - 12'(DEADZONE)) >> PASSO_SHIFT);
-        step_y_calc = (dy <= DEADZONE) ?
-            12'd0 : ((dy - 12'(DEADZONE)) >> PASSO_SHIFT);
+        step_x_calc = (dx <= START_THRESHOLD) ?
+            12'd0 : (FIXED_STEP > 0 ? 12'(FIXED_STEP) :
+                ((dx - 12'(DEADZONE)) >> PASSO_SHIFT));
+        step_y_calc = (dy <= START_THRESHOLD) ?
+            12'd0 : (FIXED_STEP > 0 ? 12'(FIXED_STEP) :
+                ((dy - 12'(DEADZONE)) >> PASSO_SHIFT));
 
         next_x = dir_x_q ?
             ($signed({1'b0,x}) + $signed({1'b0,step_x_q})) :
