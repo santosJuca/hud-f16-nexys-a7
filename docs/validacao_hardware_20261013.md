@@ -101,3 +101,23 @@ Entrega local:
 `/home/santojuca/Downloads/HUD_FPGA_Entrega_2026-10-13/`.
 As fontes SVG e os geradores permitem editar o esquema. Valores externos não
 informados estão marcados como NI, sem substituição por valores estimados.
+
+## Atualização posterior — 19/10/2026
+
+Após esta validação, o buzzer foi transferido de JC7/E7 para JC10/E6. O XDC
+atual e o top RTL mapeiam `buzzer_out` para JC10/E6; o circuito informado usa
+resistor de base de 1,2 kΩ e transistor 2N2222A. A validação física registrada
+acima refere-se à montagem e ao bitstream de 13/10, portanto não comprova a nova
+pinagem nem a ligação atual.
+
+Também foram relatadas leituras analógicas acima de 1 V nos testes recentes do
+KY-023 usando resistores de 27 kΩ. O esquema salvo não identifica os valores e a
+topologia final de todos os resistores. Como o XADC está configurado unipolar e
+tem faixa nominal de 0–1 V, a rede ainda precisa ser conferida e medida em
+JXADC1/JXADC2 antes de novos testes. Não se considera a entrada analógica
+validada eletricamente.
+
+O esquema visual e o CSV datados de 13/10 permanecem como registro da montagem
+anterior, que indicava JC7/E7. A pinagem atual está em [`pinagem.md`](pinagem.md)
+e no XDC ativo; esses artefatos históricos não devem ser usados como mapa da
+remontagem de 19/10.

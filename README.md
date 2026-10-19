@@ -4,8 +4,8 @@
 
 O operador confirmou boot pela Flash, VGA estável, joystick nos quatro sentidos
 em NORMAL e CAÇA, repouso/limites/LOCK, MPU sem ATT BAD, indicadores do BMP085 e
-HMC5883L e buzzer silenciado por BTNC. SW do joystick está em JC1/K1 e controle
-do buzzer em JC7/E7. O vertical do joystick é invertido no top.
+HMC5883L e buzzer silenciado por BTNC. SW do joystick está em JC1/K1. O buzzer
+foi remanejado de JC7/E7 para JC10/E6; o vertical do joystick é invertido no top.
 
 A versão preservada está em
 [`bitstreams/2026-10-13_hud_flash/`](bitstreams/2026-10-13_hud_flash/README.md).
@@ -28,8 +28,8 @@ O RTL está em SystemVerilog. O fluxo de implementação usa Xilinx Vivado e o c
 | Atitude MPU-6050 | Aquisição, calibração, integração temporal do giroscópio e fusão complementar conectadas ao HUD | Testbenches de sensores e fusão; operador relatou MPU funcional e recuperado no teste físico do bitstream de 8/10 |
 | Heading | HMC5883L plano, fusão com gyro Z e fallback manual | Testes de I²C, cálculo, fusão e top; operador relatou 5/5 ensaios em operação e recuperação no reteste após episódio intermitente. Calibração/precisão absoluta não verificada; `HDG BAD` foi breve |
 | BMP085 | Aquisição, calibração, compensação de temperatura/pressão e estimação vertical conectadas | Testbenches I²C, compensação, altitude e top; operador relatou 3/3 ensaios físicos e recuperação |
-| KY-023 | Eixos por XADC movem a mira; botão alterna LOCK/UNLOCK; quatro LEDs mostram direção | Simulação e relato de bancada de 13/10: quatro sentidos, repouso, limites e LOCK/UNLOCK corretos. Faixa elétrica do XADC não medida |
-| Modos SOLO/VOO/POUSO e alertas | Integrados; `buzzer_out` sai por JC7/E7 | Simulação unitária/integrada; operador confirmou buzzer e ACK por BTNC em 13/10 |
+| KY-023 | Eixos por XADC movem a mira; botão alterna LOCK/UNLOCK; quatro LEDs mostram direção | Sentidos e LOCK/UNLOCK foram relatados em 13/10. Em testes posteriores com resistores de 27 kΩ foram relatadas leituras acima de 1 V; circuito e faixa segura não validados |
+| Modos SOLO/VOO/POUSO e alertas | Integrados; `buzzer_out` sai por JC10/E6 | Simulação unitária/integrada; operador confirmou buzzer e ACK por BTNC em 13/10, com a ligação anterior em JC7/E7 |
 | Bitstream de demonstração | Versão de 13/10/2026 gravada na Flash; Vivado 2026.1 e SHA-256 registrados no catálogo | Boot pela Flash e funções relatadas em [`docs/validacao_hardware_20261013.md`](docs/validacao_hardware_20261013.md) |
 
 “Implementado” descreve o RTL; simulação, implementação Vivado e ensaios físicos são evidências diferentes. Os resultados físicos resumidos acima foram informados pelo operador e não têm logs ou medições anexados. O relatório de implementação não valida precisão física dos sensores nem segurança elétrica da montagem.
@@ -107,11 +107,11 @@ Nos pares SW13:SW12 e SW15:SW14, `00` e `11` produzem zero; `01` e `10` comandam
 | --- | --- | --- | --- |
 | BTNU | M18 | Incrementa heading manual em 10°; sincronização de dois estágios, debounce e detecção de pressionamento | Simulação coberta; operador relatou resposta física |
 | BTND | P18 | Decrementa heading manual em 10°; mesma proteção de BTNU | Simulação coberta; operador relatou resposta física |
-| BTNC | N17 | ACK do alerta: silencia a saída lógica do buzzer enquanto o alerta reconhecido permanecer na mesma severidade; sincronização/debounce | ATIVO E VALIDADO logicamente; sem buzzer físico conectado |
+| BTNC | N17 | ACK do alerta: silencia a saída lógica do buzzer enquanto o alerta reconhecido permanecer na mesma severidade; sincronização/debounce | Lógica validada; saída agora mapeada para JC10/E6. Teste físico após a mudança pendente |
 | BTNL | — | Não declarado nem mapeado | Não utilizado |
 | BTNR | — | Não declarado nem mapeado | Não utilizado |
-| KY-023, eixo ligado a VAUX3 | JXADC, VAUX3 diferencial | Canal é amostrado pelo XADC; depois do período de calibração do centro, deadzone 180 e movimento limitado da mira | Quatro sentidos relatados como corretos em 13/10; tensão e resposta quantitativa não medidas |
-| KY-023, eixo ligado a VAUX10 | JXADC, VAUX10 diferencial | Segundo canal XADC; a associação X/Y é trocada no top para corresponder à orientação configurada | Orientação funcional relatada em 13/10; faixa analógica ainda precisa de medição |
+| KY-023, eixo ligado a VAUX3 | JXADC, VAUX3 diferencial | Canal é amostrado pelo XADC; depois do período de calibração do centro, deadzone 180 e movimento limitado da mira | Quatro sentidos relatados como corretos em 13/10; teste posterior relatou >1 V, acima da faixa nominal unipolar |
+| KY-023, eixo ligado a VAUX10 | JXADC, VAUX10 diferencial | Segundo canal XADC; a associação X/Y é trocada no top para corresponder à orientação configurada | Orientação funcional relatada em 13/10; tensão do eixo e valores/topologia dos resistores ainda não caracterizados |
 | KY-023, botão SW | JC1, K1; entrada ativa baixa com pull-up no XDC | Pressionamento alterna LOCK/UNLOCK; sincronização e debounce de 10 ms. LOCK congela a mira | Simulação coberta; operador relatou LOCK/UNLOCK aprovados fisicamente |
 
 O joystick calibra o centro durante a inicialização; mantenha-o solto nesse período. A posição é atualizada em ticks lentos, limitada à região interna da tela. A deadzone e os limites reduzem deriva, mas calibração e estabilidade analógica precisam ser avaliadas na montagem real.
@@ -129,7 +129,7 @@ O joystick calibra o centro durante a inicialização; mantenha-o solto nesse pe
 | LD6 | U17 | `MAG_LED` = `mag_sensor_ok` | HMC5883L identificado/operacional; não indica calibração nem precisão | HMC5883L em operação em 5/5 ensaios físicos relatados e recuperado no reteste; calibração não verificada |
 | LD7–LD15 | — | Nenhum sinal declarado no top/XDC | Sem função atribuída | Não utilizados |
 
-Não há LED de LOCK, modo, alerta ou buzzer no mapeamento atual. O estado LOCK e os alertas aparecem na VGA. O sinal `buzzer_out` existe dentro do RTL e é tratado logicamente, mas não há saída elétrica atribuída a um buzzer.
+Não há LED de LOCK, modo, alerta ou buzzer no mapeamento atual. O estado LOCK e os alertas aparecem na VGA. `buzzer_out` está atribuído a JC10/E6 para o estágio transistorizado externo; a ligação foi informada, mas ainda não foi validada em teste físico com esta pinagem.
 
 ## Sensores e conexões
 
@@ -226,7 +226,7 @@ As constraints atuais ainda deixam seis entradas I²C sem input delay, 12 contro
 - O heading magnético é uma estimativa planar, sem compensação de inclinação ou declinação geográfica; offsets/orientação precisam de calibração na montagem.
 - Velocidade em VOO/POUSO é simulada. O estimador inercial legado não mede airspeed e não é selecionado pela política operacional atual.
 - LOCK só congela a mira móvel; não existe detecção, rastreamento ou aquisição de alvo.
-- BTNC confirma/silencia a indicação lógica. `buzzer_out` está atribuído a JC7/E7 para o estágio transistorizado externo.
+- BTNC confirma/silencia a indicação lógica. `buzzer_out` está atribuído a JC10/E6 para o estágio transistorizado externo.
 - SW4–SW8, BTNL/BTNR e LD7–LD15 não estão no top/XDC e não têm função.
 - SW9–SW11 desativam o uso das fontes, mas os drivers continuam consultando os sensores nos barramentos. Os comandos manuais geram avisos angulares em VOO/POUSO. Em VOO, velocidade simulada ≤100 kt gera STALL; é um alerta didático, não uma detecção aerodinâmica de estol.
 - O indicador vermelho/verde do MPU pode ficar vermelho durante inicialização ou recuperação; se persistir após o sensor voltar a publicar amostras, verificar a cadeia MPU. Ele não indica estado de heading.
@@ -255,7 +255,7 @@ Os guias detalhados de [arquitetura](docs/arquitetura.md), [pinagem](docs/pinage
 ## Próximos passos
 
 1. Arquivar fotos/vídeos e anotações dos ensaios físicos já relatados junto ao registro de entrega.
-2. Caracterizar e corrigir em versão futura o deslocamento lento para a esquerda do KY-023; verificar a faixa elétrica segura das entradas XADC antes de repetir ensaios analógicos.
+2. Não repetir ensaios do KY-023 no XADC até conferir o circuito completo dos divisores e medir cada eixo no próprio JXADC: foram relatadas leituras acima de 1 V com resistores de 27 kΩ, acima da faixa nominal unipolar do XADC. Os valores, posições e conexões dos demais resistores não estão documentados, então a divisão de tensão não pode ser calculada ainda. Depois, caracterizar o deslocamento lento para a esquerda.
 3. Calibrar o HMC5883L na montagem real e comparar o heading com uma referência absoluta; registrar condições e erro medido.
 4. Revisar constraints elétricas e DRC: tensão de configuração, atrasos de I/O e pull-ups/barramentos conforme os módulos conectados.
-5. Decidir se será instalado um buzzer físico. Se não, simplificar/remover a saída lógica em uma alteração futura; se sim, atribuir pino e validar driver de acordo com o transdutor. Reavaliar módulos legados sem consumidor.
+5. Testar em bancada o buzzer após a mudança física de JC7/E7 para JC10/E6 e confirmar o estágio 2N2222A, resistor de base de 1,2 kΩ, alimentação do buzzer e terra comum. Reavaliar módulos legados sem consumidor.

@@ -20,8 +20,8 @@ Este mapa foi conferido contra o top [top_reticula](../rtl/top_reticula.sv) e o 
 | SW15 | V10 | Bit mais significativo do comando de roll |
 | BTNU | M18 | Incrementa heading manual em 10° |
 | BTND | P18 | Decrementa heading manual em 10° |
-| BTNC | N17 | ACK lógico do alerta/buzzer interno |
-| Buzzer | JC7/E7, LVCMOS33 | Saída lógica para o estágio transistorizado |
+| BTNC | N17 | ACK lógico do alerta/buzzer |
+| Buzzer | JC10/E6, LVCMOS33 | `buzzer_out` para resistor de 1,2 kΩ e estágio transistorizado 2N2222A; emissor ao GND, coletor ao negativo do buzzer e positivo do buzzer em 3,3 V, conforme ligação informada em 19/10 |
 | BTNL, BTNR | Não declarados no top/XDC | Sem uso |
 | KY-023, eixo X | JXADC1/7, VAUX3, A13/A14 | Entrada analógica para a mira móvel |
 | KY-023, eixo Y | JXADC2/8, VAUX10, A15/A16 | Entrada analógica para a mira móvel; orientação configurada no top |
@@ -42,7 +42,7 @@ SW12/SW13 codificam pitch e SW14/SW15 codificam roll; `00`/`11` representam zero
 | LD6 | U17 | Estado de identificação/configuração do HMC5883L, não sua calibração |
 | LD7–LD15 | Não declarados no top/XDC | Sem uso |
 
-Não há LED dedicado para modo, LOCK, alerta ou buzzer. `buzzer_out` é lógico e está atribuído a JC7/E7 para o estágio transistorizado.
+Não há LED dedicado para modo, LOCK, alerta ou buzzer. A saída lógica do top está atribuída a JC10/E6. A ligação física foi informada, mas ainda não foi testada com esta nova pinagem.
 
 ## Sensores e VGA
 
@@ -55,7 +55,7 @@ Não há LED dedicado para modo, LOCK, alerta ou buzzer. `buzzer_out` é lógico
 | VGA RGB | DE-15 | conforme tabela no XDC | RGB444, 4 bits por canal |
 | VGA sync | DE-15 | B11 / B12 | HS / VS |
 
-As três interfaces I²C são independentes. O XDC configura `LVCMOS33`; isso não confirma a alimentação real do módulo nem substitui a verificação de pull-ups e limites elétricos. Os eixos usam entradas diferenciais dedicadas do JXADC; respeite a faixa elétrica do XADC e não trate `LVCMOS33` como autorização para excedê-la.
+As três interfaces I²C são independentes. O XDC configura `LVCMOS33`; isso não confirma a alimentação real do módulo nem substitui a verificação de pull-ups e limites elétricos. Os eixos usam entradas diferenciais dedicadas do JXADC; o top amostra VAUX3 e VAUX10 em modo unipolar, nominalmente 0–1 V. Foram relatadas leituras acima de 1 V em ensaios recentes com resistores de 27 kΩ, mas a topologia completa e os outros valores não estão registrados. Não repetir a ligação ao XADC até medir a tensão diretamente em JXADC1 e JXADC2 e confirmar a rede de condicionamento; `LVCMOS33` não autoriza exceder a faixa analógica.
 
 ## Sinais VGA
 

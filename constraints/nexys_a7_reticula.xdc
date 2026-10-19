@@ -37,7 +37,7 @@ set_property -dict { PACKAGE_PIN B12 IOSTANDARD LVCMOS33 } [get_ports { VGA_VS }
 
 set_property -dict { PACKAGE_PIN G4 IOSTANDARD LVCMOS33 } [get_ports { i2c_sda }]; #JD8 - SDA
 
-set_property -dict { PACKAGE_PIN E7 IOSTANDARD LVCMOS33 } [get_ports { buzzer_out }]; # JC7
+set_property -dict { PACKAGE_PIN E6 IOSTANDARD LVCMOS33 } [get_ports { buzzer_out }]; # JC10
 
 # set_property -dict { PACKAGE_PIN E18 IOSTANDARD LVCMOS33 } [get_ports { JA[3] }]; #IO_L21P_T3_DQS_15 Sch=ja[3]
 
