@@ -1,12 +1,16 @@
 # Testes e validação
 
-O script [`scripts/test.sh`](../scripts/test.sh) contém 55 entradas de regressão. Usa Icarus Verilog (`iverilog` e `vvp`) e, quando disponível, Verilator nos testes raster exaustivos `roll` e `vga`, sem reduzir os vetores. Sem Verilator, esses dois casos recorrem ao Icarus. Cada testbench é compilado contra `rtl/*.sv` e `tests/xadc_stub.sv`.
+O script [`scripts/test.sh`](../scripts/test.sh) contém 60 entradas de regressão. Usa Icarus Verilog (`iverilog` e `vvp`) e, quando disponível, Verilator nos testes raster exaustivos `roll` e `vga`, sem reduzir os vetores. Sem Verilator, esses dois casos recorrem ao Icarus. Cada testbench é compilado contra `rtl/*.sv` e `tests/xadc_stub.sv`.
 
 ```sh
 ./scripts/test.sh
 ```
 
 O script cria/substitui executáveis em `build/tests/`. Preserve qualquer artefato existente nesse diretório ou execute a regressão a partir de uma cópia de trabalho isolada.
+
+O CI instala Icarus Verilog e Verilator, registra suas versões e executa o mesmo script. O artefato `simulacao-rtl` preserva o log e as capturas PPM em `build/` e `build/tests/`, inclusive os dois estilos e as posições do marcador.
+
+O teste `hud_joystick_vertical` foi copiado do pacote de validação de 13/10 para `tests/`, sem alterar o arquivo histórico. Ele verifica o sentido vertical em NORMAL/CAÇA, o horizontal, o centro e os LEDs. `frames_estilos` gera capturas para comparação visual; não comprova sozinho a correção de cada pixel.
 
 ## Cobertura declarada pelo conjunto atual
 

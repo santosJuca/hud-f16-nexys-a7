@@ -26,7 +26,7 @@ module tb_frames_estilos;
 
         .btn_heading(2'b00),
 
-        .sw(4'b0000),
+        .sw(7'b0000000),
 
         .display_mode(1'b0),
         .style_mode(1'b0),

@@ -8,7 +8,7 @@ module tb_alertas_voo;
     logic signed [13:0] vertical_fpm=0;
     logic att_valid=1,attitude_alert_valid=1,alt_valid=1,heading_valid=1,vertical_valid=1;
     wire [1:0] severity; wire [2:0] causa;
-    wire alert_roll,alert_pitch,alert_speed,alert_altitude,alert_sink,alert_sensor;
+    wire alert_roll,alert_pitch,alert_speed,alert_stall,alert_altitude,alert_sink,alert_sensor;
     integer checks=0;
     alertas_voo dut(.*);
     task automatic confere(input integer sev, code);
@@ -102,9 +102,15 @@ module tb_alertas_voo;
         pitch_q10=0; attitude_alert_valid=0; confere(0,0);
         velocidade_kt=120; confere(2,3);
         velocidade_kt=100; confere(3,3);
+        if(alert_stall !== 1'b1) $fatal(1,"STALL ausente em 100 kt");
+        velocidade_kt=105; confere(3,3);
+        if(alert_stall !== 1'b1) $fatal(1,"STALL perdeu histerese em 105 kt");
         velocidade_kt=106; confere(2,3);
+        if(alert_stall !== 1'b0) $fatal(1,"STALL nao liberou em 106 kt");
         velocidade_kt=126; confere(0,0);
+        velocidade_kt=100; confere(3,3);
         reset=1; confere(0,0);
+        if(alert_stall !== 1'b0) $fatal(1,"Reset nao limpou STALL");
         $display("PASS alertas: %0d verificacoes, limiares, histerese, sinais, prioridade, sensores e pouso",checks); $finish;
     end
 endmodule
