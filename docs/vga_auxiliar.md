@@ -1,4 +1,12 @@
-# Estudo de vídeo auxiliar
+# Estudo de video auxiliar
+
+**Atualizacao P1 (19/10/2026):** existe uma mascara logica interna do HUD
+e um modulo isolado de controle de selecao, ambos sem hardware externo.
+A sobreposicao analogica VGA continua **nao implementada**.
+Ver [plano tecnico P1](p1_overlay_vga.md) para arquivos novos,
+requisitos de sincronismo e criterio de liberacao.
+
+## Registro anterior
 
 **Status: não implementado e fora do escopo atual do HUD.** O projeto produz VGA 640×480; não captura vídeo externo nem compõe um fundo de outra fonte. Não existem portas, constraints ou bitstream associados a esta proposta.
 
