@@ -4,7 +4,7 @@
 
 O HMC5883L recebeu [calibração de offsets e escala medida nesta montagem](docs/calibracao_hmc5883l_20261019/README.md). O operador confirmou rumo próximo da referência; precisão absoluta ainda não caracterizada. O [bitstream calibrado e seus relatórios](bitstreams/2026-10-19_mag_calibrado/README.md) estão preservados.
 
-Joystick com velocidade fixa de 4 pixels por atualização nos dois sentidos e LOCK independente em NORMAL e CAÇA. O botão SW está em JA1/C17; o buzzer permanece em JC10/E6. O operador confirmou o funcionamento na placa após a programação JTAG desta correção. A Flash ainda contém a versão anterior. A confirmação funcional não substitui a medição elétrica das entradas XADC.
+Joystick com velocidade fixa de 4 pixels por atualização nos dois sentidos e LOCK independente em NORMAL e CAÇA. O botão SW está em JA1/C17; o buzzer permanece em JC10/E6. O operador confirmou o funcionamento na placa após a programação JTAG desta correção. A confirmação funcional não substitui a medição elétrica das entradas XADC.
 
 O registro abaixo conserva a referência da demonstração de 13/10 e suas pendências; os testes novos estão em [docs/testes.md](docs/testes.md).
 
