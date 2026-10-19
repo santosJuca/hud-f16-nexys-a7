@@ -6,6 +6,9 @@ cd "$(dirname "$0")/.."
 mkdir -p build/tests
 
 tests=(
+    "hud_pixel_mask|tb_hud_pixel_mask|tests/tb_hud_pixel_mask.sv"
+    "hud_video_switch_ctrl|tb_hud_video_switch_ctrl|tests/tb_hud_video_switch_ctrl.sv"
+    "top_hud_mask|tb_top_hud_mask|tests/tb_top_hud_mask.sv"
     "modo_operacao|tb_modo_operacao|tests/tb_modo_operacao.sv"
     "simulador_voo|tb_simulador_voo|tests/tb_simulador_voo.sv"
     "mira_joystick|tb_mira_joystick|tests/tb_mira_joystick.sv"
