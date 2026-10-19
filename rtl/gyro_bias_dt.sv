@@ -22,8 +22,8 @@ module gyro_bias_dt #(
     output logic signed [15:0] bias_x = 16'sd0,
     output logic signed [15:0] bias_y = 16'sd0,
 
-    output logic signed [16:0] gyro_x_corr = 17'sd0,
-    output logic signed [16:0] gyro_y_corr = 17'sd0,
+    output logic signed [16:0] gyro_x_corr,
+    output logic signed [16:0] gyro_y_corr,
 
     output logic [31:0] dt_cycles = 32'd0,
     output logic        dt_valid  = 1'b0
