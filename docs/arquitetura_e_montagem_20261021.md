@@ -58,7 +58,6 @@ O pacote transferido por `entrada_hud #(.WIDTH(128))` é composto por 32 bits de
 
 Os barramentos são distintos; a referência GND é compartilhada. Não interpretar o uso de LVCMOS33 no XDC como medição ou autorização automática da alimentação dos breakout boards. Conferir tensão real e pull-ups em cada módulo.
 
-**Figura ilustrativa fornecida em conversa:** `Sensores.png`. Esta figura não foi incluída como mídia binária neste commit; é referência de montagem, não evidência experimental nem esquemático elétrico completo.
 
 ## 3. Joystick KY-023 e XADC
 
@@ -90,7 +89,6 @@ Para 3,3 V na entrada e resistores nominais, `Vout = 3,3 × 10/(27+10) ≈ 0,892
 
 O RTL troca os eixos analógicos e corrige a orientação vertical conforme a montagem. O joystick foi confirmado funcionalmente em 21/10/2026; essa confirmação não equivale a validar a faixa elétrica XADC.
 
-**Figura ilustrativa fornecida em conversa:** `Joysitckmontagem.png` (nome original). Também não incluída como binário no repositório neste commit.
 
 ## 4. Buzzer
 
@@ -106,3 +104,19 @@ Não utilizar diagramas anteriores que indiquem JC7/E7 ou o botão KY-023 no con
 - **Bancada de 21/10:** confirma resposta funcional relatada, sem caracterização quantitativa.
 
 Referências internas: [pinagem](pinagem.md), [sensores](sensores.md), [modos/alertas](modos_alertas_buzzer.md), [validação e rastreabilidade](validacao_e_rastreabilidade_20261021.md). Referências externas: [Digilent Nexys A7](https://digilent.com/reference/programmable-logic/nexys-a7/reference-manual), [Master XDC Digilent](https://github.com/Digilent/digilent-xdc/blob/master/Nexys-A7-100T-Master.xdc), [AMD UG480 XADC](https://docs.amd.com/r/en-US/ug480_7Series_XADC).
+
+## Figuras da montagem
+
+### Sensores na protoboard
+
+![Montagem ilustrativa dos sensores](figuras/sensores_protoboard.png)
+
+Três barramentos I2C independentes com referência GND comum.
+
+### Joystick KY-023
+
+![Divisores resistivos do joystick](figuras/joystick_divisores.png)
+
+Divisores resistivos ilustrativos de 27 kΩ e 10 kΩ para os dois canais do XADC.
+
+As figuras são ilustrativas e não substituem medições elétricas ou fotografias da bancada.
