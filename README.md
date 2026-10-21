@@ -1,5 +1,17 @@
 # HUD aeronáutico em FPGA
 
+## Fechamento documental de 21/10/2026
+
+Referência: commit de base `4107002ab3cff7ceab9c2d89a62e4223a523e426`. Auditoria documental de 51/51 hashes das fontes do build calibrado, 62/62 testes aprovados no CI do próprio commit e validação funcional de bancada relatada em 21/10/2026. Bitstream preservado de 19/10: SHA-256 `16bb1d1c4fdee04c6dde4d9b5a1134a9e510beb79be5d75c69df4d359d1a9cf6`.
+
+- [Resultados, Flash e rastreabilidade](docs/validacao_e_rastreabilidade_20261021.md)
+- [Arquitetura e montagem elétrica](docs/arquitetura_e_montagem_20261021.md)
+- [Simulador VGA interativo no Linux](docs/simulador_vgasim_20261021.md)
+- [Conclusão e trabalhos futuros](docs/conclusao_e_trabalhos_futuros_20261021.md)
+
+Somente documentação: RTL, XDC e bitstream não foram alterados. As fontes externas do simulador GTKmm e as imagens ilustrativas fornecidas em conversa **não foram incorporadas a este commit**. Consulte as limitações e a distinção entre simulação, implementação e ensaio físico nos documentos vinculados.
+
+
 ## Atualização de 19/10/2026
 
 O HMC5883L recebeu [calibração de offsets e escala medida nesta montagem](docs/calibracao_hmc5883l_20261019/README.md). O operador confirmou rumo próximo da referência; precisão absoluta ainda não caracterizada. O [bitstream calibrado e seus relatórios](bitstreams/2026-10-19_mag_calibrado/README.md) estão preservados.
