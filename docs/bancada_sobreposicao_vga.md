@@ -10,7 +10,7 @@ Entre os dois cabos cortados, os condutores de sincronismo foram ligados e solda
 
 ## Mapeamento observado
 
-O mapeamento abaixo foi informado pelo operador como já conferido. Nos pinos 6, 7 e 8, os retornos são fios junto ao conjunto dos fios blindados, com um fio extra. O registro não atribui cores individuais a esses retornos.
+O mapeamento abaixo foi informado pelo operador como já conferido. Nos dois cabos cortados, o fio extra tem continuidade com os pinos 6, 7 e 8, com o pino 10 e com as blindagens de R, G e B. Portanto, em cada cabo esses retornos, o GND de sincronismo e as blindagens estão eletricamente comuns. O registro não atribui cores individuais ao fio extra.
 
 | Pino VGA | Sinal / identificação informada | Condutor observado | Situação |
 | --- | --- | --- | --- |
@@ -34,4 +34,4 @@ O módulo conversor lógico HV/LV baseado em BSS138 não serve para os sinais an
 
 ## Próximas verificações de bancada
 
-O mapeamento dos fios foi concluído. Antes de conectar a Nexys A7 ou o monitor à montagem, ainda é necessário definir e validar uma interface elétrica apropriada para RGB analógico e para os sinais de sincronismo. Depois disso, avaliar a implementação do mux e realizar novos testes, mantendo o cabo VGA íntegro como referência de funcionamento.
+O mapeamento dos fios foi concluído. Como retornos RGB, GND de sincronismo e blindagens são comuns em cada cabo, considere essa ligação ao definir a referência elétrica. Antes de conectar a Nexys A7 ou o monitor à montagem, ainda é necessário definir e validar uma interface elétrica apropriada para RGB analógico e para os sinais de sincronismo. Depois disso, avaliar a implementação do mux e realizar novos testes, mantendo o cabo VGA íntegro como referência de funcionamento.
