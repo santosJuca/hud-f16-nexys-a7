@@ -1,5 +1,7 @@
 # Bancada de sobreposição VGA
 
+![Diagrama do mapeamento de cores do cabo VGA](images/mapeamento-cabo-vga.svg)
+
 Este registro descreve a montagem física em estudo para sobrepor o HUD da Nexys A7 ao sinal de uma fonte VGA externa. A sobreposição ainda não está implementada. Não houve alteração no RTL nem programação da placa para esta montagem.
 
 ## Cabos e estado da montagem
