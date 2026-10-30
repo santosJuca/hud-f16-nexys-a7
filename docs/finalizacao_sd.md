@@ -1,5 +1,7 @@
 # HUD com diagnóstico microSD: validação de 30/10/2026
 
+> Atualização posterior: [correções de configuração, I²C e cobertura VGA](aprovacao_interfaces_sd.md). O texto abaixo preserva o build histórico de 30/10; consulte a atualização para o estado atual.
+
 Esta versão acrescenta inicialização SDHC e leitura explícita de um setor de diagnóstico. Não implementa reprodução de vídeo, sistema de arquivos, framebuffer nem captura/sobreposição VGA externa. O subsistema continua desabilitado no parâmetro padrão do RTL; a implementação `C` habilita `ENABLE_SD_SUBSYSTEM=1` explicitamente.
 
 ## Comportamento integrado
