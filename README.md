@@ -279,3 +279,7 @@ Os guias detalhados de [arquitetura](docs/arquitetura.md), [pinagem](docs/pinage
 3. Calibrar o HMC5883L na montagem real e comparar o heading com uma referência absoluta; registrar condições e erro medido.
 4. Revisar constraints elétricas e DRC: tensão de configuração, atrasos de I/O e pull-ups/barramentos conforme os módulos conectados.
 5. Testar em bancada o buzzer após a mudança física de JC7/E7 para JC10/E6 e confirmar o estágio 2N2222A, resistor de base de 1,2 kΩ, alimentação do buzzer e terra comum. Reavaliar módulos legados sem consumidor.
+
+## Diagnóstico microSD na branch `feat/video-sd-overlay`
+
+A implementação C habilita inicialização SDHC e leitura explícita de um setor de diagnóstico pelo SW8. Esta integração não reproduz vídeo nem captura VGA externo. Consulte [a validação e os bloqueios de programação](docs/finalizacao_sd.md) antes de gerar ou programar artefatos desta branch.

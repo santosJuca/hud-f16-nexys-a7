@@ -30,3 +30,5 @@ O [README principal](../README.md) resume o HUD e as instruções de uso. Os gui
 | [Catálogo de bitstreams](../bitstreams/README.md) | Versões, hashes, relatórios e status físico |
 
 Os documentos descrevem o RTL em `rtl/top_reticula.sv` e o XDC `constraints/nexys_a7_reticula.xdc`. Os relatórios do build de 08/10 comprovam síntese e implementação; os ensaios físicos posteriores são resultados informados pelo operador e estão identificados separadamente em `entrega_demo.md`. Arquivos de auditoria e validação com datas anteriores são registros históricos, não substituem esta descrição do estado atual.
+
+- [MicroSD: integração e validação de 30/10/2026](finalizacao_sd.md).
