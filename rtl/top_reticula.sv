@@ -18,7 +18,13 @@ module top_reticula #(
     parameter bit MAG_INVERTER_X = 1'b0,
     parameter bit MAG_INVERTER_Y = 1'b0,
     parameter logic [12:0] MAG_GAIN_X_Q12 = 13'd4096,
-    parameter logic [12:0] MAG_GAIN_Y_Q12 = 13'd4096
+    parameter logic [12:0] MAG_GAIN_Y_Q12 = 13'd4096,
+    parameter bit ENABLE_SD_SUBSYSTEM = 1'b0,
+    parameter integer SD_REQUEST_DEBOUNCE = 1_000_000,
+    parameter integer SD_POWERUP_CYCLES = 200_000,
+    parameter integer SD_HALF_PERIOD_CYCLES = 125,
+    parameter integer SD_INIT_HALF_PERIOD_CYCLES = SD_HALF_PERIOD_CYCLES,
+    parameter integer SD_READ_HALF_PERIOD_CYCLES = SD_HALF_PERIOD_CYCLES
 ) (
     input  logic        clk,
     input wire [1:0] operacao_sw, // SW3:SW2
@@ -70,8 +76,102 @@ module top_reticula #(
     output wire [3:0]   VGA_B,
 
     output wire         VGA_HS,
-    output wire         VGA_VS
+    output wire         VGA_VS,
+
+    input  wire         SD_DAT0,
+    input  wire         SD_CD,
+    input  wire         SD_READ_SWITCH,
+    output wire         SD_RESET,
+    output wire         SD_SCK,
+    output wire         SD_CMD,
+    output wire         SD_DAT3,
+
+    output wire         SD_READY_LED,
+    output wire         SD_ERROR_LED,
+    output wire         SD_BUSY_LED
 );
+    wire reset_operacao;
+
+    wire sd_diagnostic_error;
+    wire sd_request;
+    wire sd_init_ready;
+    wire sd_init_failed;
+    wire [2:0] sd_init_error_code;
+    wire sd_read_busy;
+    wire sd_read_done;
+    wire sd_read_error;
+    wire [2:0] sd_read_error_code;
+    wire sd_block_valid;
+    wire sd_data_valid;
+    wire [7:0] sd_data_byte;
+    wire [8:0] sd_byte_index;
+
+    generate if (ENABLE_SD_SUBSYSTEM) begin : g_sd
+        sd_diagnostic #(.DEBOUNCE_CYCLES(SD_REQUEST_DEBOUNCE)) u_diagnostico (
+            .clk(clk), .rst(reset_operacao), .read_switch(SD_READ_SWITCH),
+            .ready(sd_init_ready), .busy(sd_read_busy), .failed(sd_init_failed),
+            .data_valid(sd_data_valid), .data_byte(sd_data_byte),
+            .byte_index(sd_byte_index), .block_valid(sd_block_valid),
+            .read_error(sd_read_error), .request(sd_request),
+            .diagnostic_error(sd_diagnostic_error)
+        );
+        sd_spi_controller #(
+            .POWERUP_CYCLES(SD_POWERUP_CYCLES),
+            .HALF_PERIOD_CYCLES(SD_HALF_PERIOD_CYCLES),
+            .INIT_HALF_PERIOD_CYCLES(SD_INIT_HALF_PERIOD_CYCLES),
+            .READ_HALF_PERIOD_CYCLES(SD_READ_HALF_PERIOD_CYCLES)
+        ) u_sd_spi_controller (
+            .clk(clk),
+            .rst(reset_operacao),
+            .read_start(sd_request),
+            .read_lba(32'd2048),
+            .sd_miso(SD_DAT0),
+            .sd_reset(SD_RESET),
+            .sd_sck(SD_SCK),
+            .sd_mosi(SD_CMD),
+            .sd_cs_n(SD_DAT3),
+            .init_ready(sd_init_ready),
+            .init_failed(sd_init_failed),
+            .init_error_code(sd_init_error_code),
+            .read_busy(sd_read_busy),
+            .read_done(sd_read_done),
+            .read_error(sd_read_error),
+            .read_error_code(sd_read_error_code),
+            .block_valid(sd_block_valid),
+            .data_valid(sd_data_valid),
+            .data_byte(sd_data_byte),
+            .byte_index(sd_byte_index)
+        );
+    end else begin : g_sd_disabled
+        assign sd_request = 1'b0;
+        assign sd_diagnostic_error = 1'b0;
+        assign SD_RESET = 1'b1;
+        assign SD_SCK = 1'b0;
+        assign SD_CMD = 1'b1;
+        assign SD_DAT3 = 1'b1;
+        assign sd_init_ready = 1'b0;
+        assign sd_init_failed = 1'b0;
+        assign sd_init_error_code = 3'd0;
+        assign sd_read_busy = 1'b0;
+        assign sd_read_done = 1'b0;
+        assign sd_read_error = 1'b0;
+        assign sd_read_error_code = 3'd0;
+        assign sd_block_valid = 1'b0;
+        assign sd_data_valid = 1'b0;
+        assign sd_data_byte = 8'd0;
+        assign sd_byte_index = 9'd0;
+    end endgenerate
+
+    assign SD_READY_LED = ENABLE_SD_SUBSYSTEM &&
+                          sd_init_ready && !sd_init_failed;
+
+    assign SD_ERROR_LED = ENABLE_SD_SUBSYSTEM &&
+                          (sd_init_failed || sd_read_error || sd_diagnostic_error);
+
+    assign SD_BUSY_LED = ENABLE_SD_SUBSYSTEM &&
+                         !reset_operacao &&
+                         !sd_init_failed &&
+                         (!sd_init_ready || sd_read_busy);
 
     logic [9:0] pixel_x;
     logic [9:0] pixel_y;
@@ -287,7 +387,7 @@ wire [9:0] velocidade_hud_entrada =
     wire [56:0] dados_operacao;
     wire [31:0] metadados_operacao;
     logic [3:0] inicio_operacao = 0;
-    wire reset_operacao = !inicio_operacao[3];
+    assign reset_operacao = !inicio_operacao[3];
     always_ff @(posedge clk) inicio_operacao <= {inicio_operacao[2:0],1'b1};
     wire [127:0] pacote_hud = MODOS_OPERACIONAIS ?
         {metadados_operacao,dados_operacao,mira_lock_origem,mira_y_origem,mira_x_origem,alvo_y_origem,alvo_x_origem} :

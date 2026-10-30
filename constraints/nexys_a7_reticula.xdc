@@ -10,7 +10,27 @@ set_property -dict { PACKAGE_PIN E3  IOSTANDARD LVCMOS33 } [get_ports { clk }]; 
 create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports { clk }];
 
 # Clock de pixel gerado pelo divisor por quatro do controlador.
-create_generated_clock -name pixel_clk -source [get_ports clk] -divide_by 4 [get_pins u_vga/clk25_reg/Q]
+create_generated_clock -name pixel_clk -source [get_ports clk] -edges {3 7 11} [get_pins u_vga/clk25_reg/Q]
+
+## MicroSD, Nexys A7-100T Master XDC Digilent. SD_DAT[1:2] não usados.
+## SD_DAT0 é entrada (MISO); SD_DAT3 é CS ativo baixo em SPI.
+set_property -dict { PACKAGE_PIN E2 IOSTANDARD LVCMOS33 } [get_ports { SD_RESET }]
+set_property -dict { PACKAGE_PIN B1 IOSTANDARD LVCMOS33 } [get_ports { SD_SCK }]
+set_property -dict { PACKAGE_PIN C1 IOSTANDARD LVCMOS33 } [get_ports { SD_CMD }]
+set_property -dict { PACKAGE_PIN C2 IOSTANDARD LVCMOS33 } [get_ports { SD_DAT0 }]
+set_property -dict { PACKAGE_PIN D2 IOSTANDARD LVCMOS33 } [get_ports { SD_DAT3 }]
+set_property -dict { PACKAGE_PIN A1 IOSTANDARD LVCMOS33 } [get_ports { SD_CD }]
+
+## Diagnostico do subsistema microSD.
+## LD7: inicializacao concluida.
+## LD8: falha de inicializacao.
+## LD9: inicializacao ou leitura em andamento.
+set_property -dict { PACKAGE_PIN U16 IOSTANDARD LVCMOS33 } [get_ports { SD_READY_LED }]
+set_property -dict { PACKAGE_PIN V16 IOSTANDARD LVCMOS33 } [get_ports { SD_ERROR_LED }]
+set_property -dict { PACKAGE_PIN T15 IOSTANDARD LVCMOS33 } [get_ports { SD_BUSY_LED }]
+
+## A temporização relativa cartão/FPGA para SPI ainda requer datasheets,
+## board delays, análise de skew e margens de setup/hold antes de validação física.
 
 ## Conector VGA
 set_property -dict { PACKAGE_PIN A3  IOSTANDARD LVCMOS33 } [get_ports { VGA_R[0] }]; #Sch=vga_r[0]
@@ -188,3 +208,15 @@ set_property -dict { PACKAGE_PIN R15 IOSTANDARD LVCMOS33 } [get_ports { operacao
 set_property -dict { PACKAGE_PIN N17 IOSTANDARD LVCMOS33 } [get_ports { ack_btn }]
 set_false_path -from [get_ports {operacao_sw[*]}] -to [get_pins -hier -filter {NAME =~ *u_operacao/u_modo/meta_reg*/D}]
 set_false_path -from [get_ports ack_btn] -to [get_pins -hier -filter {NAME =~ *u_operacao/u_buzzer/ack_meta_reg/D}]
+
+# Bundled-data: captura apenas depois de pedido_meta/pedido_sync.
+# O barramento fica retido ate o ACK retornar (ver docs/finalizacao_sd.md).
+set_max_delay -datapath_only 20.000 -from [get_cells -hier -filter {NAME =~ u_entrada/retido_reg*}] -to [get_cells -hier -filter {NAME =~ u_entrada/dados_destino_reg*}]
+set_bus_skew 10.000 -from [get_cells -hier -filter {NAME =~ u_entrada/retido_reg*}] -to [get_cells -hier -filter {NAME =~ u_entrada/dados_destino_reg*}]
+# Apenas a entrada dos dois sincronizadores, nunca os estagios seguintes.
+set_false_path -from [get_cells -hier -filter {NAME == u_entrada/pedido_reg}] -to [get_pins -hier -filter {NAME == u_entrada/pedido_meta_reg/D}]
+set_false_path -from [get_cells -hier -filter {NAME == u_entrada/confirmado_reg}] -to [get_pins -hier -filter {NAME == u_entrada/confirmado_meta_reg/D}]
+
+# SW8 solicita um bloco de diagnostico (somente leitura).
+set_property -dict { PACKAGE_PIN T8 IOSTANDARD LVCMOS18 } [get_ports SD_READ_SWITCH]
+set_false_path -from [get_ports SD_READ_SWITCH] -to [get_pins -hier -filter {NAME =~ *u_diagnostico/read_meta_reg/D}]

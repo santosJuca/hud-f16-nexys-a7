@@ -6,6 +6,17 @@ cd "$(dirname "$0")/.."
 mkdir -p build/tests
 
 tests=(
+    "sd_diagnostic|tb_sd_diagnostic|tests/tb_sd_diagnostic.sv"
+    "sd_spi_preamble|tb_sd_spi_preamble|tests/tb_sd_spi_preamble.sv"
+    "sd_spi_cmd0|tb_sd_spi_cmd0|tests/tb_sd_spi_cmd0.sv"
+    "sd_spi_command|tb_sd_spi_command|tests/tb_sd_spi_command.sv"
+    "sd_spi_startup|tb_sd_spi_startup|tests/tb_sd_spi_startup.sv"
+    "sd_spi_acmd|tb_sd_spi_acmd|tests/tb_sd_spi_acmd.sv"
+    "sd_spi_init|tb_sd_spi_init|tests/tb_sd_spi_init.sv"
+    "sd_spi_read_block|tb_sd_spi_read_block|tests/tb_sd_spi_read_block.sv"
+    "sd_spi_controller|tb_sd_spi_controller|tests/tb_sd_spi_controller.sv"
+    "sd_spi_throughput|tb_sd_spi_throughput|tests/tb_sd_spi_throughput.sv"
+    "top_sd_integration|tb_top_sd_integration|tests/tb_top_sd_integration.sv"
     "modo_operacao|tb_modo_operacao|tests/tb_modo_operacao.sv"
     "simulador_voo|tb_simulador_voo|tests/tb_simulador_voo.sv"
     "mira_joystick|tb_mira_joystick|tests/tb_mira_joystick.sv"
