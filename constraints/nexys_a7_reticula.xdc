@@ -5,6 +5,11 @@
 ## para o Nexys A7-50T / A7-100T
 ## =========================================================
 
+# Nexys A7 D.0, esquematico Digilent 500-292, folhas 8 e 10:
+# CFGBVS_0/P8 e VCCO_0/R9 ligados a VCC3V3.
+set_property CFGBVS VCCO [current_design]
+set_property CONFIG_VOLTAGE 3.3 [current_design]
+
 ## Clock 100 MHz do board
 set_property -dict { PACKAGE_PIN E3  IOSTANDARD LVCMOS33 } [get_ports { clk }]; #Sch=clk100mhz
 create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports { clk }];
@@ -197,6 +202,15 @@ set_property -dict { PACKAGE_PIN G1 IOSTANDARD LVCMOS33 PULLUP TRUE } \
 
 set_property -dict { PACKAGE_PIN G2 IOSTANDARD LVCMOS33 PULLUP TRUE } \
     [get_ports { mag_scl }]
+
+# Open-drain com retorno assincrono; apenas D do primeiro estagio.
+# Os segundos estagios ASYNC_REG e o protocolo I2C continuam temporizados.
+set_false_path -from [get_ports i2c_sda] -to [get_pins {u_sensor/sda_sync_reg[0]/D}]
+set_false_path -from [get_ports i2c_scl] -to [get_pins {u_sensor/scl_sync_reg[0]/D}]
+set_false_path -from [get_ports baro_sda] -to [get_pins {u_baro/sda_sync_reg[0]/D}]
+set_false_path -from [get_ports baro_scl] -to [get_pins {u_baro/scl_sync_reg[0]/D}]
+set_false_path -from [get_ports mag_sda] -to [get_pins {u_magnetometro/sda_sync_reg[0]/D}]
+set_false_path -from [get_ports mag_scl] -to [get_pins {u_magnetometro/scl_sync_reg[0]/D}]
 
 ## LED6 = magnetometro identificado/configurado
 set_property -dict { PACKAGE_PIN U17 IOSTANDARD LVCMOS33 } \
