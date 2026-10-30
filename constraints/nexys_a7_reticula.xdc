@@ -58,13 +58,14 @@ set_property -dict { PACKAGE_PIN B12 IOSTANDARD LVCMOS33 } [get_ports { VGA_VS }
 
 # VGA analogico sem clock de amostragem encaminhado: limitar o assentamento
 # FPGA->pad ao periodo de pixel, sem inventar setup/hold de um monitor.
-set_max_delay -datapath_only 40.000 -from [all_registers] \
+set_max_delay -datapath_only 40.000 \
+    -from [get_cells -hier -filter {IS_SEQUENTIAL == 1 && NAME != u_vga/clk25_reg}] \
     -to [get_ports {VGA_R[*] VGA_G[*] VGA_B[*] VGA_HS VGA_VS}]
 # Estes dados mudam somente em x=0,y=480 (top_reticula/dados_hud).
 # Restam (45*800-1) pixels de blanking antes de x=0,y=0: 1.439.960 ns.
 # Nao inclui registradores *_pendente*, que podem mudar durante video ativo.
 set_max_delay -datapath_only 1439960.000 \
-    -from [get_cells -hier -regexp {u_dados/(metadados|heading_deg|mira_x|mira_y|mira_lock|alvo_x|alvo_y|velocidade_kt|altitude_ft|horizonte_y|roll_q8)_reg(\[[0-9]+\])?}] \
+    -from [get_cells -hier -include_replicated_objects -regexp {u_dados/(metadados|heading_deg|mira_x|mira_y|mira_lock|alvo_x|alvo_y|velocidade_kt|altitude_ft|horizonte_y|roll_q8)_reg(\[[0-9]+\])?}] \
     -to [get_ports {VGA_R[*] VGA_G[*] VGA_B[*] VGA_HS VGA_VS}]
 
 ## =========================================================
