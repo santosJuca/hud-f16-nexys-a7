@@ -68,7 +68,7 @@ module top_reticula #(
     // LD6 acende quando o HMC5883L esta operacional.
     output wire         MAG_LED,
 
-    // Saida logica para o transistor do buzzer em JC10.
+    // Saida logica para o transistor do buzzer em JD4.
     output wire         buzzer_out,
 
     output wire [3:0]   VGA_R,
