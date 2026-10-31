@@ -1,6 +1,6 @@
 # Atlas elétrico do HUD FPGA
 
-Quatro pranchas de montagem para a Nexys A7-100T, com o mapeamento original de sensores, joystick e buzzer.
+Quatro pranchas de montagem para a Nexys A7-100T, com o mapeamento de sensores, joystick e buzzer. O controle do buzzer usa JD4, com alimentação em JC12 (3,3 V) e GND em JC11.
 
 [PDF vetorial para impressão](atlas-eletrico-hud-nexys-a7.pdf) · [Pacote completo](atlas-completo-png-svg-pdf.zip)
 
@@ -19,7 +19,7 @@ Quatro pranchas de montagem para a Nexys A7-100T, com o mapeamento original de s
 
 ![Buzzer e driver NPN](04-buzzer.png)
 
-A visão geral apresenta os conectores em ordem funcional, sem indicar sua posição física na placa. A prancha do buzzer mostra o conector JC em vista frontal de encaixe.
+A visão geral apresenta os conectores em ordem funcional, sem indicar sua posição física na placa. A prancha do buzzer mostra os conectores JD e JC em vista frontal de encaixe, com os pinos utilizados em destaque.
 
 Conferir a compatibilidade de alimentação e os pull-ups dos módulos antes de energizar. Identificar as pernas B/C/E do 2N2222A pelo datasheet do fabricante.
 

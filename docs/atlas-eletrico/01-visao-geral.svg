@@ -117,19 +117,19 @@
 <circle cx="1110" cy="657" r="3" fill="#FFFFFF" stroke="#BC343B" stroke-width="1.4"/>
 <text x="1130" y="662" font-family="DejaVu Sans Mono" font-size="15" font-weight="normal" text-anchor="start" fill="#202A32">3,3 V</text>
 <text x="875" y="662" font-family="DejaVu Sans Mono" font-size="15" font-weight="normal" text-anchor="end" fill="#202A32">JC12</text>
-<polyline points="890,699 1110,699" fill="none" stroke="#65717A" stroke-width="4.2" stroke-linejoin="miter"/>
-<polyline points="890,699 1110,699" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="miter"/>
-<circle cx="890" cy="699" r="3.5" fill="#65717A" stroke="#65717A" stroke-width="1"/>
-<circle cx="1110" cy="699" r="3" fill="#FFFFFF" stroke="#65717A" stroke-width="1.4"/>
-<text x="1130" y="704" font-family="DejaVu Sans Mono" font-size="15" font-weight="normal" text-anchor="start" fill="#202A32">controle</text>
-<text x="875" y="704" font-family="DejaVu Sans Mono" font-size="15" font-weight="normal" text-anchor="end" fill="#202A32">JC10</text>
 <polyline points="890,741 1110,741" fill="none" stroke="#202A32" stroke-width="1.7" stroke-linejoin="miter"/>
 <circle cx="890" cy="741" r="3.5" fill="#202A32" stroke="#202A32" stroke-width="1"/>
 <circle cx="1110" cy="741" r="3" fill="#FFFFFF" stroke="#202A32" stroke-width="1.4"/>
 <text x="1130" y="746" font-family="DejaVu Sans Mono" font-size="15" font-weight="normal" text-anchor="start" fill="#202A32">GND</text>
 <text x="875" y="746" font-family="DejaVu Sans Mono" font-size="15" font-weight="normal" text-anchor="end" fill="#202A32">JC11</text>
-<text x="1219" y="800" font-family="DejaVu Sans" font-size="13" font-weight="normal" text-anchor="middle" fill="#65717A">2N2222A · prancha 04</text>
+<text x="1219" y="699" font-family="DejaVu Sans" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">2N2222A · 04</text>
 <text x="851" y="628" font-family="DejaVu Sans" font-size="16" font-weight="bold" text-anchor="end" fill="#202A32">JC</text>
+<polyline points="520,785 490,785 490,850 1219,850 1219,776" fill="none" stroke="#65717A" stroke-width="4.2" stroke-linejoin="miter"/>
+<polyline points="520,785 490,785 490,850 1219,850 1219,776" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="520" cy="785" r="3.5" fill="#65717A" stroke="#65717A" stroke-width="1"/>
+<text x="540" y="790" font-family="DejaVu Sans Mono" font-size="15" font-weight="normal" text-anchor="start" fill="#202A32">JD4</text>
+<circle cx="1219" cy="776" r="3" fill="#FFFFFF" stroke="#65717A" stroke-width="1.4"/>
+<text x="1219" y="764" font-family="DejaVu Sans Mono" font-size="15" font-weight="normal" text-anchor="middle" fill="#202A32">controle</text>
 <text x="520" y="829" font-family="DejaVu Sans" font-size="12" font-weight="normal" text-anchor="start" fill="#65717A">Representação funcional dos conectores, sem posição física.</text>
 <polyline points="72,875 104,875" fill="none" stroke="#BC343B" stroke-width="2.5" stroke-linejoin="miter"/>
 <text x="113" y="880" font-family="DejaVu Sans" font-size="13" font-weight="normal" text-anchor="start" fill="#65717A">3,3 V</text>
