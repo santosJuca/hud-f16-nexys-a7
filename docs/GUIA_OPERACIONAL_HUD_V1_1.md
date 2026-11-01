@@ -73,3 +73,18 @@ ja tenha sido congelado.
 
 Esta alteracao nao modifica o estimador de atitude,
 os comandos, a bussola, a geometria de voo ou a QSPI.
+
+## Lapidacao da ladder em bank elevado
+
+A partir da v1.1, na geometria FULL_ATTITUDE, quando o
+cosseno de roll Q14 esta entre -8192 e +8192,
+a escada omite somente os numeros dos niveis 10 e 30 graus.
+
+Os numeros 20 e 40 graus, horizonte zero, todas as marcas,
+bussola, instrumentos laterais e referencia central permanecem.
+
+A mudanca e exclusivamente visual e usa a atitude ja publicada
+na fronteira de quadro. O modo legado nao e alterado.
+
+A escolha de limiar e experimental e requer revisao do atlas
+e validacao visual sobre o video antes da liberacao fisica.

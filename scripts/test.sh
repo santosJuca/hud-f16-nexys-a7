@@ -37,6 +37,7 @@ tests=(
     "hud_dispatch|tb_hud_dispatch|tests/tb_hud_dispatch.sv"
     "hud_offset|tb_hud_offset|tests/tb_hud_offset.sv"
     "hud_layers|tb_hud_layers|tests/tb_hud_layers.sv"
+    "hud_high_bank|tb_hud_high_bank|tests/tb_hud_high_bank.sv"
     "simulador_pouso|tb_simulador_pouso|tests/tb_simulador_pouso.sv"
     "alertas_voo|tb_alertas_voo|tests/tb_alertas_voo.sv"
     "buzzer_driver|tb_buzzer_driver|tests/tb_buzzer_driver.sv"
@@ -100,7 +101,7 @@ for spec in "${tests[@]}"; do
     echo
     echo "===== TESTE: $nome ====="
 
-    if [[ "$nome" =~ ^(roll|vga|top_sd_overlay)$ ]] && command -v verilator >/dev/null 2>&1; then
+    if [[ "$nome" =~ ^(roll|vga|top_sd_overlay|hud_high_bank)$ ]] && command -v verilator >/dev/null 2>&1; then
         # Exhaustive raster sweeps are much faster in Verilator; keep every vector.
         verilator --binary --timing -j 4 -Wno-fatal \
             --top-module "$top" \

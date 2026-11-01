@@ -5,7 +5,8 @@
 // =========================================================
 
 module simbologia_vga #(parameter bit FULL_ATTITUDE=0,
-                          parameter bit SEPARATE_FLIGHT_COORDS=0) (
+                          parameter bit SEPARATE_FLIGHT_COORDS=0,
+                          parameter bit HIGH_BANK_PITCH_DECLUTTER=1'b1) (
     input  logic [9:0] pixel_x,
     input  logic [9:0] pixel_y,
     input  logic       video_on,
@@ -136,6 +137,15 @@ module simbologia_vga #(parameter bit FULL_ATTITUDE=0,
             posicao_cardinal = 320 + diferenca * 4;
         end
     endfunction
+
+    // Simplifica apenas os numeros da ladder perto de bank vertical.
+    // cos(60 graus) = 0.5 em Q14. Inclui ambos os sentidos.
+    // O sinal vem do pacote de atitude aplicado no blanking VGA.
+    // Nao modifica horizonte, marcas ou instrumentos fixos.
+    wire sideways_bank =
+        FULL_ATTITUDE && HIGH_BANK_PITCH_DECLUTTER &&
+        attitude_cosine >= -16'sd8192 &&
+        attitude_cosine <=  16'sd8192;
 
     // The heading tape, altitude/speed bars and numeric instruments use
     // unmodified pixel_y/video_on. Only horizon, pitch and target use flight_y.
@@ -287,7 +297,10 @@ module simbologia_vga #(parameter bit FULL_ATTITUDE=0,
                 pitch_linha = int'(pitch_y_local - 22'sd155) / 2;
             end
 
-            if (pitch_campo) begin
+            // Perto de 90 graus mantem 20/40, omite 10/30.
+            if (pitch_campo &&
+                !(sideways_bank &&
+                  (pitch_nivel == 1 || pitch_nivel == 3))) begin
 
                 // Primeiro dígito: 1/2/3/4
                 // Segundo dígito: 0
