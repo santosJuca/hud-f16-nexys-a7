@@ -3,9 +3,15 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-mkdir -p build/tests
+test_dir="${TEST_OUT_DIR:-build/tests}"
+mkdir -p "$test_dir"
 
 tests=(
+    "calibracao_diagnostico|tb_calibracao_diagnostico|tests/tb_calibracao_diagnostico.sv"
+    "sd_bitmap_overlay|tb_sd_bitmap_overlay|tests/tb_sd_bitmap_overlay.sv"
+    "top_sd_overlay|tb_top_sd_overlay|tests/tb_top_sd_overlay.sv"
+    "sd_sector_buffer|tb_sd_sector_buffer|tests/tb_sd_sector_buffer.sv"
+    "sd_status_display|tb_sd_status_display|tests/tb_sd_status_display.sv"
     "sd_diagnostic|tb_sd_diagnostic|tests/tb_sd_diagnostic.sv"
     "sd_spi_preamble|tb_sd_spi_preamble|tests/tb_sd_spi_preamble.sv"
     "sd_spi_cmd0|tb_sd_spi_cmd0|tests/tb_sd_spi_cmd0.sv"
@@ -13,6 +19,7 @@ tests=(
     "sd_spi_startup|tb_sd_spi_startup|tests/tb_sd_spi_startup.sv"
     "sd_spi_acmd|tb_sd_spi_acmd|tests/tb_sd_spi_acmd.sv"
     "sd_spi_init|tb_sd_spi_init|tests/tb_sd_spi_init.sv"
+    "sd_spi_token_timeout|tb_sd_spi_token_timeout|tests/tb_sd_spi_token_timeout.sv"
     "sd_spi_read_block|tb_sd_spi_read_block|tests/tb_sd_spi_read_block.sv"
     "sd_spi_controller|tb_sd_spi_controller|tests/tb_sd_spi_controller.sv"
     "sd_spi_throughput|tb_sd_spi_throughput|tests/tb_sd_spi_throughput.sv"
@@ -84,28 +91,30 @@ tests=(
 for spec in "${tests[@]}"; do
     IFS='|' read -r nome top fonte <<< "$spec"
 
+    if [[ -n "${TEST_FILTER:-}" && ! "$nome" =~ ${TEST_FILTER} ]]; then continue; fi
+
     echo
     echo "===== TESTE: $nome ====="
 
-    if [[ "$nome" =~ ^(roll|vga)$ ]] && command -v verilator >/dev/null 2>&1; then
+    if [[ "$nome" =~ ^(roll|vga|top_sd_overlay)$ ]] && command -v verilator >/dev/null 2>&1; then
         # Exhaustive raster sweeps are much faster in Verilator; keep every vector.
-        verilator --binary --timing -Wno-fatal \
+        verilator --binary --timing -j 4 -Wno-fatal \
             --top-module "$top" \
-            --Mdir "build/tests/${nome}_verilator" \
+            --Mdir "${test_dir}/${nome}_verilator" \
             tests/xadc_stub.sv \
             rtl/*.sv \
             "$fonte"
 
-        "build/tests/${nome}_verilator/V${top}"
+        "${test_dir}/${nome}_verilator/V${top}"
     else
         iverilog -g2012 \
             -s "$top" \
-            -o "build/tests/$nome" \
+            -o "$test_dir/$nome" \
             tests/xadc_stub.sv \
             rtl/*.sv \
             "$fonte"
 
-        vvp "build/tests/$nome"
+        vvp "$test_dir/$nome"
     fi
 done
 

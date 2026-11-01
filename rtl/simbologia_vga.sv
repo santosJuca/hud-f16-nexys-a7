@@ -4,10 +4,16 @@
 // Geração procedural por coordenadas.
 // =========================================================
 
-module simbologia_vga (
+module simbologia_vga #(parameter bit FULL_ATTITUDE=0,
+                          parameter bit SEPARATE_FLIGHT_COORDS=0) (
     input  logic [9:0] pixel_x,
     input  logic [9:0] pixel_y,
     input  logic       video_on,
+    // Optional moving flight-layer coordinates; original testbenches use defaults.
+    input wire [9:0] flight_pixel_y,
+    input wire flight_video_on,
+    input wire signed [15:0] attitude_sine,attitude_cosine,
+    input wire signed [10:0] attitude_pitch_px,
     input  logic [9:0] horizonte_y, // Centro limitado a 160..320.
     input  logic signed [9:0] roll_q8, // Inclinação: pixels por 256 pixels em X.
     input  logic [8:0] heading_deg,
@@ -131,6 +137,16 @@ module simbologia_vga (
         end
     endfunction
 
+    // The heading tape, altitude/speed bars and numeric instruments use
+    // unmodified pixel_y/video_on. Only horizon, pitch and target use flight_y.
+    wire [9:0] render_flight_y =
+        SEPARATE_FLIGHT_COORDS ? flight_pixel_y : pixel_y;
+    wire render_flight_on =
+        SEPARATE_FLIGHT_COORDS ? flight_video_on : video_on;
+    wire signed [21:0] attitude_x,attitude_y;
+    horizonte_atitude u_geometry(.pixel_x(pixel_x),.pixel_y(render_flight_y),
+        .sine(attitude_sine),.cosine(attitude_cosine),.pitch_px(attitude_pitch_px),
+        .local_x(attitude_x),.local_y(attitude_y));
     always_comb begin
             direcao_cardinal = 1'b0;
             cardinal_bitmap = '0;
@@ -168,12 +184,12 @@ module simbologia_vga (
         // Por isso sua inclinacao visual ocorre no sentido oposto ao
         // roll da aeronave, como em um horizonte artificial convencional.
         delta_x = $signed({12'b0, pixel_x}) - 22'sd320;
-        delta_y = $signed({12'b0, pixel_y}) -
+        delta_y = $signed({12'b0, render_flight_y}) -
                   $signed({12'b0, horizonte_y});
 
         // Coordenadas locais Q8: rotação aproximada com escala uniforme.
-        pitch_x_local = delta_x - ((delta_y * 22'(roll_q8)) >>> 8);
-        pitch_y_local = delta_y + ((delta_x * 22'(roll_q8)) >>> 8);
+        pitch_x_local = FULL_ATTITUDE ? attitude_x : delta_x - ((delta_y * 22'(roll_q8)) >>> 8);
+        pitch_y_local = FULL_ATTITUDE ? attitude_y : delta_y + ((delta_x * 22'(roll_q8)) >>> 8);
 
             // -------------------------------------------------
             // Números da escada de pitch
@@ -417,7 +433,7 @@ marcas_inferiores =
         (pitch_y_local <= 22'sd161));
 
         horizonte_on =
-            video_on &&
+            render_flight_on &&
             (
                 horizonte_esq ||
                 horizonte_dir ||
@@ -696,15 +712,15 @@ card_x_w = posicao_cardinal(270, int'(heading_deg));
                 (
                     (pixel_x >= alvo_x - ALVO_M) &&
                     (pixel_x <= alvo_x - ALVO_M + CANTO) &&
-                    (pixel_y >= alvo_y - ALVO_M) &&
-                    (pixel_y <= alvo_y - ALVO_M + 1)
+                    (render_flight_y >= alvo_y - ALVO_M) &&
+                    (render_flight_y <= alvo_y - ALVO_M + 1)
                 )
                 ||
                 (
                     (pixel_x >= alvo_x - ALVO_M) &&
                     (pixel_x <= alvo_x - ALVO_M + 1) &&
-                    (pixel_y >= alvo_y - ALVO_M) &&
-                    (pixel_y <= alvo_y - ALVO_M + CANTO)
+                    (render_flight_y >= alvo_y - ALVO_M) &&
+                    (render_flight_y <= alvo_y - ALVO_M + CANTO)
                 )
             );
 
@@ -713,15 +729,15 @@ card_x_w = posicao_cardinal(270, int'(heading_deg));
                 (
                     (pixel_x >= alvo_x + ALVO_M - CANTO) &&
                     (pixel_x <= alvo_x + ALVO_M) &&
-                    (pixel_y >= alvo_y - ALVO_M) &&
-                    (pixel_y <= alvo_y - ALVO_M + 1)
+                    (render_flight_y >= alvo_y - ALVO_M) &&
+                    (render_flight_y <= alvo_y - ALVO_M + 1)
                 )
                 ||
                 (
                     (pixel_x >= alvo_x + ALVO_M - 1) &&
                     (pixel_x <= alvo_x + ALVO_M) &&
-                    (pixel_y >= alvo_y - ALVO_M) &&
-                    (pixel_y <= alvo_y - ALVO_M + CANTO)
+                    (render_flight_y >= alvo_y - ALVO_M) &&
+                    (render_flight_y <= alvo_y - ALVO_M + CANTO)
                 )
             );
 
@@ -730,15 +746,15 @@ card_x_w = posicao_cardinal(270, int'(heading_deg));
                 (
                     (pixel_x >= alvo_x - ALVO_M) &&
                     (pixel_x <= alvo_x - ALVO_M + CANTO) &&
-                    (pixel_y >= alvo_y + ALVO_M - 1) &&
-                    (pixel_y <= alvo_y + ALVO_M)
+                    (render_flight_y >= alvo_y + ALVO_M - 1) &&
+                    (render_flight_y <= alvo_y + ALVO_M)
                 )
                 ||
                 (
                     (pixel_x >= alvo_x - ALVO_M) &&
                     (pixel_x <= alvo_x - ALVO_M + 1) &&
-                    (pixel_y >= alvo_y + ALVO_M - CANTO) &&
-                    (pixel_y <= alvo_y + ALVO_M)
+                    (render_flight_y >= alvo_y + ALVO_M - CANTO) &&
+                    (render_flight_y <= alvo_y + ALVO_M)
                 )
             );
 
@@ -747,20 +763,20 @@ card_x_w = posicao_cardinal(270, int'(heading_deg));
                 (
                     (pixel_x >= alvo_x + ALVO_M - CANTO) &&
                     (pixel_x <= alvo_x + ALVO_M) &&
-                    (pixel_y >= alvo_y + ALVO_M - 1) &&
-                    (pixel_y <= alvo_y + ALVO_M)
+                    (render_flight_y >= alvo_y + ALVO_M - 1) &&
+                    (render_flight_y <= alvo_y + ALVO_M)
                 )
                 ||
                 (
                     (pixel_x >= alvo_x + ALVO_M - 1) &&
                     (pixel_x <= alvo_x + ALVO_M) &&
-                    (pixel_y >= alvo_y + ALVO_M - CANTO) &&
-                    (pixel_y <= alvo_y + ALVO_M)
+                    (render_flight_y >= alvo_y + ALVO_M - CANTO) &&
+                    (render_flight_y <= alvo_y + ALVO_M)
                 )
             );
 
         alvo_on =
-            video_on &&
+            render_flight_on &&
             (
                 alvo_sup_esq ||
                 alvo_sup_dir ||

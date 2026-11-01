@@ -6,9 +6,13 @@ module sd_spi_controller #(
     parameter integer HALF_PERIOD_CYCLES = 125,
     parameter integer MAX_ACMD41_TRIES = 4096,
     parameter integer MAX_READ_WAIT_R1_CLOCKS = 64,
-    parameter integer MAX_READ_WAIT_TOKEN_CLOCKS = 65535,
     parameter integer INIT_HALF_PERIOD_CYCLES = HALF_PERIOD_CYCLES,
-    parameter integer READ_HALF_PERIOD_CYCLES = HALF_PERIOD_CYCLES
+    parameter integer READ_HALF_PERIOD_CYCLES = HALF_PERIOD_CYCLES,
+    parameter integer CLK_HZ = 100_000_000,
+    parameter integer READ_TOKEN_TIMEOUT_MS = 250,
+    parameter integer MAX_READ_WAIT_TOKEN_CLOCKS =
+        8 * ((64'(CLK_HZ) * READ_TOKEN_TIMEOUT_MS + 16000 * READ_HALF_PERIOD_CYCLES - 1) /
+             (16000 * READ_HALF_PERIOD_CYCLES))
 )(
     input  wire        clk,
     input  wire        rst,
@@ -29,7 +33,14 @@ module sd_spi_controller #(
     output wire        block_valid,
     output wire        data_valid,
     output wire [7:0]  data_byte,
-    output wire [8:0]  byte_index
+    output wire [8:0]  byte_index,
+    output wire [3:0]  current_state,
+    output wire [5:0]  current_command,
+    output wire [7:0]  r1_response,
+    output wire [7:0]  data_token,
+    output wire [9:0]  bytes_received,
+    output wire [15:0] crc_received,
+    output wire [15:0] crc_calculated
 );
 
     wire init_sck;
@@ -40,11 +51,17 @@ module sd_spi_controller #(
     wire read_mosi;
     wire read_cs_n;
     reg read_start_pulse;
+    reg [31:0] accepted_lba;
     wire read_done_int;
     wire read_error_int;
     reg read_owner;
     reg read_start_d;
     reg read_busy_seen;
+    wire [2:0] init_command;
+
+    assign current_command = read_owner ? 6'd17 :
+        init_command == 0 ? 6'd0 : init_command == 1 ? 6'd8 :
+        init_command == 2 ? 6'd55 : init_command == 3 ? 6'd41 : 6'd58;
 
     assign sd_reset = init_sd_reset;
     assign sd_sck = read_owner ? read_sck : init_sck;
@@ -65,7 +82,7 @@ module sd_spi_controller #(
         .ready(init_ready),
         .failed(init_failed),
         .error_code(init_error_code),
-        .current_command(),
+        .current_command(init_command),
         .ocr()
     );
 
@@ -77,7 +94,7 @@ module sd_spi_controller #(
         .clk(clk),
         .rst(rst),
         .start(read_start_pulse),
-        .lba(read_lba),
+        .lba(accepted_lba),
         .sd_miso(sd_miso),
         .sd_sck(read_sck),
         .sd_mosi(read_mosi),
@@ -89,7 +106,10 @@ module sd_spi_controller #(
         .data_valid(data_valid),
         .data_byte(data_byte),
         .byte_index(byte_index),
-        .block_valid(block_valid)
+        .block_valid(block_valid),
+        .current_state(current_state), .r1_response(r1_response),
+        .data_token(data_token), .bytes_received(bytes_received),
+        .crc_received(crc_received), .crc_calculated(crc_calculated)
     );
 
     assign read_done = read_done_int;
@@ -99,6 +119,7 @@ module sd_spi_controller #(
     // busy_seen prevents a sticky prior read_error from releasing a new transaction.
     always @(posedge clk or posedge rst) begin
         if (rst) begin
+            accepted_lba <= 0;
             read_owner <= 0;
             read_start_d <= 0;
             read_busy_seen <= 0;
@@ -110,6 +131,8 @@ module sd_spi_controller #(
             if (init_ready && !init_failed && read_start && !read_start_d &&
                 !read_busy &&
                 (!read_owner || read_done_int || read_error_int)) begin
+                // O chamador pode liberar o endereco apos aceitar a requisicao.
+                accepted_lba <= read_lba;
                 read_owner <= 1;
                 read_busy_seen <= 0;
                 read_start_pulse <= 1;

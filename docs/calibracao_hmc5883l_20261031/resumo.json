@@ -1,0 +1,86 @@
+{
+  "accepted_samples": 1245,
+  "rejected": {},
+  "tilt_limit_degrees": 5,
+  "applied_to_fpga": true,
+  "minimum": [
+    578,
+    -330
+  ],
+  "maximum": [
+    856,
+    9
+  ],
+  "offset": [
+    717.0,
+    -160.5
+  ],
+  "half_span": [
+    139.0,
+    169.5
+  ],
+  "static_noise_span": [
+    2,
+    2
+  ],
+  "minimum_required_span": [
+    20,
+    20
+  ],
+  "motion_distinguishable_from_noise": true,
+  "gain_q12": [
+    4545,
+    3727
+  ],
+  "samples_per_30_degree_sector": [
+    373,
+    22,
+    180,
+    5,
+    11,
+    171,
+    6,
+    10,
+    177,
+    7,
+    10,
+    273
+  ],
+  "missing_sectors": [],
+  "max_abs_roll": 2.1689453125,
+  "max_abs_pitch": 3.8828125,
+  "ready_for_review": true,
+  "model_scope": "Native XY midpoint offsets and positive axis gains; planar heading only",
+  "samples": 1245,
+  "radius_mean": 153.35066021853532,
+  "radius_stddev": 2.2624535896567095,
+  "radius_cv": 0.014753464943891055,
+  "radius_min": 146.0116169576883,
+  "radius_max": 159.11881444405222,
+  "raw_closure_distance_counts": 9.219544457292887,
+  "proposed_offsets": [
+    717,
+    -161
+  ],
+  "proposed_gain_q12": [
+    4545,
+    3727
+  ],
+  "quantization_rule": "nearest integer; half away from zero",
+  "absolute_heading_accuracy_measured": false,
+  "source_sha256": "e80b6144cd85545e341e74778472bbd49c5dfb99b8e78bf68a434ee7077f1b6a",
+  "offsets_applied_in_build_profile": [
+    717,
+    -161
+  ],
+  "gain_q12_applied_in_build_profile": [
+    4545,
+    3727
+  ],
+  "new_bitstream_programmed": true,
+  "signed_calibration_version": "31/10/2026 physical guided level rotation",
+  "absolute_north_reference": "not supplied",
+  "bitstream_sha256": "bcf166ae461d8b64e4fd890a9994b89ad4e01dd967e541b9f534b94de1aa0868",
+  "programmed_at": "2026-10-31T12:09:00.536791-03:00",
+  "final_hardware_heading_verification": false
+}

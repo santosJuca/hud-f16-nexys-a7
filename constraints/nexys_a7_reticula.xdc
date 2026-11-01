@@ -28,11 +28,15 @@ set_property -dict { PACKAGE_PIN A1 IOSTANDARD LVCMOS33 } [get_ports { SD_CD }]
 
 ## Diagnostico do subsistema microSD.
 ## LD7: inicializacao concluida.
-## LD8: falha de inicializacao.
+## LD8: falha de inicializacao, leitura ou comparacao.
 ## LD9: inicializacao ou leitura em andamento.
 set_property -dict { PACKAGE_PIN U16 IOSTANDARD LVCMOS33 } [get_ports { SD_READY_LED }]
 set_property -dict { PACKAGE_PIN V16 IOSTANDARD LVCMOS33 } [get_ports { SD_ERROR_LED }]
 set_property -dict { PACKAGE_PIN T15 IOSTANDARD LVCMOS33 } [get_ports { SD_BUSY_LED }]
+## LD10: setor com CRC valido. LD11: 512 bytes identicos a referencia local.
+## Pinos livres conferidos no Master XDC; preservam LD0..9.
+set_property -dict { PACKAGE_PIN U14 IOSTANDARD LVCMOS33 } [get_ports { SD_CRC_OK_LED }]
+set_property -dict { PACKAGE_PIN T16 IOSTANDARD LVCMOS33 } [get_ports { SD_DATA_OK_LED }]
 
 ## A temporização relativa cartão/FPGA para SPI ainda requer datasheets,
 ## board delays, análise de skew e margens de setup/hold antes de validação física.
@@ -133,13 +137,13 @@ set_false_path -from [get_ports {sw[14] sw[15]}] \
     -to [get_pins -hier -filter {NAME =~ roll_meta_reg*/D}]
 
 
-# BTNU / BTND: controle manual do heading
+# BTNU / BTND: comandos roteados pelo dispatcher (heading ou ALIGN)
 set_property -dict { PACKAGE_PIN M18 IOSTANDARD LVCMOS33 } [get_ports { btn_heading[0] }]
 set_property -dict { PACKAGE_PIN P18 IOSTANDARD LVCMOS33 } [get_ports { btn_heading[1] }]
 
 # Entradas assincronas ate o primeiro estagio de sincronizacao.
 set_false_path -from [get_ports {btn_heading[*]}] \
-    -to [get_pins -hier -filter {NAME =~ u_heading/btn_meta_reg*/D}]
+    -to [get_pins -hier -filter {NAME =~ *u_hud_commands/buttons_meta_reg*/D}]
 
 # SW0 seleciona NORMAL (0) / DECLUTTER (1).
 set_property -dict { PACKAGE_PIN J15 IOSTANDARD LVCMOS33 } [get_ports { display_mode }]
@@ -246,3 +250,34 @@ set_false_path -from [get_cells -hier -filter {NAME == u_entrada/confirmado_reg}
 # SW8 solicita um bloco de diagnostico (somente leitura).
 set_property -dict { PACKAGE_PIN T8 IOSTANDARD LVCMOS18 } [get_ports SD_READ_SWITCH]
 set_false_path -from [get_ports SD_READ_SWITCH] -to [get_pins -hier -filter {NAME =~ *u_diagnostico/read_meta_reg/D}]
+
+# SW4 dedicado a ALIGN; SW5..7 selecionam a pagina de diagnostico.
+# Pinagem do Master XDC Nexys A7-100T; nao muda pinos existentes.
+set_property -dict { PACKAGE_PIN R17 IOSTANDARD LVCMOS33 } [get_ports { SD_DIAG_PAGE[0] }]
+set_property -dict { PACKAGE_PIN T18 IOSTANDARD LVCMOS33 } [get_ports { SD_DIAG_PAGE[1] }]
+set_property -dict { PACKAGE_PIN U18 IOSTANDARD LVCMOS33 } [get_ports { SD_DIAG_PAGE[2] }]
+set_property -dict { PACKAGE_PIN R13 IOSTANDARD LVCMOS33 } [get_ports { SD_DIAG_PAGE[3] }]
+set_property -dict { PACKAGE_PIN T10 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[0] }]
+set_property -dict { PACKAGE_PIN R10 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[1] }]
+set_property -dict { PACKAGE_PIN K16 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[2] }]
+set_property -dict { PACKAGE_PIN K13 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[3] }]
+set_property -dict { PACKAGE_PIN P15 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[4] }]
+set_property -dict { PACKAGE_PIN T11 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[5] }]
+set_property -dict { PACKAGE_PIN L18 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[6] }]
+set_property -dict { PACKAGE_PIN J17 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[0] }]
+set_property -dict { PACKAGE_PIN J18 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[1] }]
+set_property -dict { PACKAGE_PIN T9 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[2] }]
+set_property -dict { PACKAGE_PIN J14 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[3] }]
+set_property -dict { PACKAGE_PIN P14 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[4] }]
+set_property -dict { PACKAGE_PIN T14 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[5] }]
+set_property -dict { PACKAGE_PIN K2 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[6] }]
+set_property -dict { PACKAGE_PIN U13 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[7] }]
+set_property -dict { PACKAGE_PIN H15 IOSTANDARD LVCMOS33 } [get_ports SD_DP]
+# Apenas SW4, entrada assincrona do sincronizador de ALIGN.
+set_false_path -from [get_ports {SD_DIAG_PAGE[0]}] -to [get_pins -hier -filter {NAME =~ *u_hud_commands/align_meta_reg/D}]
+# SW5..7 continuam entrando no sincronizador de diagnostico e captura.
+set_false_path -from [get_ports {SD_DIAG_PAGE[1] SD_DIAG_PAGE[2] SD_DIAG_PAGE[3]}] -to [get_pins -hier -filter {NAME =~ *u_capture_control/page_meta_reg*/D}]
+set_false_path -from [get_ports {SD_DIAG_PAGE[1] SD_DIAG_PAGE[2] SD_DIAG_PAGE[3]}] -to [get_pins -hier -filter {NAME =~ *u_sd_display/page_meta_reg*/D}]
+
+# BTNL livre: seleciona video/HUD original, sincronizado antes do debounce.
+set_property -dict { PACKAGE_PIN P17 IOSTANDARD LVCMOS33 } [get_ports VIDEO_TOGGLE_BUTTON]

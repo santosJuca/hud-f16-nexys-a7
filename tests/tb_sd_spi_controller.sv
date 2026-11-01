@@ -419,6 +419,8 @@ module tb_sd_spi_controller;
             read_lba = address;
             @(negedge clk); read_start = 1;
             @(negedge clk); read_start = 0;
+            // O endereco so precisa permanecer valido ate a aceitacao.
+            read_lba = ~address;
             ticks = 0;
             while (!read_busy && ticks < 20) begin
                 @(negedge clk);

@@ -4,7 +4,7 @@ module tb_sd_spi_read_block;
     localparam integer HALF = 2;
     localparam integer SC_OK = 0, SC_BAD_R1 = 1, SC_TMO_R1 = 2;
     localparam integer SC_TMO_TOKEN = 3, SC_BAD_TOKEN = 4;
-    localparam integer SC_BAD_CRC = 5;
+    localparam integer SC_BAD_CRC = 5, SC_DELAY_TOKEN = 6, SC_INCOMPLETE = 7, SC_KNOWN_CRC = 8;
 
     reg clk = 0;
     always #5 clk = ~clk;
@@ -41,9 +41,10 @@ module tb_sd_spi_read_block;
     integer commands_before_busy;
     integer expected_seed = 0;
     reg [31:0] expected_lba;
-    reg [7:0] stream [0:4127];
+    reg [7:0] stream [0:4191];
     integer i;
     integer j;
+    integer token_offset;
     integer byte_count = 0;
     integer observed_data;
     integer global_cycles = 0;
@@ -71,27 +72,32 @@ module tb_sd_spi_read_block;
         reg [15:0] crc_value;
         reg [7:0] data_value;
         begin
-            for (i = 0; i < 4128; i = i + 1)
+            for (i = 0; i < 4192; i = i + 1)
                 stream[i] = 8'hFF;
             r1_value = mode == SC_BAD_R1 ? 8'h04 : 8'h00;
             for (i = 0; i < 8; i = i + 1)
                 stream[i] = (r1_value >> (7-i)) & 1'b1;
             if (mode != SC_TMO_TOKEN) begin
+                token_offset = mode == SC_DELAY_TOKEN ? 56 : 0;
                 token_value = mode == SC_BAD_TOKEN ? 8'h0B : 8'hFE;
                 for (i = 0; i < 8; i = i + 1)
-                    stream[8+i] = (token_value >> (7-i)) & 1'b1;
+                    stream[8+token_offset+i] = (token_value >> (7-i)) & 1'b1;
                 crc_value = 0;
                 for (i = 0; i < 512; i = i + 1) begin
-                    data_value = (seed * 37 + i) & 8'hFF;
+                    data_value = mode == SC_KNOWN_CRC ? 8'hFF : (seed * 37 + i) & 8'hFF;
                     for (j = 0; j < 8; j = j + 1)
-                        stream[16+i*8+j] = (data_value >> (7-j)) & 1'b1;
+                        stream[16+token_offset+i*8+j] = (data_value >> (7-j)) & 1'b1;
                     crc_value = crc_byte(crc_value, data_value);
                 end
+                if (mode == SC_KNOWN_CRC && crc_value != 16'h7FA1)
+                    $fatal(1, "Vetor CRC16 independente SD Association falhou");
                 if (mode == SC_BAD_CRC)
                     crc_value = crc_value ^ 16'h0001;
                 for (i = 0; i < 16; i = i + 1)
-                    stream[4112+i] = (crc_value >> (15-i)) & 1'b1;
+                    stream[4112+token_offset+i] = (crc_value >> (15-i)) & 1'b1;
             end
+            if (mode == SC_INCOMPLETE)
+                for (i = 16+17*8; i < 4192; i = i + 1) stream[i] = 1;
             stream_index = 0;
         end
     endtask
@@ -129,10 +135,10 @@ module tb_sd_spi_read_block;
                 sd_miso = 1;
             else begin
                 sd_miso = stream[stream_index];
-                if (stream_index < 4127)
+                if (stream_index < 4191)
                     stream_index = stream_index + 1;
                 else
-                    stream_index = 4127;
+                    stream_index = 4191;
             end
         end
     end
@@ -144,7 +150,9 @@ module tb_sd_spi_read_block;
             $fatal(1, "CS foi desativado durante dados");
         if (byte_index !== byte_count[8:0])
             $fatal(1, "byte_index=%0d esperado=%0d", byte_index, byte_count);
-        if (data_byte !== ((expected_seed * 37 + byte_count) & 8'hFF))
+        if (data_byte !== ((selected_scenario == SC_KNOWN_CRC ||
+                            (selected_scenario == SC_INCOMPLETE && byte_count >= 17)) ?
+                           8'hFF : ((expected_seed * 37 + byte_count) & 8'hFF)))
             $fatal(1, "byte[%0d]=%h inesperado", byte_count, data_byte);
         byte_count = byte_count + 1;
     end
@@ -246,6 +254,15 @@ module tb_sd_spi_read_block;
         run_error_case(SC_TMO_TOKEN, 32'h00000004, 3'd3, 0);
         run_error_case(SC_BAD_TOKEN, 32'h00000005, 3'd4, 0);
         run_error_case(SC_BAD_CRC, 32'h00000006, 3'd5, 512);
+        // Nova leitura sem reset apos erro sticky.
+        launch(0, SC_DELAY_TOKEN); wait_terminal(1);
+        if (dut.wait_count < 56) $fatal(1,"Token atrasado nao exercitado");
+        $display("PASS: token no ultimo byte permitido e recuperacao sem reset");
+        launch(0, SC_KNOWN_CRC); wait_terminal(1);
+        if (dut.crc_received != 16'h7FA1 || dut.crc_calculated != 16'h7FA1)
+            $fatal(1,"CRC16 do vetor publicado incorreto");
+        $display("PASS: vetor independente 512 x FF, CRC=7FA1");
+        run_error_case(SC_INCOMPLETE, 0, 3'd5, 512);
 
         // start ocupado deve ser ignorado sem alterar a leitura em curso.
         reset_card(); read_number = 0;
@@ -270,6 +287,8 @@ module tb_sd_spi_read_block;
         repeat (3) @(negedge clk);
         rst = 0;
         $display("PASS: reset durante transferencia aborta e libera CS");
+        launch(0, SC_OK); wait_terminal(1);
+        $display("PASS: leitura completa apos reset durante transferencia");
 
         $display("PASS: todos os cenarios P2H executados");
         $finish;

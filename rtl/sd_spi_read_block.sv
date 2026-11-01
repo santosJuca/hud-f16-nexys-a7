@@ -5,7 +5,12 @@
 module sd_spi_read_block #(
     parameter integer HALF_PERIOD_CYCLES = 2,
     parameter integer MAX_WAIT_R1_CLOCKS = 64,
-    parameter integer MAX_WAIT_TOKEN_CLOCKS = 65535
+    parameter integer CLK_HZ = 100_000_000,
+    parameter integer TOKEN_TIMEOUT_MS = 250,
+    // Round up to whole SPI bytes. Explicit overrides keep short fault tests useful.
+    parameter integer MAX_WAIT_TOKEN_CLOCKS =
+        8 * ((64'(CLK_HZ) * TOKEN_TIMEOUT_MS + 16000 * HALF_PERIOD_CYCLES - 1) /
+             (16000 * HALF_PERIOD_CYCLES))
 )(
     input  wire        clk,
     input  wire        rst,
@@ -22,7 +27,13 @@ module sd_spi_read_block #(
     output reg         data_valid,
     output reg  [7:0]  data_byte,
     output reg  [8:0]  byte_index,
-    output reg         block_valid
+    output reg         block_valid,
+    output wire [3:0]  current_state,
+    output reg  [7:0]  r1_response,
+    output reg  [7:0]  data_token,
+    output reg  [9:0]  bytes_received,
+    output wire [15:0] crc_received,
+    output wire [15:0] crc_calculated
 );
 
     localparam [3:0]
@@ -62,8 +73,15 @@ module sd_spi_read_block #(
     reg [15:0] crc_rx;
     reg crc_byte_count;
     reg [15:0] crc_calc;
-    reg [31:0] wait_count;
+    localparam integer WAIT_LIMIT = MAX_WAIT_TOKEN_CLOCKS > MAX_WAIT_R1_CLOCKS ?
+                                   MAX_WAIT_TOKEN_CLOCKS : MAX_WAIT_R1_CLOCKS;
+    localparam integer WAIT_WIDTH = WAIT_LIMIT < 2 ? 1 : $clog2(WAIT_LIMIT + 8);
+    reg [WAIT_WIDTH-1:0] wait_count;
     reg [2:0] pending_error_code;
+
+    assign current_state = state;
+    assign crc_received = crc_rx;
+    assign crc_calculated = crc_calc;
 
     function [15:0] crc16_byte;
         input [15:0] crc_in;
@@ -108,6 +126,9 @@ module sd_spi_read_block #(
             data_byte <= 0;
             byte_index <= 0;
             block_valid <= 0;
+            r1_response <= 8'hFF;
+            data_token <= 8'hFF;
+            bytes_received <= 0;
         end else begin
             start_d <= start;
             done <= 0;
@@ -133,6 +154,9 @@ module sd_spi_read_block #(
                     wait_count <= 0;
                     byte_index <= 0;
                     data_count <= 0;
+                    r1_response <= 8'hFF;
+                    data_token <= 8'hFF;
+                    bytes_received <= 0;
                     error <= 0;
                     error_code <= 0;
                     sd_cs_n <= 0;
@@ -159,6 +183,7 @@ module sd_spi_read_block #(
                         READ_R1: begin
                             rx_shift <= {rx_shift[6:0], sd_miso};
                             if (rx_bit == 6) begin
+                                r1_response <= {1'b0, rx_shift[5:0], sd_miso};
                                 if ({1'b0, rx_shift[5:0], sd_miso} == 8'h00) begin
                                     state <= WAIT_TOKEN;
                                     wait_count <= 0;
@@ -176,6 +201,7 @@ module sd_spi_read_block #(
                             wait_count <= wait_count + 1'b1;
                             rx_shift <= {rx_shift[6:0], sd_miso};
                             if (rx_bit == 7) begin
+                                data_token <= {rx_shift[6:0], sd_miso};
                                 if ({rx_shift[6:0], sd_miso} == 8'hFE) begin
                                     state <= READ_DATA;
                                     rx_bit <= 0;
@@ -202,6 +228,7 @@ module sd_spi_read_block #(
                             if (rx_bit == 7) begin
                                 data_byte <= {rx_shift[6:0], sd_miso};
                                 data_valid <= 1;
+                                bytes_received <= bytes_received + 1'b1;
                                 byte_index <= data_count;
                                 crc_calc <= crc16_byte(crc_calc, {rx_shift[6:0], sd_miso});
                                 rx_bit <= 0;

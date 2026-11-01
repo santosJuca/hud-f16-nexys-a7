@@ -40,7 +40,8 @@ module hmc5883l_i2c #(
 
     output logic signed [15:0] mag_x = 16'sd0,
     output logic signed [15:0] mag_y = 16'sd0,
-    output logic signed [15:0] mag_z = 16'sd0
+    output logic signed [15:0] mag_z = 16'sd0,
+    output wire [31:0] diagnostico
 );
 
     localparam logic [6:0] DEVICE_ADDR = 7'h1E;
@@ -51,6 +52,10 @@ module hmc5883l_i2c #(
 
     logic sda_low = 1'b0;
     logic scl_low = 1'b0;
+    logic [23:0] ultimo_id = 24'd0;
+    logic id_lido = 1'b0;
+    logic [1:0] ultimo_erro = 2'd0;
+    logic [1:0] etapa_nack = 2'd0;
 
     assign mag_sda = sda_low ? 1'b0 : 1'bz;
     assign mag_scl = scl_low ? 1'b0 : 1'bz;
@@ -65,6 +70,10 @@ module hmc5883l_i2c #(
 
     (* ASYNC_REG = "TRUE" *)
     logic [1:0] scl_sync = 2'b11;
+
+    // ID observado; flags: OK, ID lido, erro (0=nenhum,1=NACK,2=timeout), SCL/SDA.
+    assign diagnostico = {ultimo_id, etapa_nack, sensor_ok, id_lido,
+                          ultimo_erro, scl_sync[1], sda_sync[1]};
 
     logic [7:0] scl_high_count = 8'd0;
 
@@ -248,6 +257,9 @@ module hmc5883l_i2c #(
 
                 sensor_ok <= 1'b0;
 
+                ultimo_erro <= 2'd2;
+                etapa_nack <= 2'd0;
+
                 operation <= OP_ID;
                 idle_count <= POLL_TICKS;
 
@@ -358,8 +370,10 @@ module hmc5883l_i2c #(
 
                         if (scl_high_ready) begin
 
-                            if (sda_sync[1])
+                            if (sda_sync[1]) begin
                                 ack_error <= 1'b1;
+                                etapa_nack <= etapa;
+                            end
 
                             state <= ST_ACK_FALL;
                         end
@@ -564,6 +578,7 @@ module hmc5883l_i2c #(
                         if (ack_error) begin
 
                             sensor_ok <= 1'b0;
+                            ultimo_erro <= 2'd1;
 
                             operation <= OP_ID;
                             idle_count <= POLL_TICKS;
@@ -571,9 +586,15 @@ module hmc5883l_i2c #(
                         end
                         else begin
 
+                            ultimo_erro <= 2'd0;
+                            etapa_nack <= 2'd0;
+
                             case (operation)
 
                                 OP_ID: begin
+
+                                    ultimo_id <= {rx_bytes[0], rx_bytes[1], rx_bytes[2]};
+                                    id_lido <= 1'b1;
 
                                     if (
                                         rx_bytes[0] == 8'h48 &&

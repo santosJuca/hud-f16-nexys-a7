@@ -4,23 +4,34 @@
 // =========================================================
 
 module top_reticula #(
+    parameter bit FULL_ATTITUDE = 1'b1,
+    parameter bit MPU_GIRO_ESQUERDA_90 = 1'b0,
+    parameter bit FRENTE_INVERTIDA_180 = 1'b0,
+    parameter integer CAPTURE_DEBOUNCE = 1_000_000, CAPTURE_LONG_PRESS = 100_000_000,
     parameter bit MODOS_OPERACIONAIS = 1'b1,
     parameter integer OPERACAO_DEBOUNCE = 10_000_000,
     parameter integer OPERACAO_TICK = 5_000_000,
     parameter integer OPERACAO_ACK = 1_000_000,
     parameter integer MIRA_TICK = 5_000_000,
     parameter integer MIRA_DEBOUNCE = 1_000_000,
+    parameter integer VIDEO_SENSOR_STARTUP_CYCLES = 1_000_000_000,
     parameter logic signed [15:0] MAG_OFFSET_X = 16'sd0,
     parameter logic signed [15:0] MAG_OFFSET_Y = 16'sd0,
-    // HMC5883L alinhado fisicamente ao referencial do HUD.
-    // Sem troca ou inversao de eixos.
+    // Sem compensacao de montagem por padrao; builds registram a orientacao usada.
     parameter bit MAG_TROCAR_XY = 1'b0,
     parameter bit MAG_INVERTER_X = 1'b0,
     parameter bit MAG_INVERTER_Y = 1'b0,
     parameter logic [12:0] MAG_GAIN_X_Q12 = 13'd4096,
     parameter logic [12:0] MAG_GAIN_Y_Q12 = 13'd4096,
     parameter bit ENABLE_SD_SUBSYSTEM = 1'b0,
+    parameter bit ENABLE_SD_OVERLAY = 1'b0,
+    parameter bit ENABLE_SD_VIDEO = 1'b0,
+    parameter logic [31:0] SD_VIDEO_LBA = 0,
+    parameter integer SD_VIDEO_SECTORS = 0,
+    parameter integer SD_VIDEO_WIDTH = 320, SD_VIDEO_HEIGHT = 240, SD_VIDEO_FPS = 10,
     parameter integer SD_REQUEST_DEBOUNCE = 1_000_000,
+    parameter logic [31:0] SD_DIAGNOSTIC_LBA = 0,
+    parameter SD_REFERENCE_FILE = "",
     parameter integer SD_POWERUP_CYCLES = 200_000,
     parameter integer SD_HALF_PERIOD_CYCLES = 125,
     parameter integer SD_INIT_HALF_PERIOD_CYCLES = SD_HALF_PERIOD_CYCLES,
@@ -78,6 +89,7 @@ module top_reticula #(
     output wire         VGA_HS,
     output wire         VGA_VS,
 
+    input wire VIDEO_TOGGLE_BUTTON, // BTNL, livre no mapeamento anterior.
     input  wire         SD_DAT0,
     input  wire         SD_CD,
     input  wire         SD_READ_SWITCH,
@@ -88,11 +100,64 @@ module top_reticula #(
 
     output wire         SD_READY_LED,
     output wire         SD_ERROR_LED,
-    output wire         SD_BUSY_LED
+    output wire         SD_BUSY_LED,
+    output wire         SD_CRC_OK_LED,
+    input wire [3:0]    SD_DIAG_PAGE, // SW4=ALIGN; SW5..7 continuam diagnosticos/captura
+    output wire [6:0]   SD_SEG,
+    output wire [7:0]   SD_AN,
+    output wire         SD_DP,
+    output wire         SD_DATA_OK_LED
 );
     wire reset_operacao;
 
+    wire sd_buffer_ready, sd_buffer_pending, sd_buffer_error, sd_buffer_published;
+    logic sd_read_busy_d=0, sd_block_valid_d=0;
+    logic sd_asset_published=0;
+    logic [31:0] sd_publications=0;
+    always_ff @(posedge clk) begin
+        sd_read_busy_d <= sd_diag_busy;
+        sd_block_valid_d <= sd_diag_block;
+        if(reset_operacao) begin
+            sd_read_busy_d<=0; sd_block_valid_d<=0;
+            sd_asset_published<=0; sd_publications<=0;
+        end else if(sd_buffer_published) begin
+            sd_asset_published<=1;
+            sd_publications<=sd_publications+1'b1;
+        end
+    end
+    wire video_request, video_grant;
+    wire [31:0] video_lba;
+    logic video_owner=0, sd_dispatch=0, sd_busy_seen=0;
+    wire diagnostic_grant = sd_request && (!ENABLE_SD_OVERLAY || sd_buffer_ready) && !sd_dispatch && !sd_read_busy;
+    assign video_grant = video_request && !diagnostic_grant && !sd_dispatch && !sd_read_busy;
+    always_ff @(posedge clk) begin
+        if(reset_operacao) begin video_owner<=0; sd_dispatch<=0; sd_busy_seen<=0; end
+        else if(diagnostic_grant || video_grant) begin
+            video_owner<=video_grant; sd_dispatch<=1; sd_busy_seen<=0;
+        end else if(sd_dispatch && sd_read_busy) sd_busy_seen<=1;
+        else if(sd_dispatch && sd_busy_seen && !sd_read_busy) begin
+            sd_dispatch<=0; sd_busy_seen<=0;
+        end
+    end
+    wire sd_diag_busy = sd_read_busy && !video_owner;
+    wire sd_diag_valid = sd_data_valid && !video_owner;
+    wire sd_diag_block = sd_block_valid && !video_owner;
+    wire video_failed;
+    wire [31:0] video_frames, video_errors, video_late, video_cycles;
+    wire [3:0] video_state;
+    wire sd_path_busy = sd_read_busy || (ENABLE_SD_OVERLAY && !sd_buffer_ready);
     wire sd_diagnostic_error;
+    wire sd_crc_ok, sd_data_ok;
+    wire [9:0] sd_diag_byte_count;
+    wire [8:0] sd_first_mismatch;
+    wire [7:0] sd_expected_byte, sd_received_byte;
+    wire [31:0] sd_attempts, sd_timeout_count;
+    wire [3:0] sd_current_state;
+    wire [5:0] sd_current_command;
+    wire [7:0] sd_r1_response, sd_data_token;
+    wire [9:0] sd_bytes_received;
+    wire [15:0] sd_crc_received, sd_crc_calculated;
+    wire [31:0] sd_good_reads, sd_failed_reads;
     wire sd_request;
     wire sd_init_ready;
     wire sd_init_failed;
@@ -107,13 +172,19 @@ module top_reticula #(
     wire [8:0] sd_byte_index;
 
     generate if (ENABLE_SD_SUBSYSTEM) begin : g_sd
-        sd_diagnostic #(.DEBOUNCE_CYCLES(SD_REQUEST_DEBOUNCE)) u_diagnostico (
+        sd_diagnostic #(.DEBOUNCE_CYCLES(SD_REQUEST_DEBOUNCE),
+                        .REFERENCE_FILE(SD_REFERENCE_FILE)) u_diagnostico (
             .clk(clk), .rst(reset_operacao), .read_switch(SD_READ_SWITCH),
-            .ready(sd_init_ready), .busy(sd_read_busy), .failed(sd_init_failed),
-            .data_valid(sd_data_valid), .data_byte(sd_data_byte),
-            .byte_index(sd_byte_index), .block_valid(sd_block_valid),
-            .read_error(sd_read_error), .request(sd_request),
-            .diagnostic_error(sd_diagnostic_error)
+            .ready(sd_init_ready), .busy(sd_path_busy || sd_dispatch), .failed(sd_init_failed),
+            .data_valid(sd_diag_valid), .data_byte(sd_data_byte),
+            .byte_index(sd_byte_index), .block_valid(sd_diag_block),
+            .read_error(sd_read_error && !video_owner), .read_error_code(sd_read_error_code),
+            .request(sd_request), .diagnostic_error(sd_diagnostic_error),
+            .crc_ok(sd_crc_ok), .data_ok(sd_data_ok), .byte_count(sd_diag_byte_count),
+            .first_mismatch(sd_first_mismatch), .expected_byte(sd_expected_byte),
+            .received_byte(sd_received_byte), .attempts(sd_attempts),
+            .timeout_count(sd_timeout_count), .good_reads(sd_good_reads),
+            .failed_reads(sd_failed_reads)
         );
         sd_spi_controller #(
             .POWERUP_CYCLES(SD_POWERUP_CYCLES),
@@ -123,8 +194,8 @@ module top_reticula #(
         ) u_sd_spi_controller (
             .clk(clk),
             .rst(reset_operacao),
-            .read_start(sd_request),
-            .read_lba(32'd2048),
+            .read_start(diagnostic_grant || video_grant),
+            .read_lba(video_grant ? video_lba : SD_DIAGNOSTIC_LBA),
             .sd_miso(SD_DAT0),
             .sd_reset(SD_RESET),
             .sd_sck(SD_SCK),
@@ -140,9 +211,17 @@ module top_reticula #(
             .block_valid(sd_block_valid),
             .data_valid(sd_data_valid),
             .data_byte(sd_data_byte),
-            .byte_index(sd_byte_index)
+            .byte_index(sd_byte_index), .current_state(sd_current_state),
+            .current_command(sd_current_command), .r1_response(sd_r1_response),
+            .data_token(sd_data_token), .bytes_received(sd_bytes_received),
+            .crc_received(sd_crc_received), .crc_calculated(sd_crc_calculated)
         );
     end else begin : g_sd_disabled
+        assign {sd_crc_ok, sd_data_ok, sd_diag_byte_count, sd_first_mismatch,
+                sd_expected_byte, sd_received_byte, sd_attempts, sd_timeout_count,
+                sd_good_reads, sd_failed_reads,
+                sd_current_state, sd_current_command, sd_r1_response, sd_data_token,
+                sd_bytes_received, sd_crc_received, sd_crc_calculated} = '0;
         assign sd_request = 1'b0;
         assign sd_diagnostic_error = 1'b0;
         assign SD_RESET = 1'b1;
@@ -166,12 +245,50 @@ module top_reticula #(
                           sd_init_ready && !sd_init_failed;
 
     assign SD_ERROR_LED = ENABLE_SD_SUBSYSTEM &&
-                          (sd_init_failed || sd_read_error || sd_diagnostic_error);
+                          (sd_init_failed || sd_read_error || sd_diagnostic_error || sd_buffer_error || video_failed);
+
+    assign SD_CRC_OK_LED = ENABLE_SD_SUBSYSTEM && sd_crc_ok;
+    assign SD_DATA_OK_LED = ENABLE_SD_SUBSYSTEM && sd_data_ok;
 
     assign SD_BUSY_LED = ENABLE_SD_SUBSYSTEM &&
                          !reset_operacao &&
                          !sd_init_failed &&
-                         (!sd_init_ready || sd_read_busy);
+                         (!sd_init_ready || sd_path_busy);
+
+    wire [3:0] sd_display_page;
+    reg [31:0] sd_display_value;
+    always @* begin
+        case (sd_display_page)
+            0: sd_display_value = {8'h50, 2'd0, sd_current_command, sd_current_state,
+                1'b0, sd_init_error_code, 1'b0, sd_read_error_code,
+                sd_init_ready, sd_read_busy, sd_crc_ok, sd_data_ok};
+            1: sd_display_value = {sd_r1_response, sd_data_token, 6'd0, sd_bytes_received};
+            2: sd_display_value = {sd_crc_received, sd_crc_calculated};
+            3: sd_display_value = {3'd0, sd_first_mismatch, sd_expected_byte,
+                                  sd_received_byte, 3'd0, sd_diagnostic_error};
+            4: sd_display_value = sd_attempts;
+            5: sd_display_value = sd_good_reads;
+            6: sd_display_value = sd_timeout_count;
+            7: sd_display_value = sd_failed_reads;
+            8: sd_display_value = SD_DIAGNOSTIC_LBA;
+            9: sd_display_value = SD_REFERENCE_FILE != "" ? 32'd1 : 32'd0;
+            10: sd_display_value = {28'd0, sd_buffer_error, sd_buffer_pending,
+                                    sd_buffer_ready, sd_asset_published};
+            11: sd_display_value = sd_publications;
+            12: sd_display_value = video_frames;
+            13: sd_display_value = video_errors;
+            14: sd_display_value = video_cycles;
+            15: sd_display_value = {video_late[23:0],video_state,3'd0,video_failed};
+            default: sd_display_value = 32'h00000000;
+        endcase
+    end
+    // Remove SW4 da selecao de diagnostico. SW5..SW7 selecionam paginas 0..7.
+    wire [3:0] diagnostic_page={1'b0,SD_DIAG_PAGE[3:1]};
+    sd_status_display u_sd_display (
+        .clk(clk), .rst(reset_operacao), .enabled(ENABLE_SD_SUBSYSTEM),
+        .page_switches(diagnostic_page), .page(sd_display_page), .value(sd_display_value),
+        .segments(SD_SEG), .anodes(SD_AN), .dp(SD_DP)
+    );
 
     logic [9:0] pixel_x;
     logic [9:0] pixel_y;
@@ -297,7 +414,8 @@ module top_reticula #(
     logic signed [9:0] roll_sensor;
 
     logic gyro_bias_calibrado;
-    logic fusao_valida;
+    wire fusao_valida;
+    wire legacy_fusao_valida;
     logic signed [10:0] fusao_pitch_px;
     logic signed [9:0]  fusao_roll_q8;
 
@@ -317,11 +435,8 @@ module top_reticula #(
         roll_sync == 2'b10 ? 32'sd26096 : 32'sd0;
 
     // SW15..12=1111 seleciona o MPU; os demais estados comandam pitch/roll.
-    wire usar_mpu = !modo_atitude_manual &&
-        sensor_ok &&
-        atitude_calibrada &&
-        gyro_bias_calibrado &&
-        fusao_valida;
+    wire usar_mpu = !modo_atitude_manual && sensor_ok && fusao_valida &&
+        (FULL_ATTITUDE ? vector_calibrated : (atitude_calibrada && gyro_bias_calibrado));
 
     always_ff @(posedge clk) begin
         horizonte_meta <= sw[13:12];
@@ -358,6 +473,161 @@ module top_reticula #(
         end
     end
 
+    wire capture_mode,video_mode,step_toggle,zero_request,cal_grid;
+    // SW4 has one meaning: visual alignment. BTNU/BTND are mutually routed.
+    wire align_mode;
+    wire [1:0] heading_command_buttons,align_command_buttons;
+    wire capture_grid_pulse;
+    logic capture_grid_enabled=1'b0;
+    // The capture mode owns the grid chord, not SW4 or the video mode FSM.
+    always_ff @(posedge clk) begin
+        if(reset_operacao || !capture_mode) capture_grid_enabled<=1'b0;
+        else if(capture_grid_pulse) capture_grid_enabled<=~capture_grid_enabled;
+    end
+    hud_command_dispatch u_hud_commands(
+        .clk(clk),.reset(reset_operacao),
+        .align_switch(SD_DIAG_PAGE[0]),.capture_active(capture_mode),
+        .buttons(btn_heading),.align_mode(align_mode),
+        .heading_buttons(heading_command_buttons),
+        .align_buttons(align_command_buttons),
+        .capture_grid_pulse(capture_grid_pulse)
+    );
+    wire [1:0] capture_view;
+    captura_controle #(.DEBOUNCE(CAPTURE_DEBOUNCE),.LONG_PRESS(CAPTURE_LONG_PRESS)) u_capture_control(
+        // SW5/SW6: four capture views; SW7: MPU zero request.
+        // CAPTURE grid is switched by BTNU+BTND, never by SW4.
+        .clk(clk),.reset(reset_operacao),.button(VIDEO_TOGGLE_BUTTON),
+        .page({SD_DIAG_PAGE[3],capture_grid_enabled,SD_DIAG_PAGE[2:1]}),
+        .video_mode(video_mode),.capture(capture_mode),.step_toggle(step_toggle),
+        .zero_request(zero_request),.view(capture_view),.grid(cal_grid));
+    wire vector_calibrated,vector_valid,vector_updated,vector_stationary,zero_set,zero_rejected;
+    wire [25:0] vector_calibration_debug;
+    wire signed [31:0] vector_raw_roll,vector_raw_pitch,vector_roll,vector_pitch;
+    // Zeragem automatica, uma vez por inicializacao.
+    wire auto_zero_request, auto_zero_done;
+
+    hud_auto_zero #(.SETTLE_UPDATES(8)) u_auto_zero (
+        .clk(clk),
+        .reset(reset_operacao),
+        .enabled(FULL_ATTITUDE && sensor_ok && !modo_atitude_manual),
+        .calibrated(vector_calibrated),
+        .valid(vector_valid),
+        .stationary(vector_stationary),
+        .updated(vector_updated),
+        .already_zeroed(zero_set),
+        .raw_roll(vector_raw_roll),
+        .raw_pitch(vector_raw_pitch),
+        .zero_pulse(auto_zero_request),
+        .done(auto_zero_done)
+    );
+
+    atitude_vetorial #(
+        .ALLOW_TILTED_STARTUP(1'b1),
+        .SENSOR_FAULT_GRACE_CYCLES(50_000_000),
+        .STALE_RESET_CYCLES(100_000_000)
+    ) u_vector(.clk(clk),
+        .reset(reset_operacao || !atitude_mpu_habilitada),
+        .sensor_ok(sensor_ok && atitude_mpu_habilitada),.sample(amostra_nova),.zero_request(zero_request | auto_zero_request),
+        .ax(mpu_accel_x),.ay(mpu_accel_y),.az(mpu_accel_z),
+        .gx(mpu_gyro_x),.gy(mpu_gyro_y),.gz(mpu_gyro_z),
+        .calibrated(vector_calibrated),.valid(vector_valid),.updated(vector_updated),
+        .stationary(vector_stationary),.zero_set(zero_set),.zero_rejected(zero_rejected),
+        .raw_roll(vector_raw_roll),.raw_pitch(vector_raw_pitch),.roll(vector_roll),.pitch(vector_pitch),
+        .calibration_debug(vector_calibration_debug));
+    localparam integer VIDEO_STARTUP_W = VIDEO_SENSOR_STARTUP_CYCLES > 1 ?
+        $clog2(VIDEO_SENSOR_STARTUP_CYCLES) : 1;
+    logic [VIDEO_STARTUP_W-1:0] video_startup_count = 0;
+    logic video_startup_ready = 0;
+    initial if (VIDEO_SENSOR_STARTUP_CYCLES < 1)
+        $fatal(1,"Prazo de partida do video deve ser positivo");
+    // A pausa do video permitiu calibrar o MPU real; inicia leituras apos esse repouso.
+    // O prazo de 10 s libera o video mesmo com sensor ausente, preservando ATT BAD.
+    always_ff @(posedge clk) begin
+        if (reset_operacao) begin
+            video_startup_count <= 0;
+            video_startup_ready <= 0;
+        end else if (!video_startup_ready) begin
+            if (!FULL_ATTITUDE || !MODOS_OPERACIONAIS || modo_atitude_manual ||
+                (sensor_ok && vector_calibrated && vector_valid) ||
+                video_startup_count == VIDEO_STARTUP_W'(VIDEO_SENSOR_STARTUP_CYCLES-1))
+                video_startup_ready <= 1;
+            else video_startup_count <= video_startup_count + 1'b1;
+        end
+    end
+    wire signed [31:0] render_roll_source=modo_atitude_manual ? roll_manual_q10 :
+        vector_valid ? vector_roll : 32'sd0;
+    wire signed [31:0] render_pitch_source=modo_atitude_manual ? pitch_manual_q10 :
+        vector_valid ? vector_pitch : 32'sd0;
+    wire trig_done,trig_busy;
+    wire signed [31:0] trig_x,trig_y;
+    logic signed [31:0] trig_roll_pending=0,trig_pitch_pending=0;
+    logic signed [31:0] render_roll_ready=0;
+    logic signed [10:0] render_pitch_ready=0;
+    logic signed [15:0] render_sine_ready=0,render_cosine_ready=16384;
+    logic trig_start=0,trig_wait=0;
+    // Os operandos e resultados pertencem a mesma amostra; CORDIC leva 18 ciclos.
+    always_ff @(posedge clk) begin
+        trig_start<=0;
+        if(reset_operacao) begin trig_wait<=0; render_roll_ready<=0; render_pitch_ready<=0; end
+        else if(!trig_wait) begin
+            trig_roll_pending<=render_roll_source; trig_pitch_pending<=render_pitch_source;
+            trig_start<=1; trig_wait<=1;
+        end else if(trig_done) begin
+            render_sine_ready<=16'(trig_y>>>6); render_cosine_ready<=16'(trig_x>>>6);
+            render_roll_ready<=trig_roll_pending;
+            render_pitch_ready<=trig_pitch_pending>40960 ? 11'sd160 :
+                trig_pitch_pending < -40960 ? -11'sd160 : 11'(trig_pitch_pending>>>8);
+            trig_wait<=0;
+        end
+    end
+    atitude_cordic #(.VECTORING(0)) u_render_trig(.clk(clk),.reset(reset_operacao),.start(trig_start),
+        .x_in(32'sd0),.y_in(32'sd0),.angle_in(trig_roll_pending<<<6),.busy(trig_busy),
+        .done(trig_done),.x_out(trig_x),.y_out(trig_y),.angle_out());
+    wire [238:0] attitude_packet={capture_mode,cal_grid,capture_view,
+        vector_calibration_debug,sensor_ok,vector_valid,zero_rejected,zero_set,vector_stationary,vector_calibrated,
+        vector_raw_roll,vector_raw_pitch,vector_roll,vector_pitch,render_roll_ready,
+        render_pitch_ready,render_sine_ready,render_cosine_ready};
+    wire [238:0] attitude_received;
+    wire attitude_received_valid;
+    entrada_hud #(.WIDTH(239)) u_attitude_cdc(.clk_origem(clk),.clk_destino(pixel_clk),
+        .valido(1'b1),.dados(attitude_packet),.pronto(),
+        .valido_destino(attitude_received_valid),.dados_destino(attitude_received));
+    logic [238:0] attitude_pending=239'd16384,attitude_display=239'd16384;
+    always_ff @(posedge pixel_clk) begin
+        if(attitude_received_valid) attitude_pending<=attitude_received;
+        if(pixel_x==0 && pixel_y==480) attitude_display<=attitude_pending;
+    end
+    wire signed [15:0] attitude_cosine=attitude_display[15:0],attitude_sine=attitude_display[31:16];
+    wire signed [10:0] attitude_pitch_px=attitude_display[42:32];
+    wire signed [31:0] attitude_render_roll=attitude_display[74:43];
+    wire signed [31:0] attitude_pitch=attitude_display[106:75],attitude_roll=attitude_display[138:107];
+    wire signed [31:0] attitude_raw_pitch=attitude_display[170:139],attitude_raw_roll=attitude_display[202:171];
+    wire [31:0] attitude_status=attitude_display[234:203];
+    wire [1:0] pixel_view=attitude_display[236:235];
+    wire pixel_grid=attitude_display[237],pixel_capture=attitude_display[238];
+    wire calibration_on;
+    wire [31:0] display_frame_id;
+    wire [31:0] mag_diagnostics;
+    wire [159:0] video_diag_received;
+    wire video_diag_valid;
+    entrada_hud #(.WIDTH(160)) u_video_diag_cdc(.clk_origem(clk),.clk_destino(pixel_clk),
+        .valido(1'b1),.dados({mag_diagnostics,mpu_raw_ax,mpu_raw_ay,mpu_raw_az,
+                            mpu_raw_gx,mpu_raw_gy,mpu_raw_gz,27'd0,video_failed,video_state}),.pronto(),
+        .valido_destino(video_diag_valid),.dados_destino(video_diag_received));
+    logic [159:0] video_diag_pending=0,video_diag_display=0;
+    always_ff @(posedge pixel_clk) begin
+        if(video_diag_valid) video_diag_pending<=video_diag_received;
+        if(pixel_x==0 && pixel_y==480) video_diag_display<=video_diag_pending;
+    end
+    calibracao_vga u_calibration_display(.x(pixel_x),.y(pixel_y),.video_on(video_on),
+        .grid(pixel_capture && (pixel_grid || pixel_view==2)),
+        .diagnostics(pixel_capture && pixel_view==3),
+        .raw_roll(attitude_raw_roll),.raw_pitch(attitude_raw_pitch),
+        .roll(attitude_roll),.pitch(attitude_pitch),.render_roll(attitude_render_roll),
+        .sine(attitude_sine),.cosine(attitude_cosine),.pitch_px(attitude_pitch_px),
+        .status(attitude_status),.video_status(video_diag_display[31:0]),.frame_id(display_frame_id),
+        .sensor_raw(video_diag_display[127:32]),.mag_status(video_diag_display[159:128]),.on(calibration_on));
+
     // Pacote atômico com dados do HUD, mira CAÇA e alvo manual.
     wire [127:0] amostra_completa;
     wire [56:0] amostra_pixel = amostra_completa[95:39];
@@ -380,7 +650,7 @@ wire [9:0] velocidade_hud_entrada =
 
     controle_heading u_heading (
         .clk         (clk),
-        .btn         (btn_heading),
+        .btn         (heading_command_buttons),
         .heading_deg (heading_manual)
     );
     // Ordem: velocidade(10), altitude(17), pitch(11), roll(10), heading(9)..
@@ -458,6 +728,24 @@ wire [9:0] velocidade_hud_entrada =
     logic signed [15:0] mpu_gyro_x;
     logic signed [15:0] mpu_gyro_y;
     logic signed [15:0] mpu_gyro_z;
+    wire signed [15:0] mpu_raw_ax,mpu_raw_ay,mpu_raw_az;
+    wire signed [15:0] mpu_raw_gx,mpu_raw_gy,mpu_raw_gz;
+    // Compoe a montagem de 90 graus com a frente oposta, sem alterar Z.
+    wire signed [15:0] mpu_montagem_ax=MPU_GIRO_ESQUERDA_90 ? mpu_raw_ay : mpu_raw_ax;
+    wire signed [15:0] mpu_montagem_ay=MPU_GIRO_ESQUERDA_90 ? mpu_raw_ax : mpu_raw_ay;
+    wire signed [15:0] mpu_montagem_gx=MPU_GIRO_ESQUERDA_90 ? mpu_raw_gy : mpu_raw_gx;
+    wire signed [15:0] mpu_montagem_gy=MPU_GIRO_ESQUERDA_90 ? mpu_raw_gx : mpu_raw_gy;
+    localparam bit MPU_INVERTER_X=MPU_GIRO_ESQUERDA_90 ^ FRENTE_INVERTIDA_180;
+    localparam bit MPU_INVERTER_Y=FRENTE_INVERTIDA_180;
+    function automatic logic signed [15:0] negar_mpu_saturado(input logic signed [15:0] valor);
+        negar_mpu_saturado=valor==16'sh8000 ? 16'sh7fff : -valor;
+    endfunction
+    assign mpu_accel_x=MPU_INVERTER_X ? negar_mpu_saturado(mpu_montagem_ax) : mpu_montagem_ax;
+    assign mpu_accel_y=MPU_INVERTER_Y ? negar_mpu_saturado(mpu_montagem_ay) : mpu_montagem_ay;
+    assign mpu_accel_z=mpu_raw_az;
+    assign mpu_gyro_x=MPU_INVERTER_X ? negar_mpu_saturado(mpu_montagem_gx) : mpu_montagem_gx;
+    assign mpu_gyro_y=MPU_INVERTER_Y ? negar_mpu_saturado(mpu_montagem_gy) : mpu_montagem_gy;
+    assign mpu_gyro_z=mpu_raw_gz;
 
     // Preparacao do giroscopio para a fusao complementar de atitude.
     // Estas saidas alimentam a fusao; nao dirigem o HUD diretamente.
@@ -483,11 +771,14 @@ wire [9:0] velocidade_hud_entrada =
     wire fusao_atualizar =
         gyro_pitch_atualizado && gyro_roll_atualizado;
 
-    logic signed [31:0] fusao_pitch_q10;
-    logic signed [31:0] fusao_roll_q10;
+    wire signed [31:0] fusao_pitch_q10,fusao_roll_q10;
+    wire signed [31:0] legacy_pitch_q10,legacy_roll_q10;
+    assign fusao_pitch_q10=FULL_ATTITUDE ? vector_pitch : legacy_pitch_q10;
+    assign fusao_roll_q10=FULL_ATTITUDE ? vector_roll : legacy_roll_q10;
+    assign fusao_valida=FULL_ATTITUDE ? vector_valid : legacy_fusao_valida;
 
 
-    // Mapeamento fisico validado em hardware no GY-521.
+    // Referencial original do GY-521, apos a compensacao de montagem acima.
     //
     // Acelerometro:
     // frente para baixo   -> accel_y negativo
@@ -516,12 +807,12 @@ wire [9:0] velocidade_hud_entrada =
         .who_am_i  (sensor_id),
         .sensor_ok (sensor_ok),
         .amostra_nova(amostra_nova),
-        .accel_x   (mpu_accel_x),
-        .accel_y   (mpu_accel_y),
-        .accel_z   (mpu_accel_z),
-        .gyro_x    (mpu_gyro_x),
-        .gyro_y    (mpu_gyro_y),
-        .gyro_z    (mpu_gyro_z)
+        .accel_x   (mpu_raw_ax),
+        .accel_y   (mpu_raw_ay),
+        .accel_z   (mpu_raw_az),
+        .gyro_x    (mpu_raw_gx),
+        .gyro_y    (mpu_raw_gy),
+        .gyro_z    (mpu_raw_gz)
     );
 
     // -----------------------------------------------------
@@ -546,14 +837,16 @@ wire [9:0] velocidade_hud_entrada =
 
         .mag_x        (mag_x),
         .mag_y        (mag_y),
-        .mag_z        (mag_z)
+        .mag_z        (mag_z),
+        .diagnostico  (mag_diagnostics)
     );
 
     heading_magnetico #(
         .OFFSET_X(MAG_OFFSET_X), .OFFSET_Y(MAG_OFFSET_Y),
         .GAIN_X_Q12(MAG_GAIN_X_Q12), .GAIN_Y_Q12(MAG_GAIN_Y_Q12),
         .TROCAR_XY(MAG_TROCAR_XY),
-        .INVERTER_X(MAG_INVERTER_X), .INVERTER_Y(MAG_INVERTER_Y)
+        .INVERTER_X(MAG_INVERTER_X ^ FRENTE_INVERTIDA_180),
+        .INVERTER_Y(MAG_INVERTER_Y ^ FRENTE_INVERTIDA_180)
     ) u_heading_magnetico (
         .clk(clk),
         .sensor_ok(magnetometro_habilitado && mag_sensor_ok && (mag_z != -16'sd4096)),
@@ -850,10 +1143,10 @@ wire [9:0] velocidade_hud_entrada =
         .gyro_pitch_q10  (gyro_pitch_q10),
         .gyro_roll_q10   (gyro_roll_q10),
 
-        .valido          (fusao_valida),
+        .valido          (legacy_fusao_valida),
 
-        .pitch_q10       (fusao_pitch_q10),
-        .roll_q10        (fusao_roll_q10)
+        .pitch_q10       (legacy_pitch_q10),
+        .roll_q10        (legacy_roll_q10)
     );
 
     atitude_gyro_hud u_atitude_fusao_hud (
@@ -911,14 +1204,32 @@ wire [9:0] velocidade_hud_entrada =
     // Retícula
     // -----------------------------------------------------
 
+    // SW4 != capture. Offset only changes flight coordinates, at VGA frame boundary.
+    wire signed [8:0] hud_offset_y;
+    wire [9:0] hud_pixel_y;
+    wire hud_video_on;
+    hud_flight_coords u_flight_coords(
+        .screen_y(pixel_y),.screen_video_on(video_on),
+        .active_offset_y(hud_offset_y),
+        .flight_y(hud_pixel_y),.flight_video_on(hud_video_on)
+    );
+    hud_vertical_adjust u_hud_vertical_adjust(
+        .clk(pixel_clk),.reset(reset_operacao),
+        .align_enable(align_mode && !capture_mode),
+        .up_button(align_command_buttons[0]),
+        .down_button(align_command_buttons[1]),
+        .frame_boundary(pixel_x==0 && pixel_y==480),
+        .offset_y(hud_offset_y)
+    );
+
     reticula_vga #(
         .ESPESSURA   (1),
         .TAMANHO     (28),
         .VAO_CENTRAL (5)
     ) u_retic (
         .pixel_x     (pixel_x),
-        .pixel_y     (pixel_y),
-        .video_on    (video_on),
+        .pixel_y     (hud_pixel_y),
+        .video_on    (hud_video_on),
         .reticula_on (retic)
     );
 
@@ -927,8 +1238,8 @@ wire [9:0] velocidade_hud_entrada =
         .CLEARANCE (3)
     ) u_retic_caca (
         .pixel_x      (pixel_x),
-        .pixel_y      (pixel_y),
-        .video_on     (video_on),
+        .pixel_y      (hud_pixel_y),
+        .video_on     (hud_video_on),
         .reticula_on  (retic_caca),
         .clearance_on (retic_caca_clearance)
     );
@@ -942,7 +1253,9 @@ wire [9:0] velocidade_hud_entrada =
     // Simbologia
     // -----------------------------------------------------
 
-    simbologia_vga u_simbologia (
+    simbologia_vga #(.FULL_ATTITUDE(FULL_ATTITUDE),
+                      .SEPARATE_FLIGHT_COORDS(1'b1)) u_simbologia (
+        .attitude_sine(attitude_sine),.attitude_cosine(attitude_cosine),.attitude_pitch_px(attitude_pitch_px),
         .horizonte_y  (horizonte_y),
         .roll_q8      (roll_q8),
         .heading_deg  (heading_deg),
@@ -951,6 +1264,8 @@ wire [9:0] velocidade_hud_entrada =
         .pixel_x      (pixel_x),
         .pixel_y      (pixel_y),
         .video_on     (video_on),
+        .flight_pixel_y(hud_pixel_y),
+        .flight_video_on(hud_video_on),
 
         .horizonte_on (horizonte),
         .altitude_on  (altitude),
@@ -980,12 +1295,10 @@ wire [9:0] velocidade_hud_entrada =
     );
 
     mira_caca_vga u_mira_caca (
-        .pixel_x(pixel_x),.pixel_y(pixel_y),.video_on(video_on && estilo_caca),
+        .pixel_x(pixel_x),.pixel_y(hud_pixel_y),.video_on(hud_video_on && estilo_caca),
         .mira_x(mira_x),.mira_y(mira_y),.locked(mira_lock),.on(mira_on),.rgb(mira_rgb)
     );
 
-    assign VGA_HS = hsync;
-    assign VGA_VS = vsync;
 
     // -----------------------------------------------------
     // Indicador do sensor
@@ -1044,10 +1357,10 @@ wire [9:0] velocidade_hud_entrada =
         .fontes_validas({(heading_fusionado_valido ||
                           (magnetometro_habilitado && mag_sensor_ok && heading_magnetico_valido)),
                          (barometro_habilitado && baro_sensor_ok && baro_calibracao_ok),
-                         (!modo_atitude_manual && sensor_ok && atitude_calibrada &&
-                          gyro_bias_calibrado && fusao_valida)}),
+                         (!modo_atitude_manual && sensor_ok && fusao_valida &&
+                          (FULL_ATTITUDE ? vector_calibrated : (atitude_calibrada && gyro_bias_calibrado)))}),
         .novas_amostras({(magnetometro_habilitado && heading_magnetico_atualizado),
-                         (barometro_habilitado && baro_altitude_calc_ok),fusao_atualizar}),
+                         (barometro_habilitado && baro_altitude_calc_ok),(FULL_ATTITUDE ? vector_updated : fusao_atualizar)}),
         .attitude_manual_valid(modo_atitude_manual),
         .pitch_real_q10(fusao_pitch_q10),.roll_real_q10(fusao_roll_q10),
         .pitch_manual_q10(pitch_manual_q10),.roll_manual_q10(roll_manual_q10),
@@ -1070,8 +1383,16 @@ wire [9:0] velocidade_hud_entrada =
         assign overlay_on=0; assign overlay_rgb=0;
     end endgenerate
 
-    assign VGA_R =
+    wire align_status_on;
+    hud_align_status_vga u_align_status(
+        .pixel_clk(pixel_clk),.pixel_x(pixel_x),.pixel_y(pixel_y),
+        .video_on(video_on),.align_mode(align_mode),.offset_y(hud_offset_y),
+        .on(align_status_on)
+    );
+    wire [11:0] hud_rgb;
+    assign hud_rgb[11:8] =
         (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[11:8] :
+        align_status_on ? 4'h0 :
         (MODOS_OPERACIONAIS && mira_on) ? mira_rgb[11:8] :
         retic_visivel                                ? 4'h0 :
         (!estilo_caca && alvo)                      ? 4'hF :
@@ -1082,8 +1403,9 @@ wire [9:0] velocidade_hud_entrada =
         )                                            ? 4'hF :
                                                        4'h0;
 
-    assign VGA_G =
+    assign hud_rgb[7:4] =
         (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[7:4] :
+        align_status_on ? 4'hF :
         (MODOS_OPERACIONAIS && mira_on) ? mira_rgb[7:4] :
         retic_visivel ? 4'hF :
         (
@@ -1100,7 +1422,95 @@ wire [9:0] velocidade_hud_entrada =
         ) ? 4'hF :
             4'h0;
 
-    assign VGA_B = (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[3:0] :
+    assign hud_rgb[3:0] = (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[3:0] :
+        align_status_on ? 4'hF :
         (MODOS_OPERACIONAIS && mira_on) ? mira_rgb[3:0] : 4'h0;
 
+    // Opacidade vem dos sinais de desenho, inclusive elementos pretos prioritarios.
+    wire hud_opaque = align_status_on || (MODOS_OPERACIONAIS && (overlay_on || mira_on)) ||
+        retic_visivel || (!estilo_caca && alvo) || horizonte_visivel ||
+        (!declutter && (extras_estilo || sensor_status));
+    wire capture_hud_enabled=!pixel_capture || pixel_view!=0;
+    wire [11:0] capture_hud_rgb=calibration_on ? 12'h0ff : capture_hud_enabled ? hud_rgb : 12'h000;
+    wire capture_hud_opaque=calibration_on || (capture_hud_enabled && hud_opaque);
+    wire [11:0] scene_rgb;
+    generate if (ENABLE_SD_VIDEO && ENABLE_SD_SUBSYSTEM) begin : g_video
+        localparam integer AB = $clog2(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT);
+        wire frame_start, frame_abort, frame_commit, frame_write, frame_ready;
+        wire [AB-1:0] frame_address, display_address;
+        wire display_enable, display_valid, frame_valid;
+        wire [7:0] display_byte;
+        wire publish_frame,frozen,updated_frame;
+        video_captura u_capture(.pixel_clk(pixel_clk),.reset(reset_operacao),
+            .capture(capture_mode),.step_toggle(step_toggle),.frame_boundary(pixel_x==0 && pixel_y==480),
+            .frame_valid(frame_valid),.updated(updated_frame),.publish(publish_frame),
+            .frozen(frozen),.frame_id(display_frame_id));
+        sd_video_loader #(.WIDTH(SD_VIDEO_WIDTH),.HEIGHT(SD_VIDEO_HEIGHT),.FPS(SD_VIDEO_FPS),
+            .BASE_LBA(SD_VIDEO_LBA),.MAX_FILE_SECTORS(SD_VIDEO_SECTORS)) u_loader (
+            .clk(clk),.rst(reset_operacao),.init_ready(sd_init_ready && video_startup_ready),.init_failed(sd_init_failed),
+            .request(video_request),.grant(video_grant),.lba(video_lba),
+            .read_busy(sd_read_busy && video_owner),.read_done(sd_read_done && video_owner),
+            .read_error(sd_read_error && video_owner),.data_valid(sd_data_valid && video_owner),
+            .block_valid(sd_block_valid && video_owner),.byte_index(sd_byte_index),.data_byte(sd_data_byte),
+            .buffer_ready(frame_ready),.frame_start(frame_start),.frame_abort(frame_abort),
+            .frame_commit(frame_commit),.frame_write(frame_write),.frame_address(frame_address),
+            .header_valid(),.failed(video_failed),.frames_loaded(video_frames),.errors(video_errors),
+            .late_frames(video_late),.transfer_cycles(video_cycles),.state(video_state));
+        sd_sector_buffer #(.BYTES(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT)) u_frames (
+            .wr_clk(clk),.rd_clk(pixel_clk),.rst(reset_operacao),
+            .wr_start(frame_start),.wr_abort(frame_abort),.wr_valid(frame_write),.wr_commit(frame_commit),
+            .wr_byte(sd_data_byte),.wr_index(frame_address),.wr_ready(frame_ready),
+            .wr_active(),.wr_pending(),.wr_error(),.wr_published(),
+            .rd_frame_start(publish_frame),
+            .rd_enable(display_enable),.rd_address(display_address),.rd_byte(display_byte),
+            .rd_valid(display_valid),.rd_sector_valid(frame_valid),.rd_updated(updated_frame));
+        sd_video_background #(.WIDTH(SD_VIDEO_WIDTH),.HEIGHT(SD_VIDEO_HEIGHT)) u_background (
+            .pixel_clk(pixel_clk),.rst(reset_operacao),.toggle_button(video_mode),
+            .pixel_x(pixel_x),.pixel_y(pixel_y),.video_on(video_on),.hsync(hsync),.vsync(vsync),
+            .hud_rgb(capture_hud_rgb),.hud_opaque(capture_hud_opaque),.frame_valid(frame_valid),
+            .byte_valid(display_valid),.pixel_byte(display_byte),.read_enable(display_enable),
+            .read_address(display_address),.rgb(scene_rgb),.hs(),.vs(),.enabled());
+    end else begin : g_no_video
+        assign video_request=0; assign video_lba=0; assign video_failed=0;
+        assign {video_frames,video_errors,video_late,video_cycles,video_state}=0;
+        assign scene_rgb=capture_hud_rgb;
+        assign display_frame_id=32'hffffffff;
+    end endgenerate
+    generate if (ENABLE_SD_OVERLAY && ENABLE_SD_SUBSYSTEM) begin : g_sd_overlay
+        wire [8:0] bitmap_address;
+        wire [7:0] bitmap_byte;
+        wire bitmap_enable, bitmap_valid, sector_valid;
+        wire reference_ok = SD_REFERENCE_FILE == "" || sd_data_ok;
+        // read_busy sobe com o erro antigo do leitor ja limpo.
+        sd_sector_buffer u_buffer (
+            .wr_clk(clk), .rd_clk(pixel_clk), .rst(reset_operacao),
+            .wr_start(sd_diag_busy && !sd_read_busy_d),
+            .wr_abort((sd_read_error && !video_owner) || (sd_block_valid_d && !reference_ok)),
+            .wr_valid(sd_diag_valid), .wr_commit(sd_block_valid_d && reference_ok),
+            .wr_byte(sd_data_byte), .wr_index(sd_byte_index),
+            .wr_ready(sd_buffer_ready), .wr_active(), .wr_pending(sd_buffer_pending),
+            .wr_error(sd_buffer_error), .wr_published(sd_buffer_published),
+            .rd_frame_start(pixel_x == 0 && pixel_y == 480),
+            .rd_enable(bitmap_enable), .rd_address(bitmap_address),
+            .rd_byte(bitmap_byte), .rd_valid(bitmap_valid),
+            .rd_sector_valid(sector_valid), .rd_updated()
+        );
+        sd_bitmap_overlay u_bitmap (
+            .pixel_clk(pixel_clk), .rst(reset_operacao),
+            .pixel_x(pixel_x), .pixel_y(pixel_y), .video_on(video_on),
+            .hsync(hsync), .vsync(vsync), .base_rgb(scene_rgb),
+            .sector_valid(sector_valid),
+            .byte_valid(bitmap_valid && capture_hud_enabled && !(ENABLE_SD_VIDEO && MODOS_OPERACIONAIS && (overlay_on || mira_on))),
+            .bitmap_byte(bitmap_byte),
+            .read_enable(bitmap_enable), .read_address(bitmap_address),
+            .rgb({VGA_R,VGA_G,VGA_B}), .hs(VGA_HS), .vs(VGA_VS),
+            .de(), .overlay_pixel()
+        );
+    end else begin : g_sd_overlay_disabled
+        assign sd_buffer_ready=1;
+        assign {sd_buffer_pending,sd_buffer_error,sd_buffer_published}=0;
+        assign {VGA_R,VGA_G,VGA_B}=scene_rgb;
+        assign VGA_HS=hsync;
+        assign VGA_VS=vsync;
+    end endgenerate
 endmodule
