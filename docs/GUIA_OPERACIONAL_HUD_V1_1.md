@@ -59,3 +59,17 @@ não altera a interface física nem o bitstream publicado.
 
 Avaliar simplificação dos modos com testes de isolamento,
 preservando a lógica de atitude, vídeo e boot QSPI.
+
+## Indicador visual de captura, v1.1
+
+A v1.1 acrescenta `CAP` em ciano, fixo em
+`x=560..601`, `y=440..453`, quando a captura esta ativa
+nas vistas 01, 10 ou 11.
+
+Na vista 00, o indicador permanece oculto para preservar
+a imagem de video puro. O indicador identifica o modo
+captura, nao certifica isoladamente que o proximo quadro
+ja tenha sido congelado.
+
+Esta alteracao nao modifica o estimador de atitude,
+os comandos, a bussola, a geometria de voo ou a QSPI.

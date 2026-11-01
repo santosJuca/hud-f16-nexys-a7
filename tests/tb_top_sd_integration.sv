@@ -37,7 +37,7 @@ module tb_top_sd_integration;
     );
 
     reg read_switch = 0;
-    reg [3:0] diagnostic_page = 2;
+    reg [3:0] diagnostic_page = 4;
     reg corrupt_crc = 0;
     reg [15:0] crc;
     reg [7:0] payload;
@@ -287,7 +287,7 @@ module tb_top_sd_integration;
         repeat(20) @(negedge clk);
         if (cmd17_count != 1) $fatal(1,"Switch mantido repetiu leitura");
         if (enabled.sd_display_value !== {crc,crc}) $fatal(1,"Pagina CRC incorreta");
-        diagnostic_page=1; repeat(4) @(negedge clk);
+        diagnostic_page=2; repeat(4) @(negedge clk);
         if (enabled.sd_display_value !== 32'h00FE0200) $fatal(1,"Pagina de dados incorreta");
         diagnostic_page=0; repeat(4) @(negedge clk);
         if (enabled.sd_display_value !== 32'h503A000B) $fatal(1,"Pagina de estado incorreta");

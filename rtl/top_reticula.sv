@@ -1389,10 +1389,23 @@ wire [9:0] velocidade_hud_entrada =
         .video_on(video_on),.align_mode(align_mode),.offset_y(hud_offset_y),
         .on(align_status_on)
     );
+    // Indicador discreto de captura, fixo no raster.
+    // A vista pura permanece completamente sem HUD.
+    wire capture_status_on;
+    hud_capture_status_vga u_capture_status (
+        .pixel_x(pixel_x),
+        .pixel_y(pixel_y),
+        .video_on(video_on),
+        .capture_active(pixel_capture),
+        .view(pixel_view),
+        .on(capture_status_on)
+    );
+
     wire [11:0] hud_rgb;
     assign hud_rgb[11:8] =
         (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[11:8] :
         align_status_on ? 4'h0 :
+        capture_status_on ? 4'h0 :
         (MODOS_OPERACIONAIS && mira_on) ? mira_rgb[11:8] :
         retic_visivel                                ? 4'h0 :
         (!estilo_caca && alvo)                      ? 4'hF :
@@ -1406,6 +1419,7 @@ wire [9:0] velocidade_hud_entrada =
     assign hud_rgb[7:4] =
         (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[7:4] :
         align_status_on ? 4'hF :
+        capture_status_on ? 4'hF :
         (MODOS_OPERACIONAIS && mira_on) ? mira_rgb[7:4] :
         retic_visivel ? 4'hF :
         (
@@ -1424,10 +1438,11 @@ wire [9:0] velocidade_hud_entrada =
 
     assign hud_rgb[3:0] = (MODOS_OPERACIONAIS && overlay_on) ? overlay_rgb[3:0] :
         align_status_on ? 4'hF :
+        capture_status_on ? 4'hF :
         (MODOS_OPERACIONAIS && mira_on) ? mira_rgb[3:0] : 4'h0;
 
     // Opacidade vem dos sinais de desenho, inclusive elementos pretos prioritarios.
-    wire hud_opaque = align_status_on || (MODOS_OPERACIONAIS && (overlay_on || mira_on)) ||
+    wire hud_opaque = align_status_on || capture_status_on || (MODOS_OPERACIONAIS && (overlay_on || mira_on)) ||
         retic_visivel || (!estilo_caca && alvo) || horizonte_visivel ||
         (!declutter && (extras_estilo || sensor_status));
     wire capture_hud_enabled=!pixel_capture || pixel_view!=0;
