@@ -35,7 +35,7 @@ module tb_modos;
         .VGA_HS(hs),
         .VGA_VS(vs)
     );
-    defparam dut.u_modo.DEBOUNCE_CYCLES=4;
+    // O switch permanece estavel por mais de 10 ms antes do blanking; usa debounce real.
     integer ocultos=0, criticos=0;
     logic [11:0] esperado;
     initial begin

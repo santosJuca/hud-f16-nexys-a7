@@ -1,34 +1,22 @@
-# Arquitetura RTL
+# Arquitetura RTL consolidada
 
-O top atual é [`rtl/top_reticula.sv`](../rtl/top_reticula.sv). A arquitetura mantém aquisição e política de voo no clock de sistema de 100 MHz, com renderização no clock VGA derivado de 25 MHz.
+O top é `rtl/top_reticula.sv`, com aquisição/controles a 100 MHz e raster VGA a 25 MHz. A saída permanece 640×480 em um total de 800×525 pixels, 59,524 Hz.
 
-## Fluxo de dados
+| Cadeia | Implementação e seleção |
+|---|---|
+| Atitude | `mpu6050_i2c` → transformação de montagem → `atitude_vetorial`/`atitude_cordic`; `FULL_ATTITUDE=1` é o padrão. `hud_auto_zero` solicita referência estável após calibração. `FULL_ATTITUDE=0` preserva accel/bias/integração/fusão complementar legados. |
+| Heading | `hmc5883l_i2c` → offsets/ganhos/orientação → `heading_magnetico` → `heading_fusao`, usando gyro Z e fallback manual. |
+| Altitude/VSI | `bmp085_i2c` → compensação sequencial → `bmp085_altitude` e `estado_vertical`; validade segue a política operacional. |
+| Operação | `operacao_hud`, simuladores SOLO/VOO/POUSO, `alertas_voo` e `buzzer_driver`; velocidade é demonstrativa. |
+| Mira | `joystick_xadc` → duas instâncias `mira_joystick`, com passo fixo, limites e LOCK por estilo. Não controla o estimador de atitude. |
+| Dados entre clocks | `entrada_hud`/`dados_hud` e pacotes adicionais transferem dados com handshake; publicação visual na fronteira do quadro. |
+| Ajuste/captura | `hud_command_dispatch`, `hud_vertical_adjust`, `hud_flight_coords`, `captura_controle` e `video_captura`; bússola e vídeo mantêm coordenadas de tela, horizonte/retículos recebem o deslocamento de voo. |
+| SD | Preamble/CMD0/comandos/inicialização → CMD17 e CRC16; árbitro do top separa diagnóstico e vídeo em um único mestre SPI. |
+| Memória/vídeo | `sd_video_loader` escreve somente no banco livre de `sd_sector_buffer`; quadro íntegro é publicado no blanking. `sd_video_background` faz prefetch e RGB332→RGB444. Falha conserva HUD/último quadro válido. |
+| Composição | Máscaras explícitas de HUD/captura, alertas, mira, retículos, horizonte e instrumentos; ícone microSD e RGB final. Preto pode ser opaco. HS/VS não são deslocados. |
 
-```text
-MPU-6050 ──> atitude/fusão ─┐
-BMP085 ────> altitude/VSI ──┼─> operacao_hud ─> pacote CDC ─> dados_hud ─┐
-HMC5883L ──> heading/fusão ─┘                                           ├─> VGA RGB
-KY-023/XADC ─> mira móvel/LOCK ────────────────────────────────────────┘
-SW/BTNs ───> modos, fallbacks, heading manual e ACK
-```
+`ENABLE_SD_SUBSYSTEM`, `ENABLE_SD_OVERLAY` e `ENABLE_SD_VIDEO` são desabilitados por padrão; os scripts especializados habilitam os perfis. Dois bancos de vídeo usam BRAM interna, sem DDR externa. O formato admite 160×120 ou 320×240; o refresh VGA não muda. Resolução/FPS do arquivo e divisor SPI pertencem ao perfil de build.
 
-## Blocos e responsabilidades
+As três interfaces I²C são independentes. Clocks relacionados e exceções dos primeiros estágios assíncronos estão nos XDC; STA interno e CDC não qualificam os atrasos externos de SPI/I²C. `controle_manche`/`modo_manche` e velocidade inercial permanecem legados ou experimentais, sem substituir as fontes operacionais.
 
-| Bloco/cadeia | Papel no top |
-| --- | --- |
-| `mpu6050_i2c` | Aquisição I²C de acelerômetro e giroscópio; alimenta a estimação de atitude e gyro Z |
-| `atitude_accel_fixa`, `gyro_bias_dt`, `gyro_integrador`, `atitude_fusao_complementar` | Referência acelerométrica, calibração/intervalo do giroscópio, integração e fusão complementar |
-| `hmc5883l_i2c`, `heading_magnetico`, `heading_fusao` | Aquisição magnética, rumo plano e combinação com gyro Z |
-| `bmp085_i2c`, `bmp085_compensacao_seq`, `bmp085_altitude`, `estado_vertical` | Aquisição, compensação barométrica e estado vertical |
-| `joystick_xadc`, `mira_joystick`, `mira_caca_vga` | Amostragem dos eixos pelo XADC, posição móvel e LOCK/UNLOCK; a mira não substitui controle de atitude |
-| `operacao_hud`, `controle_modo_operacao`, `simulador_voo`, `simulador_pouso`, `alertas_voo`, `buzzer_driver` | Seleção SOLO/VOO/POUSO, dados simulados, validade, alertas e ACK lógico |
-| `entrada_hud`, `dados_hud` | Transferência do pacote entre domínios e atualização dos valores no quadro |
-| `vga_controller`, `simbologia_vga`, `simbologia_caca_vga`, retículos, `numeros_hud`, `alertas_vga` | Coordenadas, composição e saída RGB/sincronismos |
-
-Os detalhes de interface, fallback e ordem de composição estão documentados no README principal e nos módulos RTL. O marcador fixo vermelho pertence a NORMAL; a mira móvel funciona em CAÇA e LOCK apenas congela sua posição. DECLUTTER reduz conteúdo exibido, sem selecionar outra fonte de sensor.
-
-## Clocks, reset e limites
-
-O XDC declara clock de entrada de 100 MHz e clock gerado de 25 MHz no registrador do controlador VGA. O relatório de CDC preservado acompanha esse build. Entradas físicas assíncronas usam sincronização/debounce no RTL; isso não equivale a validar eletricamente os periféricos. A transferência dos dados do HUD usa um pacote entre os domínios, com atualização visual coordenada ao quadro.
-
-`controle_manche` e caminhos históricos relacionados continuam no repositório/testes, mas não são instanciados no top de produção. A interface SENSOR/MANCHE não é função ativa. O estimador inercial experimental também não é a fonte operacional de velocidade.
+A consolidação não altera o RTL de `622eacb`; preserva a versão ensaiada e corrige sua infraestrutura de reprodução. Os riscos físicos de ajuste/ângulo/vídeo estão em [cobertura](consolidacao_20261106/cobertura.md). A máscara de chaveamento VGA externo do PR #5 permanece fora do top consolidado.

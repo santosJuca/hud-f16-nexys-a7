@@ -1,31 +1,19 @@
 # Testes e validação
 
-O script [`scripts/test.sh`](../scripts/test.sh) contém 62 entradas de regressão. Usa Icarus Verilog (`iverilog` e `vvp`) e, quando disponível, Verilator nos testes raster exaustivos `roll` e `vga`, sem reduzir os vetores. Sem Verilator, esses dois casos recorrem ao Icarus. Cada testbench é compilado contra `rtl/*.sv` e `tests/xadc_stub.sv`.
+A consolidação usa três entradas reproduzíveis, também executadas pelo workflow existente em `.github/workflows/ci.yml`:
 
 ```sh
-./scripts/test.sh
+scripts/test.sh
+python3 -m unittest discover -s tests -p 'test_*.py'
+scripts/test_attitude_capture.sh build/capture
 ```
 
-O script cria/substitui executáveis em `build/tests/`. Preserve qualquer artefato existente nesse diretório ou execute a regressão a partir de uma cópia de trabalho isolada.
+`scripts/test.sh` contém 84 bancos. Compila todos contra o RTL e o stub XADC. Icarus cobre a lógica digital; Verilator acelera os rasters exaustivos sem reduzir vetores. `TEST_FILTER` seleciona um subconjunto e `TEST_OUT_DIR` muda o destino. A mensagem final de um teste filtrado não significa que os demais bancos foram executados.
 
-O CI instala Icarus Verilog e Verilator, registra suas versões e executa o mesmo script. O artefato `simulacao-rtl` preserva o log e as capturas PPM em `build/` e `build/tests/`, inclusive os dois estilos e as posições do marcador.
+Os nove testes Python cobrem conversão, cabeçalho/padding, mapa FAT32 contíguo, corrupção/fragmentação, referência SD e despacho portátil do build. Os testes do wrapper simulam a chamada do Vivado, não substituem sua execução real.
 
-O teste `hud_joystick_vertical` foi copiado do pacote de validação de 13/10 para `tests/`, sem alterar o arquivo histórico. Ele verifica o sentido vertical em NORMAL/CAÇA, o horizontal, o centro e os LEDs. `frames_estilos` gera capturas para comparação visual; não comprova sozinho a correção de cada pixel.
+`scripts/test_attitude_capture.sh` executa os seis cenários do pipeline de vídeo e dez bancos de autozero, partida, geometria completa, atitude vetorial/bias, controles, captura e top vídeo. Usa diretório novo e modelo SD; não acessa cartão nem FPGA. `tb_hud_atitude_preview` é um gerador auxiliar de seis imagens, não uma regressão de aceite; fica fora do CI. `sd_video_card_model` e `xadc_stub` são suporte.
 
-## Cobertura declarada pelo conjunto atual
+Os resultados, as versões efetivamente usadas e os relatórios Vivado desta execução estão em [consolidação/testes](consolidacao_20261106/testes.md). O [mapa de cobertura](consolidacao_20261106/cobertura.md) liga os testes às funcionalidades.
 
-Os casos incluem modos e simuladores, mira/joystick, alertas e ACK, heading/fusão/controle manual, atitude e sua fusão, estimativa vertical, VGA e sincronização dos dados do HUD, além dos drivers e cálculos do BMP085, HMC5883L e MPU-6050. A lista exata de tops e fontes está no array `tests` do script.
-
-O teste do simulador de voo verifica estabilidade do heading durante invalidação da atitude e avanço após recuperação. Outros casos verificam blocos isolados e integrações específicas; a quantidade de bancos não deve ser confundida com teste físico ou cobertura formal de todas as combinações.
-
-## Resultado do build preservado
-
-O README do artefato `bitstreams/2026-10-08_hud_caca_marker` registra a regressão completa como PASS, síntese e implementação roteada aprovadas, WNS/WHS positivos e bitstream gerado. Essa associação é a documentação disponível para o build. A regressão não exercita placa, cabeamento, tensão, calibração magnética nem qualidade da imagem em monitor.
-
-O operador relatou programação e validação integrada da versão de demonstração; esses resultados estão resumidos em [`entrega_demo.md`](entrega_demo.md), sem fotos, vídeos ou medições anexadas para conferência independente. A regressão deste script continua sendo simulação, não evidência de bancada. Consulte o [roteiro de prioridades](roadmap.md) para as pendências de caracterização e documentação física.
-
-## Joystick: atualização de 19/10/2026
-
-Movimento fixo de 4 pixels por atualização, com limiar efetivo preservado. O botão SW usa JA1/C17 e alterna LOCK no estilo ativo, NORMAL ou CAÇA. Os testes `tb_joystick_start_threshold` e `tb_top_joystick_lock` cobrem limiar, sentidos independentes, passo uniforme e trava até o domínio de vídeo.
-
-O usuário confirmou o funcionamento na placa após programação JTAG. Bitstream testado: SHA256 `5578f5b54978d8d54821e463f6aca6bb1ca93feac583fdeb3efe62afb39dcc17`. A Flash ainda contém a versão anterior.
+A simulação não valida faixa elétrica XADC, barramentos externos, montagem, precisão dos sensores, imagem física ou power cycle. Relatos v1.0/v1.1 continuam vinculados aos hashes históricos. Não programar um bitstream com LBA de simulação em cartão real.

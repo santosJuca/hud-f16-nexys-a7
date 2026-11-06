@@ -1,0 +1,16 @@
+{
+  "hud": {
+    "WNS_ns": 0.147,
+    "TNS_ns": 0.0,
+    "WHS_ns": 0.009,
+    "bitstream_sha256": "4bbb80662a517d059c862e1f92170716523cef34200e439e03cf51603cb5e735"
+  },
+  "video": {
+    "WNS_ns": 0.412,
+    "TNS_ns": 0.0,
+    "WHS_ns": 0.019,
+    "bitstream_sha256": "fe7b89422e33623980c072341dc7c6ed91df1728741b7a57488c975fd38b849a"
+  },
+  "rtl_identical_to": "622eacb",
+  "physical_test_this_session": false
+}

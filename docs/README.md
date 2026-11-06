@@ -1,34 +1,24 @@
 # Documentação técnica
 
-## Consolidação de 21/10/2026: revisão `4107002`
+| Documento | Uso |
+|---|---|
+| [Consolidação de 06/11/2026](consolidacao_20261106/README.md) | Estado integrado, evidências e bloqueios |
+| [Branches](consolidacao_20261106/branches.md) | Todas as referências locais/remotas e decisões |
+| [Cobertura](consolidacao_20261106/cobertura.md) | Funcionalidades, origens, testes e classificação |
+| [Testes atuais](testes.md) | Regressão reproduzível e limites |
+| [Recuperação](consolidacao_20261106/recuperacao.md) | Backups, versões e retorno seguro |
+| [Guia operacional v1.1](GUIA_OPERACIONAL_HUD_V1_1.md) | Switches, botões, captura e alinhamento |
+| [Pinagem](pinagem.md) | Mapeamento atual, XDC e riscos elétricos |
+| [Arquitetura](arquitetura.md) | Caminhos ativos, legados e vídeo |
+| [Sensores](sensores.md) | Aquisição, calibração e limites |
+| [Atlas elétrico](atlas-eletrico/README.md) | Montagem documentada, sem substituir medições |
+| [Vídeo microSD](reproducao_video_microSD_overlay_HUD.md) | Formato, mapeamento e histórico de desenvolvimento |
+| [Validação v1.0](HUD_V1_0_ESTAVEL.md) | Boot QSPI historicamente confirmado |
+| [Validação v1.1](HUD_V1_1_VALIDACAO_FISICA.md) | Ensaio JTAG de oito verificações |
+| [Plano v1.2](HUD_V1_2_PLANO.md) | Planejamento, sem RTL novo |
+| [Catálogo de bitstreams](../bitstreams/README.md) | Artefatos históricos versionados |
+| [Bancada VGA externa](bancada_sobreposicao_vga.md) | Estudo e cabos; não é vídeo SD |
+| [Gabinete F-16 v1.3.2](../gabinete/HUD_F16_V1_3_2_PUBLICACAO_ATOMICA/README_IMPORTACAO.md) | STEP/DXF/manual e fontes faltantes |
+| [Stealth V3](../mechanical/HUD_FPGA_Stealth_V3/README.md) | CAD preliminar alternativo |
 
-Os documentos abaixo preservam a auditoria e os resultados físicos mais recentes, sem substituir nem reescrever evidências históricas:
-
-| Documento | Finalidade |
-| --- | --- |
-| [Validação física e rastreabilidade de 21/10](validacao_e_rastreabilidade_20261021.md) | 51/51 hashes, CI 62/62, bitstream calibrado, timing, Flash e bancada |
-| [Arquitetura e montagem elétrica](arquitetura_e_montagem_20261021.md) | Diagrama em Mermaid, três barramentos I²C, 128 bits de CDC, joystick e buzzer |
-| [Bancada virtual Verilator/GTKmm](simulador_vgasim_20261021.md) | Integração Linux, controles, ferramentas auxiliares e limites de reprodutibilidade |
-| [Conclusão e trabalhos futuros](conclusao_e_trabalhos_futuros_20261021.md) | Texto acadêmico consolidado, prioridades e referências |
-
-**Atenção:** as duas imagens ilustrativas da protoboard e do joystick e as capturas interativas estão fora deste commit; a inclusão de anexos binários permanece pendente. A documentação de 13/10 contém ligações históricas anteriores à pinagem JC10/E6.
-
-
-O [README principal](../README.md) resume o HUD e as instruções de uso. Os guias abaixo detalham a branch `feat/modos-alertas`. A montagem de 13/10/2026 foi validada por relatos de bancada; os relatórios de 08/10 preservam seu contexto histórico.
-
-| Documento | Conteúdo |
-| --- | --- |
-| [Validação da montagem em 13/10/2026](validacao_hardware_20261013.md) | Pinagem atual, Flash, resultados relatados, verificações digitais e pendências elétricas |
-| [Pinagem](pinagem.md) | Pinos efetivamente usados no top e no XDC, controles e sensores |
-| [Arquitetura](arquitetura.md) | Fluxo de dados e responsabilidades dos blocos ativos |
-| [Entrega e demonstração](entrega_demo.md) | Estado físico informado, identidade do bitstream, ressalvas, roteiro, evidências e apresentação |
-| [Sensores](sensores.md) | Interfaces, funções e limites de validação |
-| [Testes](testes.md) | Regressão, cobertura e ressalvas da simulação |
-| [Timing e recursos](timing_recursos.md) | Resultados do build de 08/10/2026 e cobertura das constraints |
-| [Roadmap](roadmap.md) | Próximas verificações, sem ampliar o escopo funcional |
-| [Estudo de vídeo auxiliar](vga_auxiliar.md) | Exploração não implementada de captura/composição de vídeo |
-| [Catálogo de bitstreams](../bitstreams/README.md) | Versões, hashes, relatórios e status físico |
-
-Os documentos descrevem o RTL em `rtl/top_reticula.sv` e o XDC `constraints/nexys_a7_reticula.xdc`. Os relatórios do build de 08/10 comprovam síntese e implementação; os ensaios físicos posteriores são resultados informados pelo operador e estão identificados separadamente em `entrega_demo.md`. Arquivos de auditoria e validação com datas anteriores são registros históricos, não substituem esta descrição do estado atual.
-
-- [MicroSD: integração e validação de 30/10/2026](finalizacao_sd.md).
+Documentos datados de 08/10 a 31/10 preservam suas evidências e pinagens históricas. A descrição atual é a do README, guia operacional, arquitetura e XDC consolidados. Alegações antigas de ausência de vídeo/framebuffer, falta de workflow, pinos JC7/JC10 ou SW4–SW8 sem uso não descrevem o firmware v1.1. Os relatos físicos não se transferem automaticamente para um novo bitstream.

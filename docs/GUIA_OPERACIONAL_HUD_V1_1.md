@@ -2,8 +2,8 @@
 
 Base de referência: `hud-v1.0-autozero-qspi`, commit `33bf42c`.
 
-Este documento descreve o comportamento implementado. A v1.1 ainda
-não altera a interface física nem o bitstream publicado.
+Este documento descreve o comportamento implementado. A v1.1 preserva a interface física v1.0 e possui bitstream JTAG publicado,
+sem substituir o boot QSPI v1.0.
 
 ## Operação normal
 
@@ -86,5 +86,5 @@ bussola, instrumentos laterais e referencia central permanecem.
 A mudanca e exclusivamente visual e usa a atitude ja publicada
 na fronteira de quadro. O modo legado nao e alterado.
 
-A escolha de limiar e experimental e requer revisao do atlas
-e validacao visual sobre o video antes da liberacao fisica.
+O limiar foi ensaiado por JTAG na v1.1; a qualificacao detalhada do atlas
+e o aceite de um novo bitstream continuam separados do relato fisico existente.

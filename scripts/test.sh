@@ -101,7 +101,7 @@ for spec in "${tests[@]}"; do
     echo
     echo "===== TESTE: $nome ====="
 
-    if [[ "$nome" =~ ^(roll|vga|top_sd_overlay|hud_high_bank)$ ]] && command -v verilator >/dev/null 2>&1; then
+    if [[ "$nome" =~ ^(roll|vga|top_sd_overlay|hud_high_bank|modos|frames_estilos|top_atitude|captura_marcador)$ ]] && command -v verilator >/dev/null 2>&1; then
         # Exhaustive raster sweeps are much faster in Verilator; keep every vector.
         verilator --binary --timing -j 4 -Wno-fatal \
             --top-module "$top" \

@@ -47,9 +47,14 @@ SW12/SW13 codificam pitch e SW14/SW15 codificam roll; `00`/`11` representam zero
 | LD4 | R18 | MPU-6050 habilitado e identificado, conforme `GYRO_LED` (giroscópio e acelerômetro) |
 | LD5 | V17 | Estado de identificação/leitura válida do BMP085, conforme `BARO_LED` |
 | LD6 | U17 | Estado de identificação/configuração do HMC5883L, não sua calibração |
-| LD7–LD15 | Não declarados no top/XDC | Sem uso |
+| LD7 | U16 | Inicialização SD concluída |
+| LD8 | V16 | Erros SD, incluindo carregador de vídeo |
+| LD9 | T15 | Transação SD ocupada |
+| LD10 | U14 | CRC válido do diagnóstico |
+| LD11 | T16 | Conteúdo do diagnóstico confere com referência |
+| LD12–LD15 | Não declarados no top/XDC | Sem uso |
 
-Não há LED dedicado para modo, LOCK, alerta ou buzzer. A saída lógica do top está atribuída a JD4/G3 na versão v1.0. A ligação física foi informada, mas ainda não foi testada com esta nova pinagem.
+Não há LED dedicado para modo, LOCK, alerta ou buzzer. A saída lógica do top está atribuída a JD4/G3 na versão v1.0. A v1.1 tem relato de joystick e buzzer aprovados; isso não qualifica eletricamente o estágio externo nem qualquer novo bitstream.
 
 ## Sensores e VGA
 
@@ -68,9 +73,17 @@ As três interfaces I²C são independentes. O XDC configura `LVCMOS33`; isso n�
 
 | Sinal | PACKAGE_PIN |
 | --- | --- |
-| VGA_R[3:0] | A3, B4, C5, A4 |
-| VGA_G[3:0] | C6, A5, B6, A6 |
-| VGA_B[3:0] | B7, C7, D7, D8 |
+| VGA_R[0], [1], [2], [3] | A3, B4, C5, A4 |
+| VGA_G[0], [1], [2], [3] | C6, A5, B6, A6 |
+| VGA_B[0], [1], [2], [3] | B7, C7, D7, D8 |
 | VGA_HS / VGA_VS | B11 / B12 |
 
 A saída VGA onboard é saída analógica por DAC resistivo. O projeto não captura entrada VGA.
+
+## microSD e display de diagnóstico
+
+Pinagem do XDC: `SD_RESET=E2`, `SD_SCK=B1`, `SD_CMD=C1`, `SD_DAT0=C2`, `SD_DAT3=D2`, `SD_CD=A1`, todos LVCMOS33. SW8/`SD_READ_SWITCH` é T8/LVCMOS18. BTNL/`VIDEO_TOGGLE_BUTTON` é P17/LVCMOS33 no XDC principal; `constraints/sd_video.xdc` acrescenta uma exceção ao primeiro estágio de sincronização.
+
+O display de sete segmentos usa `SD_SEG[0..6]=T10,R10,K16,K13,P15,T11,L18`, `SD_AN[0..7]=J17,J18,T9,J14,P14,T14,K2,U13` e `SD_DP=H15`. SW7..SW4 também selecionam as páginas de diagnóstico. O XDC é a fonte de verdade; não duplicar pinos livres a partir de tabelas históricas.
+
+SW4/BTNU/BTND, vistas SW6:SW5 e SW7 compartilham funções por contexto. Conferir o guia operacional antes de ajustar. Os episódios físicos de perda de vídeo, deslocamento da bússola e inconsistência angular permanecem pendentes de reteste dirigido.
