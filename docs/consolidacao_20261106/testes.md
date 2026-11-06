@@ -26,7 +26,7 @@ Ferramentas encontradas: Ubuntu 24.04.5 LTS, Vivado 2026.1 build 6511674, Verila
 | Preview de atitude | Não executado: gerador de imagens auxiliar, não teste de aceite |
 | PR #5, máscara VGA externa | Não reexecutado nem integrado; experimental e fora do caminho SD aprovado |
 
-O primeiro CI remoto aprovou todos os 84 bancos RTL, mas falhou em um teste Python por ausência de FFmpeg no runner. FFmpeg também gera a fixture sintética; sua instalação e versão foram incluídas no workflow, sem mudar o conversor ou o RTL. A suíte de captura foi pulada nessa execução e precisa da nova execução completa.
+O primeiro CI remoto aprovou todos os 84 bancos RTL, mas falhou em um teste Python por ausência de FFmpeg no runner. FFmpeg também gera a fixture sintética; sua instalação e versão foram incluídas no workflow, sem mudar o conversor ou o RTL. A suíte de captura foi pulada nessa execução. Na execução seguinte, RTL e Python passaram; a captura não iniciou porque o entrypoint estava sem permissão de execução no Git. Os dois entrypoints de vídeo foram marcados como executáveis, sem alterar seus bytes; o comando direto é revalidado em checkout limpo.
 
 ## Vivado executado nesta consolidação
 
