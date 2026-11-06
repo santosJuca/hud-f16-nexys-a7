@@ -18,6 +18,8 @@ simbologia_vga dut (
     x,
     y,
     ativo,
+    y,
+    ativo,
     16'sd0,16'sd16384,11'sd0,
     centro,
     10'sd0,

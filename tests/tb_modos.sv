@@ -2,14 +2,15 @@
 module tb_modos;
     logic clk=0, btn=0;
     always #5 clk=~clk;
-    tri1 sda,scl;
+    tri1 sda,scl,baro_sda,baro_scl,mag_sda,mag_scl;
     wire [3:0] r,g,b;
     wire hs,vs;
     // Regressao da configuracao anterior; modos novos tem banco integrado proprio.
     top_reticula #(.MODOS_OPERACIONAIS(1'b0)) dut (
         .operacao_sw(2'b00),.ack_btn(1'b0),.clk(clk),
         .btn_heading(2'b00),
-        .sw(4'b0000),
+        .sw(7'b0000000),
+        .joystick_sw_n(1'b1),
         .display_mode(btn),
         .style_mode(1'b0),
         .vauxp3(1'b0),
@@ -19,6 +20,15 @@ module tb_modos;
         .JOY_LED(),
         .i2c_sda(sda),
         .i2c_scl(scl),
+        .baro_sda(baro_sda),
+        .baro_scl(baro_scl),
+        .mag_sda(mag_sda),
+        .mag_scl(mag_scl),
+        .VIDEO_TOGGLE_BUTTON(1'b0),
+        .SD_DAT0(1'b1),
+        .SD_CD(1'b1),
+        .SD_READ_SWITCH(1'b0),
+        .SD_DIAG_PAGE(4'b0000),
         .VGA_R(r),
         .VGA_G(g),
         .VGA_B(b),
