@@ -26,6 +26,8 @@ Ferramentas encontradas: Ubuntu 24.04.5 LTS, Vivado 2026.1 build 6511674, Verila
 | Preview de atitude | Não executado: gerador de imagens auxiliar, não teste de aceite |
 | PR #5, máscara VGA externa | Não reexecutado nem integrado; experimental e fora do caminho SD aprovado |
 
+O primeiro CI remoto aprovou todos os 84 bancos RTL, mas falhou em um teste Python por ausência de FFmpeg no runner. FFmpeg também gera a fixture sintética; sua instalação e versão foram incluídas no workflow, sem mudar o conversor ou o RTL. A suíte de captura foi pulada nessa execução e precisa da nova execução completa.
+
 ## Vivado executado nesta consolidação
 
 Os dois builds usam RTL byte a byte igual ao commit fisicamente ensaiado `622eacb`. Os relatórios completos estão em `evidencias/hud/` e `evidencias/video/`. Os bitstreams novos permanecem fora do Git, nos diretórios de build/validação locais.

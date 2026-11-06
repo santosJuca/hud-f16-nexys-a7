@@ -201,5 +201,5 @@
   "tests/test_prepare_sd_bitmap.py": "e38fa6764e6fc99d24287483d9dc23f9b7b927c087e633781878d6c4fe2fc596",
   "tests/test_sd_sector_reference.py": "cb95391870604baf0fd150cc0efcfd25d160f169c119c7f158c25c66fa553db7",
   "tests/xadc_stub.sv": "84e8d7b5d13606b15f1b4dd8dac8db1cc289acceb29999f5ba556e22b7ba1b8e",
-  ".github/workflows/ci.yml": "503cc87c922c32de952dae27e9525b6672a0cff7f7a911b39699d120030beec6"
+  ".github/workflows/ci.yml": "76fd6b52fdf5d8f2113682abb303926a032922e7d357c9fe6a2a87d00d713a4d"
 }

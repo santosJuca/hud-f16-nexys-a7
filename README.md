@@ -32,7 +32,7 @@ O buzzer atual sai em **JD4/G3** via estágio externo; JA1/C17 recebe o botão d
 ```sh
 git clone https://github.com/santosJuca/Trabalho-display-aviao-v2.git
 cd Trabalho-display-aviao-v2
-sudo apt-get install iverilog verilator make g++ python3 python3-pil
+sudo apt-get install iverilog verilator make g++ python3 python3-pil ffmpeg
 scripts/test.sh
 python3 -m unittest discover -s tests -p 'test_*.py'
 scripts/test_attitude_capture.sh build/capture
@@ -52,7 +52,7 @@ vivado -mode batch -source scripts/build_vivado.tcl
 
 Saída: `build/vivado/reticula.runs/impl_1/top_reticula.bit`. Esse comando **não habilita o subsistema SD**. Preserva builds anteriores em `build/before-*` e bloqueia bitstream em caso de falha de síntese, implementação, setup/hold ou DRC com erros.
 
-Vídeo em cartão real exige `HUDVIDEO.BIN` contíguo e mapa FAT32 conferido. A conversao de um video real requer FFmpeg (`sudo apt-get install ffmpeg`); os testes sinteticos nao precisam dele. Converter gera apenas arquivos locais; copiar para cartão e programar a FPGA são operações separadas. Nunca usar um LBA histórico como mapa de outro cartão.
+Vídeo em cartão real exige `HUDVIDEO.BIN` contíguo e mapa FAT32 conferido. FFmpeg e necessario tanto para converter videos reais como para gerar as fixtures sinteticas dos testes. Converter gera apenas arquivos locais; copiar para cartão e programar a FPGA são operações separadas. Nunca usar um LBA histórico como mapa de outro cartão.
 
 ```sh
 python3 tools/convert_video_for_fpga.py --help
