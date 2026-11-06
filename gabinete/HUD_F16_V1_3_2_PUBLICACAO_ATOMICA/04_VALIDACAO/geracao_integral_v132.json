@@ -1,0 +1,75 @@
+{
+  "versao": "1.3.2",
+  "publication_id": "20261103T172921Z-61ed8b479b3b",
+  "origem": "execucao_integral_dos_modelos_reais_no_ambiente_atual",
+  "execucao_integral_codigo_saida": 0,
+  "sintetico": {
+    "teste_publicacao_dupla": "PASSOU",
+    "falha_segundo_STEP_preservou_anterior": true
+  },
+  "estados": {
+    "fechado": {
+      "filename": "gabinete_v13_tampa_fechada.step",
+      "solids": 101,
+      "invalid_solids": 0,
+      "bytes": 10150070,
+      "sha256": "424360c1b2cce5c66709c8ba111cbecaa78ca52d4fd56ad2fd980b0070eecd2b",
+      "regenerated": true,
+      "readback_checked": true,
+      "geometry_compared_to_current_model": true
+    },
+    "aberto": {
+      "filename": "gabinete_v13_tampa_aberta_105deg.step",
+      "solids": 101,
+      "invalid_solids": 0,
+      "bytes": 10229642,
+      "sha256": "3b1dd11b24f6f5e5c333be99362b9bb5049b87223020858846b52e548adc6ea4",
+      "regenerated": true,
+      "readback_checked": true,
+      "geometry_compared_to_current_model": true
+    }
+  },
+  "independente": {
+    "dxf": {
+      "mm": true,
+      "parts": 36,
+      "inner_contours": 67,
+      "circular_holes": 99,
+      "clip_slots_per_part": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "joystick_pcb_slots": 4,
+      "min_gap_mm": 3.0,
+      "window_bbox_nesting_xy": [
+        274,
+        94,
+        402,
+        236
+      ]
+    },
+    "modified_components": {
+      "caps": 4,
+      "nominal_elastomer_pads": 4,
+      "tray": 1,
+      "lid": 1
+    },
+    "step": {
+      "closed": {
+        "solid_count": 101,
+        "invalid_indices": []
+      },
+      "opened_105deg": {
+        "solid_count": 101,
+        "invalid_indices": []
+      }
+    },
+    "errors": [],
+    "status": "VALIDADO_CAD_INDEPENDENTE_COM_FABRICACAO_BLOQUEADA"
+  },
+  "interferencias_reais_case_cabos": "INDETERMINADO",
+  "fabricacao_liberada": false,
+  "nota": "ATUAL precisa ser ativado apos a extracao ZIP ou ser gerado por novo run. Arquivos STEP na raiz 01_CAD_3D sao legados v1.3.1."
+}
