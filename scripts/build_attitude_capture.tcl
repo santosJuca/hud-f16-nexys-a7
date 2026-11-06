@@ -12,6 +12,7 @@ foreach value [list $lba $sectors $half $width $fps] {
 if {$half < 4 || $width ni {160 320} || $fps>60 || $lba+$sectors>4294967296} {error "Perfil fora do limite"}
 set height [expr {$width*3/4}]
 if {![file isfile $reference]} {error "Referencia do icone ausente"}
+set reference [file normalize $reference]
 set root [file normalize [file join [file dirname [info script]] ..]]
 file mkdir $out
 cd $out

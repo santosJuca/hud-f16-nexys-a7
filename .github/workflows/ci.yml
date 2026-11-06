@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   simulacao:
-    name: Testes com Icarus Verilog
+    name: Regressao RTL e video
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     defaults:
@@ -28,7 +28,7 @@ jobs:
       - name: Instalar simuladores
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y iverilog verilator make g++
+          sudo apt-get install --no-install-recommends -y iverilog verilator make g++ python3
 
       - name: Registrar versoes
         run: |
@@ -36,11 +36,18 @@ jobs:
           vvp -V
           verilator --version
           g++ --version
+          python3 --version
 
       - name: Executar simulacoes
         run: |
           mkdir -p build
           scripts/test.sh 2>&1 | tee build/tests.log
+
+      - name: Testar ferramentas Python
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+
+      - name: Testar video, captura e partida automatica
+        run: scripts/test_attitude_capture.sh build/capture 2>&1 | tee build/capture.log
 
       - name: Salvar log e capturas VGA
         if: always()
@@ -49,6 +56,8 @@ jobs:
           name: simulacao-rtl
           path: |
             build/tests.log
+            build/capture.log
+            build/capture/**/*.log
             build/*.ppm
             build/tests/*.ppm
           if-no-files-found: warn
