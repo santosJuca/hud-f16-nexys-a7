@@ -1,0 +1,218 @@
+{
+  "archive": "Manual_HUD_F16_R2_Kit_Completo.zip",
+  "archive_sha256": "4bf352df0e0845b2a719e2d51deab53d674f3abecbabecf1d4c0c80296b6ed7d",
+  "files": [
+    {
+      "path": "01_CAD_3D/geracoes_step/20261103T172921Z-61ed8b479b3b/gabinete_v13_tampa_fechada.step",
+      "source_member": "fontes/gabinete_v13_tampa_fechada.step",
+      "sha256": "424360c1b2cce5c66709c8ba111cbecaa78ca52d4fd56ad2fd980b0070eecd2b"
+    },
+    {
+      "path": "01_CAD_3D/geracoes_step/20261103T172921Z-61ed8b479b3b/gabinete_v13_tampa_aberta_105deg.step",
+      "source_member": "fontes/gabinete_v13_tampa_aberta_105deg.step",
+      "sha256": "3b1dd11b24f6f5e5c333be99362b9bb5049b87223020858846b52e548adc6ea4"
+    },
+    {
+      "path": "02_DXF/gabinete_v13_PRELIMINAR_NAO_PRODUCAO.dxf",
+      "source_member": "fontes/gabinete_v13_PRELIMINAR_NAO_PRODUCAO.dxf",
+      "sha256": "ddb041202ccb1c2e2e57e5b41a2610eba554d9eeb7513a5553d1fbc554c1c3d7"
+    },
+    {
+      "path": "02_DXF/nesting_coordenadas.csv",
+      "source_member": "fontes/nesting_coordenadas.csv",
+      "sha256": "1767fb2c502289ae8856f3b0bbb6bd223875ab9c05d22ee1a53c0b882acb9fcb"
+    },
+    {
+      "path": "05_MONTAGEM/lista_materiais_v13.csv",
+      "source_member": "fontes/lista_materiais_v13.csv",
+      "sha256": "630a0a411385813eb3b7d58452ea0c350face86430adb6fb6c588154bed17e5c"
+    },
+    {
+      "path": "05_MONTAGEM/Manual_HUD_F16_PreMontagem_Revisado.pdf",
+      "source_member": "Manual_HUD_F16_PreMontagem_Revisado.pdf",
+      "sha256": "14436ae19e55ecb88e91efba5dad1043fab6bc02465871c1e1a076a96b309723"
+    },
+    {
+      "path": "05_MONTAGEM/inventario_66.csv",
+      "source_member": "inventario_66.csv",
+      "sha256": "42c72126cc0ea746dd3b1f0fc17dbbad37d08138250d107bb8f8bf84e925ea6b"
+    },
+    {
+      "path": "04_VALIDACAO/pendencias_fabricacao.csv",
+      "source_member": "pendencias_fabricacao.csv",
+      "sha256": "442fe6aea7f776b75e5f77dc92575f2a955fadca3904e72c303b66c9401eccc2"
+    },
+    {
+      "path": "05_MONTAGEM/matriz_etapas_25.csv",
+      "source_member": "matriz_etapas_25.csv",
+      "sha256": "e622b2c7f47ab475e53ce38317997669db016af360e8a09cdcf6ff5514bf5767"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_24.png",
+      "source_member": "figuras_CAD/CAD_etapa_24.png",
+      "sha256": "a8598a455d9eb724d51b2b43a37dce3c4f7ab283840f9ba2dd6696aa11dfde1b"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_explodido_plataforma.png",
+      "source_member": "figuras_CAD/CAD_explodido_plataforma.png",
+      "sha256": "3024ac83b70dd6325453590cabf0d7b4c29d8ce8edb2be9bd884e5e56a4847c2"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_modulo_protoboard_E05.png",
+      "source_member": "figuras_CAD/CAD_modulo_protoboard_E05.png",
+      "sha256": "67921660cddad645e71fb6edd7b8e736cc0d5066734b8875eb9417b5eac579ae"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_12.png",
+      "source_member": "figuras_CAD/CAD_etapa_12.png",
+      "sha256": "7d0ece52b62d998283c636399796966e001880585a0694e1c2e527624454dd03"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_modulo_BMP085_E07.png",
+      "source_member": "figuras_CAD/CAD_modulo_BMP085_E07.png",
+      "sha256": "d2915e540d6dfb0ab28e1edfcdffcfb25cd9b95b06eddd2d03bd19157b7246ea"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_07.png",
+      "source_member": "figuras_CAD/CAD_etapa_07.png",
+      "sha256": "387b389271247d4ff2ca23dc07a0ed321192669ac7ad81fa91dd6ab329856953"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_15.png",
+      "source_member": "figuras_CAD/CAD_etapa_15.png",
+      "sha256": "04493a0daf2ca38c4a38f424bfd4b83b201911bef47268ff354ad6fb56c8dde4"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_19.png",
+      "source_member": "figuras_CAD/CAD_etapa_19.png",
+      "sha256": "b180709322125d112a07e905c4b419e433d2a2b4057b7e9e13ce974093c2ab68"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_11.png",
+      "source_member": "figuras_CAD/CAD_etapa_11.png",
+      "sha256": "0ba5d4e2b24c4fdfd4c6dad7c94a3d2831b0f24939a00d5c4664627f6bf8f04c"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_05.png",
+      "source_member": "figuras_CAD/CAD_etapa_05.png",
+      "sha256": "c320b2420d78cd421f4308dc8e01e5a01b7b9f8ef9393ebee9f60b9163de10d7"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_explodido_tampa.png",
+      "source_member": "figuras_CAD/CAD_explodido_tampa.png",
+      "sha256": "34c0ab69b4ff583ba2d9ed154ccbfc17d730a04398e01f8cef253126e38703c8"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_modulo_protoboard_E04.png",
+      "source_member": "figuras_CAD/CAD_modulo_protoboard_E04.png",
+      "sha256": "d233f4379c48bfbdbe9e4a24f6466cdf25c1857ad0f2a7acd0a99b961de8c394"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_17.png",
+      "source_member": "figuras_CAD/CAD_etapa_17.png",
+      "sha256": "d30c20d214036d114c10c39c67f75bc3499cb1ee652f0c61ab986275f55dfa2c"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_tampa_aberta_105.png",
+      "source_member": "figuras_CAD/CAD_tampa_aberta_105.png",
+      "sha256": "154625c55281aff51dbb2435a18142f912b21763cd553066ffa23a52a66b6bd4"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_04.png",
+      "source_member": "figuras_CAD/CAD_etapa_04.png",
+      "sha256": "dfa9ca85196b16f80374520861541de7b889f670067ee53cbf95a6eb3c0aa8a3"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_16.png",
+      "source_member": "figuras_CAD/CAD_etapa_16.png",
+      "sha256": "5afe9134c791ab644be4494c5f9c8d09933cceb3716be77d98c1419b54c33db9"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_23.png",
+      "source_member": "figuras_CAD/CAD_etapa_23.png",
+      "sha256": "1a2ccd62408a5dea775900ee0ad52a45ba3d324beb28064bee62571382daddf9"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_13.png",
+      "source_member": "figuras_CAD/CAD_etapa_13.png",
+      "sha256": "580393035afb4e7fc495ef0213222d9af6f70fc5c733219eea30255362cfcea0"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_10.png",
+      "source_member": "figuras_CAD/CAD_etapa_10.png",
+      "sha256": "2917ff0e726e9d7218443db00bbc2f7c555bdea091bd199749c52274a24109ed"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_06.png",
+      "source_member": "figuras_CAD/CAD_etapa_06.png",
+      "sha256": "0429742b392436a1faf288e03ace711ad159a40401c706ce80dad9100cb85373"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_09.png",
+      "source_member": "figuras_CAD/CAD_etapa_09.png",
+      "sha256": "56952d336f8f909cd8228ccd57751042e0f59c5205d37fe13e668942c01630a7"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_modulo_MPU6050_E06.png",
+      "source_member": "figuras_CAD/CAD_modulo_MPU6050_E06.png",
+      "sha256": "34ffe4d4a636584e07cc92e1d7a6f08d2edd37473f7ba43c164ca49261ed1a95"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_explodido_cruz.png",
+      "source_member": "figuras_CAD/CAD_explodido_cruz.png",
+      "sha256": "1a71f4db4f2527b95a19a10e946c5830a8b6518b694463c9d238b9dfa98c6d1d"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_explodido_retencao.png",
+      "source_member": "figuras_CAD/CAD_explodido_retencao.png",
+      "sha256": "491acf2e2530ca3d1a363be929f946b8257548d31d2fbc7c1af329d31c2999ed"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_20.png",
+      "source_member": "figuras_CAD/CAD_etapa_20.png",
+      "sha256": "d7639554cedb518cff7756e8a1f23796158f6070cdc57a794a07c22543897132"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_03.png",
+      "source_member": "figuras_CAD/CAD_etapa_03.png",
+      "sha256": "3c22e033901f8f30d2ae9b5086988f0731ba8d52fd0667289fb56774bec6688c"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_21.png",
+      "source_member": "figuras_CAD/CAD_etapa_21.png",
+      "sha256": "ad9ad4407814017e188f82d7d8baaabf186ba361b129cd4cedeb3b139133db6e"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_08.png",
+      "source_member": "figuras_CAD/CAD_etapa_08.png",
+      "sha256": "e02427ebbf0a43715c15edda92c8954d8dd5f44ddb3f12a8fc0ffa98cff9f9db"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_18.png",
+      "source_member": "figuras_CAD/CAD_etapa_18.png",
+      "sha256": "246fea853e851186f3260ec8e091adc9b51624459052eb762e08e177d1a4a1df"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_14.png",
+      "source_member": "figuras_CAD/CAD_etapa_14.png",
+      "sha256": "e3b7de645cd577b983582bd581a6802343602cf711b1cd13f4af8cf2c41a997f"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_etapa_22.png",
+      "source_member": "figuras_CAD/CAD_etapa_22.png",
+      "sha256": "3c604d21e0a7a81341c48cd9131076f1958f6a7ac29c694e2c5d6e820116f8d8"
+    },
+    {
+      "path": "05_MONTAGEM/figuras_CAD/CAD_modulo_HMC5883L_E08.png",
+      "source_member": "figuras_CAD/CAD_modulo_HMC5883L_E08.png",
+      "sha256": "77b905e1bbe75bbcf6147d9ffbeb281214474585b7ceed9e3011d7d2ba2b4e5d"
+    }
+  ],
+  "missing": [
+    "gerador_v12_preservado.py",
+    "nucleo_v11_preservado.py",
+    "originais/*.step",
+    "00_FONTE/HUD_F16_V12_ORIGINAL_INALTERADO.zip"
+  ],
+  "fabricacao_liberada": false
+}

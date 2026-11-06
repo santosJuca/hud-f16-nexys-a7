@@ -1,0 +1,19 @@
+﻿codigo,pendencia,medicao_ou_evidencia_exigida,consequencia,etapa
+P01,"Lote MDF 3,14 mm","Medir em >=3 pontos, guardar amostra e resultados 3,20/3,30/3,40",Bloqueia ajuste de rasgo e corte final,Etapa 2
+P02,Kerf real,"Cortar e medir corpos de prova, evitar dupla compensação",Bloqueia DXF final,Etapa 2
+P03,Dobradiça 226,"Desenho dimensionado, eixo, folhas, furos e amostra",Bloqueia fixação tampa,Etapa 18
+P04,Estudo MDF314_DOBRADICA226,Arquivo ZIP não disponibilizado nesta sessão,18 furos isolados não foram conferidos,Etapa 18
+P05,Fecho não magnético,"Modelo, base, furos, contrapeca, curso e carga",Bloqueia fechamento definitivo,Etapa 19
+P06,Cantoneiras e arruelas de reforço,"Desenho, quantidade, apoio e acesso a porcas",Bloqueia fixação estrutural homologada,Etapa 7
+P07,VGA,"Plug conectado, parafusos laterais, curvatura e rota XYZ",Bloqueia recorte/fechamento,Etapa 20
+P08,USB e alimentação,"Plugues conectados, movimento e acessibilidade",Bloqueia recorte/fechamento,Etapa 20
+P09,Retentores e elastômeros,Borda real da case e pressão sem contato PCB,Bloqueia retenção definitiva,Etapa 11
+P10,KY-023,"Dimensões PCB, furação real, espaçadores e curso",Bloqueia bandeja definitiva,Etapa 15
+P11,Buzzer e circuito 2N2222A,"Fixação isolada, esquema e polaridade",Bloqueia instalação elétrica,Etapa 16
+P12,Protoboards,"Medir base metálica, bornes e altura com jumpers",Bloqueia posicionamento e passagem de fios,Etapa 13
+P13,"MPU6050, BMP085, HMC5883L",Suportes e eixos reais; testar interferência magnética,Bloqueia fixação dos sensores,Etapa 14
+P14,Tampa e raio de abertura,"Colisão real com case, cabos e ferragens durante todo o giro",Bloqueia fechamento,Etapa 21
+P15,Acesso aos controles,"Testar switches, botões, LEDs, displays e joystick",Bloqueia validação ergonômica,Etapa 22
+P16,"Ensaios 5 N, 10 N e 50 ciclos",Executar e documentar medições e resultado de cada ensaio,Bloqueia liberação mecânica,Etapa 24
+P17,Teste de manutenção,Desmontagem não destrutiva e acesso a conectores,Bloqueia homologação de manutenção,Etapa 23
+P18,Fotos físicas dos módulos,Fotos com paquímetro e orientação de montagem,Impede vistas reais dos periféricos,Etapas 10-16

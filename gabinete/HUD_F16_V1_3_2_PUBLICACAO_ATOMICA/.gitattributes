@@ -1,0 +1,4 @@
+*.step -text
+*.dxf -text
+*.png binary
+*.pdf binary

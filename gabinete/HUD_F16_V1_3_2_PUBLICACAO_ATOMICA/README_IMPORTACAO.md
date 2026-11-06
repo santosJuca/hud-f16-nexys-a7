@@ -1,12 +1,11 @@
 # Gabinete HUD F-16 v1.3.2
 
-Esta pasta pertence à branch `case` e fica isolada do RTL/bitstreams do firmware.
+Gerador e manifesto recuperados da branch `case` (`9d3ff33`). STEP, DXF preliminar, lista de materiais, inventário, figuras e manual recuperados de `Manual_HUD_F16_R2_Kit_Completo.zip`. Os dois STEP correspondem em tamanho e SHA-256 ao manifesto original. A procedência de cada arquivo está em [importacao_20261106.json](04_VALIDACAO/importacao_20261106.json).
 
-## Estado da importação
+O par canônico está em `01_CAD_3D/ATUAL/`, link relativo para a publicação imutável `20261103T172921Z-61ed8b479b3b`. Não são STEP regenerados nesta consolidação. O manifesto histórico registra 101 sólidos válidos por estado; nesta execução foram conferidos os bytes, os hashes e a integridade do ZIP, sem novo ensaio geométrico.
 
-Nesta primeira revisão estão o gerador CAD e o manifesto original da execução validada. **O pacote CAD integral, com STEP, DXF, fontes auxiliares, PDF e outras verificações, ainda precisa ser importado para esta pasta.** Não use esta revisão isolada para fabricar.
+**Fabricação bloqueada.** Interferências reais de cabos/case, medidas de componentes, MDF e kerf continuam pendentes. O manual de pré-montagem e o DXF não aprovam essas dimensões. A pinagem atual do firmware está no XDC e em `docs/pinagem.md`; documentos mecânicos não autorizam conexões elétricas.
 
-Versão: 1.3.2. Publicação STEP: `20261103T172921Z-61ed8b479b3b`.
-O manifesto comprova 101 sólidos válidos nos dois estados, com verificação de reimportação; interferências físicas de cabos/case permanecem indeterminadas, e `fabricacao_liberada=false`.
+A regeneração do projeto editável está incompleta: faltam `gerador_v12_preservado.py`, `nucleo_v11_preservado.py`, os STEP em `01_CAD_3D/originais/` e o ZIP original v1.2 em `00_FONTE/`. Esses itens não foram encontrados no repositório nem nos arquivos locais pesquisados. Não executar o gerador como se fosse autossuficiente.
 
-Quando o pacote integral for importado, o caminho canônico de STEP deverá ser `01_CAD_3D/ATUAL/`, um link simbólico para a revisão completa. Os STEP na raiz de `01_CAD_3D` são legados.
+O projeto Stealth V3 em `mechanical/HUD_FPGA_Stealth_V3/` é outra revisão preliminar; foi preservado separadamente.

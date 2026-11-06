@@ -1,0 +1,43 @@
+item,quantidade,especificacao,classificacao,observacao
+BASE_MDF,1,XY,MDF PRELIMINAR,"Painel exterior 320x240, tabs passantes"
+TAMPA_MDF,1,XY,MDF PRELIMINAR,janela 142x128 centralizada na case em Y=30
+FRENTE_MDF,1,XZ,MDF PRELIMINAR,junta alternada e 4 tabs inferiores
+TRASEIRA_MDF,1,XZ,MDF PRELIMINAR,dobradiça M3 nominal e junta alternada
+LATERAL_E_MDF,1,YZ,MDF PRELIMINAR,MDF esquerda; 2 tramas de canto
+LATERAL_D_MDF,1,YZ,MDF PRELIMINAR,MDF direita; 2 tramas de canto
+PLATAFORMA_MDF_180x140,1,XY,MDF PRELIMINAR,"z77..80, 4 cruzes e 6 stops não estruturais"
+CRUZ_1_A,1,SUPPORT,MDF PRELIMINAR,"corpo Z3..77, tabs Z0..3 e77..80; nominal slot 3.25"
+CRUZ_1_B,1,SUPPORT,MDF PRELIMINAR,"corpo Z3..77, tabs Z0..3 e77..80; nominal slot 3.25"
+CRUZ_2_A,1,SUPPORT,MDF PRELIMINAR,"corpo Z3..77, tabs Z0..3 e77..80; nominal slot 3.25"
+CRUZ_2_B,1,SUPPORT,MDF PRELIMINAR,"corpo Z3..77, tabs Z0..3 e77..80; nominal slot 3.25"
+CRUZ_3_A,1,SUPPORT,MDF PRELIMINAR,"corpo Z3..77, tabs Z0..3 e77..80; nominal slot 3.25"
+CRUZ_3_B,1,SUPPORT,MDF PRELIMINAR,"corpo Z3..77, tabs Z0..3 e77..80; nominal slot 3.25"
+CRUZ_4_A,1,SUPPORT,MDF PRELIMINAR,"corpo Z3..77, tabs Z0..3 e77..80; nominal slot 3.25"
+CRUZ_4_B,1,SUPPORT,MDF PRELIMINAR,"corpo Z3..77, tabs Z0..3 e77..80; nominal slot 3.25"
+REFORCO_DOBRADICA_1,1,REINFORCE,MDF PRELIMINAR,"MDF 60x18, verificar distância real dos furos da ferragem"
+REFORCO_DOBRADICA_2,1,REINFORCE,MDF PRELIMINAR,"MDF 60x18, verificar distância real dos furos da ferragem"
+REFORCO_FECHO,1,REINFORCE,MDF PRELIMINAR,"MDF 50x18, furos provisórios"
+BATENTE_CASE_1,1,REINFORCE,MDF PRELIMINAR,stop MDF 28x10. Montagem/pressão na case pendente
+BATENTE_CASE_2,1,REINFORCE,MDF PRELIMINAR,stop MDF 28x10. Montagem/pressão na case pendente
+BATENTE_CASE_3,1,REINFORCE,MDF PRELIMINAR,stop MDF 28x10. Montagem/pressão na case pendente
+BATENTE_CASE_4,1,REINFORCE,MDF PRELIMINAR,stop MDF 28x10. Montagem/pressão na case pendente
+BATENTE_CASE_5,1,REINFORCE,MDF PRELIMINAR,stop MDF 28x10. Montagem/pressão na case pendente
+BATENTE_CASE_6,1,REINFORCE,MDF PRELIMINAR,stop MDF 28x10. Montagem/pressão na case pendente
+TESTE_RASGO_2.9,1,TEST,MDF PRELIMINAR,comparar corte real com espessura e kerf
+TESTE_RASGO_3.0,1,TEST,MDF PRELIMINAR,comparar corte real com espessura e kerf
+TESTE_RASGO_3.1,1,TEST,MDF PRELIMINAR,comparar corte real com espessura e kerf
+TESTE_RASGO_3.2,1,TEST,MDF PRELIMINAR,comparar corte real com espessura e kerf
+TESTE_RASGO_3.3,1,TEST,MDF PRELIMINAR,comparar corte real com espessura e kerf
+TESTE_RASGO_3.4,1,TEST,MDF PRELIMINAR,comparar corte real com espessura e kerf
+CASE_RETENTOR_F_E,1,CASE_CLIP,MDF PRELIMINAR,"V1.3: dois rasgos M3 3.4x7.5 ajustáveis em Y; almofada externa opcional, sem pressionar PCB"
+CASE_RETENTOR_F_D,1,CASE_CLIP,MDF PRELIMINAR,"V1.3: dois rasgos M3 3.4x7.5 ajustáveis em Y; almofada externa opcional, sem pressionar PCB"
+CASE_RETENTOR_T_E,1,CASE_CLIP,MDF PRELIMINAR,"V1.3: dois rasgos M3 3.4x7.5 ajustáveis em Y; almofada externa opcional, sem pressionar PCB"
+CASE_RETENTOR_T_D,1,CASE_CLIP,MDF PRELIMINAR,"V1.3: dois rasgos M3 3.4x7.5 ajustáveis em Y; almofada externa opcional, sem pressionar PCB"
+SUPORTE_JOYSTICK_KY023,1,JOYSTICK_TRAY,MDF PRELIMINAR,V1.3: 4 slots PCB de 3.4x8 para padrão candidato 27x20; fixar com isolantes M3; medir o KY023 físico
+SUPORTE_BUZZER,1,BUZZER_TRAY,MDF PRELIMINAR,"45x40, Z89.5..92.5, 4 espacadores 14.5mm, dois slots de tira"
+Almofada elastomero compressivel 34x6x1.5,4,nominal; material e espessura aferir,NAO HOMOLOGADA,nao cortar de MDF
+Espacadores M3x20 nylon,8,"presilhas, reutiliza v1.2",CONFIRMAR,montagem v1.2
+Parafusos M3 isolantes PCB joystick,4,furação centros candidato 27x20 mm,PENDENTE,verificar altura e PCB real
+Dobradiça 105 graus minimo,2,furação exigida por modelo de fabricante,PENDENTE CRITICO,padrao nominal v1.2 nao homologado
+Fecho frontal positivo,1,contrapeca e furos dimensionados fornecedor,PENDENTE CRITICO,modelo real
+MDF 800x500x3mm,1,calibrar espessura e kerf,PENDENTE,area de corte
