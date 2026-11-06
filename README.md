@@ -1,5 +1,17 @@
 # HUD aeronáutico em FPGA
 
+## Fechamento documental de 21/10/2026
+
+Referência: commit de base `4107002ab3cff7ceab9c2d89a62e4223a523e426`. Auditoria documental de 51/51 hashes das fontes do build calibrado, 62/62 testes aprovados no CI do próprio commit e validação funcional de bancada relatada em 21/10/2026. Bitstream preservado de 19/10: SHA-256 `16bb1d1c4fdee04c6dde4d9b5a1134a9e510beb79be5d75c69df4d359d1a9cf6`.
+
+- [Resultados, Flash e rastreabilidade](docs/validacao_e_rastreabilidade_20261021.md)
+- [Arquitetura e montagem elétrica](docs/arquitetura_e_montagem_20261021.md)
+- [Simulador VGA interativo no Linux](docs/simulador_vgasim_20261021.md)
+- [Conclusão e trabalhos futuros](docs/conclusao_e_trabalhos_futuros_20261021.md)
+
+Somente documentação: RTL, XDC e bitstream não foram alterados. As fontes externas do simulador GTKmm e as imagens ilustrativas fornecidas em conversa **não foram incorporadas a este commit**. Consulte as limitações e a distinção entre simulação, implementação e ensaio físico nos documentos vinculados.
+
+
 ## Atualização de 19/10/2026
 
 O HMC5883L recebeu [calibração de offsets e escala medida nesta montagem](docs/calibracao_hmc5883l_20261019/README.md). O operador confirmou rumo próximo da referência; precisão absoluta ainda não caracterizada. O [bitstream calibrado e seus relatórios](bitstreams/2026-10-19_mag_calibrado/README.md) estão preservados.
@@ -267,3 +279,7 @@ Os guias detalhados de [arquitetura](docs/arquitetura.md), [pinagem](docs/pinage
 3. Calibrar o HMC5883L na montagem real e comparar o heading com uma referência absoluta; registrar condições e erro medido.
 4. Revisar constraints elétricas e DRC: tensão de configuração, atrasos de I/O e pull-ups/barramentos conforme os módulos conectados.
 5. Testar em bancada o buzzer após a mudança física de JC7/E7 para JC10/E6 e confirmar o estágio 2N2222A, resistor de base de 1,2 kΩ, alimentação do buzzer e terra comum. Reavaliar módulos legados sem consumidor.
+
+## Diagnóstico microSD na branch `feat/video-sd-overlay`
+
+A implementação C habilita inicialização SDHC e leitura explícita de um setor de diagnóstico pelo SW8. Esta integração não reproduz vídeo nem captura VGA externo. Consulte [a validação e os bloqueios de programação](docs/finalizacao_sd.md) antes de gerar ou programar artefatos desta branch.

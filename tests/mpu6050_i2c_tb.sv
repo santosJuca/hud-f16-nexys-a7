@@ -24,10 +24,16 @@ module mpu6050_i2c_tb;
     reg nack_wake = 0;
     reg nack_gyro_config = 1;
     reg nack_accel_config = 1;
+    reg nack_filter_config = 1;
+    reg nack_accel_filter = 1;
     reg gyro_configurado = 0;
     reg accel_configurado = 0;
+    reg filtro_configurado = 0;
+    reg accel_filtrado = 0;
     integer tentativas_gyro = 0;
     integer tentativas_accel = 0;
+    integer tentativas_filtro = 0;
+    integer tentativas_filtro_accel = 0;
     reg nack_register = 0;
     reg nack_read_address = 0;
     reg stretch = 0;
@@ -45,6 +51,7 @@ module mpu6050_i2c_tb;
     integer pulsos_antes = 0;
     reg amostra_nova_anterior = 0;
     time wake_time;
+    time filter_time;
 
     // Conta cada pulso pela borda real de subida.
     always @(posedge amostra_nova)
@@ -140,7 +147,7 @@ module mpu6050_i2c_tb;
                     reply(1);
                     receive_byte(pointer);
                     if (pointer != 8'h75 && pointer != 8'h6B && pointer != 8'h3B &&
-                        pointer != 8'h1B && pointer != 8'h1C)
+                        pointer != 8'h1B && pointer != 8'h1C && pointer != 8'h1A && pointer != 8'h1D)
                         $fatal(1, "Registrador inesperado=%h", pointer);
                     reply(!nack_register);
                     if (!nack_register && pointer == 8'h6B) begin
@@ -152,6 +159,8 @@ module mpu6050_i2c_tb;
                             awake = 1;
                             gyro_configurado = 0;
                             accel_configurado = 0;
+                            filtro_configurado = 0;
+                            accel_filtrado = 0;
                             wakes = wakes + 1;
                             wake_time = $time;
                         end
@@ -172,6 +181,21 @@ module mpu6050_i2c_tb;
                             reply(!nack_accel_config);
                             if (!nack_accel_config) accel_configurado = 1;
                         end
+                    end else if (!nack_register && (pointer == 8'h1A || pointer == 8'h1D)) begin
+                        receive_byte(value);
+                        if(value !== 8'h05 || !accel_configurado || !gyro_configurado)
+                            $fatal(1,"Filtro fora da ordem/faixa: reg=%h valor=%h",pointer,value);
+                        if(pointer == 8'h1A) begin
+                            tentativas_filtro = tentativas_filtro + 1;
+                            reply(!nack_filter_config);
+                            if(!nack_filter_config) begin filtro_configurado=1;filter_time=$time;end
+                        end else begin
+                            if(identity != 8'h70 || !filtro_configurado)
+                                $fatal(1,"ACCEL_CONFIG2 escrito no modelo errado ou antes de CONFIG");
+                            tentativas_filtro_accel = tentativas_filtro_accel + 1;
+                            reply(!nack_accel_filter);
+                            if(!nack_accel_filter) begin accel_filtrado=1;filter_time=$time;end
+                        end
                     end
                 end else begin
                     reply(!nack_read_address);
@@ -186,6 +210,9 @@ module mpu6050_i2c_tb;
                                 $fatal(1, "Leitura antes da inicializacao ou espera de 100 ms");
                             if (!gyro_configurado || !accel_configurado)
                                 $fatal(1, "Leitura antes da configuracao das faixas");
+                            if(!filtro_configurado || (identity==8'h70 && !accel_filtrado) ||
+                               $time-filter_time < 100000000)
+                                $fatal(1,"Leitura antes da configuracao/assentamento dos filtros");
                             for (i = 0; i < 14; i = i + 1) begin
                                 send_byte(registers[8'h3B+i], master_ack);
                                 if (master_ack !== (i < 13))
@@ -255,6 +282,12 @@ module mpu6050_i2c_tb;
             $fatal(1, "NACK accel: status=%b pulsos=%0d esperado=0/0", sensor_ok, pulsos_amostra);
         $display("PASS NACK ACCEL_CONFIG: nao publica dados");
         nack_accel_config = 0;
+        wait(tentativas_filtro >= 1);
+        #1000000;
+        if(sensor_ok || pulsos_amostra || tentativas_filtro_accel)
+            $fatal(1,"NACK CONFIG aceitou dados ou escreveu ACCEL_CONFIG2 no ID 68");
+        $display("PASS NACK CONFIG: nao publica dados; ID 68 nao escreve ACCEL_CONFIG2");
+        nack_filter_config = 0;
         stretch = 1;
         wait (sensor_ok);
         check_axes(4660, -292, -32768, 32767, -1, 258);
@@ -411,15 +444,23 @@ module mpu6050_i2c_tb;
         identity = 8'h70;
         nack_register = 0;
         wait (who_am_i == 8'h70);
+        pulsos_antes = pulsos_amostra;
+        wait(tentativas_filtro_accel >= 1);
+        #1000000;
+        if(sensor_ok || pulsos_amostra!=pulsos_antes)
+            $fatal(1,"NACK ACCEL_CONFIG2 aceitou dados no ID 70");
+        $display("PASS NACK ACCEL_CONFIG2: sensor invalido ate configurar filtro do ID 70");
+        nack_accel_filter = 0;
         wait (sensor_ok);
-        $display("PASS WHO_AM_I=70: identificacao, wake e leitura de dados");
+        if(!filtro_configurado || !accel_filtrado) $fatal(1,"Filtros do ID 70 ausentes");
+        $display("PASS WHO_AM_I=70: identificacao, wake, filtros separados e leitura de dados");
 
         $display("PASS todos os testes");
         $finish;
     end
 
     initial begin
-        #2500000000;
+        #4000000000;
         $fatal(1, "Timeout global da simulacao");
     end
 endmodule

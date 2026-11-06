@@ -12,6 +12,7 @@ foreach name {timing_summary.rpt utilization.rpt drc.rpt check_timing.rpt cdc.rp
 create_project reticula $project_dir -part xc7a100tcsg324-1
 add_files [glob [file join $root rtl *.sv]]
 add_files -fileset constrs_1 [file join $root constraints nexys_a7_reticula.xdc]
+add_files -fileset constrs_1 [file join $root constraints attitude_capture.xdc]
 set_property top top_reticula [current_fileset]
 # Perfil medido desta montagem; defaults RTL continuam sem calibracao.
 source [file join $root constraints magnetometer_calibration.tcl]

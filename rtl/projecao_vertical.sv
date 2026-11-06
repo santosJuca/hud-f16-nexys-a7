@@ -90,7 +90,7 @@ module projecao_vertical (
                  roll_q10 >= -30720 && roll_q10 <= 30720;
     wire [31:0] ap = pitch_q10 < 0 ? -pitch_q10 : pitch_q10;
     wire [31:0] ar = roll_q10 < 0 ? -roll_q10 : roll_q10;
-    logic signed [15:0] sp=0, cp=0, sr=0, cr=0;
+    logic signed [15:0] sp=0, cp=0, neg_sr=0, cr=0;
     logic signed [31:0] nx=0, nz=0;
     logic signed [15:0] ny=0;
     logic signed [15:0] ax1=0, ay1=0, az1=0, ax2=0, ay2=0, az2=0;
@@ -113,12 +113,12 @@ module projecao_vertical (
             if (token[0]) begin
                 sp <= sinal_p ? -seno((ap_reg+16'd512)>>10) : seno((ap_reg+16'd512)>>10);
                 cp <= cosseno((ap_reg+16'd512)>>10);
-                sr <= sinal_r ? -seno((ar_reg+16'd512)>>10) : seno((ar_reg+16'd512)>>10);
+                neg_sr <= sinal_r ? seno((ar_reg+16'd512)>>10) : -seno((ar_reg+16'd512)>>10);
                 cr <= cosseno((ar_reg+16'd512)>>10);
                 ax1 <= ax0; ay1 <= ay0; az1 <= az0;
             end
             if (token[1]) begin
-                nx <= -sr * cp; nz <= cr * cp; ny <= sp;
+                nx <= neg_sr * cp; nz <= cr * cp; ny <= sp;
                 ax2 <= ax1; ay2 <= ay1; az2 <= az1;
             end
             if (token[2]) begin

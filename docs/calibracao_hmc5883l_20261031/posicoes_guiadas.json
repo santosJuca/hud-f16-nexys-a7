@@ -1,0 +1,73 @@
+[
+  {
+    "step": "initial horizontal support; before clock12-to1",
+    "mag_valid": true,
+    "mpu_valid": true,
+    "sample": 8153,
+    "x": 850,
+    "y": -209,
+    "z": 816,
+    "roll": 1.07421875,
+    "pitch": 2.630859375
+  },
+  {
+    "step": "user completed clock12-to1 horizontal turn",
+    "time_ms": "1793418600376",
+    "mag_valid": true,
+    "mpu_valid": true,
+    "sample": 8437,
+    "x": 854,
+    "y": -144,
+    "z": 822,
+    "roll": 1.064453125,
+    "pitch": 2.458984375
+  },
+  {
+    "step": "user completed clock1-to3 horizontal turn",
+    "time_ms": "1793418636761",
+    "mag_valid": true,
+    "mpu_valid": true,
+    "sample": 8797,
+    "x": 766,
+    "y": -1,
+    "z": 845,
+    "roll": 1.0576171875,
+    "pitch": 1.8017578125
+  },
+  {
+    "step": "user completed clock3-to6 horizontal turn",
+    "time_ms": "1793418659047",
+    "mag_valid": true,
+    "mpu_valid": true,
+    "sample": 9017,
+    "x": 589,
+    "y": -93,
+    "z": 874,
+    "roll": 0.5478515625,
+    "pitch": 1.5400390625
+  },
+  {
+    "step": "user completed clock6-to9 horizontal turn",
+    "time_ms": "1793418675916",
+    "mag_valid": true,
+    "mpu_valid": true,
+    "sample": 9184,
+    "x": 670,
+    "y": -321,
+    "z": 858,
+    "roll": 0.2607421875,
+    "pitch": 2.41796875
+  },
+  {
+    "step": "user completed clock9-to12 and returned to starting direction",
+    "time_ms": "1793418699327",
+    "mag_valid": true,
+    "mpu_valid": true,
+    "sample": 9416,
+    "x": 848,
+    "y": -201,
+    "z": 803,
+    "roll": 0.7822265625,
+    "pitch": 3.0224609375
+  }
+]

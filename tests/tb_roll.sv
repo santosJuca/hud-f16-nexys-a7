@@ -14,6 +14,7 @@ module tb_roll;
         x,
         y,
         ativo,
+    16'sd0,16'sd16384,11'sd0,
         centro_y,
         roll,
         9'd0,

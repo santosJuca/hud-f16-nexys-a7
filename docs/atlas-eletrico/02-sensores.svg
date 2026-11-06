@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2800" height="1980" viewBox="0 0 1400 990">
+<rect width="1400" height="990" fill="white"/>
+<text x="60" y="49" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="start" fill="#65717A">ATLAS ELÉTRICO  /  HUD FPGA</text>
+<text x="1340" y="49" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="end" fill="#65717A">NEXYS A7-100T   /   02</text>
+<text x="60" y="111" font-family="DejaVu Sans" font-size="38" font-weight="bold" text-anchor="start" fill="#202A32">Sensores</text>
+<text x="60" y="149" font-family="DejaVu Sans" font-size="17" font-weight="normal" text-anchor="start" fill="#65717A">MPU6050 · BMP085 · HMC5883L</text>
+<polyline points="60,177 1340,177" fill="none" stroke="#D3D9DD" stroke-width="1" stroke-linejoin="miter"/>
+<text x="80" y="231" font-family="DejaVu Sans" font-size="27" font-weight="bold" text-anchor="start" fill="#202A32">MPU6050</text>
+<rect x="80" y="275" width="175" height="325" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1.3"/>
+<text x="237" y="327" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">VCC</text>
+<polyline points="255,321 361,321" fill="none" stroke="#BC343B" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="255" cy="321" r="3.7" fill="#FFFFFF" stroke="#BC343B" stroke-width="1.4"/>
+<circle cx="361" cy="321" r="3.5" fill="#FFFFFF" stroke="#BC343B" stroke-width="1.4"/>
+<text x="373" y="326" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JD12</text>
+<text x="373" y="348" font-family="DejaVu Sans Mono" font-size="13" font-weight="normal" text-anchor="start" fill="#65717A">3,3 V</text>
+<text x="237" y="387" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">GND</text>
+<polyline points="255,381 361,381" fill="none" stroke="#202A32" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="255" cy="381" r="3.7" fill="#FFFFFF" stroke="#202A32" stroke-width="1.4"/>
+<circle cx="361" cy="381" r="3.5" fill="#FFFFFF" stroke="#202A32" stroke-width="1.4"/>
+<text x="373" y="386" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JD11</text>
+<text x="237" y="447" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">SDA</text>
+<polyline points="255,441 361,441" fill="none" stroke="#AD8200" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="255" cy="441" r="3.7" fill="#FFFFFF" stroke="#AD8200" stroke-width="1.4"/>
+<circle cx="361" cy="441" r="3.5" fill="#FFFFFF" stroke="#AD8200" stroke-width="1.4"/>
+<text x="373" y="446" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JD8</text>
+<text x="237" y="507" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">SCL</text>
+<polyline points="255,501 361,501" fill="none" stroke="#286AA6" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="255" cy="501" r="3.7" fill="#FFFFFF" stroke="#286AA6" stroke-width="1.4"/>
+<circle cx="361" cy="501" r="3.5" fill="#FFFFFF" stroke="#286AA6" stroke-width="1.4"/>
+<text x="373" y="506" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JD7</text>
+<text x="237" y="561" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">AD0</text>
+<polyline points="255,556 322,556" fill="none" stroke="#202A32" stroke-width="1.7" stroke-linejoin="miter"/>
+<polyline points="322,556 322,569" fill="none" stroke="#202A32" stroke-width="1.7" stroke-linejoin="miter"/>
+<polyline points="307.0,569 337.0,569" fill="none" stroke="#202A32" stroke-width="1.7" stroke-linejoin="miter"/>
+<polyline points="312.5,576 331.5,576" fill="none" stroke="#202A32" stroke-width="1.7" stroke-linejoin="miter"/>
+<polyline points="318.0,583 326.0,583" fill="none" stroke="#202A32" stroke-width="1.7" stroke-linejoin="miter"/>
+<text x="358" y="563" font-family="DejaVu Sans Mono" font-size="17" font-weight="normal" text-anchor="start" fill="#202A32">GND</text>
+<text x="80" y="650" font-family="DejaVu Sans Mono" font-size="16" font-weight="normal" text-anchor="start" fill="#202A32">INT / XDA / XCL</text>
+<text x="80" y="678" font-family="DejaVu Sans" font-size="15" font-weight="normal" text-anchor="start" fill="#65717A">Não conectados</text>
+<text x="520" y="231" font-family="DejaVu Sans" font-size="27" font-weight="bold" text-anchor="start" fill="#202A32">BMP085</text>
+<rect x="520" y="275" width="175" height="325" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1.3"/>
+<text x="677" y="327" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">VCC</text>
+<polyline points="695,321 801,321" fill="none" stroke="#BC343B" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="695" cy="321" r="3.7" fill="#FFFFFF" stroke="#BC343B" stroke-width="1.4"/>
+<circle cx="801" cy="321" r="3.5" fill="#FFFFFF" stroke="#BC343B" stroke-width="1.4"/>
+<text x="813" y="326" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JD12</text>
+<text x="813" y="348" font-family="DejaVu Sans Mono" font-size="13" font-weight="normal" text-anchor="start" fill="#65717A">3,3 V</text>
+<text x="677" y="387" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">GND</text>
+<polyline points="695,381 801,381" fill="none" stroke="#202A32" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="695" cy="381" r="3.7" fill="#FFFFFF" stroke="#202A32" stroke-width="1.4"/>
+<circle cx="801" cy="381" r="3.5" fill="#FFFFFF" stroke="#202A32" stroke-width="1.4"/>
+<text x="813" y="386" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JD11</text>
+<text x="677" y="447" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">SDA</text>
+<polyline points="695,441 801,441" fill="none" stroke="#AD8200" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="695" cy="441" r="3.7" fill="#FFFFFF" stroke="#AD8200" stroke-width="1.4"/>
+<circle cx="801" cy="441" r="3.5" fill="#FFFFFF" stroke="#AD8200" stroke-width="1.4"/>
+<text x="813" y="446" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JD1</text>
+<text x="677" y="507" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">SCL</text>
+<polyline points="695,501 801,501" fill="none" stroke="#286AA6" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="695" cy="501" r="3.7" fill="#FFFFFF" stroke="#286AA6" stroke-width="1.4"/>
+<circle cx="801" cy="501" r="3.5" fill="#FFFFFF" stroke="#286AA6" stroke-width="1.4"/>
+<text x="813" y="506" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JD2</text>
+<text x="960" y="231" font-family="DejaVu Sans" font-size="27" font-weight="bold" text-anchor="start" fill="#202A32">HMC5883L</text>
+<rect x="960" y="275" width="175" height="325" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1.3"/>
+<text x="1117" y="327" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">VCC</text>
+<polyline points="1135,321 1241,321" fill="none" stroke="#BC343B" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="1135" cy="321" r="3.7" fill="#FFFFFF" stroke="#BC343B" stroke-width="1.4"/>
+<circle cx="1241" cy="321" r="3.5" fill="#FFFFFF" stroke="#BC343B" stroke-width="1.4"/>
+<text x="1253" y="326" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JD12</text>
+<text x="1253" y="348" font-family="DejaVu Sans Mono" font-size="13" font-weight="normal" text-anchor="start" fill="#65717A">3,3 V</text>
+<text x="1117" y="387" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">GND</text>
+<polyline points="1135,381 1241,381" fill="none" stroke="#202A32" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="1135" cy="381" r="3.7" fill="#FFFFFF" stroke="#202A32" stroke-width="1.4"/>
+<circle cx="1241" cy="381" r="3.5" fill="#FFFFFF" stroke="#202A32" stroke-width="1.4"/>
+<text x="1253" y="386" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JD11</text>
+<text x="1117" y="447" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">SDA</text>
+<polyline points="1135,441 1241,441" fill="none" stroke="#AD8200" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="1135" cy="441" r="3.7" fill="#FFFFFF" stroke="#AD8200" stroke-width="1.4"/>
+<circle cx="1241" cy="441" r="3.5" fill="#FFFFFF" stroke="#AD8200" stroke-width="1.4"/>
+<text x="1253" y="446" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JD3</text>
+<text x="1117" y="507" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="end" fill="#202A32">SCL</text>
+<polyline points="1135,501 1241,501" fill="none" stroke="#286AA6" stroke-width="2" stroke-linejoin="miter"/>
+<circle cx="1135" cy="501" r="3.7" fill="#FFFFFF" stroke="#286AA6" stroke-width="1.4"/>
+<circle cx="1241" cy="501" r="3.5" fill="#FFFFFF" stroke="#286AA6" stroke-width="1.4"/>
+<text x="1253" y="506" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JD9</text>
+<text x="960" y="650" font-family="DejaVu Sans Mono" font-size="16" font-weight="normal" text-anchor="start" fill="#202A32">DRDY</text>
+<text x="960" y="678" font-family="DejaVu Sans" font-size="15" font-weight="normal" text-anchor="start" fill="#65717A">Não conectado</text>
+<text x="80" y="786" font-family="DejaVu Sans" font-size="23" font-weight="bold" text-anchor="start" fill="#202A32">Três barramentos I²C independentes.</text>
+<text x="80" y="821" font-family="DejaVu Sans" font-size="17" font-weight="normal" text-anchor="start" fill="#65717A">Somente JD12 (3,3 V) e JD11 (GND) são compartilhados.</text>
+<text x="80" y="877" font-family="DejaVu Sans" font-size="15" font-weight="normal" text-anchor="start" fill="#202A32">Antes de energizar: confirmar alimentação a 3,3 V e pull-ups em cada módulo.</text>
+<polyline points="60,925 1340,925" fill="none" stroke="#D3D9DD" stroke-width="1" stroke-linejoin="miter"/>
+<text x="60" y="952" font-family="DejaVu Sans" font-size="12" font-weight="normal" text-anchor="start" fill="#65717A">Terminais em ordem funcional • Localizar cada pino pela serigrafia do módulo</text>
+<text x="1340" y="952" font-family="DejaVu Sans Mono" font-size="13" font-weight="normal" text-anchor="end" fill="#65717A">02 / 04</text>
+</svg>

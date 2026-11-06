@@ -5,12 +5,41 @@
 ## para o Nexys A7-50T / A7-100T
 ## =========================================================
 
+# Nexys A7 D.0, esquematico Digilent 500-292, folhas 8 e 10:
+# CFGBVS_0/P8 e VCCO_0/R9 ligados a VCC3V3.
+set_property CFGBVS VCCO [current_design]
+set_property CONFIG_VOLTAGE 3.3 [current_design]
+
 ## Clock 100 MHz do board
 set_property -dict { PACKAGE_PIN E3  IOSTANDARD LVCMOS33 } [get_ports { clk }]; #Sch=clk100mhz
 create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports { clk }];
 
 # Clock de pixel gerado pelo divisor por quatro do controlador.
-create_generated_clock -name pixel_clk -source [get_ports clk] -divide_by 4 [get_pins u_vga/clk25_reg/Q]
+create_generated_clock -name pixel_clk -source [get_ports clk] -edges {3 7 11} [get_pins u_vga/clk25_reg/Q]
+
+## MicroSD, Nexys A7-100T Master XDC Digilent. SD_DAT[1:2] não usados.
+## SD_DAT0 é entrada (MISO); SD_DAT3 é CS ativo baixo em SPI.
+set_property -dict { PACKAGE_PIN E2 IOSTANDARD LVCMOS33 } [get_ports { SD_RESET }]
+set_property -dict { PACKAGE_PIN B1 IOSTANDARD LVCMOS33 } [get_ports { SD_SCK }]
+set_property -dict { PACKAGE_PIN C1 IOSTANDARD LVCMOS33 } [get_ports { SD_CMD }]
+set_property -dict { PACKAGE_PIN C2 IOSTANDARD LVCMOS33 } [get_ports { SD_DAT0 }]
+set_property -dict { PACKAGE_PIN D2 IOSTANDARD LVCMOS33 } [get_ports { SD_DAT3 }]
+set_property -dict { PACKAGE_PIN A1 IOSTANDARD LVCMOS33 } [get_ports { SD_CD }]
+
+## Diagnostico do subsistema microSD.
+## LD7: inicializacao concluida.
+## LD8: falha de inicializacao, leitura ou comparacao.
+## LD9: inicializacao ou leitura em andamento.
+set_property -dict { PACKAGE_PIN U16 IOSTANDARD LVCMOS33 } [get_ports { SD_READY_LED }]
+set_property -dict { PACKAGE_PIN V16 IOSTANDARD LVCMOS33 } [get_ports { SD_ERROR_LED }]
+set_property -dict { PACKAGE_PIN T15 IOSTANDARD LVCMOS33 } [get_ports { SD_BUSY_LED }]
+## LD10: setor com CRC valido. LD11: 512 bytes identicos a referencia local.
+## Pinos livres conferidos no Master XDC; preservam LD0..9.
+set_property -dict { PACKAGE_PIN U14 IOSTANDARD LVCMOS33 } [get_ports { SD_CRC_OK_LED }]
+set_property -dict { PACKAGE_PIN T16 IOSTANDARD LVCMOS33 } [get_ports { SD_DATA_OK_LED }]
+
+## A temporização relativa cartão/FPGA para SPI ainda requer datasheets,
+## board delays, análise de skew e margens de setup/hold antes de validação física.
 
 ## Conector VGA
 set_property -dict { PACKAGE_PIN A3  IOSTANDARD LVCMOS33 } [get_ports { VGA_R[0] }]; #Sch=vga_r[0]
@@ -31,13 +60,25 @@ set_property -dict { PACKAGE_PIN D8  IOSTANDARD LVCMOS33 } [get_ports { VGA_B[3]
 set_property -dict { PACKAGE_PIN B11 IOSTANDARD LVCMOS33 } [get_ports { VGA_HS }]; #Sch=vga_hs
 set_property -dict { PACKAGE_PIN B12 IOSTANDARD LVCMOS33 } [get_ports { VGA_VS }]; #Sch=vga_vs
 
+# VGA analogico sem clock de amostragem encaminhado: limitar o assentamento
+# FPGA->pad ao periodo de pixel, sem inventar setup/hold de um monitor.
+set_max_delay -datapath_only 40.000 \
+    -from [get_cells -hier -filter {IS_SEQUENTIAL == 1 && NAME != u_vga/clk25_reg}] \
+    -to [get_ports {VGA_R[*] VGA_G[*] VGA_B[*] VGA_HS VGA_VS}]
+# Estes dados mudam somente em x=0,y=480 (top_reticula/dados_hud).
+# Restam (45*800-1) pixels de blanking antes de x=0,y=0: 1.439.960 ns.
+# Nao inclui registradores *_pendente*, que podem mudar durante video ativo.
+set_max_delay -datapath_only 1439960.000 \
+    -from [get_cells -hier -include_replicated_objects -regexp {u_dados/(metadados|heading_deg|mira_x|mira_y|mira_lock|alvo_x|alvo_y|velocidade_kt|altitude_ft|horizonte_y|roll_q8)_reg(\[[0-9]+\])?}] \
+    -to [get_ports {VGA_R[*] VGA_G[*] VGA_B[*] VGA_HS VGA_VS}]
+
 ## =========================================================
 ## GY-521 / MPU-6050 - I2C
 ## =========================================================
 
 set_property -dict { PACKAGE_PIN G4 IOSTANDARD LVCMOS33 } [get_ports { i2c_sda }]; #JD8 - SDA
 
-set_property -dict { PACKAGE_PIN E6 IOSTANDARD LVCMOS33 } [get_ports { buzzer_out }]; # JC10
+set_property -dict { PACKAGE_PIN G3 IOSTANDARD LVCMOS33 } [get_ports { buzzer_out }]; # JD4
 
 # set_property -dict { PACKAGE_PIN E18 IOSTANDARD LVCMOS33 } [get_ports { JA[3] }]; #IO_L21P_T3_DQS_15 Sch=ja[3]
 
@@ -96,13 +137,13 @@ set_false_path -from [get_ports {sw[14] sw[15]}] \
     -to [get_pins -hier -filter {NAME =~ roll_meta_reg*/D}]
 
 
-# BTNU / BTND: controle manual do heading
+# BTNU / BTND: comandos roteados pelo dispatcher (heading ou ALIGN)
 set_property -dict { PACKAGE_PIN M18 IOSTANDARD LVCMOS33 } [get_ports { btn_heading[0] }]
 set_property -dict { PACKAGE_PIN P18 IOSTANDARD LVCMOS33 } [get_ports { btn_heading[1] }]
 
 # Entradas assincronas ate o primeiro estagio de sincronizacao.
 set_false_path -from [get_ports {btn_heading[*]}] \
-    -to [get_pins -hier -filter {NAME =~ u_heading/btn_meta_reg*/D}]
+    -to [get_pins -hier -filter {NAME =~ *u_hud_commands/buttons_meta_reg*/D}]
 
 # SW0 seleciona NORMAL (0) / DECLUTTER (1).
 set_property -dict { PACKAGE_PIN J15 IOSTANDARD LVCMOS33 } [get_ports { display_mode }]
@@ -178,6 +219,15 @@ set_property -dict { PACKAGE_PIN G1 IOSTANDARD LVCMOS33 PULLUP TRUE } \
 set_property -dict { PACKAGE_PIN G2 IOSTANDARD LVCMOS33 PULLUP TRUE } \
     [get_ports { mag_scl }]
 
+# Open-drain com retorno assincrono; apenas D do primeiro estagio.
+# Os segundos estagios ASYNC_REG e o protocolo I2C continuam temporizados.
+set_false_path -from [get_ports i2c_sda] -to [get_pins {u_sensor/sda_sync_reg[0]/D}]
+set_false_path -from [get_ports i2c_scl] -to [get_pins {u_sensor/scl_sync_reg[0]/D}]
+set_false_path -from [get_ports baro_sda] -to [get_pins {u_baro/sda_sync_reg[0]/D}]
+set_false_path -from [get_ports baro_scl] -to [get_pins {u_baro/scl_sync_reg[0]/D}]
+set_false_path -from [get_ports mag_sda] -to [get_pins {u_magnetometro/sda_sync_reg[0]/D}]
+set_false_path -from [get_ports mag_scl] -to [get_pins {u_magnetometro/scl_sync_reg[0]/D}]
+
 ## LED6 = magnetometro identificado/configurado
 set_property -dict { PACKAGE_PIN U17 IOSTANDARD LVCMOS33 } \
     [get_ports { MAG_LED }]
@@ -188,3 +238,46 @@ set_property -dict { PACKAGE_PIN R15 IOSTANDARD LVCMOS33 } [get_ports { operacao
 set_property -dict { PACKAGE_PIN N17 IOSTANDARD LVCMOS33 } [get_ports { ack_btn }]
 set_false_path -from [get_ports {operacao_sw[*]}] -to [get_pins -hier -filter {NAME =~ *u_operacao/u_modo/meta_reg*/D}]
 set_false_path -from [get_ports ack_btn] -to [get_pins -hier -filter {NAME =~ *u_operacao/u_buzzer/ack_meta_reg/D}]
+
+# Bundled-data: captura apenas depois de pedido_meta/pedido_sync.
+# O barramento fica retido ate o ACK retornar (ver docs/finalizacao_sd.md).
+set_max_delay -datapath_only 20.000 -from [get_cells -hier -filter {NAME =~ u_entrada/retido_reg*}] -to [get_cells -hier -filter {NAME =~ u_entrada/dados_destino_reg*}]
+set_bus_skew 10.000 -from [get_cells -hier -filter {NAME =~ u_entrada/retido_reg*}] -to [get_cells -hier -filter {NAME =~ u_entrada/dados_destino_reg*}]
+# Apenas a entrada dos dois sincronizadores, nunca os estagios seguintes.
+set_false_path -from [get_cells -hier -filter {NAME == u_entrada/pedido_reg}] -to [get_pins -hier -filter {NAME == u_entrada/pedido_meta_reg/D}]
+set_false_path -from [get_cells -hier -filter {NAME == u_entrada/confirmado_reg}] -to [get_pins -hier -filter {NAME == u_entrada/confirmado_meta_reg/D}]
+
+# SW8 solicita um bloco de diagnostico (somente leitura).
+set_property -dict { PACKAGE_PIN T8 IOSTANDARD LVCMOS18 } [get_ports SD_READ_SWITCH]
+set_false_path -from [get_ports SD_READ_SWITCH] -to [get_pins -hier -filter {NAME =~ *u_diagnostico/read_meta_reg/D}]
+
+# SW4 dedicado a ALIGN; SW5..7 selecionam a pagina de diagnostico.
+# Pinagem do Master XDC Nexys A7-100T; nao muda pinos existentes.
+set_property -dict { PACKAGE_PIN R17 IOSTANDARD LVCMOS33 } [get_ports { SD_DIAG_PAGE[0] }]
+set_property -dict { PACKAGE_PIN T18 IOSTANDARD LVCMOS33 } [get_ports { SD_DIAG_PAGE[1] }]
+set_property -dict { PACKAGE_PIN U18 IOSTANDARD LVCMOS33 } [get_ports { SD_DIAG_PAGE[2] }]
+set_property -dict { PACKAGE_PIN R13 IOSTANDARD LVCMOS33 } [get_ports { SD_DIAG_PAGE[3] }]
+set_property -dict { PACKAGE_PIN T10 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[0] }]
+set_property -dict { PACKAGE_PIN R10 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[1] }]
+set_property -dict { PACKAGE_PIN K16 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[2] }]
+set_property -dict { PACKAGE_PIN K13 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[3] }]
+set_property -dict { PACKAGE_PIN P15 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[4] }]
+set_property -dict { PACKAGE_PIN T11 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[5] }]
+set_property -dict { PACKAGE_PIN L18 IOSTANDARD LVCMOS33 } [get_ports { SD_SEG[6] }]
+set_property -dict { PACKAGE_PIN J17 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[0] }]
+set_property -dict { PACKAGE_PIN J18 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[1] }]
+set_property -dict { PACKAGE_PIN T9 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[2] }]
+set_property -dict { PACKAGE_PIN J14 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[3] }]
+set_property -dict { PACKAGE_PIN P14 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[4] }]
+set_property -dict { PACKAGE_PIN T14 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[5] }]
+set_property -dict { PACKAGE_PIN K2 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[6] }]
+set_property -dict { PACKAGE_PIN U13 IOSTANDARD LVCMOS33 } [get_ports { SD_AN[7] }]
+set_property -dict { PACKAGE_PIN H15 IOSTANDARD LVCMOS33 } [get_ports SD_DP]
+# Apenas SW4, entrada assincrona do sincronizador de ALIGN.
+set_false_path -from [get_ports {SD_DIAG_PAGE[0]}] -to [get_pins -hier -filter {NAME =~ *u_hud_commands/align_meta_reg/D}]
+# SW5..7 continuam entrando no sincronizador de diagnostico e captura.
+set_false_path -from [get_ports {SD_DIAG_PAGE[1] SD_DIAG_PAGE[2] SD_DIAG_PAGE[3]}] -to [get_pins -hier -filter {NAME =~ *u_capture_control/page_meta_reg*/D}]
+set_false_path -from [get_ports {SD_DIAG_PAGE[1] SD_DIAG_PAGE[2] SD_DIAG_PAGE[3]}] -to [get_pins -hier -filter {NAME =~ *u_sd_display/page_meta_reg*/D}]
+
+# BTNL livre: seleciona video/HUD original, sincronizado antes do debounce.
+set_property -dict { PACKAGE_PIN P17 IOSTANDARD LVCMOS33 } [get_ports VIDEO_TOGGLE_BUTTON]
