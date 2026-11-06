@@ -24,7 +24,8 @@ class BuildVideoTest(unittest.TestCase):
 
     def test_portable_build_and_mounting_profile(self):
         for mounting, script in [('original', 'build_sd_video.tcl'),
-                ('mpu-left90-mag-right90-front180-hdg-plus90', 'build_attitude_capture.tcl')]:
+                ('mpu-left90-mag-right90-front180-hdg-plus90', 'build_attitude_capture.tcl'),
+                ('mpu-left90-mag-right90-front180-hdg-minus90', 'build_attitude_capture.tcl')]:
             with self.subTest(mounting=mounting), \
                     patch.object(sys, 'argv', ['build', str(self.root/'out'), '--map', str(self.map),
                                               '--mounting', mounting]), \

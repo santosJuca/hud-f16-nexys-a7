@@ -62,6 +62,8 @@ python3 tools/build_video_bitstream.py build/video-mapeado --map /caminho/mapa.j
 
 O wrapper reconfere o arquivo/dispositivo em modo de leitura antes de compilar; recusa mudanças de LBA, conteúdo ou cabeçalho. O perfil de montagem acima pertence à montagem ensaiada, não é universal. Sua saída é `experimental_attitude_capture.bit`; sem `--mounting` especial, o fluxo original produz `experimental.bit`. Veja o [procedimento de vídeo](docs/reproducao_video_microSD_overlay_HUD.md) para formato, mapeamento e limites elétricos. Um build de simulação não deve ser programado como vídeo real.
 
+O perfil `mpu-left90-mag-right90-front180-hdg-minus90` gira somente a bússola em 180° em relação ao perfil `hdg-plus90`, preservando os parâmetros do MPU. Foi acrescentado para o ajuste solicitado na montagem atual; o [registro do ajuste](docs/consolidacao_20261106/ajuste_bussola_180_20261106.md) distingue os testes digitais do aceite físico ainda pendente.
+
 ## Mecânica, histórico e recuperação
 
 - [Gabinete F-16 v1.3.2](gabinete/HUD_F16_V1_3_2_PUBLICACAO_ATOMICA/README_IMPORTACAO.md): dois STEP com hashes originais, DXF, manual e inventário; fontes auxiliares ainda ausentes. Fabricação bloqueada.

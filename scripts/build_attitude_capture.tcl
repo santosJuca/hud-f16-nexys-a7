@@ -2,7 +2,7 @@
 if {[llength $argv] ni {8 9}} {error "Uso: out lba setores half width fps reference kind ?montagem?"}
 lassign $argv out lba sectors half width fps reference kind mounting
 if {$mounting eq ""} {set mounting original}
-if {$mounting ni {original mpu-left90-mag-right90 mpu-left90-mag-right90-front180 mpu-left90-mag-right90-front180-hdg-plus90}} {error "Montagem desconhecida"}
+if {$mounting ni {original mpu-left90-mag-right90 mpu-left90-mag-right90-front180 mpu-left90-mag-right90-front180-hdg-plus90 mpu-left90-mag-right90-front180-hdg-minus90}} {error "Montagem desconhecida"}
 set out [file normalize $out]
 if {[file exists $out]} {error "Diretorio ja existe"}
 if {$kind ni {simulation mapped}} {error "Origem de mapa invalida"}
@@ -26,16 +26,19 @@ set f [open [file join $root constraints magnetometer_calibration.tcl] r]
 set calibration [read $f]; close $f
 if {![regexp {set_property generic \{([^\}]+)\}} $calibration match generics]} {error "Calibracao ausente"}
 set args [list -top top_reticula -part xc7a100tcsg324-1 -flatten_hierarchy rebuilt]
-if {$mounting in {mpu-left90-mag-right90 mpu-left90-mag-right90-front180 mpu-left90-mag-right90-front180-hdg-plus90}} {
+if {$mounting in {mpu-left90-mag-right90 mpu-left90-mag-right90-front180 mpu-left90-mag-right90-front180-hdg-plus90 mpu-left90-mag-right90-front180-hdg-minus90}} {
     lappend args -generic MPU_GIRO_ESQUERDA_90=1
     if {$mounting eq "mpu-left90-mag-right90-front180-hdg-plus90"} {
         # Com frente180: (-Y, X) passa a (-X, -Y), somando 90 graus somente ao HDG.
         lappend args -generic MAG_TROCAR_XY=0 -generic MAG_INVERTER_X=0 -generic MAG_INVERTER_Y=0
+    } elseif {$mounting eq "mpu-left90-mag-right90-front180-hdg-minus90"} {
+        # Inverte 180 graus o HDG do perfil plus90, preservando a montagem do MPU.
+        lappend args -generic MAG_TROCAR_XY=0 -generic MAG_INVERTER_X=1 -generic MAG_INVERTER_Y=1
     } else {
         lappend args -generic MAG_TROCAR_XY=1 -generic MAG_INVERTER_Y=1
     }
 }
-if {$mounting in {mpu-left90-mag-right90-front180 mpu-left90-mag-right90-front180-hdg-plus90}} {
+if {$mounting in {mpu-left90-mag-right90-front180 mpu-left90-mag-right90-front180-hdg-plus90 mpu-left90-mag-right90-front180-hdg-minus90}} {
     lappend args -generic FRENTE_INVERTIDA_180=1
 }
 foreach generic [concat $generics [list ENABLE_SD_SUBSYSTEM=1 ENABLE_SD_OVERLAY=1 ENABLE_SD_VIDEO=1 SD_DIAGNOSTIC_LBA=30006080 SD_HALF_PERIOD_CYCLES=125 SD_READ_HALF_PERIOD_CYCLES=$half SD_VIDEO_LBA=$lba SD_VIDEO_SECTORS=$sectors SD_VIDEO_WIDTH=$width SD_VIDEO_HEIGHT=$height SD_VIDEO_FPS=$fps]] {

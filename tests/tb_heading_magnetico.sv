@@ -3,8 +3,8 @@ module tb_heading_magnetico;
     logic clk=0, ok=1, nova=0;
     always #5 clk=~clk;
     logic signed [15:0] x=0,y=0;
-    wire [8:0] heading[0:8];
-    wire [8:0] valido;
+    wire [8:0] heading[0:9];
+    wire [9:0] valido;
     heading_magnetico dut(clk,ok,nova,x,y,heading[0],valido[0],);
     heading_magnetico #(.OFFSET_X(16'sd100),.OFFSET_Y(-16'sd200),
         .TROCAR_XY(1),.INVERTER_X(1)) ajustado(clk,ok,nova,x,y,heading[1],valido[1],);
@@ -26,6 +26,9 @@ module tb_heading_magnetico;
     heading_magnetico #(.OFFSET_X(16'sd717),.OFFSET_Y(-16'sd161),
         .GAIN_X_Q12(13'd4545),.GAIN_Y_Q12(13'd3727),.INVERTER_X(1),.INVERTER_Y(1))
         calibrado_mais90(clk,ok,nova,x,y,heading[8],valido[8],);
+    heading_magnetico #(.OFFSET_X(16'sd717),.OFFSET_Y(-16'sd161),
+        .GAIN_X_Q12(13'd4545),.GAIN_Y_Q12(13'd3727))
+        calibrado_menos90(clk,ok,nova,x,y,heading[9],valido[9],);
     integer casos=0;
     task automatic confere(input integer idx,ex,ey);
         real graus;
@@ -56,6 +59,7 @@ module tb_heading_magnetico;
         confere(6,(vy+148)*4270,-(vx+8)*3935);
         confere(7,-(vy+161)*3727,(vx-717)*4545);
         confere(8,-(vx-717)*4545,-(vy+161)*3727);
+        confere(9,(vx-717)*4545,(vy+161)*3727);
         casos=casos+1;
     endtask
     integer vx,vy;
@@ -75,6 +79,9 @@ module tb_heading_magnetico;
         vetor(589,-93); vetor(670,-321); vetor(848,-201);
         vetor(860,-209);
         if(heading[7]!=75 || heading[8]!=165) $fatal(1,"Alinhamento solicitado: 75 deve passar a 165");
+        // Vetor sintetico para o giro solicitado na bancada: 348 -> 168 graus.
+        vetor(500,-105);
+        if(heading[8]!=348 || heading[9]!=168) $fatal(1,"Giro de 180 graus: 348 deve passar a 168");
         vetor(717,-161);
         vetor(1717,-161); if(heading[7]!=90) $fatal(1,"Nova calibracao: +X nativo != 90");
         if(heading[8]!=180) $fatal(1,"Alinhamento +90: +X nativo != 180");
@@ -100,7 +107,7 @@ module tb_heading_magnetico;
         @(negedge clk); ok=1;
         repeat(25) @(negedge clk);
         if(valido) $fatal(1,"calculo interrompido publicou rumo");
-        $display("PASS heading: %0d vetores em 9 configuracoes; cardeais, quadrantes, wrap, offsets, limites e perda",casos);
+        $display("PASS heading: %0d vetores em 10 configuracoes; cardeais, quadrantes, wrap, offsets, limites e perda",casos);
         $finish;
     end
     initial begin #1_000_000; $fatal(1,"timeout heading"); end

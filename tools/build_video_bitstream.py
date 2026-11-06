@@ -14,7 +14,8 @@ def main():
     p.add_argument('--map',required=True,type=Path)
     p.add_argument('--read-half',type=int,choices=(125,50,25,13,6,5,4),default=125)
     p.add_argument('--mounting', choices=('original', 'mpu-left90-mag-right90',
-        'mpu-left90-mag-right90-front180', 'mpu-left90-mag-right90-front180-hdg-plus90'),
+        'mpu-left90-mag-right90-front180', 'mpu-left90-mag-right90-front180-hdg-plus90',
+        'mpu-left90-mag-right90-front180-hdg-minus90'),
         default='original', help='Perfil de montagem conferido; nao altera o mapa do cartao')
     a=p.parse_args()
     root=Path(__file__).resolve().parents[1]
