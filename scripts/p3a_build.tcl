@@ -99,7 +99,9 @@ set_max_delay 8.000 -datapath_only -from $req_s -to $req_d
 set_max_delay 8.000 -datapath_only -from $dat_s -to $dat_d
 set_bus_skew 8.000 -from $dat_s -to $dat_d
 
-source [file join $root scripts p4c_cdc.tcl]
+if {[llength [get_cells -hier -filter {NAME =~ *u_mirror/ui_ready_reg}]] != 0} {
+    source [file join $root scripts p4c_cdc.tcl]
+}
 
 place_design
 phys_opt_design

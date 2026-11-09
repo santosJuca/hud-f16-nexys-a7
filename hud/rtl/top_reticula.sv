@@ -31,6 +31,7 @@ module top_reticula #(
     parameter bit ENABLE_DDR2_FRAME_TEST = 1'b0,
     // P4B: espelho de stream real SD na DDR2. A VGA segue usando BRAM.
     parameter bit ENABLE_DDR2_SD_MIRROR = 1'b0,
+    parameter bit ENABLE_DDR2_VIDEO = 1'b0,
     parameter logic [31:0] SD_VIDEO_LBA = 0,
     parameter integer SD_VIDEO_SECTORS = 0,
     parameter integer SD_VIDEO_WIDTH = 320, SD_VIDEO_HEIGHT = 240, SD_VIDEO_FPS = 10,
@@ -354,19 +355,40 @@ module top_reticula #(
     logic [9:0] alvo_x_origem;
     logic [8:0] alvo_y_origem;
 
+    wire clk_xadc;
+    wire [11:0] joystick_x_adc,joystick_y_adc;
+    wire temperature_adc_valid;
     joystick_xadc u_joystick_xadc (
-        .clk     (clk_hud),
+        .clk     (ENABLE_DDR2_VIDEO ? clk_xadc : clk_hud),
         .vauxp3  (vauxp3),
         .vauxn3  (vauxn3),
         .vauxp10 (vauxp10),
         .vauxn10 (vauxn10),
-        .x_raw   (joystick_x_raw),
-        .y_raw   (joystick_y_raw),
+        .x_raw   (joystick_x_adc),
+        .y_raw   (joystick_y_adc),
         .temperature_raw    (temperature_xadc_raw),
-        .temperature_valid  (temperature_xadc_valid),
+        .temperature_valid  (temperature_adc_valid),
         .temperature_toggle (temperature_xadc_toggle),
         .temperature_ack    (temperature_xadc_ack)
     );
+
+    generate if (ENABLE_DDR2_VIDEO) begin : g_xadc_fast
+        // Barramento retido ate ACK: preserva amostras coerentes no HUD 100 MHz.
+        entrada_hud #(.WIDTH(24)) u_joystick_cdc (
+            .clk_origem(clk_xadc),.clk_destino(clk_hud),.valido(1'b1),
+            .dados({joystick_x_adc,joystick_y_adc}),
+            .dados_destino({joystick_x_raw,joystick_y_raw}));
+        (* ASYNC_REG = "TRUE" *) reg temperature_valid_meta=0,temperature_valid_sync=0;
+        always @(posedge clk_hud) begin
+            temperature_valid_meta <= temperature_adc_valid;
+            temperature_valid_sync <= temperature_valid_meta;
+        end
+        assign temperature_xadc_valid=temperature_valid_sync;
+    end else begin : g_xadc_original
+        assign joystick_x_raw=joystick_x_adc;
+        assign joystick_y_raw=joystick_y_adc;
+        assign temperature_xadc_valid=temperature_adc_valid;
+    end endgenerate
 
     controle_joystick u_controle_joystick (
         .clk     (clk_hud),
@@ -1493,6 +1515,13 @@ wire [9:0] velocidade_hud_entrada =
     wire capture_hud_opaque=calibration_on || (capture_hud_enabled && hud_opaque);
     wire [11:0] scene_rgb;
     // P4B: sinais de captura somente espelhados; nao interceptam VGA.
+    initial if (ENABLE_DDR2_VIDEO &&
+        (!ENABLE_DDR2_SD_MIRROR || !ENABLE_SD_VIDEO || !ENABLE_SD_SUBSYSTEM))
+        $error("DDR2_VIDEO exige SD, video e espelho DDR2 habilitados");
+    wire ddr_video_ready, ddr_src_ready;
+    wire ddr_out_start,ddr_out_abort,ddr_out_commit,ddr_out_valid;
+    wire [($clog2(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT))-1:0] ddr_out_address;
+    wire [7:0] ddr_out_byte;
     wire p4b_frame_start, p4b_frame_abort, p4b_frame_commit, p4b_frame_write;
     wire [($clog2(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT))-1:0] p4b_frame_address;
     wire [7:0] p4b_data_byte;
@@ -1503,6 +1532,7 @@ wire [9:0] velocidade_hud_entrada =
         wire display_enable, display_valid, frame_valid;
         wire [7:0] display_byte;
         wire publish_frame,frozen,updated_frame;
+        assign ddr_video_ready=frame_ready;
         assign p4b_frame_start = frame_start;
         assign p4b_frame_abort = frame_abort;
         assign p4b_frame_commit = frame_commit;
@@ -1520,14 +1550,18 @@ wire [9:0] velocidade_hud_entrada =
             .read_busy(sd_read_busy && video_owner),.read_done(sd_read_done && video_owner),
             .read_error(sd_read_error && video_owner),.data_valid(sd_data_valid && video_owner),
             .block_valid(sd_block_valid && video_owner),.byte_index(sd_byte_index),.data_byte(sd_data_byte),
-            .buffer_ready(frame_ready),.frame_start(frame_start),.frame_abort(frame_abort),
+            .buffer_ready(frame_ready && (!ENABLE_DDR2_VIDEO || ddr_src_ready)),.frame_start(frame_start),.frame_abort(frame_abort),
             .frame_commit(frame_commit),.frame_write(frame_write),.frame_address(frame_address),
             .header_valid(),.failed(video_failed),.frames_loaded(video_frames),.errors(video_errors),
             .late_frames(video_late),.transfer_cycles(video_cycles),.state(video_state));
         sd_sector_buffer #(.BYTES(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT)) u_frames (
             .wr_clk(clk_hud),.rd_clk(pixel_clk),.rst(reset_operacao),
-            .wr_start(frame_start),.wr_abort(frame_abort),.wr_valid(frame_write),.wr_commit(frame_commit),
-            .wr_byte(sd_data_byte),.wr_index(frame_address),.wr_ready(frame_ready),
+            .wr_start(ENABLE_DDR2_VIDEO ? ddr_out_start : frame_start),
+            .wr_abort(ENABLE_DDR2_VIDEO ? ddr_out_abort : frame_abort),
+            .wr_valid(ENABLE_DDR2_VIDEO ? ddr_out_valid : frame_write),
+            .wr_commit(ENABLE_DDR2_VIDEO ? ddr_out_commit : frame_commit),
+            .wr_byte(ENABLE_DDR2_VIDEO ? ddr_out_byte : sd_data_byte),
+            .wr_index(ENABLE_DDR2_VIDEO ? ddr_out_address : frame_address),.wr_ready(frame_ready),
             .wr_active(),.wr_pending(),.wr_error(),.wr_published(),
             .rd_frame_start(publish_frame),
             .rd_enable(display_enable),.rd_address(display_address),.rd_byte(display_byte),
@@ -1539,6 +1573,7 @@ wire [9:0] velocidade_hud_entrada =
             .byte_valid(display_valid),.pixel_byte(display_byte),.read_enable(display_enable),
             .read_address(display_address),.rgb(scene_rgb),.hs(),.vs(),.enabled());
     end else begin : g_no_video
+        assign ddr_video_ready=0;
         assign {p4b_frame_start,p4b_frame_abort,p4b_frame_commit,p4b_frame_write}=4'b0;
         assign p4b_frame_address='0;
         assign p4b_data_byte=8'd0;
@@ -1587,12 +1622,14 @@ wire [9:0] velocidade_hud_entrada =
 
     // P3A - coexistencia experimental: sem trafego de video na DDR2.
     wire clk200_raw;
+    wire clk_xadc_raw;
     wire clk200_ref;
     wire clkfb_raw;
     wire clkfb_buf;
     wire ref_mmcm_locked;
 
-    // 100 MHz * 10 / 5 = 200 MHz, VCO = 1000 MHz.
+    // VCO=1000 MHz: CLKOUT1=200 MHz para MIG; CLKOUT0=102.564 MHz
+    // para XADC (divisor ADC=4, 25.641 MHz < limite de 26 MHz).
     // MIG's REFCLK_TYPE=NOBUF expects an internal 200 MHz clock here.
     MMCME2_BASE #(
         .BANDWIDTH("OPTIMIZED"),
@@ -1600,7 +1637,8 @@ wire [9:0] velocidade_hud_entrada =
         .DIVCLK_DIVIDE(1),
         .CLKFBOUT_MULT_F(10.000),
         .CLKFBOUT_PHASE(0.000),
-        .CLKOUT0_DIVIDE_F(5.000),
+        .CLKOUT0_DIVIDE_F(9.750),
+        .CLKOUT1_DIVIDE(5),
         .CLKOUT0_PHASE(0.000),
         .CLKOUT0_DUTY_CYCLE(0.500),
         .STARTUP_WAIT("FALSE")
@@ -1610,10 +1648,12 @@ wire [9:0] velocidade_hud_entrada =
         .RST(~cpu_resetn),
         .PWRDWN(1'b0),
         .CLKFBOUT(clkfb_raw),
-        .CLKOUT0(clk200_raw),
+        .CLKOUT0(clk_xadc_raw),
+        .CLKOUT1(clk200_raw),
         .LOCKED(ref_mmcm_locked)
     );
 
+    BUFG u_xadc_global (.I(clk_xadc_raw),.O(clk_xadc));
     BUFG u_refclk_feedback (.I(clkfb_raw), .O(clkfb_buf));
     BUFG u_refclk_global   (.I(clk200_raw), .O(clk200_ref));
 
@@ -1646,15 +1686,19 @@ wire [9:0] velocidade_hud_entrada =
     wire smoke_pass;
     wire [12:0] compared_words;
 
-    // A DDR2 continua isolada do compositor e do caminho SD -> BRAM -> VGA.
+    // O modo DDR2_VIDEO alimenta o buffer de exibicao pela releitura do MIG.
     ddr2_ui_smoke_top #(
         .FRAME_TEST_WORDS(ENABLE_DDR2_FRAME_TEST ?
             (SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT/16) : 0),
-        .ENABLE_SD_MIRROR(ENABLE_DDR2_SD_MIRROR),
+        .ENABLE_SD_MIRROR(ENABLE_DDR2_SD_MIRROR),.OUTPUT_STREAM(ENABLE_DDR2_VIDEO),
         .MIRROR_FRAME_BYTES(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT)
     ) u_ui_test (
         .src_clk(clk_hud),
         .src_rst(reset_operacao),
+        .out_ready(ddr_video_ready),.src_ready(ddr_src_ready),
+        .out_start(ddr_out_start),.out_abort(ddr_out_abort),
+        .out_commit(ddr_out_commit),.out_valid(ddr_out_valid),
+        .out_address(ddr_out_address),.out_byte(ddr_out_byte),
         .src_frame_start(p4b_frame_start),
         .src_frame_abort(p4b_frame_abort),
         .src_frame_commit(p4b_frame_commit),

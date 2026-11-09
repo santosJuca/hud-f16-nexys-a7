@@ -3,6 +3,7 @@
 module ddr2_ui_smoke_top #(
     parameter integer FRAME_TEST_WORDS = 0,
     parameter integer ENABLE_SD_MIRROR = 0,
+    parameter integer OUTPUT_STREAM = 0,
     parameter integer MIRROR_FRAME_BYTES = 76800
 ) (
     inout  wire [15:0] ddr2_dq,
@@ -27,6 +28,11 @@ module ddr2_ui_smoke_top #(
     input  wire        src_frame_write,
     input  wire [($clog2(MIRROR_FRAME_BYTES))-1:0] src_frame_address,
     input  wire [7:0] src_data_byte,
+    input wire out_ready,
+    output wire src_ready,
+    output wire out_start,out_abort,out_commit,out_valid,
+    output wire [($clog2(MIRROR_FRAME_BYTES))-1:0] out_address,
+    output wire [7:0] out_byte,
     input  wire        sys_clk_i,
     input  wire        clk_ref_i,
     input  wire        sys_rst,
@@ -117,15 +123,17 @@ module ddr2_ui_smoke_top #(
 
     // Modos mutuamente exclusivos: P3D (16 words), P4A (sintetico), P4B (SD).
     generate if (ENABLE_SD_MIRROR != 0) begin : g_sd_mirror
-        wire src_mirror_ready;
-        ddr2_sd_frame_mirror #(.FRAME_BYTES(MIRROR_FRAME_BYTES)) u_mirror (
+
+        ddr2_sd_frame_mirror #(.FRAME_BYTES(MIRROR_FRAME_BYTES),.OUTPUT_STREAM(OUTPUT_STREAM)) u_mirror (
             .src_clk(src_clk), .src_rst(src_rst),
             .src_frame_start(src_frame_start),
             .src_frame_abort(src_frame_abort),
             .src_frame_commit(src_frame_commit),
             .src_frame_write(src_frame_write),
             .src_frame_address(src_frame_address),
-            .src_data_byte(src_data_byte), .src_ready(src_mirror_ready),
+            .src_data_byte(src_data_byte), .src_ready(src_ready),
+            .out_ready(out_ready),.out_start(out_start),.out_abort(out_abort),
+            .out_commit(out_commit),.out_valid(out_valid),.out_address(out_address),.out_byte(out_byte),
             .ui_clk(ui_clk), .ui_rst(ui_clk_sync_rst),
             .init_calib_complete(init_calib_complete),
             .app_rdy(app_rdy), .app_wdf_rdy(app_wdf_rdy),
@@ -139,6 +147,10 @@ module ddr2_ui_smoke_top #(
             .test_error(smoke_error), .words_compared(smoke_words_compared)
         );
     end else if (FRAME_TEST_WORDS > 0) begin : g_frame_test
+        assign src_ready=0;
+        assign {out_start,out_abort,out_commit,out_valid}=0;
+        assign out_address=0;
+        assign out_byte=0;
         ddr2_ui_frame_test #(.WORDS(FRAME_TEST_WORDS)) u_test (
             .ui_clk(ui_clk),
             .ui_rst(ui_clk_sync_rst),
@@ -161,6 +173,10 @@ module ddr2_ui_smoke_top #(
             .words_compared(smoke_words_compared)
         );
     end else begin : g_legacy_smoke
+        assign src_ready=0;
+        assign {out_start,out_abort,out_commit,out_valid}=0;
+        assign out_address=0;
+        assign out_byte=0;
         wire [7:0] compared_legacy;
         assign smoke_words_compared = {5'd0, compared_legacy};
         ddr2_ui_smoke #(.WORDS(16)) u_smoke (

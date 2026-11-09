@@ -5,6 +5,7 @@
 // O barramento de dados atravessa clk_hud -> ui_clk via FIFO Gray.
 module ddr2_sd_frame_mirror #(
     parameter integer FRAME_BYTES = 76800,
+    parameter integer OUTPUT_STREAM = 0,
     parameter integer FIFO_ADDR_BITS = 5,
     parameter integer MAX_ACTIVE_CYCLES = 400000000,
     parameter integer ADDRESS_BITS = $clog2(FRAME_BYTES)
@@ -18,6 +19,10 @@ module ddr2_sd_frame_mirror #(
     input wire [ADDRESS_BITS-1:0] src_frame_address,
     input wire [7:0] src_data_byte,
     output wire src_ready,
+    input wire out_ready,
+    output wire out_start, out_abort, out_commit, out_valid,
+    output wire [ADDRESS_BITS-1:0] out_address,
+    output wire [7:0] out_byte,
     input wire ui_clk,
     input wire ui_rst,
     input wire init_calib_complete,
@@ -42,7 +47,7 @@ module ddr2_sd_frame_mirror #(
     localparam [1:0] EV_START=2'd0, EV_WORD=2'd1, EV_COMMIT=2'd2, EV_ABORT=2'd3;
     localparam [2:0] WAIT_START=3'd0, WRITING=3'd1,
                      READ_CMD=3'd2, WAIT_DATA=3'd3, CHECK_BYTE=3'd4,
-                     FAILED=3'd5;
+                     FAILED=3'd5, OUTPUT_END=3'd6;
 
     function automatic [31:0] crc32_byte;
         input [31:0] crc;
@@ -106,7 +111,7 @@ module ddr2_sd_frame_mirror #(
         if (ui_local_rst) ui_ready <= 0;
         else ui_ready <= ui_state == WAIT_START && init_calib_complete;
     end
-    assign src_ready = !src_local_rst && !reset_request && !src_busy && !fifo_full && ui_ready_sync;
+    assign src_ready = !src_local_rst && !src_busy && !fifo_full && ui_ready_sync;
 
     // Eventos têm prioridade fixa. Cada pulso de origem produz no maximo um
     // token; se a FIFO encher, aborta a tentativa, jamais publica quadro parcial.
@@ -146,7 +151,7 @@ module ddr2_sd_frame_mirror #(
         end
         event_in = {push_kind, push_payload};
     end
-    assign event_push = push && !fifo_full && !src_local_rst && !reset_request;
+    assign event_push = push && !fifo_full && !src_local_rst;
 
     always @(posedge src_clk) begin
         if (src_local_rst) begin
@@ -211,21 +216,68 @@ module ddr2_sd_frame_mirror #(
         end
     end
 
+    (* ASYNC_REG = "TRUE" *) reg src_busy_meta = 0, src_busy_sync = 0;
+    always @(posedge ui_clk) begin
+        if (ui_local_rst) begin src_busy_meta <= 0; src_busy_sync <= 0; end
+        else begin src_busy_meta <= src_busy; src_busy_sync <= src_busy_meta; end
+    end
+    reg output_abort_sent = 0;
+    always @(posedge ui_clk) begin
+        if (ui_local_rst || (ui_state == WAIT_START && event_pop)) output_abort_sent <= 0;
+        else if (ui_state == FAILED && output_push) output_abort_sent <= 1;
+    end
+    wire output_full, output_empty;
+    wire [9:0] output_front;
+    wire output_push = OUTPUT_STREAM && !ui_local_rst &&
+        !output_full && ((ui_state == WRITING && event_pop && event_kind == EV_COMMIT && ui_index == WORDS) ||
+                         ui_state == CHECK_BYTE || ui_state == OUTPUT_END ||
+                         (ui_state == FAILED && !output_abort_sent));
+    wire [9:0] output_token = ui_state == WRITING ? {EV_START,8'd0} :
+        (ui_state == OUTPUT_END || ui_state == FAILED) ?
+        {ui_state == OUTPUT_END && test_pass ? EV_COMMIT : EV_ABORT,8'd0} :
+        {EV_WORD,read_word[read_byte_pos*8 +: 8]};
+    wire output_pop = OUTPUT_STREAM && !src_local_rst &&
+        !output_empty && (output_front[9:8] != EV_START || out_ready);
+    generate if (OUTPUT_STREAM != 0) begin : g_output
+        ddr2_p4b_async_fifo #(.WIDTH(10),.ADDR_BITS(FIFO_ADDR_BITS)) u_output_fifo (
+            .wr_clk(ui_clk),.wr_rst(ui_local_rst),.wr_en(output_push),
+            .wr_data(output_token),.full(output_full),
+            .rd_clk(src_clk),.rd_rst(src_local_rst),.rd_en(output_pop),
+            .rd_data(output_front),.empty(output_empty));
+    end else begin : g_no_output
+        assign output_full=0;
+        assign output_empty=1;
+        assign output_front=0;
+    end endgenerate
+    reg [ADDRESS_BITS-1:0] output_index = 0;
+    always @(posedge src_clk) begin
+        if (src_local_rst || out_start) output_index <= 0;
+        else if (out_valid) output_index <= output_index + 1'b1;
+    end
+    assign out_start = output_pop && output_front[9:8] == EV_START;
+    assign out_valid = output_pop && output_front[9:8] == EV_WORD;
+    assign out_commit = output_pop && output_front[9:8] == EV_COMMIT;
+    assign out_abort = OUTPUT_STREAM && (src_local_rst ||
+        (output_pop && output_front[9:8] == EV_ABORT));
+    assign out_byte = output_front[7:0];
+    assign out_address = output_index;
+
     wire write_accept = ui_state == WRITING && !fifo_empty &&
                         event_kind == EV_WORD && app_rdy && app_wdf_rdy &&
                         ui_index < WORDS;
     wire read_accept = ui_state == READ_CMD && app_rdy;
     assign app_addr = {11'd0, ui_index, 3'd0};
     assign app_cmd = ui_state == READ_CMD ? 3'b001 : 3'b000;
-    assign app_en = !ui_local_rst && !reset_request && (write_accept || read_accept);
+    assign app_en = !ui_local_rst && (write_accept || read_accept);
     assign app_wdf_data = event_payload;
     assign app_wdf_mask = 16'd0;
-    assign app_wdf_wren = !ui_local_rst && !reset_request && write_accept;
+    assign app_wdf_wren = !ui_local_rst && write_accept;
     assign app_wdf_end = app_wdf_wren;
     assign event_pop = !fifo_empty &&
-                       ((ui_state == WAIT_START && event_kind == EV_START && ui_ready) ||
+                       ((ui_state == FAILED) ||
+                        (ui_state == WAIT_START && event_kind == EV_START && ui_ready) ||
                         (ui_state == WRITING &&
-                         (write_accept || event_kind == EV_COMMIT ||
+                         (write_accept || (event_kind == EV_COMMIT && !output_full) ||
                           event_kind == EV_ABORT)));
     wire [31:0] crc_next = crc32_byte(actual_crc, read_word[read_byte_pos*8 +: 8]);
 
@@ -293,7 +345,7 @@ module ddr2_sd_frame_mirror #(
                         ui_state <= CHECK_BYTE;
                     end
                 end
-                CHECK_BYTE: begin
+                CHECK_BYTE: if (!output_full) begin
                     actual_crc <= crc_next;
                     if (read_byte_pos == 15) begin
                         words_compared <= words_compared + 1'b1;
@@ -305,13 +357,16 @@ module ddr2_sd_frame_mirror #(
                             else
                                 test_error <= 1;
                             // Readback concluido. Proximo frame pode iniciar.
-                            ui_state <= WAIT_START;
+                            ui_state <= OUTPUT_STREAM ? OUTPUT_END : WAIT_START;
                         end else begin
                             ui_index <= ui_index + 1'b1;
                             ui_state <= READ_CMD;
                         end
                     end else read_byte_pos <= read_byte_pos + 1'b1;
                 end
+                FAILED: if (fifo_empty && !src_busy_sync &&
+                            (!OUTPUT_STREAM || output_abort_sent)) ui_state <= WAIT_START;
+                OUTPUT_END: if (output_push) ui_state <= WAIT_START;
                 default: ;
             endcase
         end

@@ -8,9 +8,18 @@ module tb_ddr2_sd_frame_mirror;
     parameter integer ABORT_FRAME = 0;
     parameter integer STALL = 0;
     parameter integer RESET_CASE = 0;
+    parameter integer STREAM = 0;
+    parameter integer TB_FRAMES = 1;
+    parameter integer HOLD_OUTPUT = 0;
+    parameter integer CORRUPT_ON_SECOND = 0;
+    parameter integer BAD_RD_END = 0;
+    parameter integer DROP_READ = 0;
+    parameter integer FIFO_BITS = 4;
+    integer epoch=0;
     localparam integer WORDS = TB_BYTES / 16;
     localparam integer ADDR_BITS = $clog2(TB_BYTES);
 
+    wire corrupt_now = CORRUPT || (CORRUPT_ON_SECOND && epoch != 0);
     reg src_clk = 0, ui_clk = 0;
     always #5 src_clk = ~src_clk;        // 100 MHz
     always #6.154 ui_clk = ~ui_clk;      // ~81.25 MHz, assincrono
@@ -32,15 +41,55 @@ module tb_ddr2_sd_frame_mirror;
     wire test_done, test_pass, test_error;
     wire [12:0] words_compared;
 
+    wire out_start,out_abort,out_commit,out_valid;
+    wire [ADDR_BITS-1:0] out_address;
+    wire [7:0] out_byte;
+    wire buffer_ready;
+    reg pixel_clk=0;
+    always #20 pixel_clk=~pixel_clk;
+    reg display_boundary=0, display_enable=0;
+    reg [ADDR_BITS-1:0] display_address=0;
+    wire [7:0] display_byte;
+    wire display_valid,display_updated;
+
+    reg output_finished=0;
+    integer output_count=0, output_mismatches=0;
+    wire buffer_pending,buffer_error;
+    sd_sector_buffer #(.BYTES(TB_BYTES)) display_buffer (
+        .wr_clk(src_clk),.rd_clk(pixel_clk),.rst(src_rst),
+        .wr_start(out_start),.wr_abort(out_abort),.wr_commit(out_commit),
+        .wr_valid(out_valid),.wr_index(out_address),.wr_byte(out_byte),
+        .wr_ready(buffer_ready),.wr_pending(buffer_pending),.wr_error(buffer_error),
+        .rd_frame_start(display_boundary),.rd_enable(display_enable),
+        .rd_address(display_address),.rd_byte(display_byte),
+        .rd_valid(display_valid),.rd_updated(display_updated));
+    always @(posedge src_clk) begin
+        if (frame_start) output_finished=0;
+        if (out_start) begin output_count=0; output_mismatches=0; output_finished=0; end
+        if (out_valid) begin
+            if (out_address != output_count) $fatal(1,"Endereco de saida DDR2 fora de ordem");
+            if (out_byte != pixel_byte(output_count)) output_mismatches=output_mismatches+1;
+            output_count=output_count+1;
+        end
+        if (out_commit) begin
+            if (output_count != TB_BYTES || output_mismatches != 0)
+                $fatal(1,"DDR2 publicou dados incorretos: count=%0d mismatches=%0d",output_count,output_mismatches);
+            output_finished=1;
+        end
+        if (out_abort) output_finished=1;
+    end
+
     ddr2_sd_frame_mirror #(
-        .FRAME_BYTES(TB_BYTES), .FIFO_ADDR_BITS(4),
-        .MAX_ACTIVE_CYCLES(STALL ? 600 : 2000000)
+        .FRAME_BYTES(TB_BYTES),.OUTPUT_STREAM(STREAM), .FIFO_ADDR_BITS(FIFO_BITS),
+        .MAX_ACTIVE_CYCLES(STALL ? 600 : DROP_READ ? 2000 : 2000000)
     ) dut (
         .src_clk(src_clk), .src_rst(src_rst),
         .src_frame_start(frame_start), .src_frame_abort(frame_abort),
         .src_frame_commit(frame_commit), .src_frame_write(frame_write),
         .src_frame_address(frame_address), .src_data_byte(data_byte),
         .src_ready(src_ready),
+        .out_ready(buffer_ready && cycles >= HOLD_OUTPUT),.out_start(out_start),.out_abort(out_abort),
+        .out_commit(out_commit),.out_valid(out_valid),.out_address(out_address),.out_byte(out_byte),
         .ui_clk(ui_clk), .ui_rst(ui_rst), .init_calib_complete(calib),
         .app_rdy(app_rdy), .app_wdf_rdy(app_wdf_rdy),
         .app_rd_data(app_rd_data), .app_rd_data_valid(app_rd_data_valid),
@@ -88,9 +137,9 @@ module tb_ddr2_sd_frame_mirror;
                 if (read_delay > 0) read_delay <= read_delay-1;
                 else begin
                     app_rd_data <= memory[pending_idx] ^
-                        ((CORRUPT && pending_idx == 4) ? 128'h1 : 128'h0);
-                    app_rd_data_valid <= 1;
-                    app_rd_data_end <= 1;
+                        ((corrupt_now && pending_idx == 4) ? 128'h1 : 128'h0);
+                    app_rd_data_valid <= !DROP_READ;
+                    app_rd_data_end <= !BAD_RD_END;
                     pending <= 0;
                 end
             end
@@ -100,7 +149,7 @@ module tb_ddr2_sd_frame_mirror;
     function [7:0] pixel_byte;
         input integer i;
         begin
-            pixel_byte = ((i * 37) ^ (i >> 5) ^ (i >> 11) ^ 8'hA5);
+            pixel_byte = ((i * 37) ^ (i >> 5) ^ (i >> 11) ^ 8'hA5 ^ (epoch*17));
         end
     endfunction
 
@@ -125,6 +174,7 @@ module tb_ddr2_sd_frame_mirror;
         ui_rst = 0;
         repeat (7) @(negedge ui_clk);
         calib = 1;
+        for (epoch=0;epoch<TB_FRAMES;epoch=epoch+1) begin
         wait (src_ready);
         @(negedge src_clk);
         frame_start = 1;
@@ -160,19 +210,56 @@ module tb_ddr2_sd_frame_mirror;
         frame_abort = 0;
         frame_commit = 0;
 
+        if (epoch != 0) wait(!test_done);
         wait(test_done);
+        if (STREAM) begin
+            wait(output_finished);
+            repeat (4) @(negedge src_clk);
+            if (corrupt_now || SHORT_COMMIT || ABORT_FRAME || STALL || BAD_RD_END || DROP_READ) begin
+                if (buffer_pending) $fatal(1,"Quadro invalido publicado pelo buffer");
+            end else if (!buffer_pending || buffer_error)
+                $fatal(1,"Releitura DDR2 nao chegou ao buffer de exibicao");
+        end
+        if (STREAM && !(corrupt_now || SHORT_COMMIT || ABORT_FRAME || STALL || BAD_RD_END || DROP_READ)) begin
+            @(negedge pixel_clk); display_boundary=1;
+            wait(display_updated);
+            @(negedge pixel_clk); display_boundary=0;
+            for (j=0; j<TB_BYTES; j=j+1) begin
+                @(negedge pixel_clk); display_enable=1; display_address=j;
+                repeat (3) @(negedge pixel_clk);
+                if (!display_valid || display_byte !== pixel_byte(j))
+                    $fatal(1,"Pixel vindo da DDR2 incorreto no buffer de saida: %0d",j);
+            end
+            $display("DDR2_DISPLAY_PIXELS_PASS bytes=%0d",TB_BYTES);
+        end
+        if (STREAM && CORRUPT_ON_SECOND && epoch != 0) begin
+            // Um quadro corrompido nao pode substituir o banco ja exibido.
+            for (j=0;j<TB_BYTES;j=j+1) begin
+                @(negedge pixel_clk); display_enable=1; display_address=j;
+                repeat (3) @(negedge pixel_clk);
+                if (!display_valid || display_byte !== 8'(pixel_byte(j) ^ (epoch*17) ^ ((epoch-1)*17)))
+                    $fatal(1,"Ultima imagem integra foi perdida apos corrupcao");
+            end
+            $display("DDR2_LAST_GOOD_FRAME_PRESERVED");
+        end
         @(negedge ui_clk);
-        if (CORRUPT || SHORT_COMMIT || ABORT_FRAME || STALL) begin
+        if (corrupt_now || SHORT_COMMIT || ABORT_FRAME || STALL || BAD_RD_END || DROP_READ) begin
             if (test_pass || !test_error)
                 $fatal(1,"Erro de quadro nao detectado");
             $display("P4B_EXPECTED_ERROR_PASS bytes=%0d writes=%0d reads=%0d",
                      TB_BYTES, writes, reads);
         end else begin
-            if (!test_pass || test_error || writes != WORDS ||
-                reads != WORDS || words_compared != WORDS)
+            if (!test_pass || test_error || writes != (epoch+1)*WORDS ||
+                reads != (epoch+1)*WORDS || words_compared != WORDS)
                 $fatal(1,"Frame incorreto: pass=%b err=%b writes=%0d reads=%0d compared=%0d",
                        test_pass,test_error,writes,reads,words_compared);
+            if (epoch == 0 && TB_BYTES == 256 && dut.expected_crc !== 32'hD2BE52CC)
+                $fatal(1,"CRC32 diverge da referencia zlib de 256 bytes");
+            if (epoch == 0 && TB_BYTES == 76800 && dut.expected_crc !== 32'h2F622165)
+                $fatal(1,"CRC32 diverge da referencia zlib do quadro integral");
             $display("P4B_FRAME_PASS bytes=%0d words=%0d", TB_BYTES, WORDS);
+        end
+        if (STREAM && !(corrupt_now || SHORT_COMMIT || ABORT_FRAME || STALL || BAD_RD_END || DROP_READ)) wait(buffer_ready);
         end
         $finish;
     end

@@ -15,14 +15,14 @@ assert "parameter bit ENABLE_DDR2_SD_MIRROR = 1'b0" in top
 assert ".src_frame_write(p4b_frame_write)" in top
 assert "assign p4b_frame_write = frame_write;" in top
 assert "sd_sector_buffer #(.BYTES(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT))" in top
-assert ".buffer_ready(frame_ready)" in top
+assert ".buffer_ready(frame_ready && (!ENABLE_DDR2_VIDEO || ddr_src_ready))" in top
 assert ".rd_clk(pixel_clk)" in top
 assert "SD_VIDEO_LBA == 0 || SD_VIDEO_SECTORS <= 1" in top
 assert "ddr2_sd_frame_mirror" in wrapper
 assert "generate if (ENABLE_SD_MIRROR != 0)" in wrapper
 assert "FRAME_TEST_WORDS > 0" in wrapper
 assert "ddr2_ui_smoke #(.WORDS(16))" in wrapper
-assert "app_wdf_wren = !ui_local_rst && !reset_request && write_accept" in mirror
+assert "app_wdf_wren = !ui_local_rst && write_accept" in mirror
 assert "(write_accept || read_accept)" in mirror
 assert "app_addr = {11'd0, ui_index, 3'd0}" in mirror
 assert "event_kind == EV_COMMIT" in mirror

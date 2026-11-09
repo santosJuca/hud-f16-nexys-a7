@@ -23,6 +23,8 @@ for case in short_good full_good corruption incomplete aborted stalled; do
         -P tb_ddr2_sd_frame_mirror.ABORT_FRAME="$aborted" \
         -P tb_ddr2_sd_frame_mirror.STALL="$stalled" \
         -o "$OUT/$case.vvp" \
+        -P tb_ddr2_sd_frame_mirror.STREAM="${STREAM:-0}" \
+        "$ROOT/hud/rtl/sd_sector_buffer.sv" \
         "$ROOT/hud/rtl/ddr2_p4b_async_fifo.sv" \
         "$ROOT/hud/rtl/ddr2_sd_frame_mirror.sv" \
         "$ROOT/tests/tb_ddr2_sd_frame_mirror.sv" \
