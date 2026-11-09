@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2800" height="1980" viewBox="0 0 1400 990">
+<rect width="1400" height="990" fill="white"/>
+<text x="60" y="49" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="start" fill="#65717A">ATLAS ELÉTRICO  /  HUD FPGA</text>
+<text x="1340" y="49" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="end" fill="#65717A">NEXYS A7-100T   /   04</text>
+<text x="60" y="111" font-family="DejaVu Sans" font-size="38" font-weight="bold" text-anchor="start" fill="#202A32">Buzzer e driver NPN</text>
+<text x="60" y="149" font-family="DejaVu Sans" font-size="17" font-weight="normal" text-anchor="start" fill="#65717A">BAT3 · chaveamento low-side com 2N2222A</text>
+<polyline points="60,177 1340,177" fill="none" stroke="#D3D9DD" stroke-width="1" stroke-linejoin="miter"/>
+<text x="80" y="243" font-family="DejaVu Sans" font-size="20" font-weight="bold" text-anchor="start" fill="#202A32">CONECTORES JD / JC</text>
+<text x="80" y="275" font-family="DejaVu Sans" font-size="17" font-weight="bold" text-anchor="start" fill="#202A32">JD · controle</text>
+<rect x="80" y="295" width="330" height="100" fill="#FFFFFF" stroke="#202A32" stroke-width="1.2"/>
+<rect x="96" y="307" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="109" y="325" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">6</text>
+<rect x="150" y="307" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="163" y="325" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">5</text>
+<rect x="204" y="307" width="26" height="26" fill="#FFFFFF" stroke="#65717A" stroke-width="2.3"/>
+<text x="217" y="325" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">4</text>
+<rect x="258" y="307" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="271" y="325" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">3</text>
+<rect x="312" y="307" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="325" y="325" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">2</text>
+<rect x="366" y="307" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="379" y="325" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">1</text>
+<rect x="96" y="357" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="109" y="375" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">12</text>
+<rect x="150" y="357" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="163" y="375" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">11</text>
+<rect x="204" y="357" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="217" y="375" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">10</text>
+<rect x="258" y="357" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="271" y="375" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">9</text>
+<rect x="312" y="357" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="325" y="375" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">8</text>
+<rect x="366" y="357" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="379" y="375" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">7</text>
+<polyline points="80,406 410,406" fill="none" stroke="#D3D9DD" stroke-width="5" stroke-linejoin="miter"/>
+<text x="80" y="433" font-family="DejaVu Sans" font-size="13" font-weight="normal" text-anchor="start" fill="#65717A">Vista frontal · PCB abaixo</text>
+<text x="80" y="528" font-family="DejaVu Sans" font-size="17" font-weight="bold" text-anchor="start" fill="#202A32">JC · alimentação</text>
+<rect x="80" y="548" width="330" height="100" fill="#FFFFFF" stroke="#202A32" stroke-width="1.2"/>
+<rect x="96" y="560" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="109" y="578" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">6</text>
+<rect x="150" y="560" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="163" y="578" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">5</text>
+<rect x="204" y="560" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="217" y="578" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">4</text>
+<rect x="258" y="560" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="271" y="578" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">3</text>
+<rect x="312" y="560" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="325" y="578" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">2</text>
+<rect x="366" y="560" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="379" y="578" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">1</text>
+<rect x="96" y="610" width="26" height="26" fill="#FFFFFF" stroke="#BC343B" stroke-width="2.3"/>
+<text x="109" y="628" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#BC343B">12</text>
+<rect x="150" y="610" width="26" height="26" fill="#FFFFFF" stroke="#202A32" stroke-width="2.3"/>
+<text x="163" y="628" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#202A32">11</text>
+<rect x="204" y="610" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="217" y="628" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">10</text>
+<rect x="258" y="610" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="271" y="628" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">9</text>
+<rect x="312" y="610" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="325" y="628" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">8</text>
+<rect x="366" y="610" width="26" height="26" fill="#FFFFFF" stroke="#D3D9DD" stroke-width="1"/>
+<text x="379" y="628" font-family="DejaVu Sans Mono" font-size="14" font-weight="normal" text-anchor="middle" fill="#65717A">7</text>
+<polyline points="80,659 410,659" fill="none" stroke="#D3D9DD" stroke-width="5" stroke-linejoin="miter"/>
+<text x="80" y="686" font-family="DejaVu Sans" font-size="13" font-weight="normal" text-anchor="start" fill="#65717A">Vista frontal · PCB abaixo</text>
+<text x="80" y="466" font-family="DejaVu Sans Mono" font-size="17" font-weight="normal" text-anchor="start" fill="#202A32">JD4   controle</text>
+<text x="80" y="722" font-family="DejaVu Sans Mono" font-size="17" font-weight="normal" text-anchor="start" fill="#202A32">JC11  GND</text>
+<text x="80" y="754" font-family="DejaVu Sans Mono" font-size="17" font-weight="normal" text-anchor="start" fill="#202A32">JC12  3,3 V</text>
+<circle cx="950" cy="230" r="3.5" fill="#FFFFFF" stroke="#BC343B" stroke-width="1.4"/>
+<text x="962" y="235" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JC12 · 3,3 V</text>
+<polyline points="950,230 950,310 990,310" fill="none" stroke="#BC343B" stroke-width="2" stroke-linejoin="miter"/>
+<polyline points="990.0,290.0 993.2701564615071,290.1070538380698 996.5263096110026,290.4277569313095 999.7545161008064,290.9607359798385 1002.940952255126,291.7037086855466 1006.071973265158,292.6534935252447 1009.1341716182545,293.80602337443565 1012.1144345109501,295.1563629233656 1015.0,296.69872981077805 1017.7785116509801,298.42651938487273 1020.438071450436,300.33233298543826 1022.9672907550034,302.4080096260511 1025.3553390593274,304.6446609406726 1027.5919903739489,307.03270924499657 1029.6676670145619,309.56192854956396 1031.5734806151272,312.22148834901986 1033.301270189222,315.0 1034.8436370766344,317.88556548904995 1036.1939766255643,320.86582838174553 1037.3465064747552,323.9280267348419 1038.2962913144534,327.05904774487396 1039.0392640201615,330.2454838991936 1039.5722430686906,333.4736903889974 1039.8929461619302,336.72984353849284 1040.0,340.0 1039.8929461619302,343.27015646150716 1039.5722430686906,346.5263096110026 1039.0392640201615,349.7545161008064 1038.2962913144534,352.94095225512604 1037.3465064747552,356.0719732651581 1036.1939766255643,359.13417161825447 1034.8436370766344,362.11443451095005 1033.301270189222,365.0 1031.5734806151272,367.77851165098014 1029.6676670145619,370.43807145043604 1027.5919903739489,372.96729075500343 1025.3553390593274,375.3553390593274 1022.9672907550034,377.5919903739489 1020.438071450436,379.66766701456174 1017.7785116509801,381.57348061512727 1015.0,383.30127018922195 1012.1144345109501,384.8436370766344 1009.1341716182545,386.19397662556435 1006.0719732651581,387.3465064747553 1002.940952255126,388.2962913144534 999.7545161008064,389.0392640201615 996.5263096110026,389.5722430686905 993.2701564615071,389.8929461619302 990.0,390.0" fill="none" stroke="#202A32" stroke-width="1.8" stroke-linejoin="miter"/>
+<polyline points="990,290 990,390" fill="none" stroke="#202A32" stroke-width="1.8" stroke-linejoin="miter"/>
+<text x="960" y="301" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="start" fill="#BC343B">+</text>
+<text x="960" y="395" font-family="DejaVu Sans Mono" font-size="19" font-weight="normal" text-anchor="start" fill="#202A32">−</text>
+<text x="1072" y="337" font-family="DejaVu Sans" font-size="25" font-weight="bold" text-anchor="start" fill="#202A32">BAT3</text>
+<text x="1072" y="368" font-family="DejaVu Sans" font-size="17" font-weight="normal" text-anchor="start" fill="#65717A">Buzzer ativo</text>
+<polyline points="990,370 950,370 950,420 990,420 990,580" fill="none" stroke="#202A32" stroke-width="2" stroke-linejoin="miter"/>
+<text x="1020" y="511" font-family="DejaVu Sans Mono" font-size="16" font-weight="normal" text-anchor="start" fill="#202A32">COLETOR (C)</text>
+<circle cx="965" cy="625" r="65" fill="none" stroke="#202A32" stroke-width="1.8"/>
+<polyline points="940,592 940,658" fill="none" stroke="#202A32" stroke-width="2.4" stroke-linejoin="miter"/>
+<polyline points="940,610 990,580" fill="none" stroke="#202A32" stroke-width="2" stroke-linejoin="miter"/>
+<polyline points="940,640 990,675" fill="none" stroke="#202A32" stroke-width="2" stroke-linejoin="miter"/>
+<polygon points="982,670 966,666 974,655" fill="#202A32"/>
+<circle cx="516" cy="625" r="3.5" fill="#FFFFFF" stroke="#65717A" stroke-width="1.4"/>
+<text x="504" y="630" font-family="DejaVu Sans Mono" font-size="20" font-weight="normal" text-anchor="end" fill="#202A32">JD4</text>
+<polyline points="516,625 665,625" fill="none" stroke="#65717A" stroke-width="4.2" stroke-linejoin="miter"/>
+<polyline points="516,625 665,625" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="miter"/>
+<rect x="665" y="616" width="80" height="18" fill="#FFFFFF" stroke="#202A32" stroke-width="1.8"/>
+<polyline points="745,625 940,625" fill="none" stroke="#65717A" stroke-width="4.2" stroke-linejoin="miter"/>
+<polyline points="745,625 940,625" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="miter"/>
+<text x="705" y="584" font-family="DejaVu Sans" font-size="22" font-weight="normal" text-anchor="middle" fill="#202A32">1,2 kΩ</text>
+<text x="816" y="594" font-family="DejaVu Sans Mono" font-size="16" font-weight="normal" text-anchor="middle" fill="#202A32">BASE (B)</text>
+<text x="1085" y="623" font-family="DejaVu Sans" font-size="24" font-weight="bold" text-anchor="start" fill="#202A32">2N2222A</text>
+<text x="1085" y="653" font-family="DejaVu Sans" font-size="17" font-weight="normal" text-anchor="start" fill="#65717A">NPN</text>
+<polyline points="990,675 990,786" fill="none" stroke="#202A32" stroke-width="2" stroke-linejoin="miter"/>
+<polyline points="990,786 990,799" fill="none" stroke="#202A32" stroke-width="1.7" stroke-linejoin="miter"/>
+<polyline points="975.0,799 1005.0,799" fill="none" stroke="#202A32" stroke-width="1.7" stroke-linejoin="miter"/>
+<polyline points="980.5,806 999.5,806" fill="none" stroke="#202A32" stroke-width="1.7" stroke-linejoin="miter"/>
+<polyline points="986.0,813 994.0,813" fill="none" stroke="#202A32" stroke-width="1.7" stroke-linejoin="miter"/>
+<text x="1020" y="735" font-family="DejaVu Sans Mono" font-size="16" font-weight="normal" text-anchor="start" fill="#202A32">EMISSOR (E)</text>
+<text x="1020" y="791" font-family="DejaVu Sans Mono" font-size="18" font-weight="normal" text-anchor="start" fill="#202A32">JC11 · GND</text>
+<text x="80" y="877" font-family="DejaVu Sans" font-size="15" font-weight="normal" text-anchor="start" fill="#202A32">Definir a posição física de B/C/E pelo datasheet do fabricante do 2N2222A.</text>
+<polyline points="60,925 1340,925" fill="none" stroke="#D3D9DD" stroke-width="1" stroke-linejoin="miter"/>
+<text x="60" y="952" font-family="DejaVu Sans" font-size="12" font-weight="normal" text-anchor="start" fill="#65717A">Numeração JD/JC: referência Digilent, figura 10.1 • Símbolo NPN sem pinagem de encapsulamento</text>
+<text x="1340" y="952" font-family="DejaVu Sans Mono" font-size="13" font-weight="normal" text-anchor="end" fill="#65717A">04 / 04</text>
+</svg>
