@@ -24,7 +24,7 @@ if {[llength $joystick] != 0} {
 }
 
 # Somente os PRE dos sincronizadores de reset: a desativacao chega
-# assincrona; dois estagios locais fazem a liberacao sincronizada.
+# assincrona; cinco estagios locais fazem a liberacao sincronizada.
 # Os caminhos dos reset_pipe/Q para os registradores funcionais ficam temporizados.
 set reset_regs [p4c_required mirror_reset_sync [get_cells -hier -filter {NAME =~ *u_mirror/src_reset_pipe_reg* || NAME =~ *u_mirror/ui_reset_pipe_reg*}]]
 if {[llength $reset_regs] != 10} {error "Esperados dez estagios de reset"}

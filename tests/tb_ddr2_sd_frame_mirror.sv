@@ -8,6 +8,7 @@ module tb_ddr2_sd_frame_mirror;
     parameter integer ABORT_FRAME = 0;
     parameter integer STALL = 0;
     parameter integer RESET_CASE = 0;
+    parameter integer RESET_PHASE = 0;
     parameter integer STREAM = 0;
     parameter integer TB_FRAMES = 1;
     parameter integer HOLD_OUTPUT = 0;
@@ -47,6 +48,11 @@ module tb_ddr2_sd_frame_mirror;
     wire [7:0] out_byte;
     wire buffer_ready;
     integer cycles=0;
+    reg saw_fifo_full=0, saw_overflow_abort=0;
+    always @(posedge src_clk) begin
+        if(dut.fifo_full && !dut.src_local_rst) saw_fifo_full=1;
+        if(dut.abort_pending) saw_overflow_abort=1;
+    end
     reg pixel_clk=0;
     always #20 pixel_clk=~pixel_clk;
     reg display_boundary=0, display_enable=0;
@@ -212,6 +218,22 @@ module tb_ddr2_sd_frame_mirror;
         frame_abort = 0;
         frame_commit = 0;
 
+        if (RESET_PHASE != 0) begin
+            // Interrompe a transacao em releitura ou ja no retorno ao BRAM.
+            if (RESET_PHASE == 1) wait(reads >= 2);
+            else wait(output_count >= 32);
+            @(negedge src_clk); calib=0;
+            repeat (12) @(negedge src_clk);
+            if (buffer_pending) $fatal(1,"Reset publicou quadro parcial");
+            @(negedge ui_clk); pending=0; writes=0; reads=0;
+            @(negedge src_clk); calib=1;
+            wait(src_ready);
+            @(negedge src_clk); frame_start=1;
+            @(negedge src_clk); frame_start=0;
+            for (j=0;j<TB_BYTES;j=j+1) send_byte(j);
+            @(negedge src_clk); frame_commit=1;
+            @(negedge src_clk); frame_commit=0;
+        end
         if (epoch != 0) wait(!test_done);
         wait(test_done);
         if (STREAM) begin
@@ -248,6 +270,10 @@ module tb_ddr2_sd_frame_mirror;
         if (corrupt_now || SHORT_COMMIT || ABORT_FRAME || STALL || BAD_RD_END || DROP_READ) begin
             if (test_pass || !test_error)
                 $fatal(1,"Erro de quadro nao detectado");
+            if(STALL && TB_BYTES==1024) begin
+                if(!saw_fifo_full || !saw_overflow_abort) $fatal(1,"Overflow nao foi exercitado");
+                $display("FIFO_OVERFLOW_ABORT_OBSERVED");
+            end
             $display("P4B_EXPECTED_ERROR_PASS bytes=%0d writes=%0d reads=%0d",
                      TB_BYTES, writes, reads);
         end else begin
