@@ -28,7 +28,8 @@ assert "app_addr = {11'd0, ui_index, 3'd0}" in mirror
 assert "event_kind == EV_COMMIT" in mirror
 assert "event_kind == EV_ABORT" in mirror
 assert "~crc_next == expected_crc" in mirror
-assert "ASYNC_REG" in fifo and "rgray_sync" in fifo and "wgray_sync" in fifo
+assert "xpm_fifo_async" in fifo and ".READ_MODE(\"fwft\")" in fifo
+assert "wr_busy" in fifo and "rd_busy" in fifo
 # Os fontes criticos nao devem ter mudado desde P3D/P4A.
 expected = {
     "atitude_vetorial.sv": "a71500526bf475e804835a7ed112b2a7f1c2543c29af66e5999baf50c029e147",

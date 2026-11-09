@@ -64,16 +64,16 @@ module ddr2_sd_frame_mirror #(
 
     // Um reset parcial invalida toda a transacao, incluindo os dois ponteiros.
     wire reset_request = src_rst || ui_rst || !init_calib_complete;
-    (* ASYNC_REG = "TRUE" *) reg [1:0] src_reset_pipe = 2'b11;
-    (* ASYNC_REG = "TRUE" *) reg [1:0] ui_reset_pipe = 2'b11;
+    (* ASYNC_REG = "TRUE" *) reg [4:0] src_reset_pipe = 5'b11111;
+    (* ASYNC_REG = "TRUE" *) reg [4:0] ui_reset_pipe = 5'b11111;
     always @(posedge src_clk or posedge reset_request)
-        if (reset_request) src_reset_pipe <= 2'b11;
-        else src_reset_pipe <= {src_reset_pipe[0], 1'b0};
+        if (reset_request) src_reset_pipe <= 5'b11111;
+        else src_reset_pipe <= {src_reset_pipe[3:0], 1'b0};
     always @(posedge ui_clk or posedge reset_request)
-        if (reset_request) ui_reset_pipe <= 2'b11;
-        else ui_reset_pipe <= {ui_reset_pipe[0], 1'b0};
-    wire src_local_rst = src_reset_pipe[1];
-    wire ui_local_rst = ui_reset_pipe[1];
+        if (reset_request) ui_reset_pipe <= 5'b11111;
+        else ui_reset_pipe <= {ui_reset_pipe[3:0], 1'b0};
+    wire src_local_rst = src_reset_pipe[4];
+    wire ui_local_rst = ui_reset_pipe[4];
 
     wire fifo_full, fifo_empty;
     wire [129:0] event_front;
@@ -221,6 +221,7 @@ module ddr2_sd_frame_mirror #(
         if (ui_local_rst) begin src_busy_meta <= 0; src_busy_sync <= 0; end
         else begin src_busy_meta <= src_busy; src_busy_sync <= src_busy_meta; end
     end
+    wire output_push;
     reg output_abort_sent = 0;
     always @(posedge ui_clk) begin
         if (ui_local_rst || (ui_state == WAIT_START && event_pop)) output_abort_sent <= 0;
@@ -228,7 +229,7 @@ module ddr2_sd_frame_mirror #(
     end
     wire output_full, output_empty;
     wire [9:0] output_front;
-    wire output_push = OUTPUT_STREAM && !ui_local_rst &&
+    assign output_push = OUTPUT_STREAM && !ui_local_rst &&
         !output_full && ((ui_state == WRITING && event_pop && event_kind == EV_COMMIT && ui_index == WORDS) ||
                          ui_state == CHECK_BYTE || ui_state == OUTPUT_END ||
                          (ui_state == FAILED && !output_abort_sent));
@@ -374,7 +375,7 @@ module ddr2_sd_frame_mirror #(
 
     initial begin
         if (FRAME_BYTES < 16 || (FRAME_BYTES % 16) != 0 || WORDS > 8191 ||
-            MAX_ACTIVE_CYCLES < 1 || FIFO_ADDR_BITS < 2)
+            MAX_ACTIVE_CYCLES < 1 || FIFO_ADDR_BITS < 4)
             $error("P4B: FRAME_BYTES invalido (multiplo de 16, max 131056)");
     end
 endmodule

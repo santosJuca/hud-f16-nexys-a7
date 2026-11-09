@@ -7,3 +7,6 @@ __pycache__/
 .Xil/
 clockInfo.txt
 tight_setup_hold_pins.txt
+xsim.dir/
+*.pb
+*.wdb

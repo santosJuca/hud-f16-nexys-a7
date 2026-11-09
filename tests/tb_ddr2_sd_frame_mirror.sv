@@ -15,6 +15,7 @@ module tb_ddr2_sd_frame_mirror;
     parameter integer BAD_RD_END = 0;
     parameter integer DROP_READ = 0;
     parameter integer FIFO_BITS = 4;
+    parameter integer TIMEOUT_CYCLES = STALL ? 600 : DROP_READ ? 2000 : 2000000;
     integer epoch=0;
     localparam integer WORDS = TB_BYTES / 16;
     localparam integer ADDR_BITS = $clog2(TB_BYTES);
@@ -45,6 +46,7 @@ module tb_ddr2_sd_frame_mirror;
     wire [ADDR_BITS-1:0] out_address;
     wire [7:0] out_byte;
     wire buffer_ready;
+    integer cycles=0;
     reg pixel_clk=0;
     always #20 pixel_clk=~pixel_clk;
     reg display_boundary=0, display_enable=0;
@@ -81,7 +83,7 @@ module tb_ddr2_sd_frame_mirror;
 
     ddr2_sd_frame_mirror #(
         .FRAME_BYTES(TB_BYTES),.OUTPUT_STREAM(STREAM), .FIFO_ADDR_BITS(FIFO_BITS),
-        .MAX_ACTIVE_CYCLES(STALL ? 600 : DROP_READ ? 2000 : 2000000)
+        .MAX_ACTIVE_CYCLES(TIMEOUT_CYCLES)
     ) dut (
         .src_clk(src_clk), .src_rst(src_rst),
         .src_frame_start(frame_start), .src_frame_abort(frame_abort),
@@ -102,7 +104,7 @@ module tb_ddr2_sd_frame_mirror;
     );
 
     reg [127:0] memory [0:WORDS-1];
-    integer cycles=0, writes=0, reads=0, pending=0, read_delay=0, pending_idx=0;
+    integer writes=0, reads=0, pending=0, read_delay=0, pending_idx=0;
     integer index;
     always @(*) begin
         app_rdy = !STALL && ((cycles % 7) >= 2);

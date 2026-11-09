@@ -36,6 +36,7 @@ if {$actual_part ne "xc7a100tcsg324-1"} {
 puts "P3A_BOARD_CONFIRMED: $required_board ($actual_part)"
 
 set_property target_language Verilog [current_project]
+set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY XPM_FIFO} [current_project]
 set rtl [concat [lsort [glob -nocomplain [file join $root hud rtl *.sv]]] \
                [lsort [glob -nocomplain [file join $root hud rtl *.v]]]]
 if {[llength $rtl] < 60} { error "Faltam fontes HUD/DDR2: [llength $rtl]" }

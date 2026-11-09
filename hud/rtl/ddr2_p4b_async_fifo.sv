@@ -1,75 +1,32 @@
-// P4B: FIFO de eventos entre clk_hud (100 MHz) e ui_clk do MIG.
-// Ponteiros Gray, dois estagios ASYNC_REG; sem clock ou reset gerado por logica.
-// Os dados sao lidos apenas enquanto a palavra permanece na posicao de leitura.
-// DEPTH = 2**ADDR_BITS, com ADDR_BITS >= 2.
+// Interface FWFT preservada. Ambos os resets pertencem a uma transacao comum;
+// o reset da macro e sincrono ao clock de escrita e os busy bloqueiam acessos.
 module ddr2_p4b_async_fifo #(
     parameter integer WIDTH = 130,
     parameter integer ADDR_BITS = 5
 ) (
-    input  wire wr_clk,
-    input  wire wr_rst,
-    input  wire wr_en,
-    input  wire [WIDTH-1:0] wr_data,
+    input wire wr_clk, wr_rst, wr_en,
+    input wire [WIDTH-1:0] wr_data,
     output wire full,
-    input  wire rd_clk,
-    input  wire rd_rst,
-    input  wire rd_en,
+    input wire rd_clk, rd_rst, rd_en,
     output wire [WIDTH-1:0] rd_data,
     output wire empty
 );
-    localparam integer PTR_BITS = ADDR_BITS + 1;
-    (* ram_style = "distributed" *) reg [WIDTH-1:0] mem [0:(1<<ADDR_BITS)-1];
-
-    reg [PTR_BITS-1:0] wbin = 0, wgray = 0;
-    reg [PTR_BITS-1:0] rbin = 0, rgray = 0;
-    (* ASYNC_REG = "TRUE" *) reg [PTR_BITS-1:0] rgray_meta = 0, rgray_sync = 0;
-    (* ASYNC_REG = "TRUE" *) reg [PTR_BITS-1:0] wgray_meta = 0, wgray_sync = 0;
-
-    wire wpush = wr_en && !full;
-    wire rpop = rd_en && !empty;
-    wire [PTR_BITS-1:0] wbin_next = wbin + wpush;
-    wire [PTR_BITS-1:0] rbin_next = rbin + rpop;
-    wire [PTR_BITS-1:0] wgray_next = (wbin_next >> 1) ^ wbin_next;
-    wire [PTR_BITS-1:0] rgray_next = (rbin_next >> 1) ^ rbin_next;
-
-    // Full compara os dois bits mais altos invertidos do ponteiro de leitura.
-    assign full = wgray == {~rgray_sync[PTR_BITS-1:PTR_BITS-2],
-                                    rgray_sync[PTR_BITS-3:0]};
-    assign empty = rgray == wgray_sync;
-    assign rd_data = mem[rbin[ADDR_BITS-1:0]];
-
-    always @(posedge wr_clk) begin
-        if (wr_rst) begin
-            wbin <= 0;
-            wgray <= 0;
-            rgray_meta <= 0;
-            rgray_sync <= 0;
-        end else begin
-            rgray_meta <= rgray;
-            rgray_sync <= rgray_meta;
-            if (wpush) begin
-                mem[wbin[ADDR_BITS-1:0]] <= wr_data;
-                wbin <= wbin_next;
-                wgray <= wgray_next;
-            end
-        end
-    end
-
-    always @(posedge rd_clk) begin
-        if (rd_rst) begin
-            rbin <= 0;
-            rgray <= 0;
-            wgray_meta <= 0;
-            wgray_sync <= 0;
-        end else begin
-            wgray_meta <= wgray;
-            wgray_sync <= wgray_meta;
-            if (rpop) begin
-                rbin <= rbin_next;
-                rgray <= rgray_next;
-            end
-        end
-    end
-
-    initial if (ADDR_BITS < 2) $error("P4B FIFO: ADDR_BITS >= 2 exigido");
+    wire fifo_full, fifo_empty, wr_busy, rd_busy;
+    assign full = fifo_full || wr_busy || wr_rst;
+    assign empty = fifo_empty || rd_busy || rd_rst;
+    xpm_fifo_async #(
+        .FIFO_MEMORY_TYPE("distributed"), .FIFO_WRITE_DEPTH(1 << ADDR_BITS),
+        .WRITE_DATA_WIDTH(WIDTH), .READ_DATA_WIDTH(WIDTH),
+        .WR_DATA_COUNT_WIDTH(ADDR_BITS+1), .RD_DATA_COUNT_WIDTH(ADDR_BITS+1),
+        .READ_MODE("fwft"), .FIFO_READ_LATENCY(0), .CDC_SYNC_STAGES(2),
+        .RELATED_CLOCKS(0), .USE_ADV_FEATURES("0000"),
+        .SIM_ASSERT_CHK(1), .EN_SIM_ASSERT_ERR("error")
+    ) u_xpm (
+        .wr_clk(wr_clk), .rst(wr_rst), .wr_en(wr_en && !full), .din(wr_data),
+        .full(fifo_full), .wr_rst_busy(wr_busy),
+        .rd_clk(rd_clk), .rd_en(rd_en && !empty), .dout(rd_data),
+        .empty(fifo_empty), .rd_rst_busy(rd_busy),
+        .sleep(1'b0), .injectsbiterr(1'b0), .injectdbiterr(1'b0)
+    );
+    initial if (ADDR_BITS < 4) $error("XPM FIFO exige pelo menos 16 entradas");
 endmodule
