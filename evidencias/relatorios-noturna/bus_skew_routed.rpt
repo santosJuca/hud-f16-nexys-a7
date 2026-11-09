@@ -1,0 +1,968 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (lin64) Build 6511674 Tue Jun 16 11:01:26 MDT 2026
+| Date         : Mon Nov  9 00:40:22 2026
+| Host         : santojuca-System-Product-Name running 64-bit Ubuntu 24.04.5 LTS
+| Command      : report_bus_skew -file /home/santojuca/Downloads/hud_ddr2_noturna_20261108/resultado/bus_skew_routed.rpt
+| Design       : top_reticula
+| Device       : 7a100t-csg324
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+| Design State : Physopt postRoute
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Bus Skew Report
+
+Table of Contents
+-----------------
+1. Bus Skew Report Summary
+2. Bus Skew Report Per Constraint
+
+1. Bus Skew Report Summary
+--------------------------
+
+Id  Position  From                            To                              Corner  Requirement(ns)  Actual(ns)  Slack(ns)
+--  --------  ------------------------------  ------------------------------  ------  ---------------  ----------  ---------
+1   11        [get_cells -hier -filter {NAME =~ u_attitude_cdc/retido_reg* || NAME =~ u_video_diag_cdc/retido_reg*}]
+                                              [get_cells -hier -filter {NAME =~ u_attitude_cdc/dados_destino_reg* || NAME =~ u_video_diag_cdc/dados_destino_reg*}]
+                                                                              Slow             10.000       1.778      8.222
+2   37        [get_cells -hier -filter {NAME =~ u_entrada/retido_reg*}]
+                                              [get_cells -hier -filter {NAME =~ u_entrada/dados_destino_reg*}]
+                                                                              Slow             10.000       1.559      8.441
+3   45        [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[0]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[1]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[2]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[3]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[4]}]]
+                                              [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][0]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][1]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][2]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][3]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]}]]
+                                                                              Slow             10.000       0.616      9.384
+4   47        [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[0]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[1]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[2]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[3]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[4]}]]
+                                              [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][0]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][1]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][2]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][3]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][4]}]]
+                                                                              Slow             10.000       0.883      9.117
+5   49        [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[0]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[1]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[2]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[3]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[4]}]]
+                                              [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][0]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][1]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][2]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][3]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]}]]
+                                                                              Slow             10.000       0.956      9.044
+6   51        [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[0]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[1]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[2]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[3]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[4]}]]
+                                              [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][0]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][1]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][2]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][3]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][4]}]]
+                                                                              Slow             10.000       1.092      8.908
+7   69        [get_cells -hier -filter {NAME =~ *u_joystick_xadc/temperature_raw_reg*}]
+                                              [get_pins -hier -filter {NAME =~ *u_temperature_cdc/destination_data_reg*/D}]
+                                                                              Slow              8.000       1.457      6.543
+8   74        [get_cells -hier -filter {NAME =~ *u_joystick_cdc/retido_reg*}]
+                                              [get_pins -hier -filter {NAME =~ *u_joystick_cdc/dados_destino_reg*/D}]
+                                                                              Slow              8.000       1.284      6.716
+
+
+2. Bus Skew Report Per Constraint
+---------------------------------
+
+Id: 1
+set_bus_skew -from [get_cells -hier -filter {NAME =~ u_attitude_cdc/retido_reg* || NAME =~ u_video_diag_cdc/retido_reg*}] -to [get_cells -hier -filter {NAME =~ u_attitude_cdc/dados_destino_reg* || NAME =~ u_video_diag_cdc/dados_destino_reg*}] 10.000
+Requirement: 10.000ns
+Endpoints: 343
+
+From Clock            To Clock              Endpoint Pin                    Reference Pin                   Corner  Actual(ns)  Slack(ns)
+--------------------  --------------------  ------------------------------  ------------------------------  ------  ----------  ---------
+u_ui_test/u_mig/sys_clk_i
+                      pixel_clk             u_attitude_cdc/dados_destino_reg[39]/D
+                                                                            u_attitude_cdc/dados_destino_reg[12]/D
+                                                                                                            Slow         1.778      8.222
+
+
+Slack (MET) :             8.222ns  (requirement - actual skew)
+  Endpoint Source:        u_attitude_cdc/retido_reg[39]/C
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Endpoint Destination:   u_attitude_cdc/dados_destino_reg[39]/D
+                            (rising edge-triggered cell FDRE clocked by pixel_clk)
+  Reference Source:       u_attitude_cdc/retido_reg[12]/C
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Reference Destination:  u_attitude_cdc/dados_destino_reg[12]/D
+                            (rising edge-triggered cell FDRE clocked by pixel_clk)
+  Path Type:              Bus Skew (Max at Slow Process Corner)
+  Requirement:            10.000ns
+  Endpoint Relative Delay:   -0.685ns
+  Reference Relative Delay:  -2.782ns
+  Relative CRPR:              0.319ns
+  Actual Bus Skew:            1.778ns  (Endpoint Relative Delay - Reference Relative Delay - Relative CRPR)
+
+Endpoint path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.096     3.602 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.635     5.238    u_attitude_cdc/clk_hud
+    SLICE_X45Y53         FDRE                                         r  u_attitude_cdc/retido_reg[39]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X45Y53         FDRE (Prop_fdre_C_Q)         0.456     5.694 r  u_attitude_cdc/retido_reg[39]/Q
+                         net (fo=1, routed)           1.272     6.966    u_attitude_cdc/retido_reg_n_0_[39]
+    SLICE_X52Y53         FDRE                                         r  u_attitude_cdc/dados_destino_reg[39]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock pixel_clk rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.505     4.928    u_vga/clk_hud
+    SLICE_X52Y97         FDRE (Prop_fdre_C_Q)         0.367     5.295 r  u_vga/clk25_reg/Q
+                         net (fo=2, routed)           0.689     5.983    pixel_clk
+    BUFGCTRL_X0Y1        BUFG (Prop_bufg_I_O)         0.091     6.074 r  pixel_clk_BUFG_inst/O
+                         net (fo=1652, routed)        1.501     7.576    u_attitude_cdc/pixel_clk
+    SLICE_X52Y53         FDRE                                         r  u_attitude_cdc/dados_destino_reg[39]/C
+                         clock pessimism              0.180     7.756    <hidden>
+    SLICE_X52Y53         FDRE (Setup_fdre_C_D)       -0.105     7.651    u_attitude_cdc/dados_destino_reg[39]
+  -------------------------------------------------------------------
+                         data arrival                           6.966    <hidden>
+                         clock arrival                          7.651    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                        -0.685    <hidden>
+
+Reference path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.505     4.928    u_attitude_cdc/clk_hud
+    SLICE_X52Y50         FDRE                                         r  u_attitude_cdc/retido_reg[12]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X52Y50         FDRE (Prop_fdre_C_Q)         0.367     5.295 r  u_attitude_cdc/retido_reg[12]/Q
+                         net (fo=1, routed)           0.291     5.586    u_attitude_cdc/retido_reg_n_0_[12]
+    SLICE_X52Y48         FDRE                                         r  u_attitude_cdc/dados_destino_reg[12]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock pixel_clk rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.096     3.602 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.626     5.229    u_vga/clk_hud
+    SLICE_X52Y97         FDRE (Prop_fdre_C_Q)         0.456     5.685 r  u_vga/clk25_reg/Q
+                         net (fo=2, routed)           0.778     6.462    pixel_clk
+    BUFGCTRL_X0Y1        BUFG (Prop_bufg_I_O)         0.096     6.558 r  pixel_clk_BUFG_inst/O
+                         net (fo=1652, routed)        1.797     8.356    u_attitude_cdc/pixel_clk
+    SLICE_X52Y48         FDRE                                         r  u_attitude_cdc/dados_destino_reg[12]/C
+                         clock pessimism             -0.180     8.176    <hidden>
+    SLICE_X52Y48         FDRE (Hold_fdre_C_D)         0.192     8.368    u_attitude_cdc/dados_destino_reg[12]
+  -------------------------------------------------------------------
+                         data arrival                           5.586    <hidden>
+                         clock arrival                          8.368    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                        -2.782    <hidden>
+
+
+
+Id: 2
+set_bus_skew -from [get_cells -hier -filter {NAME =~ u_entrada/retido_reg*}] -to [get_cells -hier -filter {NAME =~ u_entrada/dados_destino_reg*}] 10.000
+Requirement: 10.000ns
+Endpoints: 91
+
+From Clock            To Clock              Endpoint Pin                    Reference Pin                   Corner  Actual(ns)  Slack(ns)
+--------------------  --------------------  ------------------------------  ------------------------------  ------  ----------  ---------
+u_ui_test/u_mig/sys_clk_i
+                      pixel_clk             u_entrada/dados_destino_reg[105]/D
+                                                                            u_entrada/dados_destino_reg[20]/D
+                                                                                                            Slow         1.559      8.441
+
+
+Slack (MET) :             8.441ns  (requirement - actual skew)
+  Endpoint Source:        u_entrada/retido_reg[105]/C
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Endpoint Destination:   u_entrada/dados_destino_reg[105]/D
+                            (rising edge-triggered cell FDRE clocked by pixel_clk)
+  Reference Source:       u_entrada/retido_reg[20]/C
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Reference Destination:  u_entrada/dados_destino_reg[20]/D
+                            (rising edge-triggered cell FDRE clocked by pixel_clk)
+  Path Type:              Bus Skew (Max at Slow Process Corner)
+  Requirement:            10.000ns
+  Endpoint Relative Delay:   -0.791ns
+  Reference Relative Delay:  -2.654ns
+  Relative CRPR:              0.304ns
+  Actual Bus Skew:            1.559ns  (Endpoint Relative Delay - Reference Relative Delay - Relative CRPR)
+
+Endpoint path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.096     3.602 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.627     5.230    u_entrada/clk_hud
+    SLICE_X37Y79         FDRE                                         r  u_entrada/retido_reg[105]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X37Y79         FDRE (Prop_fdre_C_Q)         0.456     5.686 r  u_entrada/retido_reg[105]/Q
+                         net (fo=1, routed)           1.181     6.867    u_entrada/retido__0[105]
+    SLICE_X40Y83         FDRE                                         r  u_entrada/dados_destino_reg[105]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock pixel_clk rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.505     4.928    u_vga/clk_hud
+    SLICE_X52Y97         FDRE (Prop_fdre_C_Q)         0.367     5.295 r  u_vga/clk25_reg/Q
+                         net (fo=2, routed)           0.689     5.983    pixel_clk
+    BUFGCTRL_X0Y1        BUFG (Prop_bufg_I_O)         0.091     6.074 r  pixel_clk_BUFG_inst/O
+                         net (fo=1652, routed)        1.508     7.583    u_entrada/pixel_clk
+    SLICE_X40Y83         FDRE                                         r  u_entrada/dados_destino_reg[105]/C
+                         clock pessimism              0.180     7.763    <hidden>
+    SLICE_X40Y83         FDRE (Setup_fdre_C_D)       -0.105     7.658    u_entrada/dados_destino_reg[105]
+  -------------------------------------------------------------------
+                         data arrival                           6.867    <hidden>
+                         clock arrival                          7.658    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                        -0.791    <hidden>
+
+Reference path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.497     4.919    u_entrada/clk_hud
+    SLICE_X49Y105        FDRE                                         r  u_entrada/retido_reg[20]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X49Y105        FDRE (Prop_fdre_C_Q)         0.367     5.286 r  u_entrada/retido_reg[20]/Q
+                         net (fo=1, routed)           0.299     5.585    u_entrada/retido__0[20]
+    SLICE_X50Y104        FDRE                                         r  u_entrada/dados_destino_reg[20]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock pixel_clk rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.096     3.602 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.626     5.229    u_vga/clk_hud
+    SLICE_X52Y97         FDRE (Prop_fdre_C_Q)         0.456     5.685 r  u_vga/clk25_reg/Q
+                         net (fo=2, routed)           0.778     6.462    pixel_clk
+    BUFGCTRL_X0Y1        BUFG (Prop_bufg_I_O)         0.096     6.558 r  pixel_clk_BUFG_inst/O
+                         net (fo=1652, routed)        1.618     8.176    u_entrada/pixel_clk
+    SLICE_X50Y104        FDRE                                         r  u_entrada/dados_destino_reg[20]/C
+                         clock pessimism             -0.180     7.996    <hidden>
+    SLICE_X50Y104        FDRE (Hold_fdre_C_D)         0.243     8.239    u_entrada/dados_destino_reg[20]
+  -------------------------------------------------------------------
+                         data arrival                           5.585    <hidden>
+                         clock arrival                          8.239    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                        -2.654    <hidden>
+
+
+
+Id: 3
+set_bus_skew -from [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[0]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[1]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[2]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[3]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[4]}]] -to [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][0]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][1]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][2]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][3]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]}]] 10.000
+Requirement: 10.000ns
+Endpoints: 5
+
+From Clock            To Clock              Endpoint Pin                    Reference Pin                   Corner  Actual(ns)  Slack(ns)
+--------------------  --------------------  ------------------------------  ------------------------------  ------  ----------  ---------
+u_ui_test/u_mig/sys_clk_i
+                      clk_pll_i             u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]/D
+                                                                            u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][1]/D
+                                                                                                            Slow         0.616      9.384
+
+
+Slack (MET) :             9.384ns  (requirement - actual skew)
+  Endpoint Source:        u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Endpoint Destination:   u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]/D
+                            (rising edge-triggered cell FDRE clocked by clk_pll_i)
+  Reference Source:       u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[1]/C
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Reference Destination:  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][1]/D
+                            (rising edge-triggered cell FDRE clocked by clk_pll_i)
+  Path Type:              Bus Skew (Max at Slow Process Corner)
+  Requirement:            10.000ns
+  Endpoint Relative Delay:    1.546ns
+  Reference Relative Delay:   0.439ns
+  Relative CRPR:              0.492ns
+  Actual Bus Skew:            0.616ns  (Endpoint Relative Delay - Reference Relative Delay - Relative CRPR)
+
+Endpoint path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.096     3.602 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.807     5.410    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_clk
+    SLICE_X64Y48         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[4]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X64Y48         FDRE (Prop_fdre_C_Q)         0.456     5.866 r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[4]/Q
+                         net (fo=1, routed)           0.634     6.499    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/async_path[4]
+    SLICE_X64Y49         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_pll_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.241     2.652    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/mmcm_clk
+    PLLE2_ADV_X1Y1       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT3)
+                                                      0.083     2.735 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/plle2_i/CLKOUT3
+                         net (fo=1, routed)           1.205     3.940    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3_out
+    BUFHCE_X1Y12         BUFH (Prop_bufh_I_O)         0.081     4.021 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufh_pll_clk3/O
+                         net (fo=1, routed)           0.799     4.820    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3
+    MMCME2_ADV_X1Y1      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKFBOUT)
+                                                     -3.249     1.571 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT
+                         net (fo=1, routed)           1.639     3.210    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/clk_pll_i
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091     3.301 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufg_clkdiv0/O
+                         net (fo=4488, routed)        1.675     4.976    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_clk
+    SLICE_X64Y49         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]/C
+                         clock pessimism              0.071     5.046    <hidden>
+    SLICE_X64Y49         FDRE (Setup_fdre_C_D)       -0.093     4.953    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]
+  -------------------------------------------------------------------
+                         data arrival                           6.499    <hidden>
+                         clock arrival                          4.953    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                         1.546    <hidden>
+
+Reference path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.678     5.100    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_clk
+    SLICE_X64Y48         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X64Y48         FDRE (Prop_fdre_C_Q)         0.337     5.437 r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[1]/Q
+                         net (fo=1, routed)           0.258     5.695    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/async_path[1]
+    SLICE_X64Y49         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][1]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_pll_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.316     2.798    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/mmcm_clk
+    PLLE2_ADV_X1Y1       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT3)
+                                                      0.088     2.886 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/plle2_i/CLKOUT3
+                         net (fo=1, routed)           1.281     4.167    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3_out
+    BUFHCE_X1Y12         BUFH (Prop_bufh_I_O)         0.127     4.294 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufh_pll_clk3/O
+                         net (fo=1, routed)           0.841     5.135    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3
+    MMCME2_ADV_X1Y1      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKFBOUT)
+                                                     -3.457     1.678 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT
+                         net (fo=1, routed)           1.719     3.398    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/clk_pll_i
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096     3.494 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufg_clkdiv0/O
+                         net (fo=4488, routed)        1.805     5.299    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_clk
+    SLICE_X64Y49         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][1]/C
+                         clock pessimism             -0.071     5.228    <hidden>
+    SLICE_X64Y49         FDRE (Hold_fdre_C_D)         0.028     5.256    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][1]
+  -------------------------------------------------------------------
+                         data arrival                           5.695    <hidden>
+                         clock arrival                          5.256    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                         0.439    <hidden>
+
+
+
+Id: 4
+set_bus_skew -from [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[0]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[1]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[2]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[3]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[4]}]] -to [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][0]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][1]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][2]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][3]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][4]}]] 10.000
+Requirement: 10.000ns
+Endpoints: 5
+
+From Clock            To Clock              Endpoint Pin                    Reference Pin                   Corner  Actual(ns)  Slack(ns)
+--------------------  --------------------  ------------------------------  ------------------------------  ------  ----------  ---------
+u_ui_test/u_mig/sys_clk_i
+                      clk_pll_i             u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][1]/D
+                                                                            u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][2]/D
+                                                                                                            Slow         0.883      9.117
+
+
+Slack (MET) :             9.117ns  (requirement - actual skew)
+  Endpoint Source:        u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[1]/C
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Endpoint Destination:   u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][1]/D
+                            (rising edge-triggered cell FDRE clocked by clk_pll_i)
+  Reference Source:       u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[2]/C
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Reference Destination:  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][2]/D
+                            (rising edge-triggered cell FDRE clocked by clk_pll_i)
+  Path Type:              Bus Skew (Max at Slow Process Corner)
+  Requirement:            10.000ns
+  Endpoint Relative Delay:    1.605ns
+  Reference Relative Delay:   0.314ns
+  Relative CRPR:              0.408ns
+  Actual Bus Skew:            0.883ns  (Endpoint Relative Delay - Reference Relative Delay - Relative CRPR)
+
+Endpoint path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.096     3.602 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.632     5.235    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_clk
+    SLICE_X68Y58         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X68Y58         FDRE (Prop_fdre_C_Q)         0.419     5.654 r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[1]/Q
+                         net (fo=1, routed)           0.613     6.267    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/async_path[1]
+    SLICE_X66Y58         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][1]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_pll_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.241     2.652    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/mmcm_clk
+    PLLE2_ADV_X1Y1       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT3)
+                                                      0.083     2.735 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/plle2_i/CLKOUT3
+                         net (fo=1, routed)           1.205     3.940    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3_out
+    BUFHCE_X1Y12         BUFH (Prop_bufh_I_O)         0.081     4.021 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufh_pll_clk3/O
+                         net (fo=1, routed)           0.799     4.820    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3
+    MMCME2_ADV_X1Y1      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKFBOUT)
+                                                     -3.249     1.571 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT
+                         net (fo=1, routed)           1.639     3.210    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/clk_pll_i
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091     3.301 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufg_clkdiv0/O
+                         net (fo=4488, routed)        1.508     4.809    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_clk
+    SLICE_X66Y58         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][1]/C
+                         clock pessimism              0.071     4.880    <hidden>
+    SLICE_X66Y58         FDRE (Setup_fdre_C_D)       -0.218     4.662    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][1]
+  -------------------------------------------------------------------
+                         data arrival                           6.267    <hidden>
+                         clock arrival                          4.662    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                         1.605    <hidden>
+
+Reference path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.511     4.934    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_clk
+    SLICE_X67Y57         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y57         FDRE (Prop_fdre_C_Q)         0.367     5.301 r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[2]/Q
+                         net (fo=1, routed)           0.296     5.597    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/async_path[2]
+    SLICE_X66Y57         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][2]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_pll_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.316     2.798    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/mmcm_clk
+    PLLE2_ADV_X1Y1       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT3)
+                                                      0.088     2.886 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/plle2_i/CLKOUT3
+                         net (fo=1, routed)           1.281     4.167    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3_out
+    BUFHCE_X1Y12         BUFH (Prop_bufh_I_O)         0.127     4.294 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufh_pll_clk3/O
+                         net (fo=1, routed)           0.841     5.135    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3
+    MMCME2_ADV_X1Y1      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKFBOUT)
+                                                     -3.457     1.678 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT
+                         net (fo=1, routed)           1.719     3.398    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/clk_pll_i
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096     3.494 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufg_clkdiv0/O
+                         net (fo=4488, routed)        1.630     5.124    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_clk
+    SLICE_X66Y57         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][2]/C
+                         clock pessimism             -0.071     5.053    <hidden>
+    SLICE_X66Y57         FDRE (Hold_fdre_C_D)         0.230     5.283    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][2]
+  -------------------------------------------------------------------
+                         data arrival                           5.597    <hidden>
+                         clock arrival                          5.283    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                         0.314    <hidden>
+
+
+
+Id: 5
+set_bus_skew -from [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[0]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[1]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[2]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[3]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[4]}]] -to [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][0]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][1]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][2]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][3]} {u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]}]] 10.000
+Requirement: 10.000ns
+Endpoints: 5
+
+From Clock            To Clock              Endpoint Pin                    Reference Pin                   Corner  Actual(ns)  Slack(ns)
+--------------------  --------------------  ------------------------------  ------------------------------  ------  ----------  ---------
+clk_pll_i             u_ui_test/u_mig/sys_clk_i
+                                            u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]/D
+                                                                            u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][0]/D
+                                                                                                            Slow         0.956      9.044
+
+
+Slack (MET) :             9.044ns  (requirement - actual skew)
+  Endpoint Source:        u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by clk_pll_i)
+  Endpoint Destination:   u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]/D
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Reference Source:       u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[0]/C
+                            (rising edge-triggered cell FDRE clocked by clk_pll_i)
+  Reference Destination:  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][0]/D
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Path Type:              Bus Skew (Max at Slow Process Corner)
+  Requirement:            10.000ns
+  Endpoint Relative Delay:    1.577ns
+  Reference Relative Delay:   0.129ns
+  Relative CRPR:              0.492ns
+  Actual Bus Skew:            0.956ns  (Endpoint Relative Delay - Reference Relative Delay - Relative CRPR)
+
+Endpoint path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_pll_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.316     2.798    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/mmcm_clk
+    PLLE2_ADV_X1Y1       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT3)
+                                                      0.088     2.886 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/plle2_i/CLKOUT3
+                         net (fo=1, routed)           1.281     4.167    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3_out
+    BUFHCE_X1Y12         BUFH (Prop_bufh_I_O)         0.127     4.294 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufh_pll_clk3/O
+                         net (fo=1, routed)           0.841     5.135    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3
+    MMCME2_ADV_X1Y1      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKFBOUT)
+                                                     -3.457     1.678 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT
+                         net (fo=1, routed)           1.719     3.398    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/clk_pll_i
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096     3.494 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufg_clkdiv0/O
+                         net (fo=4488, routed)        1.805     5.299    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_clk
+    SLICE_X69Y49         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[4]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X69Y49         FDRE (Prop_fdre_C_Q)         0.456     5.755 r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[4]/Q
+                         net (fo=1, routed)           0.901     6.656    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/async_path[4]
+    SLICE_X68Y49         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.678     5.100    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_clk
+    SLICE_X68Y49         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]/C
+                         clock pessimism              0.071     5.171    <hidden>
+    SLICE_X68Y49         FDRE (Setup_fdre_C_D)       -0.092     5.079    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][4]
+  -------------------------------------------------------------------
+                         data arrival                           6.656    <hidden>
+                         clock arrival                          5.079    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                         1.577    <hidden>
+
+Reference path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_pll_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.241     2.652    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/mmcm_clk
+    PLLE2_ADV_X1Y1       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT3)
+                                                      0.083     2.735 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/plle2_i/CLKOUT3
+                         net (fo=1, routed)           1.205     3.940    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3_out
+    BUFHCE_X1Y12         BUFH (Prop_bufh_I_O)         0.081     4.021 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufh_pll_clk3/O
+                         net (fo=1, routed)           0.799     4.820    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3
+    MMCME2_ADV_X1Y1      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKFBOUT)
+                                                     -3.249     1.571 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT
+                         net (fo=1, routed)           1.639     3.210    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/clk_pll_i
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091     3.301 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufg_clkdiv0/O
+                         net (fo=4488, routed)        1.675     4.976    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_clk
+    SLICE_X69Y49         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X69Y49         FDRE (Prop_fdre_C_Q)         0.367     5.343 r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/src_gray_ff_reg[0]/Q
+                         net (fo=1, routed)           0.295     5.637    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/async_path[0]
+    SLICE_X68Y49         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.096     3.602 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.807     5.410    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_clk
+    SLICE_X68Y49         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][0]/C
+                         clock pessimism             -0.071     5.339    <hidden>
+    SLICE_X68Y49         FDRE (Hold_fdre_C_D)         0.169     5.508    u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.rd_pntr_cdc_inst/dest_graysync_ff_reg[0][0]
+  -------------------------------------------------------------------
+                         data arrival                           5.637    <hidden>
+                         clock arrival                          5.508    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                         0.129    <hidden>
+
+
+
+Id: 6
+set_bus_skew -from [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[0]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[1]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[2]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[3]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[4]}]] -to [get_cells [list {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][0]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][1]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][2]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][3]} {u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][4]}]] 10.000
+Requirement: 10.000ns
+Endpoints: 5
+
+From Clock            To Clock              Endpoint Pin                    Reference Pin                   Corner  Actual(ns)  Slack(ns)
+--------------------  --------------------  ------------------------------  ------------------------------  ------  ----------  ---------
+clk_pll_i             u_ui_test/u_mig/sys_clk_i
+                                            u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][3]/D
+                                                                            u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][0]/D
+                                                                                                            Slow         1.092      8.908
+
+
+Slack (MET) :             8.908ns  (requirement - actual skew)
+  Endpoint Source:        u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[3]/C
+                            (rising edge-triggered cell FDRE clocked by clk_pll_i)
+  Endpoint Destination:   u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][3]/D
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Reference Source:       u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[0]/C
+                            (rising edge-triggered cell FDRE clocked by clk_pll_i)
+  Reference Destination:  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][0]/D
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Path Type:              Bus Skew (Max at Slow Process Corner)
+  Requirement:            10.000ns
+  Endpoint Relative Delay:    1.705ns
+  Reference Relative Delay:   0.138ns
+  Relative CRPR:              0.475ns
+  Actual Bus Skew:            1.092ns  (Endpoint Relative Delay - Reference Relative Delay - Relative CRPR)
+
+Endpoint path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_pll_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.316     2.798    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/mmcm_clk
+    PLLE2_ADV_X1Y1       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT3)
+                                                      0.088     2.886 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/plle2_i/CLKOUT3
+                         net (fo=1, routed)           1.281     4.167    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3_out
+    BUFHCE_X1Y12         BUFH (Prop_bufh_I_O)         0.127     4.294 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufh_pll_clk3/O
+                         net (fo=1, routed)           0.841     5.135    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3
+    MMCME2_ADV_X1Y1      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKFBOUT)
+                                                     -3.457     1.678 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT
+                         net (fo=1, routed)           1.719     3.398    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/clk_pll_i
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096     3.494 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufg_clkdiv0/O
+                         net (fo=4488, routed)        1.632     5.126    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_clk
+    SLICE_X65Y51         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[3]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y51         FDRE (Prop_fdre_C_Q)         0.419     5.545 r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[3]/Q
+                         net (fo=1, routed)           0.901     6.446    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/async_path[3]
+    SLICE_X64Y51         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][3]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.513     4.936    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_clk
+    SLICE_X64Y51         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][3]/C
+                         clock pessimism              0.071     5.006    <hidden>
+    SLICE_X64Y51         FDRE (Setup_fdre_C_D)       -0.265     4.741    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][3]
+  -------------------------------------------------------------------
+                         data arrival                           6.446    <hidden>
+                         clock arrival                          4.741    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                         1.705    <hidden>
+
+Reference path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_pll_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.241     2.652    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/mmcm_clk
+    PLLE2_ADV_X1Y1       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT3)
+                                                      0.083     2.735 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/plle2_i/CLKOUT3
+                         net (fo=1, routed)           1.205     3.940    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3_out
+    BUFHCE_X1Y12         BUFH (Prop_bufh_I_O)         0.081     4.021 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufh_pll_clk3/O
+                         net (fo=1, routed)           0.799     4.820    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3
+    MMCME2_ADV_X1Y1      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKFBOUT)
+                                                     -3.249     1.571 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT
+                         net (fo=1, routed)           1.639     3.210    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/clk_pll_i
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091     3.301 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufg_clkdiv0/O
+                         net (fo=4488, routed)        1.510     4.811    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_clk
+    SLICE_X65Y51         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y51         FDRE (Prop_fdre_C_Q)         0.367     5.178 r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/src_gray_ff_reg[0]/Q
+                         net (fo=1, routed)           0.295     5.473    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/async_path[0]
+    SLICE_X64Y51         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.096     3.602 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.634     5.237    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_clk
+    SLICE_X64Y51         FDRE                                         r  u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][0]/C
+                         clock pessimism             -0.071     5.166    <hidden>
+    SLICE_X64Y51         FDRE (Hold_fdre_C_D)         0.169     5.335    u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/gen_cdc_pntr.wr_pntr_cdc_inst/dest_graysync_ff_reg[0][0]
+  -------------------------------------------------------------------
+                         data arrival                           5.473    <hidden>
+                         clock arrival                          5.335    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                         0.138    <hidden>
+
+
+
+Id: 7
+set_bus_skew -from [get_cells -hier -filter {NAME =~ *u_joystick_xadc/temperature_raw_reg*}] -to [get_pins -hier -filter {NAME =~ *u_temperature_cdc/destination_data_reg*/D}] 8.000
+Requirement: 8.000ns
+Endpoints: 12
+
+From Clock            To Clock              Endpoint Pin                    Reference Pin                   Corner  Actual(ns)  Slack(ns)
+--------------------  --------------------  ------------------------------  ------------------------------  ------  ----------  ---------
+clk_xadc_raw          clk_pll_i             u_ui_test/u_temperature_cdc/destination_data_reg[7]/D
+                                                                            u_ui_test/u_temperature_cdc/destination_data_reg[8]/D
+                                                                                                            Slow         1.457      6.543
+
+
+Slack (MET) :             6.543ns  (requirement - actual skew)
+  Endpoint Source:        u_joystick_xadc/temperature_raw_reg[7]/C
+                            (rising edge-triggered cell FDRE clocked by clk_xadc_raw)
+  Endpoint Destination:   u_ui_test/u_temperature_cdc/destination_data_reg[7]/D
+                            (rising edge-triggered cell FDRE clocked by clk_pll_i)
+  Reference Source:       u_joystick_xadc/temperature_raw_reg[8]/C
+                            (rising edge-triggered cell FDRE clocked by clk_xadc_raw)
+  Reference Destination:  u_ui_test/u_temperature_cdc/destination_data_reg[8]/D
+                            (rising edge-triggered cell FDRE clocked by clk_pll_i)
+  Path Type:              Bus Skew (Max at Slow Process Corner)
+  Requirement:            8.000ns
+  Endpoint Relative Delay:   -3.677ns
+  Reference Relative Delay:  -5.841ns
+  Relative CRPR:              0.707ns
+  Actual Bus Skew:            1.457ns  (Endpoint Relative Delay - Reference Relative Delay - Relative CRPR)
+
+Endpoint path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_xadc_raw rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.233     2.715    clk_IBUF
+    MMCME2_ADV_X1Y2      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -7.070    -4.355 r  u_refclk_mmcm/CLKOUT0
+                         net (fo=1, routed)           1.719    -2.636    clk_xadc_raw
+    BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.096    -2.540 r  u_xadc_global/O
+                         net (fo=73, routed)          1.610    -0.930    u_joystick_xadc/clk_xadc
+    SLICE_X57Y106        FDRE                                         r  u_joystick_xadc/temperature_raw_reg[7]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X57Y106        FDRE (Prop_fdre_C_Q)         0.456    -0.474 r  u_joystick_xadc/temperature_raw_reg[7]/Q
+                         net (fo=1, routed)           1.566     1.092    u_ui_test/u_temperature_cdc/destination_data_reg[11]_0[7]
+    SLICE_X68Y100        FDRE                                         r  u_ui_test/u_temperature_cdc/destination_data_reg[7]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_pll_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.241     2.652    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/mmcm_clk
+    PLLE2_ADV_X1Y1       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT3)
+                                                      0.083     2.735 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/plle2_i/CLKOUT3
+                         net (fo=1, routed)           1.205     3.940    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3_out
+    BUFHCE_X1Y12         BUFH (Prop_bufh_I_O)         0.081     4.021 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufh_pll_clk3/O
+                         net (fo=1, routed)           0.799     4.820    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3
+    MMCME2_ADV_X1Y1      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKFBOUT)
+                                                     -3.249     1.571 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT
+                         net (fo=1, routed)           1.639     3.210    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/clk_pll_i
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091     3.301 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufg_clkdiv0/O
+                         net (fo=4488, routed)        1.500     4.800    u_ui_test/u_temperature_cdc/ui_clk
+    SLICE_X68Y100        FDRE                                         r  u_ui_test/u_temperature_cdc/destination_data_reg[7]/C
+                         clock pessimism              0.071     4.871    <hidden>
+    SLICE_X68Y100        FDRE (Setup_fdre_C_D)       -0.102     4.769    u_ui_test/u_temperature_cdc/destination_data_reg[7]
+  -------------------------------------------------------------------
+                         data arrival                           1.092    <hidden>
+                         clock arrival                          4.769    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                        -3.677    <hidden>
+
+Reference path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_xadc_raw rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.162     2.573    clk_IBUF
+    MMCME2_ADV_X1Y2      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -7.324    -4.751 r  u_refclk_mmcm/CLKOUT0
+                         net (fo=1, routed)           1.639    -3.112    clk_xadc_raw
+    BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.091    -3.021 r  u_xadc_global/O
+                         net (fo=73, routed)          1.494    -1.527    u_joystick_xadc/clk_xadc
+    SLICE_X58Y102        FDRE                                         r  u_joystick_xadc/temperature_raw_reg[8]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X58Y102        FDRE (Prop_fdre_C_Q)         0.418    -1.109 r  u_joystick_xadc/temperature_raw_reg[8]/Q
+                         net (fo=1, routed)           0.510    -0.599    u_ui_test/u_temperature_cdc/destination_data_reg[11]_0[8]
+    SLICE_X69Y102        FDRE                                         r  u_ui_test/u_temperature_cdc/destination_data_reg[8]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_pll_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.316     2.798    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/mmcm_clk
+    PLLE2_ADV_X1Y1       PLLE2_ADV (Prop_plle2_adv_CLKIN1_CLKOUT3)
+                                                      0.088     2.886 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/plle2_i/CLKOUT3
+                         net (fo=1, routed)           1.281     4.167    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3_out
+    BUFHCE_X1Y12         BUFH (Prop_bufh_I_O)         0.127     4.294 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufh_pll_clk3/O
+                         net (fo=1, routed)           0.841     5.135    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3
+    MMCME2_ADV_X1Y1      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKFBOUT)
+                                                     -3.457     1.678 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT
+                         net (fo=1, routed)           1.719     3.398    u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/clk_pll_i
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096     3.494 r  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/u_bufg_clkdiv0/O
+                         net (fo=4488, routed)        1.620     5.114    u_ui_test/u_temperature_cdc/ui_clk
+    SLICE_X69Y102        FDRE                                         r  u_ui_test/u_temperature_cdc/destination_data_reg[8]/C
+                         clock pessimism             -0.071     5.043    <hidden>
+    SLICE_X69Y102        FDRE (Hold_fdre_C_D)         0.199     5.242    u_ui_test/u_temperature_cdc/destination_data_reg[8]
+  -------------------------------------------------------------------
+                         data arrival                          -0.599    <hidden>
+                         clock arrival                          5.242    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                        -5.841    <hidden>
+
+
+
+Id: 8
+set_bus_skew -from [get_cells -hier -filter {NAME =~ *u_joystick_cdc/retido_reg*}] -to [get_pins -hier -filter {NAME =~ *u_joystick_cdc/dados_destino_reg*/D}] 8.000
+Requirement: 8.000ns
+Endpoints: 24
+
+From Clock            To Clock              Endpoint Pin                    Reference Pin                   Corner  Actual(ns)  Slack(ns)
+--------------------  --------------------  ------------------------------  ------------------------------  ------  ----------  ---------
+clk_xadc_raw          u_ui_test/u_mig/sys_clk_i
+                                            g_xadc_fast.u_joystick_cdc/dados_destino_reg[1]/D
+                                                                            g_xadc_fast.u_joystick_cdc/dados_destino_reg[21]/D
+                                                                                                            Slow         1.284      6.716
+
+
+Slack (MET) :             6.716ns  (requirement - actual skew)
+  Endpoint Source:        g_xadc_fast.u_joystick_cdc/retido_reg[1]/C
+                            (rising edge-triggered cell FDRE clocked by clk_xadc_raw)
+  Endpoint Destination:   g_xadc_fast.u_joystick_cdc/dados_destino_reg[1]/D
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Reference Source:       g_xadc_fast.u_joystick_cdc/retido_reg[21]/C
+                            (rising edge-triggered cell FDRE clocked by clk_xadc_raw)
+  Reference Destination:  g_xadc_fast.u_joystick_cdc/dados_destino_reg[21]/D
+                            (rising edge-triggered cell FDRE clocked by u_ui_test/u_mig/sys_clk_i)
+  Path Type:              Bus Skew (Max at Slow Process Corner)
+  Requirement:            8.000ns
+  Endpoint Relative Delay:   -4.404ns
+  Reference Relative Delay:  -6.223ns
+  Relative CRPR:              0.535ns
+  Actual Bus Skew:            1.284ns  (Endpoint Relative Delay - Reference Relative Delay - Relative CRPR)
+
+Endpoint path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_xadc_raw rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.233     2.715    clk_IBUF
+    MMCME2_ADV_X1Y2      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -7.070    -4.355 r  u_refclk_mmcm/CLKOUT0
+                         net (fo=1, routed)           1.719    -2.636    clk_xadc_raw
+    BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.096    -2.540 r  u_xadc_global/O
+                         net (fo=73, routed)          1.625    -0.915    g_xadc_fast.u_joystick_cdc/clk_xadc
+    SLICE_X31Y106        FDRE                                         r  g_xadc_fast.u_joystick_cdc/retido_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X31Y106        FDRE (Prop_fdre_C_Q)         0.456    -0.459 r  g_xadc_fast.u_joystick_cdc/retido_reg[1]/Q
+                         net (fo=1, routed)           0.946     0.487    g_xadc_fast.u_joystick_cdc/retido_reg_n_0_[1]
+    SLICE_X32Y106        FDRE                                         r  g_xadc_fast.u_joystick_cdc/dados_destino_reg[1]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.504     4.926    g_xadc_fast.u_joystick_cdc/clk_hud
+    SLICE_X32Y106        FDRE                                         r  g_xadc_fast.u_joystick_cdc/dados_destino_reg[1]/C
+                         clock pessimism              0.071     4.997    <hidden>
+    SLICE_X32Y106        FDRE (Setup_fdre_C_D)       -0.105     4.892    g_xadc_fast.u_joystick_cdc/dados_destino_reg[1]
+  -------------------------------------------------------------------
+                         data arrival                           0.487    <hidden>
+                         clock arrival                          4.892    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                        -4.404    <hidden>
+
+Reference path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_xadc_raw rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.162     2.573    clk_IBUF
+    MMCME2_ADV_X1Y2      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -7.324    -4.751 r  u_refclk_mmcm/CLKOUT0
+                         net (fo=1, routed)           1.639    -3.112    clk_xadc_raw
+    BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.091    -3.021 r  u_xadc_global/O
+                         net (fo=73, routed)          1.492    -1.529    g_xadc_fast.u_joystick_cdc/clk_xadc
+    SLICE_X59Y108        FDRE                                         r  g_xadc_fast.u_joystick_cdc/retido_reg[21]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X59Y108        FDRE (Prop_fdre_C_Q)         0.367    -1.162 r  g_xadc_fast.u_joystick_cdc/retido_reg[21]/Q
+                         net (fo=1, routed)           0.301    -0.861    g_xadc_fast.u_joystick_cdc/retido_reg_n_0_[21]
+    SLICE_X58Y108        FDRE                                         r  g_xadc_fast.u_joystick_cdc/dados_destino_reg[21]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.096     3.602 r  u_hud_clock_bufg/O
+                         net (fo=10284, routed)       1.613     5.215    g_xadc_fast.u_joystick_cdc/clk_hud
+    SLICE_X58Y108        FDRE                                         r  g_xadc_fast.u_joystick_cdc/dados_destino_reg[21]/C
+                         clock pessimism             -0.071     5.145    <hidden>
+    SLICE_X58Y108        FDRE (Hold_fdre_C_D)         0.218     5.363    g_xadc_fast.u_joystick_cdc/dados_destino_reg[21]
+  -------------------------------------------------------------------
+                         data arrival                          -0.861    <hidden>
+                         clock arrival                          5.363    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                        -6.223    <hidden>
+
+
+

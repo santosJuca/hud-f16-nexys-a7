@@ -1,0 +1,1 @@
+Fatal: DDR2 nao foi efetivamente usada

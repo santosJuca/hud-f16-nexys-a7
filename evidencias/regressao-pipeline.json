@@ -1,0 +1,75 @@
+{
+  "rtl_commit": "415149935a67f0825a995a6aa793366c03683701",
+  "scenarios_passed": 7,
+  "pixel_checks": 13824000,
+  "results": [
+    {
+      "WIDTH": 320,
+      "FPS": 30,
+      "scenario": 0,
+      "frames": 4,
+      "updates": 4,
+      "errors": 0,
+      "pixel_checks": 2150400,
+      "load_cycles": 2515651,
+      "late_frames": 0
+    },
+    {
+      "WIDTH": 320,
+      "FPS": 30,
+      "scenario": 1,
+      "frames": 4,
+      "updates": 4,
+      "errors": 1,
+      "pixel_checks": 2764800,
+      "load_cycles": 2515651,
+      "late_frames": 0
+    },
+    {
+      "WIDTH": 320,
+      "FPS": 30,
+      "scenario": 2,
+      "frames": 4,
+      "updates": 4,
+      "errors": 1,
+      "pixel_checks": 2764800,
+      "load_cycles": 2515651,
+      "late_frames": 0
+    },
+    {
+      "WIDTH": 320,
+      "FPS": 30,
+      "scenario": 4,
+      "frames": 2,
+      "updates": 2,
+      "errors": 3,
+      "pixel_checks": 1843200,
+      "load_cycles": 2515651,
+      "late_frames": 0
+    },
+    {
+      "WIDTH": 320,
+      "FPS": 30,
+      "scenario": 5,
+      "frames": 3,
+      "updates": 3,
+      "errors": 0,
+      "pixel_checks": 1228800,
+      "load_cycles": 2515651,
+      "late_frames": 0
+    },
+    {
+      "WIDTH": 320,
+      "FPS": 30,
+      "scenario": 6,
+      "frames": 4,
+      "updates": 4,
+      "errors": 0,
+      "pixel_checks": 3072000,
+      "load_cycles": 5030851,
+      "late_frames": 4
+    }
+  ],
+  "invalid_header_rejected": true,
+  "physical_validation": false
+}

@@ -1,0 +1,10 @@
+Conferencia dos logs finais XSim; o wrapper foi editado durante execucao e terminou com erro de parsing apos os tres testes.
+O script estabilizado passou bash -n. Os logs abaixo nao foram alterados.
+validation/sd-ddr2-falhas/2.txt
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=2 frames=4 updates=4 errors=1 pixel_checks=2764800 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=22478 reads=19200 good_readbacks=4
+validation/sd-ddr2-falhas/3.txt
+PASS invalid header: fallback, nenhum quadro publicado
+validation/sd-ddr2-falhas/4.txt
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=4 frames=2 updates=2 errors=3 pixel_checks=1843200 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=9696 reads=9600 good_readbacks=2

@@ -1,0 +1,1078 @@
+{
+  "root": "/home/santojuca/Downloads/hud_ddr2_noturna_20261108",
+  "created_at": "2026-11-09T06:49:02.065724-03:00",
+  "base_tag": "rc/hud-ddr2-offline-20261108",
+  "rtl_commit": "415149935a67f0825a995a6aa793366c03683701",
+  "scope": "Fontes, documentos, evidencias, relatorios e checkpoints finais; exclui caches/intermediarios do simulador e o proprio manifesto",
+  "physical_approval": false,
+  "bitstream_generated": false,
+  "card_mapping_verified": false,
+  "artifacts": {
+    "ARQUITETURA_VIDEO_DDR2.md": {
+      "bytes": 3563,
+      "sha256": "158dbe793c5a53d59e48b85c9c57afc4782a92212f6bc3a65399626bc8ceceaa"
+    },
+    "PENDENCIAS_FISICAS.md": {
+      "bytes": 2254,
+      "sha256": "68278be11c3579f42e7216bdc8c9472cf6892a27cd256a293a55fe07b328080a"
+    },
+    "PROCEDIMENTO_FLASH_QSPI.md": {
+      "bytes": 2858,
+      "sha256": "3ce4a672cbd6bf7c846345c5b23f6810f071010e76fcda31164a30850432dd21"
+    },
+    "PROCEDIMENTO_TESTE_FPGA.md": {
+      "bytes": 6056,
+      "sha256": "3ce463985090a40058b157a4fa65c69e98fd9326024b0ab4a202a8d5e229d3d0"
+    },
+    "README.md": {
+      "bytes": 3485,
+      "sha256": "3d661bff3e70992eaa5bfd16186d0dd2e5dd410271b23d50b304095e017713a1"
+    },
+    "RESULTADO_FINAL.md": {
+      "bytes": 9075,
+      "sha256": "e27ca5e0f75e38b2026c8f42ab7ff88cf43741bd91a631c619ea6b0f7e370a13"
+    },
+    "VALIDACAO_OFFLINE.md": {
+      "bytes": 16357,
+      "sha256": "6e31b71a4b358fdb7d6f83a3332fbfb3cc036f3d39e21595126ef11df920c7bb"
+    },
+    "digilent-vivado-boards/new/board_files/nexys-a7-100t/D.0/1.3/board.xml": {
+      "bytes": 56500,
+      "sha256": "c78a05fd571e4c2a302988001d752fd9dfe70d43e00a3efb40087faf6c5438bf"
+    },
+    "digilent-vivado-boards/new/board_files/nexys-a7-100t/D.0/1.3/mig.prj": {
+      "bytes": 8693,
+      "sha256": "b3bd26e09a9dfcb47de33fe70343c42b5ef7600849ac759c41ca3c1578707770"
+    },
+    "digilent-vivado-boards/new/board_files/nexys-a7-100t/D.0/1.3/part0_pins.xml": {
+      "bytes": 10492,
+      "sha256": "5001de7b69a4b9aee9a7ca26bb94a9036b2926d3f4f42450930bcac6f87909cb"
+    },
+    "digilent-vivado-boards/new/board_files/nexys-a7-100t/D.0/1.3/preset.xml": {
+      "bytes": 17820,
+      "sha256": "f8cc4cba00e5aa69c64fbc3c53a3e1674f3524c0ba61ecb3a142f070e263ba91"
+    },
+    "evidencias/arquivo-cartao-20261109.json": {
+      "bytes": 1057,
+      "sha256": "dd2a8a07f052d4dee35846ac7cce79e6984c84535b5e8bed58c60fd13a4e7237"
+    },
+    "evidencias/artefatos-sha256.json": {
+      "bytes": 1061,
+      "sha256": "bbcb7d8e2ba496b7a8c5c27191cfb3d31b1662ba9ae00bcd689f380abc7addc4"
+    },
+    "evidencias/base-p4b-sha256.json": {
+      "bytes": 9277,
+      "sha256": "b5afd2ea1cd820dbe93dbe6daaf5676d037abe287d073fb761664818a2ce8a3a"
+    },
+    "evidencias/build-noturna.txt": {
+      "bytes": 308,
+      "sha256": "bbce5859830a702bdd96bbbc757a7d501d486d3da885fe513c994f716aade4ab"
+    },
+    "evidencias/build-preload.txt": {
+      "bytes": 308,
+      "sha256": "46374cf187668cdad2ab22135136e0b415ab00db4ab710633d04e8dbbd6cbb80"
+    },
+    "evidencias/cadencia-vga.txt": {
+      "bytes": 342,
+      "sha256": "b5963f0cfc6674873136a9ad7f8abbb2659202f8a6f0a08f4201c3f2daf5585c"
+    },
+    "evidencias/duplicatas-video.json": {
+      "bytes": 801,
+      "sha256": "a41f048b8b9cee89d3788effc0b36d5bbf5b28b85a463d2bfdf9037677a1a647"
+    },
+    "evidencias/ferramentas-video.json": {
+      "bytes": 436,
+      "sha256": "f78bd2c32825a88d4dce6a5b4b9c44aace002102ed257bfc90c472cf25e013ff"
+    },
+    "evidencias/fontes-candidato-sha256.json": {
+      "bytes": 10652,
+      "sha256": "ef1a3f6feac4b7c3f1ce414fa70a5812844cfaac03da3c6cebe1ee7e92c3302c"
+    },
+    "evidencias/fontes-noturna-sha256.json": {
+      "bytes": 8530,
+      "sha256": "3cebb9898a2c50fb6a7a39e0ce42fe1bc18d8e80234d667065ae309bfeb88809"
+    },
+    "evidencias/fontes-preload-sha256.json": {
+      "bytes": 9205,
+      "sha256": "add57e6fb7c40670d3a15414cd162f7f76dd3432e2bdd866e2990db585a04a77"
+    },
+    "evidencias/hud-offset-video.txt": {
+      "bytes": 150,
+      "sha256": "d4e68a8f929fccb895d954a641d84793e918e3f441acc2ab4b45d6be155b54c5"
+    },
+    "evidencias/identidade-cartao-20261109.json": {
+      "bytes": 781,
+      "sha256": "b0b9f3115078fc4b7ac72a46176488f8bb06496187c8f5218c02543ede35b657"
+    },
+    "evidencias/inicio-noturna.json": {
+      "bytes": 230,
+      "sha256": "a63c74d717b7f766be3714570b87a8dc51dd56782f6c44d54b57d068fed21202"
+    },
+    "evidencias/integridade-arquivo-cartao-20261109.json": {
+      "bytes": 533,
+      "sha256": "d31aa441425e9c04ed1a6687a730f8dcbdb2e45d6014879c369cc65eed326cb2"
+    },
+    "evidencias/leitura-cartao-20261109.txt": {
+      "bytes": 41,
+      "sha256": "f30a3f036e432bb5cb883869271a31794b2e8abec704b3db4a7f1a070329c7b5"
+    },
+    "evidencias/leitura-cartao-privilegiada-20261109.txt": {
+      "bytes": 29,
+      "sha256": "9b3a3b7a78f239c4473bb193476b1a860c91f1c2b4fab9c7639eceea414a60fb"
+    },
+    "evidencias/overflow-confirmado.txt": {
+      "bytes": 81,
+      "sha256": "b9f691311b42279a8c9eefa063564444c37743121dcb71e9f1072c716ca25e30"
+    },
+    "evidencias/perfil-fisico-preservado.json": {
+      "bytes": 759,
+      "sha256": "5490c962034a7960c755ca415f699d41bc523f41e6b37e0dd6bfcb8093c3607b"
+    },
+    "evidencias/pipeline-atraso.txt": {
+      "bytes": 342,
+      "sha256": "d98c86d34d3e23e8664e1e881015629447333bfaec23b03a453ac60462594028"
+    },
+    "evidencias/pipeline-falhas-conferidas.txt": {
+      "bytes": 714,
+      "sha256": "5cbe209312b3bd8429316f85a31cedf12b720835c198ca9785701bf11b8d67a6"
+    },
+    "evidencias/pipeline-falhas.txt": {
+      "bytes": 709,
+      "sha256": "62ccd9c13fb57f99eefc4adcdfd16f3c4047dcec6c203716d24eca216a203bf5"
+    },
+    "evidencias/pipeline-preload.txt": {
+      "bytes": 342,
+      "sha256": "f5aa2c9c778f51c535fb7972bb9b53ddf339e98687a2e5e83f3582593eb509c8"
+    },
+    "evidencias/pipeline-regressao.txt": {
+      "bytes": 2012,
+      "sha256": "5a421de8f8bf18d5cb3d0ec2a9ff34c963320e6462a75ab95002197e214eb711"
+    },
+    "evidencias/pipeline-sd-ddr2-vga-final.txt": {
+      "bytes": 549,
+      "sha256": "6ca7ebb373738b2cea37f7a3ae9808c67bd46a4d9c92aa5deda1faa72a6ba9f3"
+    },
+    "evidencias/pipeline-sd-ddr2-vga.txt": {
+      "bytes": 39,
+      "sha256": "84a38887ebf520a7921fa80f7c59e101dde7bbc19c9ee60625437c3e98815f8a"
+    },
+    "evidencias/previas/comparativo-video.json": {
+      "bytes": 6612,
+      "sha256": "9daff134ff8660675fd4f9f8703cdbd8b8f11b930bc50ef62301a915d7eb30c7"
+    },
+    "evidencias/previas/comparativo-video.png": {
+      "bytes": 700414,
+      "sha256": "b20c35ef334b456a1f16790dcc26ece33e1d7dfd05cd751ca9859724091bf48d"
+    },
+    "evidencias/previas/hud-capturas.json": {
+      "bytes": 1153,
+      "sha256": "ac470a2e90ed735f558a94437d25f06d5b411ba9cfc319ad6a053a94e2becffb"
+    },
+    "evidencias/previas/hud-comparativo.png": {
+      "bytes": 51861,
+      "sha256": "c475bef16ddd2221b05412073f01d91fac9dc1ca634758c1c49cb3b4f3a52e08"
+    },
+    "evidencias/previas/hud-modo-0.png": {
+      "bytes": 15392,
+      "sha256": "12070f9aabb4f8af9460bb74858181417679c6faea4e54759a9a14aeecf0b548"
+    },
+    "evidencias/previas/hud-modo-1.png": {
+      "bytes": 14141,
+      "sha256": "20aa2e5b1b886adfcda685bdeda79c564deb04386b57ceaa10ed5eae9fad081b"
+    },
+    "evidencias/previas/hud-modo-4.png": {
+      "bytes": 16379,
+      "sha256": "a1b6f7de8f6dfab36e0f6baa6b21753c394701c7492aa1382b07130d9a267ac8"
+    },
+    "evidencias/previas/hud-modo-8.png": {
+      "bytes": 16203,
+      "sha256": "0438d29e9a5c3353ec0719beecf3b1fd976012e351eec9c8591c9b6d08ca1a54"
+    },
+    "evidencias/qualidade-final-resumo.json": {
+      "bytes": 153,
+      "sha256": "bbde5463d111ab8881c550f3bb0301843bfda52e829dd3bf68b0369cf9f1b7f5"
+    },
+    "evidencias/recuperacao-preservada.json": {
+      "bytes": 1151,
+      "sha256": "bfd21785cb82fe6c1ebf087901b003b1a4311bed2a6c46fb0f8f0b747e6a5799"
+    },
+    "evidencias/referencias-video-localizadas.txt": {
+      "bytes": 3141,
+      "sha256": "c30c9ee940af9a8752143e9a504796e4b45aac99013f81edbc386a6092543f6c"
+    },
+    "evidencias/regressao-pipeline.json": {
+      "bytes": 1480,
+      "sha256": "5ac16e61d739b60f96a6d75fdfae9c5acdaead8698ad7a578ac807f2771279bd"
+    },
+    "evidencias/relatorios-noturna/bus_skew_routed.rpt": {
+      "bytes": 98603,
+      "sha256": "3aa7db2b642790079a7fb466b2235bcb5748a924e179afb751bba018f1239ae8"
+    },
+    "evidencias/relatorios-noturna/cdc_routed.rpt": {
+      "bytes": 89657,
+      "sha256": "9b543432b25bb8327d1c87a2d186f086790645624e71c9bbadbeed165d8cc12a"
+    },
+    "evidencias/relatorios-noturna/check_timing.rpt": {
+      "bytes": 3962,
+      "sha256": "c071a9101f8fd4afeeece9aad29a592f29321d89e5b98df458a2ec006f6c71d2"
+    },
+    "evidencias/relatorios-noturna/clock_interaction.rpt": {
+      "bytes": 15644,
+      "sha256": "437d68863a6df8379f4b52d2ee94ca2c4ba5c3220dc73082c7039ca809ebafc2"
+    },
+    "evidencias/relatorios-noturna/clock_reset_detail.txt": {
+      "bytes": 1280,
+      "sha256": "3222f3bde6a09bc2c4283b0ab5594ec3845e7013cccac217ef4bbc63e31251e7"
+    },
+    "evidencias/relatorios-noturna/clocks.rpt": {
+      "bytes": 19227,
+      "sha256": "02bc365e637bfc003515c5110e5817f7575eafec1aff796a80d74daf0ff5fe39"
+    },
+    "evidencias/relatorios-noturna/drc_routed.rpt": {
+      "bytes": 55827,
+      "sha256": "2d9c91ab5d7e248bc0421e8305c04ae97cc63e76aac6e3f96e0f2c236b4229aa"
+    },
+    "evidencias/relatorios-noturna/io.rpt": {
+      "bytes": 104148,
+      "sha256": "830c8422d10f91afa9ff56f5c9b9b321c34c6fee57ccdd1b576267bbd847d0ec"
+    },
+    "evidencias/relatorios-noturna/methodology.rpt": {
+      "bytes": 53513,
+      "sha256": "a0c1552634a896885327bd2aa93170f903ecc61bb8af94916763b65f9f730b36"
+    },
+    "evidencias/relatorios-noturna/mig_clocking.txt": {
+      "bytes": 4874,
+      "sha256": "20add81fe20ea78f863e113f5ca670d55519851311d37b68154e2b283cc66273"
+    },
+    "evidencias/relatorios-noturna/synthesis_utilization.rpt": {
+      "bytes": 11683,
+      "sha256": "e09964f5f904b96a61be905e6ffb876ad99c758274c7040523c5a98585596e94"
+    },
+    "evidencias/relatorios-noturna/timing_routed.rpt": {
+      "bytes": 619944,
+      "sha256": "0a3204daf3261b80741e67da0ed8aeb60ef5fece956fb6c1fb7bc743d8cd7dcf"
+    },
+    "evidencias/relatorios-noturna/utilization_routed.rpt": {
+      "bytes": 13900,
+      "sha256": "36609ac6d33a7507ffac83ea10a67b88e2e52ac909c1a4f064f129a2105486bd"
+    },
+    "evidencias/relatorios-noturna/waivers.rpt": {
+      "bytes": 1075,
+      "sha256": "87a42cd77ab6e0c4c0111faf9d5bde24fd502460d8a9032ca4dba4c95c5912c1"
+    },
+    "evidencias/relatorios-xpm-4309c53/bus_skew_routed.rpt": {
+      "bytes": 98603,
+      "sha256": "3585e808a10f5986e5f81e285faee59dc9b1a85e28cb4cbe2e7fc0cea8762210"
+    },
+    "evidencias/relatorios-xpm-4309c53/cdc_routed.rpt": {
+      "bytes": 89657,
+      "sha256": "a0f819fa4966bdf0f3be2a29ad2a023ae689e1b6756540e126cb695c191db765"
+    },
+    "evidencias/relatorios-xpm-4309c53/check_timing.rpt": {
+      "bytes": 3962,
+      "sha256": "b52fb53b735d8fcfc60c2b82a3140cd9df05b1140bad2a652baecac97a88464f"
+    },
+    "evidencias/relatorios-xpm-4309c53/clock_interaction.rpt": {
+      "bytes": 15644,
+      "sha256": "84f9998671be8203e961f293a066a67c044eadd5e8d8f825091bb9db4ea3271f"
+    },
+    "evidencias/relatorios-xpm-4309c53/clock_reset_detail.txt": {
+      "bytes": 1280,
+      "sha256": "dc0d8fdf97efb5e311af000ae583b5d56f17e2d0c34a8085673920d1d50d1d4e"
+    },
+    "evidencias/relatorios-xpm-4309c53/clocks.rpt": {
+      "bytes": 19227,
+      "sha256": "6f068a295380416385f35fe29efa850f6d9be3c28d64f0783e0d4a58e015f5c4"
+    },
+    "evidencias/relatorios-xpm-4309c53/drc_routed.rpt": {
+      "bytes": 56025,
+      "sha256": "09624c34be95c7439664db28fce1efc50e8af0f21af373d5e7f7c59b7041aaeb"
+    },
+    "evidencias/relatorios-xpm-4309c53/io.rpt": {
+      "bytes": 104148,
+      "sha256": "e8562bd0bf0959f80fd75d8314c884228f008f48d4c2c67efa7163386402033c"
+    },
+    "evidencias/relatorios-xpm-4309c53/methodology.rpt": {
+      "bytes": 53510,
+      "sha256": "d5cff07306ef259b1428740f657007fe178d731196ef237ecb490e88ec6bde03"
+    },
+    "evidencias/relatorios-xpm-4309c53/mig_clocking.txt": {
+      "bytes": 4776,
+      "sha256": "04f68dc5f1b82e89a54e09751dd850d968dfb904d5c7e2f0469b40279cabe7e6"
+    },
+    "evidencias/relatorios-xpm-4309c53/synthesis_utilization.rpt": {
+      "bytes": 11683,
+      "sha256": "dffd1a60203434383f89744b6f307db647030517d7b4711bf2903307307b4b24"
+    },
+    "evidencias/relatorios-xpm-4309c53/timing_routed.rpt": {
+      "bytes": 620878,
+      "sha256": "dbc09e790a64cdfc5695e1d7345d77b0ff6514e5c76ff751aaa8815aab89421e"
+    },
+    "evidencias/relatorios-xpm-4309c53/utilization_routed.rpt": {
+      "bytes": 13900,
+      "sha256": "79199d2e891a3051cb76ae39973bee058b1b90947bf85e3db39a7ab77f7351cf"
+    },
+    "evidencias/relatorios-xpm-4309c53/waivers.rpt": {
+      "bytes": 1075,
+      "sha256": "8dc70d4ae8a4b43a9f77d7da3ec5eae8c214cc8ab454ec91eca994c89019ac15"
+    },
+    "evidencias/resultado.json": {
+      "bytes": 3657,
+      "sha256": "e98d5e4b42b45555516c3f7d69f089475d0d5c73c1c8d340aa8453dd54ccbc8b"
+    },
+    "evidencias/testes-executados.txt": {
+      "bytes": 1235,
+      "sha256": "cffa0697922372786406635502ceb4e47b7b0244d51c0b6b4bb39c69297d0ad0"
+    },
+    "evidencias/testes-mapa-sd.txt": {
+      "bytes": 103,
+      "sha256": "46885b66d2b1edc46d24ca1ce7772212b8a0fd02ab0ff8d339521c3983127c75"
+    },
+    "evidencias/testes-xpm-final.txt": {
+      "bytes": 915,
+      "sha256": "eac28158da54eb83bd2cbe76e1f4e20757f81ed6ccc590f9521ad8dd7b528d78"
+    },
+    "evidencias/testes-xpm-noturna.txt": {
+      "bytes": 811,
+      "sha256": "55dd11af77811ff77d0a0d25f2268f6c2e4ecd6d545b0e07b1a21506424bb425"
+    },
+    "evidencias/top-ddr2-preload-final.txt": {
+      "bytes": 104,
+      "sha256": "efc79e66a4b5e9b882871d4a2e5ce4f22a15005bfa106295b3e0f70d7c20f7ac"
+    },
+    "evidencias/video-completo-integridade.json": {
+      "bytes": 547,
+      "sha256": "74c0ae20508fe5b1af36b47ee57e309ca1040e4c3ff17379d82bbb102db4e8ab"
+    },
+    "evidencias/video-historico-local.json": {
+      "bytes": 531,
+      "sha256": "1de5b11eb5372ab524fcd3b943b75c8ad9b9dfa45a35e357581da82355e62194"
+    },
+    "hud/rtl/alertas_vga.sv": {
+      "bytes": 4404,
+      "sha256": "a11319201424e3fe4f2cf4ec284dc2a7467382bbe281dba329b1126644150c48"
+    },
+    "hud/rtl/alertas_voo.sv": {
+      "bytes": 4672,
+      "sha256": "5cd87414cdf14c814abafa49d9a75d398d7f02e97960b371b132d11f7b2a24b5"
+    },
+    "hud/rtl/atitude_accel_fixa.sv": {
+      "bytes": 5447,
+      "sha256": "4f5a59fcce02aaa0b75eebf5e6ec37fccb99b28153989f0faa6c283728358d93"
+    },
+    "hud/rtl/atitude_cordic.sv": {
+      "bytes": 2636,
+      "sha256": "b2a46ec1e626773f161c0a518884c12e9cf1fcf82c224205cd71b290d77ef831"
+    },
+    "hud/rtl/atitude_fusao_complementar.sv": {
+      "bytes": 8110,
+      "sha256": "088e82c3b272848d16b1cf679355b73c200e444f49a19902910f1de262cca1ed"
+    },
+    "hud/rtl/atitude_gyro_hud.sv": {
+      "bytes": 1793,
+      "sha256": "7f4d88ce086ca82524928057692c79aef6e82cb5552d1d7d6d7c0e25b7c2d573"
+    },
+    "hud/rtl/atitude_vetorial.sv": {
+      "bytes": 13818,
+      "sha256": "a71500526bf475e804835a7ed112b2a7f1c2543c29af66e5999baf50c029e147"
+    },
+    "hud/rtl/bmp085_altitude.sv": {
+      "bytes": 7678,
+      "sha256": "3f58f7d91f6fbe7d8e1bf6c59df7dbb0a5d5c3a50927f6fc494188ef9aef0137"
+    },
+    "hud/rtl/bmp085_aritmetica_seq.sv": {
+      "bytes": 2593,
+      "sha256": "d4ec0d4042867735be611b3884118c617c34d35470b8656d4f51e859dcc5a8e1"
+    },
+    "hud/rtl/bmp085_compensacao_pressao.sv": {
+      "bytes": 4348,
+      "sha256": "a8142a0c8de4d02833bc36dedf4b9bf6bd68bf04d77b9fa6207f0d1425e7f663"
+    },
+    "hud/rtl/bmp085_compensacao_pressao_seq.sv": {
+      "bytes": 8817,
+      "sha256": "38224bf1e120b15c6f2cff7336de7c420ff3194ad3acec28fba5c2625980e4f4"
+    },
+    "hud/rtl/bmp085_compensacao_seq.sv": {
+      "bytes": 3393,
+      "sha256": "61221b244d52f8bc869973fac0331244dfa383bdd6282ab2fd70b323a7688c9c"
+    },
+    "hud/rtl/bmp085_compensacao_temp.sv": {
+      "bytes": 1936,
+      "sha256": "589951b50950b125423af46990db343775d59cc21d8a154ddf92d5b5312c9ff2"
+    },
+    "hud/rtl/bmp085_compensacao_temp_seq.sv": {
+      "bytes": 3159,
+      "sha256": "22a0d962388646eeadb913448b6cc504e90eb220fcfc2324cb2f1870f2d541d5"
+    },
+    "hud/rtl/bmp085_i2c.sv": {
+      "bytes": 26830,
+      "sha256": "6cecb131868ed47323f3031781e1f176d0156e8ec535e4bf6a1f92fe5b03ff46"
+    },
+    "hud/rtl/buzzer_driver.sv": {
+      "bytes": 2207,
+      "sha256": "c0a2d0d4793d09bd8c3a420b77cc99eb4fc770fae74f73cbdea32c467dab559e"
+    },
+    "hud/rtl/calibracao_vga.sv": {
+      "bytes": 6202,
+      "sha256": "103336dcd22b72b45aabb2820298e709b3f99a46705e66378c78e7c557943996"
+    },
+    "hud/rtl/captura_controle.sv": {
+      "bytes": 1871,
+      "sha256": "3be55696f12706132918000a5071937f4a0edef89eb19502ca7f0528402af848"
+    },
+    "hud/rtl/controle_heading.sv": {
+      "bytes": 1852,
+      "sha256": "4aa2e6f98820ca9be8337a637db61dab3745c75f1885d396141566d0c092298c"
+    },
+    "hud/rtl/controle_joystick.sv": {
+      "bytes": 1826,
+      "sha256": "c1ef4c3847d6ea8c3fa789e1a8be979a33f868da93aec5139e42481df68f02b4"
+    },
+    "hud/rtl/controle_manche.sv": {
+      "bytes": 6059,
+      "sha256": "2784ce7ab05b03cb3bd252d7bad7272b1801e9c3dda7e867031b63228fa9d11b"
+    },
+    "hud/rtl/controle_modo.sv": {
+      "bytes": 971,
+      "sha256": "60e30d04e0d43d1f4d31be3c5636c0735b7fc2f177fc395dab46777328511082"
+    },
+    "hud/rtl/controle_modo_manche.sv": {
+      "bytes": 1257,
+      "sha256": "06e2f343f1097a8a75b00434758f3ec8379421a1eca2568146b0f1bd0dcbfb07"
+    },
+    "hud/rtl/controle_modo_operacao.sv": {
+      "bytes": 1069,
+      "sha256": "0808ca3b40f099f8281f8fa695308beb516479ac3731d903fc34c6d38d4f504e"
+    },
+    "hud/rtl/dados_hud.sv": {
+      "bytes": 3559,
+      "sha256": "69880ce7485e750a399c42ec5b3b80b65c3de8eb737a93aa65053d85232a2b34"
+    },
+    "hud/rtl/ddr2_p4b_async_fifo.sv": {
+      "bytes": 1451,
+      "sha256": "d92c0cb6d45d6244756c37d34d8add317b4a07fb897aac795692a2980af0df8a"
+    },
+    "hud/rtl/ddr2_sd_frame_mirror.sv": {
+      "bytes": 16346,
+      "sha256": "28036a9a89aa3fb507ea55a677804c8aeef0fb46bc56823d8e04b1a7e01e40fe"
+    },
+    "hud/rtl/ddr2_ui_frame_test.v": {
+      "bytes": 5255,
+      "sha256": "9e3cf12bc58e95f497d14d5902103ec31f38052f58f0b9649e40a3b2a300e7af"
+    },
+    "hud/rtl/ddr2_ui_smoke.v": {
+      "bytes": 5137,
+      "sha256": "bd6efbd699092cf199a0390b52162cc75af62948265e157f0fafec76de08dcfc"
+    },
+    "hud/rtl/ddr2_ui_smoke_top.v": {
+      "bytes": 7625,
+      "sha256": "4b5904ab7c6f3a8a5144482a8db0dba553d7499e714d5b4acd5e1eb4cca22da5"
+    },
+    "hud/rtl/entrada_hud.sv": {
+      "bytes": 1254,
+      "sha256": "9fe3d73c9f9eaac4ca519f93077705c3df0c0be888271a23d912b6f4ddbd42e3"
+    },
+    "hud/rtl/estado_vertical.sv": {
+      "bytes": 7238,
+      "sha256": "f5b28f00d795800f6e5f84495891b49c8e79d39be78468612da951071e07b7ff"
+    },
+    "hud/rtl/gyro_bias_dt.sv": {
+      "bytes": 3928,
+      "sha256": "8bbd0c5b516fce1fcf286f60bee7e8fee78ed2b892df2a44d3cb7935493d435a"
+    },
+    "hud/rtl/gyro_integrador.sv": {
+      "bytes": 4463,
+      "sha256": "afacb5cbf02ec95dbf35e828b6613e0c620eef3c21d8f26bbeee87833fb175c8"
+    },
+    "hud/rtl/heading_fusao.sv": {
+      "bytes": 4716,
+      "sha256": "eaaeb66a1fe94590e8795795f6655913f874f632369feb95b642861eeed9d1ff"
+    },
+    "hud/rtl/heading_magnetico.sv": {
+      "bytes": 5609,
+      "sha256": "6e9e74bd07d41e0ef404df6091cc4251733b5c0c3ee1bd7d41051e0508566871"
+    },
+    "hud/rtl/hmc5883l_i2c.sv": {
+      "bytes": 19387,
+      "sha256": "2f65b2e9d304d261f0b439e4cbd726ad643796cd6f1880731262ad89a4e092b7"
+    },
+    "hud/rtl/horizonte_atitude.sv": {
+      "bytes": 741,
+      "sha256": "e575ff3ace17c41e65623c929bbac2b3a10fa4ad46159519b07475be0803c2ce"
+    },
+    "hud/rtl/hud_align_status_vga.sv": {
+      "bytes": 3276,
+      "sha256": "2ecfe19d50e8c44de4577db4388669d65fdc9a5e55eb159c0c183c841db94c27"
+    },
+    "hud/rtl/hud_auto_zero.sv": {
+      "bytes": 1547,
+      "sha256": "0d2c757320ce0a32aaf97941a129c2a5e73ff0819cd86b2dd68783d8adfc67d6"
+    },
+    "hud/rtl/hud_capture_status_vga.sv": {
+      "bytes": 1471,
+      "sha256": "b9082a1f7ebb3db902a8570c804ab80ecf62b1d45d7dce9e89c047da2fdbda51"
+    },
+    "hud/rtl/hud_command_dispatch.sv": {
+      "bytes": 3384,
+      "sha256": "525770c2239482926237efe135f5a446a373d86be490317f8bce61c1f79cdaac"
+    },
+    "hud/rtl/hud_flight_coords.sv": {
+      "bytes": 606,
+      "sha256": "168ed41570f38747c89fadd44448834219849a56fc247c52aa436d64166205aa"
+    },
+    "hud/rtl/hud_vertical_adjust.sv": {
+      "bytes": 3820,
+      "sha256": "e5b2d757d41a5840c9f7a3a5d44b5750b8177bc06161c87fb4e12db445cb957e"
+    },
+    "hud/rtl/joystick_xadc.sv": {
+      "bytes": 3649,
+      "sha256": "7f24b33c90f88e1a46b596beabe57bc59bae42d43af19d31701142bd93487f81"
+    },
+    "hud/rtl/mira_caca_vga.sv": {
+      "bytes": 791,
+      "sha256": "0e196561ff048e65ea8f3b3152aff52ebce67d484c6d946807f57b902599259b"
+    },
+    "hud/rtl/mira_joystick.sv": {
+      "bytes": 4808,
+      "sha256": "8a58bf2dc9277a097db44356edadcf43439ff89a8d7b71ab4766f6795d27e0da"
+    },
+    "hud/rtl/mma8452_i2c.sv": {
+      "bytes": 8703,
+      "sha256": "a8a9afbd339532cd9c0770ce5322946001edfd0842579b903d0a8bf372fe3bf4"
+    },
+    "hud/rtl/mpu6050_i2c.sv": {
+      "bytes": 16484,
+      "sha256": "22460a8e8e9f8992606a755958bb604f963cb73878414948cf56bfcfc3cee35f"
+    },
+    "hud/rtl/numeros_hud.sv": {
+      "bytes": 13882,
+      "sha256": "2b6c85c4ae08fb032778a7f1d8156a9e707d7b3ec732f962c0941b4f5ee2557b"
+    },
+    "hud/rtl/operacao_hud.sv": {
+      "bytes": 6681,
+      "sha256": "5f84b26a8903cc4420b7b188e5f966a084e72a311120b444f238a45906831b46"
+    },
+    "hud/rtl/projecao_vertical.sv": {
+      "bytes": 6706,
+      "sha256": "e450cf94cb5f903401c0dcf900be0d5ca1710000b61cd11f9bfa673d7164c75a"
+    },
+    "hud/rtl/reticula_caca_vga.sv": {
+      "bytes": 4546,
+      "sha256": "2579be0af593905eac6da513c6865c7f9b145e63d7721b05381e3f2958e7486e"
+    },
+    "hud/rtl/reticula_vga.sv": {
+      "bytes": 1718,
+      "sha256": "741026b292810443b30b2372700431638202ffc45b4ebf00b803a166a2fac78a"
+    },
+    "hud/rtl/sd_bitmap_overlay.sv": {
+      "bytes": 1618,
+      "sha256": "a1b4e3ce3460e202672dbb3e19f1bf1286d4a2d8a366c8cb3a73aa2847fb66fa"
+    },
+    "hud/rtl/sd_diagnostic.sv": {
+      "bytes": 4657,
+      "sha256": "7ac168f605821fb64f3549720980a3e494582d093a8cf0e1b9faf73486f28dbe"
+    },
+    "hud/rtl/sd_sector_buffer.sv": {
+      "bytes": 5292,
+      "sha256": "3f637d6b82044af68e28d5ee9dfa9997d1ac4d65a25d76fdbdff391cef5b32e3"
+    },
+    "hud/rtl/sd_spi_cmd0.sv": {
+      "bytes": 4823,
+      "sha256": "2322cc90f90a8f76e046ec3e6cd2ce9d6699a4ed9b8eda136bbd3701c6f821d9"
+    },
+    "hud/rtl/sd_spi_command.sv": {
+      "bytes": 6042,
+      "sha256": "d1ca16b9b61a8d89c17fbed682eeda800025efb2404478ce233067f42f6937bd"
+    },
+    "hud/rtl/sd_spi_controller.sv": {
+      "bytes": 5161,
+      "sha256": "bf60b325de192d9f8269d3bbffada421e829382487d009bbb6f2491e879024d3"
+    },
+    "hud/rtl/sd_spi_init.sv": {
+      "bytes": 7674,
+      "sha256": "702101f8e7c57417f8c10c96e085ecf88c5a540f3ac656adcdf06d9e4796cfda"
+    },
+    "hud/rtl/sd_spi_preamble.sv": {
+      "bytes": 1964,
+      "sha256": "fe8ba3b721a4ca88bf09baedde8c99927720e35c60936f07036275b55984614d"
+    },
+    "hud/rtl/sd_spi_read_block.sv": {
+      "bytes": 12495,
+      "sha256": "617eb9129058a0bbb519d4ab5f94bfc7f6ba4a6675b85da617b76a43f1746056"
+    },
+    "hud/rtl/sd_status_display.sv": {
+      "bytes": 2703,
+      "sha256": "d97fae3fde9e25db6ef3ef5a5208db28635b124fef196031a3383c3dca093b55"
+    },
+    "hud/rtl/sd_video_background.sv": {
+      "bytes": 1775,
+      "sha256": "7db5116e0e811b2850232592cbff5690167e3a16e2f6d294f295395e6f0cf4b9"
+    },
+    "hud/rtl/sd_video_loader.sv": {
+      "bytes": 7270,
+      "sha256": "0e263464a4bdc57d2b84e35ab9804a64f34b00c97d17ab3c8b44e16b0682b11a"
+    },
+    "hud/rtl/simbologia_caca_vga.sv": {
+      "bytes": 11021,
+      "sha256": "97f8d34ddf08bb22ba8fc272adb3304502ea3c266287dac71a4c953c87ef7766"
+    },
+    "hud/rtl/simbologia_vga.sv": {
+      "bytes": 24285,
+      "sha256": "031341981c6707a3ae8156040fd29236d60c4ceffea913388178e7821231816f"
+    },
+    "hud/rtl/simulador_pouso.sv": {
+      "bytes": 2569,
+      "sha256": "659179f19e642a26bfb345ddaa0d354bdcc7cd9cb6d8a1349c84d2855e846513"
+    },
+    "hud/rtl/simulador_voo.sv": {
+      "bytes": 6386,
+      "sha256": "9d5988dd5dea88b42907c3db1d91f7f45f37fa7e4bdcfe8ab7372b0e5183785e"
+    },
+    "hud/rtl/top_reticula.sv": {
+      "bytes": 71829,
+      "sha256": "650a0ecec395947df6321781a6eb225acb5ee8193c1efc94d4a1cd9bb8f9fc02"
+    },
+    "hud/rtl/velocidade_inercial.sv": {
+      "bytes": 9028,
+      "sha256": "9d145b427502ba6a17f9bf0aeafa01a1c1eda1898c01e02d24422e8ff43daa69"
+    },
+    "hud/rtl/vga_controller.sv": {
+      "bytes": 2692,
+      "sha256": "e46cf3948edb258409f5acebe373b648ea0df26fd39482e74bd17e8bae2b191b"
+    },
+    "hud/rtl/video_captura.sv": {
+      "bytes": 1035,
+      "sha256": "076509498c3db236bb5be40371156e77424271d5a3d4df847041fc98dea206b1"
+    },
+    "hud/rtl/xadc_temperature_cdc.v": {
+      "bytes": 1253,
+      "sha256": "07908eb7fce497501f4195ca489d83b4776b1df973f17eb8b9861ba9fb6c1012"
+    },
+    "resultado/routed.dcp": {
+      "bytes": 39323647,
+      "sha256": "e83af26c3baf3a37f57d602ea6648ecef6f1ac1782bb4184fdfe6077e5657d98"
+    },
+    "resultado/synthesized.dcp": {
+      "bytes": 29272306,
+      "sha256": "aea47fc86fac7c4acb2a429e54874bcadae2823146e08e9d60876c480faae87f"
+    },
+    "resultado/vivado.log": {
+      "bytes": 481265,
+      "sha256": "1c34bbd5cc1f8775f792b8a7d7bb3d91ee90d76036012036455f8bbdb7d0f7f3"
+    },
+    "scripts/build_p4c_offline.sh": {
+      "bytes": 413,
+      "sha256": "18a3c56c6fce923316a69071e3a27842b30c696f3ea876ac5f9e4f2ab5bedd54"
+    },
+    "scripts/build_rc_offline.sh": {
+      "bytes": 989,
+      "sha256": "60a0b7cf1a263301dfb9ef7fc65cf2592d3273e6410fdde5fa216b2544cba3cc"
+    },
+    "scripts/p3a_build.tcl": {
+      "bytes": 5335,
+      "sha256": "cddff9184e74f9532294baddb65ed2cc7454a53ac37729ba5270b7387ce21ff0"
+    },
+    "scripts/p4c_cdc.tcl": {
+      "bytes": 2497,
+      "sha256": "3cd375b7c9a8586e9846bc40a6f5a04ebbb97eac4faf174696bfa5f1b28ff105"
+    },
+    "scripts/qualificar_clock_reset.tcl": {
+      "bytes": 886,
+      "sha256": "adcf5cd6e494c4d41da690143e1d875c1a3a238427387b820b80c4934fd24b10"
+    },
+    "scripts/qualificar_rc.tcl": {
+      "bytes": 1132,
+      "sha256": "251708e7e1bb9b611aa65d078e9a1e6c9acb0782497728d55acc1f20bee998a1"
+    },
+    "scripts/requalificar_routed.tcl": {
+      "bytes": 1110,
+      "sha256": "a680868d3c8aff5d4d55c30af31cc2ffe8bd9a76efcde67080d39e9caf4df457"
+    },
+    "scripts/run.sh": {
+      "bytes": 761,
+      "sha256": "43f472700e0df995521bc6ad373f6fbeb051c2c885ac026293b6b189268cebeb"
+    },
+    "scripts/test_p4a.sh": {
+      "bytes": 855,
+      "sha256": "0db397bbb82cb3910149cae150b512093255edcb0a4bfdefcda0bd198f0a6fca"
+    },
+    "scripts/test_p4b.sh": {
+      "bytes": 218,
+      "sha256": "12d8439dfff61cbd7a1480d0229dc370984c011f65fc5b48bf635ecdf87a496a"
+    },
+    "scripts/test_p4c.sh": {
+      "bytes": 218,
+      "sha256": "12d8439dfff61cbd7a1480d0229dc370984c011f65fc5b48bf635ecdf87a496a"
+    },
+    "scripts/test_sd_ddr2_vga.sh": {
+      "bytes": 1803,
+      "sha256": "ab57e3b3e380e22022c845052d36c3d4873ca475d37d61c40dfb53d015886619"
+    },
+    "scripts/test_top_ddr2_video.sh": {
+      "bytes": 1709,
+      "sha256": "b268e7bba9e24d4c8cbabab4d30a833f08eaffa1ae205e0f634b560734320fc4"
+    },
+    "scripts/test_video_ddr2.sh": {
+      "bytes": 2613,
+      "sha256": "1533f276bac6858885fb1b00027ff63d037d7f61f2afa3bf092312e3013ad8b7"
+    },
+    "scripts/verificar_estatico.py": {
+      "bytes": 2167,
+      "sha256": "532451b8b14f384f118b01796642c2d9dd4f6f97fc1a00bb929e50cbf2802e03"
+    },
+    "tests/ddr2_mig_ui_model.sv": {
+      "bytes": 2643,
+      "sha256": "22415b34c1df34c97529ac8a194e2d539bd8ec6833ac410bebe6b838e77a2430"
+    },
+    "tests/hud_aircraft_64.hex": {
+      "bytes": 1536,
+      "sha256": "d0f27940902c324ebcff64c135af0849c8a67576208f19087c4368d9ce990bf2"
+    },
+    "tests/sd_video_card_model.sv": {
+      "bytes": 2999,
+      "sha256": "37afe5da6be36666c90ed28d31dcf11871e0d85077b7f9ee74bf0bb6a237fd09"
+    },
+    "tests/tb_ddr2_fifo_xpm.sv": {
+      "bytes": 2820,
+      "sha256": "2066e1feaa35bb3247353625671bc8628963c58a2dd4b7226cb59630eaf314bc"
+    },
+    "tests/tb_ddr2_sd_frame_mirror.sv": {
+      "bytes": 13068,
+      "sha256": "6e517e9fce2662167a49bc94d88b920f14985e971007d0d482d65776424fc46f"
+    },
+    "tests/tb_ddr2_ui_frame_test.sv": {
+      "bytes": 4239,
+      "sha256": "cb06f9eb4f29b37cc4f932d5e66c1a1c21c4871694ac55faa087237dbcdef911"
+    },
+    "tests/tb_hud_offset_video.sv": {
+      "bytes": 2546,
+      "sha256": "f71ae87b173dee2cc33e07ae1f23e64f94ae13ad2e0e3b2343b3b880e18264c1"
+    },
+    "tests/tb_sd_ddr2_vga.sv": {
+      "bytes": 11483,
+      "sha256": "f8f1d32a1ded63eb1ea8d0e29129bb619d238450b2a939b36631efa446f57639"
+    },
+    "tests/tb_top_ddr2_video.sv": {
+      "bytes": 5859,
+      "sha256": "e0386c2f291247a398d7bd1904eb0229f188e0280b6c37cb2c943360ae73f811"
+    },
+    "tests/tb_xadc_cadence.sv": {
+      "bytes": 1178,
+      "sha256": "da2ddc663e40f71fee52936754dc7336246ef3dcd48e4a7147ba729a848f873c"
+    },
+    "tests/test_convert_video_for_fpga.py": {
+      "bytes": 3542,
+      "sha256": "9ccd5d6a91e3766640d573515f35a9056ee8475f3765b2aa56e34ead12bd9871"
+    },
+    "tests/test_map_sd_video.py": {
+      "bytes": 4169,
+      "sha256": "9ced9855645c1f27c825885bc3592a02c97bfcc47522da4fbf17d3ff44d943c1"
+    },
+    "tests/test_p4a_contract.py": {
+      "bytes": 1911,
+      "sha256": "4fdab9e8d6bf24c04af91c6ce66e5c349de257c2f8522a919a5956dabe89c805"
+    },
+    "tests/test_p4b_contract.py": {
+      "bytes": 2672,
+      "sha256": "18d923a492282f5cd83a0bbae26bc4e3dd019d29eb232cf027418e6702fb73fe"
+    },
+    "tests/xadc_analog.txt": {
+      "bytes": 127,
+      "sha256": "fe7e7820b75df40814bfb6bcef3f80b2e698babb70492508e7b6fdfc0243fba2"
+    },
+    "tools/compare_video_profiles.py": {
+      "bytes": 4266,
+      "sha256": "25542ed433db5503d43285def6070bf8f054877500d21fd34e89635f8b2bb09b"
+    },
+    "tools/convert_video_for_fpga.py": {
+      "bytes": 5388,
+      "sha256": "5d56892c4cc27e12c020320cc46eecd58b997f339718e2884974a74ca75f1337"
+    },
+    "tools/map_sd_video.py": {
+      "bytes": 5921,
+      "sha256": "4b1cccf00e7dccd73e657c170c14fcac9ad2914a9921fda1e9357be710281a21"
+    },
+    "tools/verify_video.py": {
+      "bytes": 2219,
+      "sha256": "35ac3fd7cadcfc59c3059c12945f29bdb0fcf9e7088c1ee99f6267e34823c42e"
+    },
+    "validation/cartao-20261109/HUDVIDEO.BIN": {
+      "bytes": 6912512,
+      "sha256": "24f17b8a9bb7ec6b52aeb55a1301f065aadc05df1c03fa34b673222a4d8bdea2"
+    },
+    "validation/cartao-20261109/metadata.json": {
+      "bytes": 230049,
+      "sha256": "ef6964cc40665082f85a64c6d1508128a4fe71b0e7bf91dae0cc3ffae6b60ad6"
+    },
+    "validation/hud-offset-video/compile.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "validation/sd-ddr2-regressao/0-elaborate.txt": {
+      "bytes": 3274,
+      "sha256": "0beec92ff91227f552c62bd5e11418032d8384474e686091bde3311bff81694d"
+    },
+    "validation/sd-ddr2-regressao/0.txt": {
+      "bytes": 2434,
+      "sha256": "aa8fa91d10fc328d57fd05ada3be3244d220c8e93e8284fa6b379a2c4d459932"
+    },
+    "validation/sd-ddr2-regressao/1-elaborate.txt": {
+      "bytes": 3286,
+      "sha256": "613417135aa31365aa5fe76bd9af07bac1c4007d6126d27554faac4a24592ad9"
+    },
+    "validation/sd-ddr2-regressao/1.txt": {
+      "bytes": 2482,
+      "sha256": "05f331ae8308502af280fa9fdc60fce616443265becc94b4089ae26178003b7a"
+    },
+    "validation/sd-ddr2-regressao/2-elaborate.txt": {
+      "bytes": 3286,
+      "sha256": "eaf75a52455f81cafdc7e7d237f6f0ea47a26c93dc366aa206fd8500deb5b207"
+    },
+    "validation/sd-ddr2-regressao/2.txt": {
+      "bytes": 2483,
+      "sha256": "0fdc49628f016e4d40d0c2346d38ad4cc758544ef7f206fc55743934a6e61684"
+    },
+    "validation/sd-ddr2-regressao/3-elaborate.txt": {
+      "bytes": 3286,
+      "sha256": "2c1a54adc0311f4c196fe99d8ff1f9efcf22ce68f018d45eae7650a19f066948"
+    },
+    "validation/sd-ddr2-regressao/3.txt": {
+      "bytes": 2033,
+      "sha256": "ec466f410fdb688e50424bef75d4b9cfdb04b94273a4cc08691fc32d1595f3ec"
+    },
+    "validation/sd-ddr2-regressao/4-elaborate.txt": {
+      "bytes": 3286,
+      "sha256": "9f24bf219e8537de45ebc6b7fcd904f736ecf709fc5666e4b6a7ce52e9991729"
+    },
+    "validation/sd-ddr2-regressao/4.txt": {
+      "bytes": 2371,
+      "sha256": "02efa6f4f51712393954cc146235be68b9089af4b4738aeaf89959c88d4fb429"
+    },
+    "validation/sd-ddr2-regressao/5-elaborate.txt": {
+      "bytes": 3286,
+      "sha256": "0b7709961934c4d5273a6b048fd843279748c8f7a74ccb75d871a8cde582e21c"
+    },
+    "validation/sd-ddr2-regressao/5.txt": {
+      "bytes": 2429,
+      "sha256": "c0243f8c836f98c1e13b6b3fea33906e53112fde2d00f6375b12bd0721d98952"
+    },
+    "validation/sd-ddr2-regressao/6-elaborate.txt": {
+      "bytes": 3295,
+      "sha256": "c92c727dbf9ad97e396af6c86ab3f1797886d44002193b2fb35968da8f8824d6"
+    },
+    "validation/sd-ddr2-regressao/6.txt": {
+      "bytes": 2531,
+      "sha256": "ca992d11105866b5cc471e9e9471a3c3f074504712e9270263a76e20cca51151"
+    },
+    "validation/sd-ddr2-regressao/compile.txt": {
+      "bytes": 2846,
+      "sha256": "a9b1ec4f09095a2ccae0679c63fabdf25f40f398c654261c6da47d185ac993f1"
+    },
+    "validation/sd-ddr2-regressao/glbl.txt": {
+      "bytes": 157,
+      "sha256": "bcb684e4cc4e13c578bf421a72aa2c7efefdb6d5b5a6fc179496d2b1b1d9e253"
+    },
+    "validation/top-ddr2-preload-final/compile.txt": {
+      "bytes": 19179,
+      "sha256": "04d5594d7aeaec08b5069b5d6b12392580f2d93f0f89b8426bbc247d707d3354"
+    },
+    "validation/top-ddr2-preload-final/design.txt": {
+      "bytes": 127,
+      "sha256": "fe7e7820b75df40814bfb6bcef3f80b2e698babb70492508e7b6fdfc0243fba2"
+    },
+    "validation/top-ddr2-preload-final/elaborate.txt": {
+      "bytes": 6517,
+      "sha256": "18523e98279a9a044d31dd9972523daa5ef779831c3541c896c75c09b27e94b9"
+    },
+    "validation/top-ddr2-preload-final/glbl.txt": {
+      "bytes": 157,
+      "sha256": "bcb684e4cc4e13c578bf421a72aa2c7efefdb6d5b5a6fc179496d2b1b1d9e253"
+    },
+    "validation/top-ddr2-preload-final/result.txt": {
+      "bytes": 24781,
+      "sha256": "a14fada5a7efeba3c538459b2f3a24651ca8a8d81b16f71444cc78a14c0ed4a7"
+    },
+    "validation/video-ddr2-final/aborted-elaborate.txt": {
+      "bytes": 2621,
+      "sha256": "f05bed8531ad4a6af9fc1ba7acb731fe4d6c5c70a279e2739e7adf33774d03ac"
+    },
+    "validation/video-ddr2-final/aborted.txt": {
+      "bytes": 1841,
+      "sha256": "e214ce5869c222d5f653536dec5f88a838e28485715e54117aeae114a149fa37"
+    },
+    "validation/video-ddr2-final/bad_read_end-elaborate.txt": {
+      "bytes": 2630,
+      "sha256": "9fe569e5ab524be5cff550294d6516de506bfcf5b1b0ecfaf50a3b1ade1853fd"
+    },
+    "validation/video-ddr2-final/bad_read_end.txt": {
+      "bytes": 1850,
+      "sha256": "58cecd3e80e14f6556dfc9ce146835a34b8d4704e378fd9813e2e2dc1a1276ca"
+    },
+    "validation/video-ddr2-final/compile.txt": {
+      "bytes": 842,
+      "sha256": "30c82d6fe8661a83545b0c11204e592516aea70c5031c075c3bb7bbe4203d91a"
+    },
+    "validation/video-ddr2-final/corruption-elaborate.txt": {
+      "bytes": 2623,
+      "sha256": "7a3f4b13f8e752ed8f6d572febcb2f2371a2699f3d97dabd1ae3e85618479e1c"
+    },
+    "validation/video-ddr2-final/corruption.txt": {
+      "bytes": 1835,
+      "sha256": "5710a93f084d1ef66c2bee647a41d724630a77683803ce8278b91132c10c344c"
+    },
+    "validation/video-ddr2-final/design.txt": {
+      "bytes": 127,
+      "sha256": "fe7e7820b75df40814bfb6bcef3f80b2e698babb70492508e7b6fdfc0243fba2"
+    },
+    "validation/video-ddr2-final/fifo-compile.txt": {
+      "bytes": 202,
+      "sha256": "85018d15ecd85ec2fa8f4d93bde9bd5cfafa015d7c12056c313a29568e099bee"
+    },
+    "validation/video-ddr2-final/fifo-elaborate.txt": {
+      "bytes": 2100,
+      "sha256": "4882dd94de398a9b27600f96fc3f502317178d082f9836bfc3f5159ea9a6393f"
+    },
+    "validation/video-ddr2-final/fifo-stress.txt": {
+      "bytes": 1266,
+      "sha256": "a8826f7ee0717f649201151f883c6e1fef66abd362bd2eee6f23cb9df5605607"
+    },
+    "validation/video-ddr2-final/fifo_overflow-elaborate.txt": {
+      "bytes": 2713,
+      "sha256": "649a7346914af39b4c4935d7ccabde9e146cf0054ac55f58760e53ad5617cb62"
+    },
+    "validation/video-ddr2-final/fifo_overflow.txt": {
+      "bytes": 1968,
+      "sha256": "e006041c859dfeb6c6c680fe491e69fb2dd91795a8c2fb87775c81d6aef7b509"
+    },
+    "validation/video-ddr2-final/full_good-elaborate.txt": {
+      "bytes": 2628,
+      "sha256": "31da7e862b3a8c03016459ec0f51605af23e31cacc5827e4dd7fa135ea9656f4"
+    },
+    "validation/video-ddr2-final/full_good.txt": {
+      "bytes": 2024,
+      "sha256": "cb68374fea0cc9bbba31623a51b39d495e08dd7c1e0f06ccc3d067b74fe02fda"
+    },
+    "validation/video-ddr2-final/glbl.txt": {
+      "bytes": 157,
+      "sha256": "bcb684e4cc4e13c578bf421a72aa2c7efefdb6d5b5a6fc179496d2b1b1d9e253"
+    },
+    "validation/video-ddr2-final/incomplete-elaborate.txt": {
+      "bytes": 2628,
+      "sha256": "91c6ba15403a69f992e5418d21f8a79ae9dca5260d30990884104391c4267e65"
+    },
+    "validation/video-ddr2-final/incomplete.txt": {
+      "bytes": 1852,
+      "sha256": "5cf7f3b6ccf091851836350745ac0e2ea09af009e00e003cb89ff3c41ecf0fc0"
+    },
+    "validation/video-ddr2-final/loop-elaborate.txt": {
+      "bytes": 2613,
+      "sha256": "8954ad2f8ed1dc3b553659ec7f0134d4a8646149321db74408285c579cce8c21"
+    },
+    "validation/video-ddr2-final/loop.txt": {
+      "bytes": 1986,
+      "sha256": "484b52c53f0b2168d1fb4f2546013b2af96d6fc2c810055c49d22f44e771904f"
+    },
+    "validation/video-ddr2-final/output_stall-elaborate.txt": {
+      "bytes": 2634,
+      "sha256": "d8eb5af491aba6528469a305ba874ad88a15b964031ccad05a79d865b3c50e83"
+    },
+    "validation/video-ddr2-final/output_stall.txt": {
+      "bytes": 1884,
+      "sha256": "ecf701519a1456eda87862f00cfa1d34d4d35ce36dc4dac6ee112bffdc7c8f5e"
+    },
+    "validation/video-ddr2-final/preserve-elaborate.txt": {
+      "bytes": 2654,
+      "sha256": "caefaccf86ef8a6b0ce6341d566cf55b64a96f9ed6b0ed1055316048a563637c"
+    },
+    "validation/video-ddr2-final/preserve.txt": {
+      "bytes": 2020,
+      "sha256": "b5740f407d8d06fdfac7015ef2fbc50853c48f6f41973260c2a44edeede8f5b5"
+    },
+    "validation/video-ddr2-final/read_timeout-elaborate.txt": {
+      "bytes": 2629,
+      "sha256": "b7d0f153e231dcead6751eae32ed2a6118717a07d5e967c21074eacdd3a39476"
+    },
+    "validation/video-ddr2-final/read_timeout.txt": {
+      "bytes": 1846,
+      "sha256": "2192ca37a7c19e88d255e8257515a6e360d506f877ac46a68e1cfd0c2ba9ecec"
+    },
+    "validation/video-ddr2-final/reset_1-elaborate.txt": {
+      "bytes": 2620,
+      "sha256": "5e0b1eb669c969244855f60ac0fcf7954e78e4cc44e42a52919b4c9708aa2419"
+    },
+    "validation/video-ddr2-final/reset_1.txt": {
+      "bytes": 1857,
+      "sha256": "3040919c22f5f79f2673475653c9631f9e7f19a5eb3b11baebc8ba6e2671d630"
+    },
+    "validation/video-ddr2-final/reset_2-elaborate.txt": {
+      "bytes": 2620,
+      "sha256": "d360a4c43f15a51c92b0b6e48f07a23386e081e52c81298c8fb41d37c6dccf2e"
+    },
+    "validation/video-ddr2-final/reset_2.txt": {
+      "bytes": 1857,
+      "sha256": "195dfb453f69584aadf0bcc125732892648558227c9c625c50d2b2aa6616a6d7"
+    },
+    "validation/video-ddr2-final/reset_3-elaborate.txt": {
+      "bytes": 2620,
+      "sha256": "9f6c44f0a90382cc533a63fdb87d52dfc713f545aee5151515ef96934a655ee8"
+    },
+    "validation/video-ddr2-final/reset_3.txt": {
+      "bytes": 1857,
+      "sha256": "950fef059ff5c6d94331377d4736ac507f24c2ba8bd6122fc5905657e6e77707"
+    },
+    "validation/video-ddr2-final/reset_read-elaborate.txt": {
+      "bytes": 2627,
+      "sha256": "25cc4cd006b24a148aba98b5adef02415875214daee6e4d9566121cee1876390"
+    },
+    "validation/video-ddr2-final/reset_read.txt": {
+      "bytes": 1867,
+      "sha256": "6d482d8f3b1c38ff8272266b4a3149360672cd121eb216233de98e234d600235"
+    },
+    "validation/video-ddr2-final/reset_return-elaborate.txt": {
+      "bytes": 2631,
+      "sha256": "4c4f6dd4a0a1a948ea0a0df845e10439ba54e1579808e72ee77537ced5d3dbcc"
+    },
+    "validation/video-ddr2-final/reset_return.txt": {
+      "bytes": 1871,
+      "sha256": "dcdd287b741a1c9b331038591da42dc7905206ef566163e03a59bbaabdefef23"
+    },
+    "validation/video-ddr2-final/short_good-elaborate.txt": {
+      "bytes": 2600,
+      "sha256": "ce88c21bb776849c7b5c3421b8ca988c2081559245bb1ad27209646b4719dafb"
+    },
+    "validation/video-ddr2-final/short_good.txt": {
+      "bytes": 1811,
+      "sha256": "f26de176e1df82525e4b4752063369bfd9048370b917fa6d5989691a37d1c6f0"
+    },
+    "validation/video-ddr2-final/stalled-elaborate.txt": {
+      "bytes": 2615,
+      "sha256": "2d6dca2a28b2237e86d9a9f6f837543aaa71e48a4ae6942e54a2dc4ebeb8efbf"
+    },
+    "validation/video-ddr2-final/stalled.txt": {
+      "bytes": 1819,
+      "sha256": "a0dcbaff741ca47263bd425c115b1d7ecf9f50a4169c15aecb081d96776bb9fe"
+    },
+    "validation/video-ddr2-final/xadc-compile.txt": {
+      "bytes": 1160,
+      "sha256": "93b89f3c081321faaf1aabb3a867c10a1ab80e96bc47122908f63418188d56a5"
+    },
+    "validation/video-ddr2-final/xadc.txt": {
+      "bytes": 175,
+      "sha256": "0c6bbd463704493d59d923e26311d05b52d5c68c7f5edaea57b5272bceb22d81"
+    }
+  },
+  "external_reference_video": {
+    "path": "/home/santojuca/Downloads/hud_ddr2_video_integracao/validation/video-completo-320-30/HUDVIDEO.BIN",
+    "sha256": "fb5dfdb6bae21b7285d3053bd4725d8f86a06ef0d4a49b311a364075600b3643",
+    "hash_basis": "Validacao integral anterior; nao repetida nesta sprint"
+  },
+  "reference_recovery": {
+    "base": "93ee5a61a5e53dcf91c5845c0b14c5f446265284",
+    "base_tag": "rc/hud-ddr2-offline-20261108",
+    "reference_bit_sha256": "b3e777d72dbdeb7921371346a58c939e7eecabe8d16e7901c59c0c3430f8092f",
+    "no_hardware_mutations": true
+  },
+  "card_file_verified": true,
+  "card_file_sha256": "24f17b8a9bb7ec6b52aeb55a1301f065aadc05df1c03fa34b673222a4d8bdea2",
+  "pending_card_raw_access": "Autenticacao administrativa solicitada ao usuario; nenhum LBA inferido"
+}

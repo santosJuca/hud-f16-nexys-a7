@@ -1,3 +1,5 @@
+> Documento histórico da versão inicial. Para a sprint noturna, consulte README.md e RESULTADO_FINAL.md. Os caminhos e resultados abaixo pertencem à referência anterior.
+
 # HUD F-16: integração DDR2 em validação offline
 
 Esta cópia isolada parte das fontes locais P4B, preservadas pelo manifesto `evidencias/base-p4b-sha256.json`. O repositório original `hud-video-modos-20261106` e os experimentos P3D/P4A/P4B não foram editados. A integração não foi enviada ao GitHub.

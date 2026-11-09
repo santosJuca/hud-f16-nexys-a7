@@ -1,0 +1,34 @@
+{
+   "blockdevices": [
+      {
+         "name": "sdc",
+         "path": "/dev/sdc",
+         "type": "disk",
+         "size": 31914983424,
+         "model": "Storage Device",
+         "serial": "816820130806",
+         "tran": "usb",
+         "fstype": null,
+         "uuid": null,
+         "mountpoints": [
+             null
+         ],
+         "children": [
+            {
+               "name": "sdc1",
+               "path": "/dev/sdc1",
+               "type": "part",
+               "size": 31910789120,
+               "model": null,
+               "serial": null,
+               "tran": null,
+               "fstype": "vfat",
+               "uuid": "3562-6631",
+               "mountpoints": [
+                   null
+               ]
+            }
+         ]
+      }
+   ]
+}

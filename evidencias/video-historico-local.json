@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "width": 160,
+  "height": 120,
+  "fps": 1,
+  "pixel_format": "RGB332",
+  "frame_count": 578,
+  "frame_bytes": 19200,
+  "frame_stride": 19456,
+  "total_bytes": 11246080,
+  "data_sector": 1,
+  "sequence_id": "0497355b51d5411e9cc163fefae678c7",
+  "path": "/home/santojuca/Downloads/hud-video-modos-20261106/validation/video-bussola-20261106-GkXqhu/recovery-files/HUDVIDEO.BIN",
+  "bytes": 11246080,
+  "sha256": "615729d0740adc978b42fdf0a13dc4f18820109e4dd9e68ac66d137d431012d0",
+  "card_current_verified": false
+}

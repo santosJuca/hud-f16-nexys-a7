@@ -1,0 +1,10 @@
+DISPLAY_CADENCE interval_ms=67.200000 source_frame=2
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=3
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=4
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=2 frames=4 updates=4 errors=1 pixel_checks=2764800 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=22478 reads=19200 good_readbacks=4
+PASS invalid header: fallback, nenhum quadro publicado
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=2
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=4 frames=2 updates=2 errors=3 pixel_checks=1843200 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=9696 reads=9600 good_readbacks=2
+scripts/test_sd_ddr2_vga.sh: line 33: syntax error near unexpected token `fi'

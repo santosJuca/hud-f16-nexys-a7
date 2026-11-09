@@ -1,0 +1,6 @@
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=0 frames=4 updates=4 errors=0 pixel_checks=2150400 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=22458 reads=19200 good_readbacks=4
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=1 frames=4 updates=4 errors=1 pixel_checks=2764800 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=22510 reads=19200 good_readbacks=4
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=5 frames=3 updates=3 errors=0 pixel_checks=1228800 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=14400 reads=14400 good_readbacks=3

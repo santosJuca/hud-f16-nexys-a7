@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "file": "/home/santojuca/Downloads/hud_ddr2_noturna_20261108/validation/cartao-20261109/HUDVIDEO.BIN",
+  "version": 1,
+  "width": 320,
+  "height": 240,
+  "fps": 30,
+  "pixel_format": "RGB332",
+  "frame_count": 90,
+  "frame_bytes": 76800,
+  "frame_stride": 76800,
+  "total_bytes": 6912512,
+  "data_sector": 1,
+  "sequence_id": "a7699c175ddb435194c191d3e95ecb79",
+  "sha256": "24f17b8a9bb7ec6b52aeb55a1301f065aadc05df1c03fa34b673222a4d8bdea2",
+  "crc16_sectors_checked": 13500,
+  "physical_validation": false
+}

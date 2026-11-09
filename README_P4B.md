@@ -1,3 +1,5 @@
+> Documento histórico da versão inicial. Para a sprint noturna, consulte README.md e RESULTADO_FINAL.md. Os caminhos e resultados abaixo pertencem à referência anterior.
+
 # HUD FPGA Nexys A7-100T — P4B espelho microSD → DDR2 (experimental)
 
 ## Objetivo e limites

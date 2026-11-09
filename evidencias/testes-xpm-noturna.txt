@@ -1,0 +1,26 @@
+XPM_CASE_PASS short_good
+XPM_CASE_PASS full_good
+XPM_CASE_PASS corruption
+XPM_CASE_PASS incomplete
+XPM_CASE_PASS aborted
+XPM_CASE_PASS stalled
+XPM_CASE_PASS reset_1
+XPM_CASE_PASS reset_2
+XPM_CASE_PASS reset_3
+XPM_CASE_PASS loop
+XPM_CASE_PASS output_stall
+XPM_CASE_PASS bad_read_end
+XPM_CASE_PASS read_timeout
+XPM_CASE_PASS fifo_overflow
+XPM_CASE_PASS preserve
+P4B_PYTHON_MODEL_PASS bytes=256 beats=16 crc32=d2be52cc
+P4B_PYTHON_MODEL_PASS bytes=76800 beats=4800 crc32=2f622165
+P4B_STATIC_CONTRACT_PASS
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.413s
+
+OK
+XADC_CADENCE_PASS samples=20 max_interval_ns=113578.224000
+/home/santojuca/Downloads/hud_ddr2_noturna_20261108/tests/tb_xadc_cadence.sv:29: $finish called at 2269945978 (1ps)
+VIDEO_DDR2_XPM_SIMULATIONS_PASS

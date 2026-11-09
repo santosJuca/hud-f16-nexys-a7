@@ -1,0 +1,6 @@
+P3A: compilação isolada. Nenhum bitstream/JTAG será executado.
+# puts "P3A: WNS=$wns WHS=$whs"
+P3A: WNS=0.442 WHS=0.010
+# puts "P3A_BUILD_ROUTED; candidato sem bitstream nem JTAG"
+P3A_BUILD_ROUTED; candidato sem bitstream nem JTAG
+Relatorios: /home/santojuca/Downloads/hud_ddr2_noturna_20261108/resultado

@@ -1,0 +1,11 @@
+{
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "pillow": "10.2.0",
+  "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+  "iverilog": "Icarus Verilog version 12.0 (stable) ()",
+  "source_video": {
+    "path": "/home/santojuca/Downloads/videos-hud/E4DvcvNDQoQ.mp4",
+    "bytes": 304945288,
+    "sha256": "89075ad5f74204622fb25c0c0da445cb9a8c18c01515a3f0274216ed1fa0c9a0"
+  }
+}
