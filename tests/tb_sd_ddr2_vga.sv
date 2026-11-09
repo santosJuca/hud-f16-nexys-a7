@@ -7,7 +7,8 @@ module tb_sd_ddr2_vga #(
     parameter integer READ_HALF=2,
     parameter integer FPS=30,
     parameter integer BASE_LBA=1000,
-    parameter integer INIT_HALF=2
+    parameter integer INIT_HALF=2,
+    parameter integer NAC_BYTES=0, NAC_JITTER_BYTES=0, R1_WAIT_BYTES=0
 );
     localparam integer BYTES=WIDTH*HEIGHT, STRIDE=(BYTES+511)/512*512;
     localparam integer FILE_BYTES=512+FRAMES*STRIDE, AB=$clog2(BYTES);
@@ -31,14 +32,14 @@ module tb_sd_ddr2_vga #(
     else if(busy) seen<=1;
     else if(seen) begin inflight<=0; seen<=0; end
     sd_spi_controller #(.POWERUP_CYCLES(4),.INIT_HALF_PERIOD_CYCLES(INIT_HALF),
-        .READ_HALF_PERIOD_CYCLES(READ_HALF),.MAX_READ_WAIT_TOKEN_CLOCKS(64)) sd (
+        .READ_HALF_PERIOD_CYCLES(READ_HALF),.MAX_READ_WAIT_TOKEN_CLOCKS(8*(NAC_BYTES+NAC_JITTER_BYTES+8))) sd (
         .clk(clk),.rst(rst),.read_start(grant),.read_lba(lba),.sd_miso(miso),
         .sd_sck(sck),.sd_mosi(mosi),.sd_cs_n(cs_n),.init_ready(ready),.init_failed(init_failed),
         .read_busy(busy),.read_done(done),.read_error(error),.block_valid(block_valid),
         .data_valid(data_valid),.data_byte(data_byte),.byte_index(byte_index));
     reg corrupt=0,timeout_token=0,bad_header=0;
     wire [31:0] reads;
-    sd_video_card_model #(.FILE_BYTES(FILE_BYTES),.BASE_LBA(BASE_LBA)) card(.sck(sck),.cs_n(cs_n),.mosi(mosi),.rst(rst),
+    sd_video_card_model #(.FILE_BYTES(FILE_BYTES),.BASE_LBA(BASE_LBA),.NAC_BYTES(NAC_BYTES),.NAC_JITTER_BYTES(NAC_JITTER_BYTES),.R1_WAIT_BYTES(R1_WAIT_BYTES)) card(.sck(sck),.cs_n(cs_n),.mosi(mosi),.rst(rst),
         .corrupt_crc(corrupt),.timeout_token(timeout_token),.bad_header(bad_header),.miso(miso),.reads(reads));
     wire ddr_ready;
     wire frame_start,abort_frame,commit_frame,write_frame,buffer_ready,header_valid,failed;

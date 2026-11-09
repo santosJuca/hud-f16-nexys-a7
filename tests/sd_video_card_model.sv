@@ -4,7 +4,11 @@ module sd_video_card_model #(
     parameter integer BASE_LBA = 1000,
     parameter bit ALLOW_ICON = 0,
     // Latencia de leitura (Nac) em bytes 0xFF antes do token; 0 preserva o modelo anterior.
-    parameter integer NAC_BYTES = 0
+    parameter integer NAC_BYTES = 0,
+    parameter integer NAC_JITTER_BYTES = 0,
+    parameter integer R1_WAIT_BYTES = 0,
+    parameter [7:0] READ_R1_VALUE = 0,
+    parameter [7:0] READ_TOKEN_VALUE = 8'hfe
 )(
     input wire sck, cs_n, mosi, rst,
     input wire corrupt_crc, timeout_token, bad_header,
@@ -21,7 +25,7 @@ module sd_video_card_model #(
     end
     reg [47:0] command=0;
     integer bits=0, length=0, position=0;
-    reg reply [0:4300+8*NAC_BYTES];
+    reg reply [0:4300+8*(NAC_BYTES+NAC_JITTER_BYTES+R1_WAIT_BYTES)];
     reg [15:0] crc;
     reg [7:0] value;
     integer i,j,offset;
@@ -50,10 +54,12 @@ module sd_video_card_model #(
                     reads=reads+1;
                     offset=(command[39:8]-BASE_LBA)*512;
                     if(!(ALLOW_ICON && command[39:8]==30006080) && (offset<0 || offset+512>FILE_BYTES)) $fatal(1,"LBA fora do arquivo %0d",command[39:8]);
-                    append(0);
-                    for(j=0;j<NAC_BYTES;j=j+1) append(8'hff);
+                    for(j=0;j<R1_WAIT_BYTES;j=j+1) append(8'hff);
+                    append(READ_R1_VALUE);
+                    // Padrao deterministico por setor: latencia varia sem depender do simulador.
+                    for(j=0;j<NAC_BYTES+((reads*37)%(NAC_JITTER_BYTES+1));j=j+1) append(8'hff);
                     if(!timeout_token) begin
-                        append(8'hfe); crc=0;
+                        append(READ_TOKEN_VALUE); crc=0;
                         for(j=0;j<512;j=j+1) begin
                             value=(ALLOW_ICON && command[39:8]==30006080)?icon[j]:memory[offset+j];
                             if(bad_header && offset==0 && j==0) value=value^8'hff;

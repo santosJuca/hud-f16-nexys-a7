@@ -33,16 +33,26 @@ run() {
 
 # Atraso de ida e volta assumido para o MISO: 0..30 ns (tODLY 0..14 ns do cartao + ~16 ns
 # estimados de saida FPGA, trilhas e entrada). Estimativa, nao medicao.
-for half in 125 50 10 5 4; do
+for half in ${HALVES:-125 50 10 5 4}; do
   n=4; [[ $half == 125 ]] && n=2
   run "nominal-h$half"   SCENARIO=0 READ_HALF=$half NREADS=$n
   run "atraso-h$half"    SCENARIO=0 READ_HALF=$half NREADS=$n MISO_DMIN_NS=0 MISO_DMAX_NS=30 SEED=7
   run "crc-h$half"       SCENARIO=1 READ_HALF=$half NREADS=3
   run "reset-h$half"     SCENARIO=2 READ_HALF=$half NREADS=2
 done
+# Respostas e latencias variaveis nos dois candidatos rapidos.
+for half in 5 4; do
+  run "nac-variavel-h$half" READ_HALF=$half NREADS=8 NAC_BYTES=5 NAC_JITTER_BYTES=150 R1_WAIT_BYTES=4 MISO_DMIN_NS=0 MISO_DMAX_NS=30
+  run "timeout-h$half" SCENARIO=4 READ_HALF=$half NREADS=3 TOKEN_LIMIT_CLOCKS=64
+  run "r1-invalido-h$half" SCENARIO=5 READ_HALF=$half NREADS=2
+  run "token-invalido-h$half" SCENARIO=6 READ_HALF=$half NREADS=2
+done
 # Latencia Nac de 100 us por setor nos perfis rapidos (custo nao medido no cartao real).
 run "nac100us-h5" SCENARIO=0 READ_HALF=5 NREADS=4 NAC_BYTES=125
 run "nac100us-h4" SCENARIO=0 READ_HALF=4 NREADS=4 NAC_BYTES=157
 # 25 MHz com a mesma faixa 0..30 ns: o atraso atravessa o ponto de amostragem (20 ns).
 run "atraso-h2-deve-detectar" SCENARIO=3 READ_HALF=2 NREADS=8 MISO_DMIN_NS=0 MISO_DMAX_NS=30 SEED=7
+# Sensibilidade alem do modelo antigo: 45 ns e stress, nao atraso medido da placa.
+run "stress45ns-h5" SCENARIO=0 READ_HALF=5 NREADS=8 MISO_DMIN_NS=0 MISO_DMAX_NS=45 SEED=19
+run "stress45ns-h4-detectar" SCENARIO=3 READ_HALF=4 NREADS=8 MISO_DMIN_NS=0 MISO_DMAX_NS=45 SEED=19
 echo "PASS test_spi_profiles: logs em $OUT"

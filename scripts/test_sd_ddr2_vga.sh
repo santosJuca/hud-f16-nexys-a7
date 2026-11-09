@@ -30,6 +30,8 @@ for scenario in ${SCENARIOS:-0 1 2 3 4 5 6}; do
  "$VB/xelab" -mt 4 -L xpm work.tb_sd_ddr2_vga work.glbl \
    -generic_top SCENARIO="$scenario" -generic_top READ_HALF="$read_half" \
    -generic_top INIT_HALF="${INIT_HALF:-2}" \
+   -generic_top NAC_BYTES="${NAC_BYTES:-0}" -generic_top NAC_JITTER_BYTES="${NAC_JITTER_BYTES:-0}" \
+   -generic_top R1_WAIT_BYTES="${R1_WAIT_BYTES:-0}" \
    -generic_top BASE_LBA="${BASE_LBA:-1000}" -s "pipeline_$scenario" > "$scenario-elaborate.txt" 2>&1
  "$VB/xsim" "pipeline_$scenario" -runall -testplusarg "VIDEO_HEX=$OUT/video.hex" > "$scenario.txt" 2>&1
  if rg '(FATAL|Fatal:|Error:|ERROR:)' "$scenario.txt"; then exit 1; fi

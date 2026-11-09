@@ -10,6 +10,9 @@
 // SCENARIO 2: reset durante a primeira leitura; reinicializacao a 400 kHz e leituras OK
 // SCENARIO 3: atraso MISO incerto atravessando o ponto de amostragem; exige deteccao
 //             de falha (nenhum bloco corrompido pode ser aceito)
+// SCENARIO 4: timeout de token na segunda leitura e recuperacao
+// SCENARIO 5/6: R1/token invalido, sem aceitar bloco
+// NAC_JITTER_BYTES varia deterministicamente a espera entre setores.
 module tb_sd_spi_freq_profiles #(
     parameter integer SCENARIO = 0,
     parameter integer READ_HALF = 125,
@@ -18,10 +21,13 @@ module tb_sd_spi_freq_profiles #(
     parameter integer MISO_DMIN_NS = 0,
     parameter integer MISO_DMAX_NS = 0,
     parameter integer NAC_BYTES = 0,
+    parameter integer NAC_JITTER_BYTES = 0,
+    parameter integer R1_WAIT_BYTES = 0,
+    parameter integer TOKEN_LIMIT_CLOCKS = 4096,
     parameter integer SEED = 1
 );
     localparam integer BASE_LBA = 30028160;
-    reg clk = 0, rst = 1, read_start = 0, corrupt_crc = 0;
+    reg clk = 0, rst = 1, read_start = 0, corrupt_crc = 0, timeout_token = 0;
     reg [31:0] read_lba = BASE_LBA;
     always #5 clk = ~clk;
 
@@ -38,7 +44,8 @@ module tb_sd_spi_freq_profiles #(
     sd_spi_controller #(
         .POWERUP_CYCLES(1000),
         .INIT_HALF_PERIOD_CYCLES(INIT_HALF),
-        .READ_HALF_PERIOD_CYCLES(READ_HALF)
+        .READ_HALF_PERIOD_CYCLES(READ_HALF),
+        .MAX_READ_WAIT_TOKEN_CLOCKS(TOKEN_LIMIT_CLOCKS)
     ) dut (
         .clk(clk), .rst(rst), .read_start(read_start), .read_lba(read_lba),
         .sd_miso(miso_d), .sd_reset(sd_reset), .sd_sck(sck), .sd_mosi(mosi),
@@ -52,9 +59,12 @@ module tb_sd_spi_freq_profiles #(
     );
 
     sd_video_card_model #(.FILE_BYTES(512*NREADS), .BASE_LBA(BASE_LBA),
-                          .NAC_BYTES(NAC_BYTES)) card (
+                          .NAC_BYTES(NAC_BYTES), .NAC_JITTER_BYTES(NAC_JITTER_BYTES),
+                          .R1_WAIT_BYTES(R1_WAIT_BYTES),
+                          .READ_R1_VALUE(SCENARIO==5 ? 8'h04 : 8'h00),
+                          .READ_TOKEN_VALUE(SCENARIO==6 ? 8'hfd : 8'hfe)) card (
         .sck(sck), .cs_n(cs_n), .mosi(mosi), .rst(rst), .corrupt_crc(corrupt_crc),
-        .timeout_token(1'b0), .bad_header(1'b0), .miso(miso_card), .reads(reads));
+        .timeout_token(timeout_token), .bad_header(1'b0), .miso(miso_card), .reads(reads));
 
     // Atraso de transporte por transicao, sorteado em [DMIN, DMAX].
     integer seed_state = SEED;
@@ -93,7 +103,7 @@ module tb_sd_spi_freq_profiles #(
         captured <= captured + 1;
     end
 
-    integer good = 0, failures = 0, crc_failures = 0, i, n, offset;
+    integer good = 0, failures = 0, crc_failures = 0, token_timeouts = 0, r1_failures = 0, token_failures = 0, i, n, offset;
     integer t_start, cycles, total_cycles = 0, timed = 0;
     integer cyc = 0;
     always @(posedge clk) cyc <= cyc + 1;
@@ -105,6 +115,7 @@ module tb_sd_spi_freq_profiles #(
             @(negedge clk);
             read_lba = BASE_LBA + index;
             corrupt_crc = (SCENARIO == 1 && index == 1);
+            timeout_token = (SCENARIO == 4 && index == 1);
             captured = 0;
             read_start = 1;
             t_start = cyc;
@@ -139,9 +150,13 @@ module tb_sd_spi_freq_profiles #(
             end else begin
                 failures = failures + 1;
                 if (read_error_code == 3'd5) crc_failures = crc_failures + 1;
+                if (read_error_code == 3'd3) token_timeouts = token_timeouts + 1;
+                if (read_error_code == 3'd1) r1_failures = r1_failures + 1;
+                if (read_error_code == 3'd4) token_failures = token_failures + 1;
                 if (block_valid) $fatal(1, "block_valid junto com erro");
             end
             corrupt_crc = 0;
+            timeout_token = 0;
             // Aguarda o controlador liberar a posse do barramento.
             while (read_busy || dut.read_owner) @(posedge clk);
             repeat (4) @(posedge clk);
@@ -192,6 +207,12 @@ module tb_sd_spi_freq_profiles #(
                 $fatal(1, "CRC injetado: OK=%0d falhas=%0d crc=%0d", good, failures, crc_failures);
             3: if (failures == 0)
                 $fatal(1, "Atraso atravessando a amostragem nao foi detectado (OK=%0d)", good);
+            4: if (good != NREADS-1 || failures != 1 || token_timeouts != 1)
+                $fatal(1,"Timeout token nao recuperado OK=%0d falhas=%0d timeout=%0d",good,failures,token_timeouts);
+            5: if (good != 0 || r1_failures != NREADS)
+                $fatal(1,"R1 ruim aceito ou mal classificado");
+            6: if (good != 0 || token_failures != NREADS)
+                $fatal(1,"Token ruim aceito ou mal classificado");
             default: $fatal(1, "Cenario invalido");
         endcase
 
