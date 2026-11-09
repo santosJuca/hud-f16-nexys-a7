@@ -1,10 +1,12 @@
 `timescale 1ns/1ps
-module tb_top_ddr2_video;
+module tb_top_ddr2_video #(parameter integer QUICK_STATUS=0);
     reg clk=0;
     always #5 clk=~clk;
     wire sck,mosi,cs_n,miso;
     wire [3:0] r,g,b;
     wire hs,vs;
+    wire [3:0] status_led;
+    reg corrupt_crc=0;
     reg icon_request=0,button=0;
     reg style=0,declutter=0;
     reg [1:0] operation=0;
@@ -19,13 +21,14 @@ module tb_top_ddr2_video;
         .vauxp3(1'b0),.vauxn3(1'b0),.vauxp10(1'b0),.vauxn10(1'b0),.joystick_sw_n(1'b1),
         .i2c_sda(mpu_sda),.i2c_scl(mpu_scl),.baro_sda(baro_sda),.baro_scl(baro_scl),.mag_sda(mag_sda),.mag_scl(mag_scl),
         .SD_DIAG_PAGE(4'd0),.SD_DAT0(miso),.SD_CD(1'b1),.SD_READ_SWITCH(icon_request),
-        .SD_SCK(sck),.SD_CMD(mosi),.SD_DAT3(cs_n),.VGA_R(r),.VGA_G(g),.VGA_B(b),.VGA_HS(hs),.VGA_VS(vs));
+        .SD_SCK(sck),.SD_CMD(mosi),.SD_DAT3(cs_n),.DDR2_STATUS_LED(status_led),
+        .VGA_R(r),.VGA_G(g),.VGA_B(b),.VGA_HS(hs),.VGA_VS(vs));
     // Apenas no teste: reduz debounce sem pular a publicacao no blanking.
     defparam dut.u_modo.DEBOUNCE_CYCLES=4;
     defparam dut.u_estilo.DEBOUNCE_CYCLES=4;
     wire [31:0] reads;
     sd_video_card_model #(.FILE_BYTES(39424),.ALLOW_ICON(1)) card(.sck(sck),.cs_n(cs_n),.mosi(mosi),
-        .rst(dut.reset_operacao),.corrupt_crc(1'b0),.timeout_token(1'b0),.bad_header(1'b0),.miso(miso),.reads(reads));
+        .rst(dut.reset_operacao),.corrupt_crc(corrupt_crc),.timeout_token(1'b0),.bad_header(1'b0),.miso(miso),.reads(reads));
     integer shown=-1,updates=0,checks=0,styles_checked=0;
     initial forever begin
         #1000000;
@@ -70,6 +73,27 @@ module tb_top_ddr2_video;
         wait(dut.sd_asset_published);
         release dut.video_request;
         wait(updates>=1);
+        if(QUICK_STATUS) begin : check_status
+            integer updates_at_error;
+            repeat(20) @(negedge clk);
+            if(status_led[2]!==1) $fatal(1,"LD14 nao confirmou banco publicado");
+            wait(!dut.smoke_done);
+            repeat(20) @(negedge clk);
+            if(status_led[2]!==1) $fatal(1,"Inicio do quadro apagou LD14");
+            corrupt_crc=1;
+            wait(dut.video_errors>=1);
+            updates_at_error=updates;
+            corrupt_crc=0;
+            wait(status_led[3]);
+            wait(updates>updates_at_error);
+            repeat(20) @(negedge clk);
+            if(status_led[3:0]!==4'b1111 || checks<307200 ||
+               dut.u_ui_test.u_mig.reads==0 || dut.u_ui_test.u_mig.writes==0)
+                $fatal(1,"Status/DDR2/publicacao nao comprovados no top");
+            $display("PASS top DDR2 status: pixels=%0d updates=%0d sd_frames=%0d errors=%0d icon_publications=%0d LEDs=%b",
+                checks,updates,dut.video_frames,dut.video_errors,dut.sd_publications,status_led);
+            $finish;
+        end
         force dut.mira_on=1'b1;
         @(posedge vs);
         release dut.mira_on;

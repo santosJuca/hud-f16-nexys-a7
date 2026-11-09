@@ -11,7 +11,7 @@ VIVADO_BIN="${VIVADO_BIN:-$HOME/AMD/2026.1/Vivado/bin}"
 test ! -e "$OUT" || { echo "Resultados existentes preservados: $OUT" >&2; exit 1; }
 mkdir -p "$OUT"
 cd "$OUT"
-"$VIVADO_BIN/xvlog" --sv "$ROOT/hud/rtl/ddr2_p4b_async_fifo.sv" \
+"$VIVADO_BIN/xvlog" --sv "$ROOT/hud/rtl/ddr2_video_status.sv" "$ROOT/hud/rtl/ddr2_p4b_async_fifo.sv" \
  "$ROOT/hud/rtl/ddr2_sd_frame_mirror.sv" "$ROOT/hud/rtl/sd_sector_buffer.sv" \
  "$ROOT/tests/tb_ddr2_sd_frame_mirror.sv" > compile.txt 2>&1
 "$VIVADO_BIN/xvlog" "$VIVADO_BIN/../../data/verilog/src/glbl.v" > glbl.txt 2>&1

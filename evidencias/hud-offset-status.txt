@@ -1,0 +1,2 @@
+PASS HUD_OFFSET_VIDEO step, blanking, saturation, clipping and background preserved
+tests/tb_hud_offset_video.sv:55: $finish called at 38201000 (1ps)

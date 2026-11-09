@@ -1,0 +1,427 @@
+Comando: OUT="$PWD/validation/status-xpm" bash scripts/test_video_ddr2.sh
+
+CASO short_good
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:12:55 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/short_good/xsim_script.tcl
+# xsim {short_good} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STREAM=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(STREAM=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STREAM=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(STREAM=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+$finish called at time : 56124480 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144332 KB (Peak: 209868 KB), Simulation CPU Usage: 1020 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:12:58 2026...
+
+CASO full_good
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:13:02 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/full_good/xsim_script.tcl
+# xsim {full_good} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(TB_BYTES=76800,STREAM=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(TB_BYTES=76800,STREAM=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(TB_BYTES=76800,STREAM=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(TB_BYTES=76800,STREAM=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+DDR2_DISPLAY_PIXELS_PASS bytes=76800
+P4B_FRAME_PASS bytes=76800 words=4800
+$finish called at time : 16601448872 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1417.629 ; gain = 0.000 ; free physical = 13632 ; free virtual = 33166
+exit
+INFO: xsimkernel Simulation Memory Usage: 144992 KB (Peak: 210528 KB), Simulation CPU Usage: 7660 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:13:11 2026...
+
+CASO corruption
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:13:16 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/corruption/xsim_script.tcl
+# xsim {corruption} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(CORRUPT=1,STREAM=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(CORRUPT=1,STREAM=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(CORRUPT=1,STREAM=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(CORRUPT=1,STREAM=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=16 reads=16
+$finish called at time : 15089608 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144332 KB (Peak: 209868 KB), Simulation CPU Usage: 990 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:13:19 2026...
+
+CASO incomplete
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:13:23 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/incomplete/xsim_script.tcl
+# xsim {incomplete} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(SHORT_COMMIT=1,STREAM=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(SHORT_COMMIT=1,STREAM=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(SHORT_COMMIT=1,STREAM=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(SHORT_COMMIT=1,STREAM=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=8 reads=0
+$finish called at time : 5833992 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144332 KB (Peak: 209868 KB), Simulation CPU Usage: 990 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:13:26 2026...
+
+CASO aborted
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:13:31 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/aborted/xsim_script.tcl
+# xsim {aborted} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(ABORT_FRAME=1,STREAM=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(ABORT_FRAME=1,STREAM=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(ABORT_FRAME=1,STREAM=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(ABORT_FRAME=1,STREAM=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=8 reads=0
+$finish called at time : 5833992 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144332 KB (Peak: 209868 KB), Simulation CPU Usage: 990 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:13:33 2026...
+
+CASO stalled
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:13:38 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/stalled/xsim_script.tcl
+# xsim {stalled} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STALL=1,STREAM=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(STALL=1,STREAM=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STALL=1,STREAM=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(STALL=1,STREAM=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=0 reads=0
+$finish called at time : 10781808 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144332 KB (Peak: 209868 KB), Simulation CPU Usage: 990 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:13:40 2026...
+
+CASO reset_1
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:13:45 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/reset_1/xsim_script.tcl
+# xsim {reset_1} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(RESET_CASE=1,STREAM=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(RESET_CASE=1,STREAM=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(RESET_CASE=1,STREAM=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(RESET_CASE=1,STREAM=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+$finish called at time : 61724620 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144336 KB (Peak: 209872 KB), Simulation CPU Usage: 1010 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:13:48 2026...
+
+CASO reset_2
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:13:53 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/reset_2/xsim_script.tcl
+# xsim {reset_2} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(RESET_CASE=2,STREAM=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(RESET_CASE=2,STREAM=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(RESET_CASE=2,STREAM=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(RESET_CASE=2,STREAM=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+$finish called at time : 61724620 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144336 KB (Peak: 209872 KB), Simulation CPU Usage: 1020 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:13:55 2026...
+
+CASO reset_3
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:14:00 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/reset_3/xsim_script.tcl
+# xsim {reset_3} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(RESET_CASE=3,STREAM=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(RESET_CASE=3,STREAM=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(RESET_CASE=3,STREAM=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(RESET_CASE=3,STREAM=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+$finish called at time : 61724620 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144336 KB (Peak: 209872 KB), Simulation CPU Usage: 1010 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:14:02 2026...
+
+CASO reset_read
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:14:07 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/reset_read/xsim_script.tcl
+# xsim {reset_read} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(RESET_PHASE=1,STREAM=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(RESET_PHASE=1,STREAM=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(RESET_PHASE=1,STREAM=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(RESET_PHASE=1,STREAM=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+$finish called at time : 67201680 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144336 KB (Peak: 209872 KB), Simulation CPU Usage: 1030 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:14:10 2026...
+
+CASO reset_return
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:14:14 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/reset_return/xsim_script.tcl
+# xsim {reset_return} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(RESET_PHASE=2,STREAM=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(RESET_PHASE=2,STREAM=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(RESET_PHASE=2,STREAM=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(RESET_PHASE=2,STREAM=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+$finish called at time : 67570920 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144336 KB (Peak: 209872 KB), Simulation CPU Usage: 1010 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:14:17 2026...
+
+CASO loop
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:14:22 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/loop/xsim_script.tcl
+# xsim {loop} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STREAM=1,TB_FRAMES=3)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(STREAM=1,TB_FRAMES=3).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STREAM=1,TB_FRAMES=3)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(STREAM=1,TB_FRAMES=3).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+$finish called at time : 167487264 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144332 KB (Peak: 209868 KB), Simulation CPU Usage: 1070 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:14:24 2026...
+
+CASO output_stall
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:14:29 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/output_stall/xsim_script.tcl
+# xsim {output_stall} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STREAM=1,HOLD_OUTPUT=5000)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(STREAM=1,HOLD_OUTPUT=5000).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STREAM=1,HOLD_OUTPUT=5000)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(STREAM=1,HOLD_OUTPUT=5000).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+$finish called at time : 106611896 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144332 KB (Peak: 209868 KB), Simulation CPU Usage: 1040 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:14:32 2026...
+
+CASO bad_read_end
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:14:36 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/bad_read_end/xsim_script.tcl
+# xsim {bad_read_end} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STREAM=1,BAD_RD_END=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(STREAM=1,BAD_RD_END=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STREAM=1,BAD_RD_END=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(STREAM=1,BAD_RD_END=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=16 reads=1
+$finish called at time : 11015660 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144332 KB (Peak: 209868 KB), Simulation CPU Usage: 990 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:14:39 2026...
+
+CASO read_timeout
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:14:44 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/read_timeout/xsim_script.tcl
+# xsim {read_timeout} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STREAM=1,DROP_READ=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(STREAM=1,DROP_READ=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STREAM=1,DROP_READ=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(STREAM=1,DROP_READ=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=16 reads=1
+$finish called at time : 25317556 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144332 KB (Peak: 209868 KB), Simulation CPU Usage: 1000 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:14:46 2026...
+
+CASO fifo_overflow
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:14:51 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/fifo_overflow/xsim_script.tcl
+# xsim {fifo_overflow} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(TB_BYTES=1024,STALL=1,STREAM=1,TIMEOUT_CYCLES=2500)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(TB_BYTES=1024,STALL=1,STREAM=1,TIMEOUT_CYCLES=2500).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(TB_BYTES=1024,STALL=1,STREAM=1,TIMEOUT_CYCLES=2500)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(TB_BYTES=1024,STALL=1,STREAM=1,TIMEOUT_CYCLES=2500).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+FIFO_OVERFLOW_ABORT_OBSERVED
+P4B_EXPECTED_ERROR_PASS bytes=1024 writes=0 reads=0
+$finish called at time : 41502576 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144336 KB (Peak: 209872 KB), Simulation CPU Usage: 1000 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:14:53 2026...
+
+CASO preserve
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:14:58 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/preserve/xsim_script.tcl
+# xsim {preserve} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STREAM=1,TB_FRAMES=2,CORRUPT_ON_SECOND=1)/dut/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_109  Scope: tb_ddr2_sd_frame_mirror(STREAM=1,TB_FRAMES=2,CORRUPT_ON_SECOND=1).dut.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_ddr2_sd_frame_mirror(STREAM=1,TB_FRAMES=2,CORRUPT_ON_SECOND=1)/dut/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_207  Scope: tb_ddr2_sd_frame_mirror(STREAM=1,TB_FRAMES=2,CORRUPT_ON_SECOND=1).dut.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+DDR2_LAST_GOOD_FRAME_PRESERVED
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=32 reads=32
+$finish called at time : 111682792 ps : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_ddr2_sd_frame_mirror.sv" Line 315
+exit
+INFO: xsimkernel Simulation Memory Usage: 144332 KB (Peak: 209868 KB), Simulation CPU Usage: 1020 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:15:01 2026...

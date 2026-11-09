@@ -64,12 +64,17 @@ module tb_ddr2_sd_frame_mirror;
 
     reg output_finished=0;
     integer output_count=0, output_mismatches=0;
-    wire buffer_pending,buffer_error;
+    wire buffer_pending,buffer_error,buffer_published;
+    wire status_pass,status_error;
+    ddr2_video_status status_monitor(.clk(src_clk),.rst(src_rst),
+        .frame_started(frame_start),.readback_commit(out_commit),.readback_abort(out_abort),
+        .frame_published(buffer_published),.transfer_error(buffer_error),
+        .published_seen(status_pass),.error_seen(status_error));
     sd_sector_buffer #(.BYTES(TB_BYTES)) display_buffer (
         .wr_clk(src_clk),.rd_clk(pixel_clk),.rst(src_rst),
         .wr_start(out_start),.wr_abort(out_abort),.wr_commit(out_commit),
         .wr_valid(out_valid),.wr_index(out_address),.wr_byte(out_byte),
-        .wr_ready(buffer_ready),.wr_pending(buffer_pending),.wr_error(buffer_error),
+        .wr_ready(buffer_ready),.wr_pending(buffer_pending),.wr_error(buffer_error),.wr_published(buffer_published),
         .rd_frame_start(display_boundary),.rd_enable(display_enable),
         .rd_address(display_address),.rd_byte(display_byte),
         .rd_valid(display_valid),.rd_updated(display_updated));
@@ -270,6 +275,7 @@ module tb_ddr2_sd_frame_mirror;
                     $fatal(1,"Pixel vindo da DDR2 incorreto no buffer de saida: %0d",j);
             end
             $display("DDR2_DISPLAY_PIXELS_PASS bytes=%0d",TB_BYTES);
+            if(!status_pass) $fatal(1,"Publicacao integra nao manteve PASS");
         end
         if (STREAM && CORRUPT_ON_SECOND && epoch != 0) begin
             // Um quadro corrompido nao pode substituir o banco ja exibido.
@@ -283,6 +289,8 @@ module tb_ddr2_sd_frame_mirror;
         end
         @(negedge ui_clk);
         if (corrupt_now || SHORT_COMMIT || ABORT_FRAME || STALL || BAD_RD_END || DROP_READ) begin
+            if(STREAM && (!status_error || (epoch==0 && status_pass)))
+                $fatal(1,"Erro nao persistiu ou houve falso PASS");
             if (test_pass || !test_error)
                 $fatal(1,"Erro de quadro nao detectado");
             if(STALL && TB_BYTES==1024) begin

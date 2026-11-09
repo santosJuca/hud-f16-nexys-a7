@@ -1,0 +1,2 @@
+DDR2_STATUS_STICKY_PUBLICATION_ABORT_RESET_PASS
+tests/tb_ddr2_video_status.sv:41: $finish called at 870000 (1ps)

@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-11-09T10:16:37.546492-03:00",
+  "user_report": "Sim, programei esse arquivo por JTAG; fotos antes de desligar/religar",
+  "reported_bit": "hud-f16-ddr2-74b3541-experimental.bit",
+  "expected_sha256": "12b6781beaa60033be1ced9acc8fac564a28ada25f6019f32575c749e8b33370",
+  "firmware_classification": "CANDIDATO_CONFIRMADO_POR_RELATO_USUARIO; SRAM_NAO_IDENTIFICADA_INDEPENDENTEMENTE",
+  "usb_jtag_visible_on_this_host": false,
+  "hw_manager_read_available": false,
+  "local_logs_checked": [
+    "/home/santojuca/vivado.jou",
+    "/home/santojuca/vivado.log",
+    "/home/santojuca/Downloads/vivado.jou",
+    "/home/santojuca/Downloads/vivado.log"
+  ],
+  "matching_program_log_found_in_checked_files": false,
+  "vga_ddr2_origin_physically_proven": false,
+  "jtag_programmed_by_agent": false,
+  "flash_modified": false
+}

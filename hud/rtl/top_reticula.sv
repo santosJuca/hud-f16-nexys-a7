@@ -1519,6 +1519,7 @@ wire [9:0] velocidade_hud_entrada =
         (!ENABLE_DDR2_SD_MIRROR || !ENABLE_SD_VIDEO || !ENABLE_SD_SUBSYSTEM))
         $error("DDR2_VIDEO exige SD, video e espelho DDR2 habilitados");
     wire ddr_video_ready, ddr_src_ready;
+    wire video_frame_published, video_frame_buffer_error;
     wire ddr_out_start,ddr_out_abort,ddr_out_commit,ddr_out_valid;
     wire [($clog2(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT))-1:0] ddr_out_address;
     wire [7:0] ddr_out_byte;
@@ -1563,7 +1564,7 @@ wire [9:0] velocidade_hud_entrada =
             .wr_commit(ENABLE_DDR2_VIDEO ? ddr_out_commit : frame_commit),
             .wr_byte(ENABLE_DDR2_VIDEO ? ddr_out_byte : sd_data_byte),
             .wr_index(ENABLE_DDR2_VIDEO ? ddr_out_address : frame_address),.wr_ready(frame_ready),
-            .wr_active(),.wr_pending(),.wr_error(),.wr_published(),
+            .wr_active(),.wr_pending(),.wr_error(video_frame_buffer_error),.wr_published(video_frame_published),
             .rd_frame_start(publish_frame),
             .rd_enable(display_enable),.rd_address(display_address),.rd_byte(display_byte),
             .rd_valid(display_valid),.rd_sector_valid(frame_valid),.rd_updated(updated_frame));
@@ -1574,6 +1575,7 @@ wire [9:0] velocidade_hud_entrada =
             .byte_valid(display_valid),.pixel_byte(display_byte),.read_enable(display_enable),
             .read_address(display_address),.rgb(scene_rgb),.hs(),.vs(),.enabled());
     end else begin : g_no_video
+        assign {video_frame_published,video_frame_buffer_error}=0;
         assign ddr_video_ready=0;
         assign {p4b_frame_start,p4b_frame_abort,p4b_frame_commit,p4b_frame_write}=4'b0;
         assign p4b_frame_address='0;
@@ -1746,6 +1748,17 @@ wire [9:0] velocidade_hud_entrada =
     // LD14 teste PASS concluido, LD15 erro.
     assign DDR2_STATUS_LED[0] = ref_mmcm_locked;
     assign DDR2_STATUS_LED[1] = calib_ok;
-    assign DDR2_STATUS_LED[2] = smoke_done && smoke_pass;
-    assign DDR2_STATUS_LED[3] = smoke_error;
+    generate if (ENABLE_DDR2_VIDEO) begin : g_ddr_video_status
+        // Historico desde a configuracao: CPU RESET do MIG nao limpa os LEDs.
+        ddr2_video_status u_status (
+            .clk(clk_hud),.rst(reset_operacao),
+            .frame_started(p4b_frame_start),.readback_commit(ddr_out_commit),
+            .readback_abort(ddr_out_abort),.frame_published(video_frame_published),
+            .transfer_error(video_failed || video_frame_buffer_error),
+            .published_seen(DDR2_STATUS_LED[2]),.error_seen(DDR2_STATUS_LED[3])
+        );
+    end else begin : g_legacy_ddr_status
+        assign DDR2_STATUS_LED[2] = smoke_done && smoke_pass;
+        assign DDR2_STATUS_LED[3] = smoke_error;
+    end endgenerate
 endmodule
