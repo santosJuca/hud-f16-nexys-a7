@@ -1,5 +1,5 @@
 {
-  "base_commit": "3fc45f2a782f54fff0e22338775fd8697d405700",
+  "base_commit": "52e223d22a190b61c868cfa2966d83ff715fd965",
   "map_sha256": "066823aa6b90d362ae600991e955ef46aa1a9c9ad522c931eb2ae01ab097349d",
   "file_sha256": "24f17b8a9bb7ec6b52aeb55a1301f065aadc05df1c03fa34b673222a4d8bdea2",
   "generics": {
@@ -52,5 +52,7 @@
     "MAG_GAIN_X_Q12=4546",
     "MAG_GAIN_Y_Q12=3727",
     "MAG_ALINHAMENTO_GRAUS=81"
-  ]
+  ],
+  "profile_origin_base_commit": "3fc45f2a782f54fff0e22338775fd8697d405700",
+  "rtl_commit": "b38e538b330805b265fe1b9a7cf45d7c5501acec"
 }

@@ -3,6 +3,11 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUT="${OUT:-$ROOT/validation/top-ddr2}"
 VB="${VIVADO_BIN:-$HOME/AMD/2026.1/Vivado/bin}"
+case "${TOP_CASE:-video}" in
+ video) TEST_TOP=tb_top_ddr2_video ;;
+ bram) TEST_TOP=tb_top_bram_recovery ;;
+ *) echo "TOP_CASE deve ser video ou bram" >&2; exit 2 ;;
+esac
 test ! -e "$OUT" || { echo "Preservado: $OUT" >&2; exit 1; }
 mkdir -p "$OUT/tests"
 cp "$ROOT/tests/hud_aircraft_64.hex" "$OUT/tests/"
@@ -22,10 +27,10 @@ PY
 cd "$OUT"
 "$VB/xvlog" --relax --sv "$ROOT"/hud/rtl/*.sv "$ROOT"/hud/rtl/*.v \
  "$ROOT/tests/ddr2_mig_ui_model.sv" "$ROOT/tests/sd_video_card_model.sv" \
- "$ROOT/tests/tb_top_ddr2_video.sv" > compile.txt 2>&1
+ "$ROOT/tests/tb_top_ddr2_video.sv" "$ROOT/tests/tb_top_bram_recovery.sv" > compile.txt 2>&1
 "$VB/xvlog" "$VB/../../data/verilog/src/glbl.v" > glbl.txt 2>&1
-"$VB/xelab" -mt 4 -L xpm -L unisims_ver work.tb_top_ddr2_video work.glbl \
+"$VB/xelab" -mt 4 -L xpm -L unisims_ver "work.$TEST_TOP" work.glbl \
  -generic_top QUICK_STATUS="${QUICK_STATUS:-0}" -s top_ddr2 > elaborate.txt 2>&1
 "$VB/xsim" top_ddr2 -runall -testplusarg "VIDEO_HEX=$OUT/video.hex" -testplusarg "CAPTURE=$OUT" > result.txt 2>&1
 if rg '(FATAL|Fatal:|Error:|ERROR:)' result.txt; then exit 1; fi
-rg 'PASS top DDR2' result.txt
+rg 'PASS top DDR2|PASS top BRAM recovery' result.txt

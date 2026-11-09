@@ -26,6 +26,8 @@ module tb_top_ddr2_video #(parameter integer QUICK_STATUS=0);
     // Apenas no teste: reduz debounce sem pular a publicacao no blanking.
     defparam dut.u_modo.DEBOUNCE_CYCLES=4;
     defparam dut.u_estilo.DEBOUNCE_CYCLES=4;
+    // Somente no modelo: conserva retries/CRC, encurta a espera de 100 ms.
+    defparam dut.g_video.u_loader.RETRY_CYCLES=50;
     wire [31:0] reads;
     sd_video_card_model #(.FILE_BYTES(39424),.ALLOW_ICON(1)) card(.sck(sck),.cs_n(cs_n),.mosi(mosi),
         .rst(dut.reset_operacao),.corrupt_crc(corrupt_crc),.timeout_token(1'b0),.bad_header(1'b0),.miso(miso),.reads(reads));

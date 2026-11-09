@@ -1,0 +1,71 @@
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 10:13:52 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/top_ddr2/xsim_script.tcl
+# xsim {top_ddr2} -testplusarg VIDEO_HEX=/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/validation/top-status/video.hex -testplusarg CAPTURE=/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/validation/top-status -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_top_ddr2_video(QUICK_STATUS=1)/dut/u_ui_test/g_sd_mirror.u_mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_502  Scope: tb_top_ddr2_video(QUICK_STATUS=1).dut.u_ui_test.g_sd_mirror.u_mirror.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_top_ddr2_video(QUICK_STATUS=1)/dut/u_ui_test/g_sd_mirror.u_mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_600  Scope: tb_top_ddr2_video(QUICK_STATUS=1).dut.u_ui_test.g_sd_mirror.u_mirror.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+TOP_PROGRESS time=1000000000 init=1 video=1 frames=0 updates=0 x=200 y=31
+TOP_PROGRESS time=2000000000 init=1 video=1 frames=0 updates=0 x=400 y=62
+TOP_PROGRESS time=3000000000 init=1 video=1 frames=0 updates=0 x=600 y=93
+TOP_PROGRESS time=4000000000 init=1 video=1 frames=0 updates=0 x=0 y=125
+TOP_PROGRESS time=5000000000 init=1 video=1 frames=0 updates=0 x=200 y=156
+TOP_PROGRESS time=6000000000 init=1 video=1 frames=0 updates=0 x=400 y=187
+TOP_PROGRESS time=7000000000 init=1 video=1 frames=0 updates=0 x=600 y=218
+TOP_PROGRESS time=8000000000 init=1 video=1 frames=0 updates=0 x=0 y=250
+TOP_PROGRESS time=9000000000 init=1 video=1 frames=0 updates=0 x=200 y=281
+TOP_PROGRESS time=10000000000 init=1 video=1 frames=0 updates=0 x=400 y=312
+TOP_PROGRESS time=11000000000 init=1 video=1 frames=0 updates=0 x=600 y=343
+TOP_PROGRESS time=12000000000 init=1 video=1 frames=0 updates=0 x=0 y=375
+TOP_PROGRESS time=13000000000 init=1 video=1 frames=0 updates=0 x=200 y=406
+TOP_PROGRESS time=14000000000 init=1 video=1 frames=0 updates=0 x=400 y=437
+TOP_PROGRESS time=15000000000 init=1 video=1 frames=0 updates=0 x=600 y=468
+TOP_PROGRESS time=16000000000 init=1 video=9 frames=0 updates=0 x=0 y=500
+TOP_PROGRESS time=17000000000 init=1 video=9 frames=0 updates=0 x=200 y=6
+TOP_PROGRESS time=18000000000 init=1 video=9 frames=0 updates=0 x=400 y=37
+TOP_PROGRESS time=19000000000 init=1 video=9 frames=0 updates=0 x=600 y=68
+TOP_PROGRESS time=20000000000 init=1 video=9 frames=0 updates=0 x=0 y=100
+TOP_PROGRESS time=21000000000 init=1 video=9 frames=0 updates=0 x=200 y=131
+TOP_PROGRESS time=22000000000 init=1 video=5 frames=1 updates=0 x=400 y=162
+TOP_PROGRESS time=23000000000 init=1 video=9 frames=1 updates=0 x=600 y=193
+TOP_PROGRESS time=24000000000 init=1 video=9 frames=1 updates=0 x=0 y=225
+TOP_PROGRESS time=25000000000 init=1 video=9 frames=1 updates=0 x=200 y=256
+TOP_PROGRESS time=26000000000 init=1 video=9 frames=1 updates=0 x=400 y=287
+TOP_PROGRESS time=27000000000 init=1 video=9 frames=1 updates=0 x=600 y=318
+TOP_PROGRESS time=28000000000 init=1 video=9 frames=1 updates=0 x=0 y=350
+TOP_PROGRESS time=29000000000 init=1 video=5 frames=2 updates=0 x=200 y=381
+TOP_PROGRESS time=30000000000 init=1 video=5 frames=2 updates=0 x=400 y=412
+TOP_PROGRESS time=31000000000 init=1 video=5 frames=2 updates=0 x=600 y=443
+TOP_PROGRESS time=32000000000 init=1 video=5 frames=2 updates=0 x=0 y=475
+TOP_PROGRESS time=33000000000 init=1 video=11 frames=2 updates=1 x=200 y=506
+TOP_PROGRESS time=34000000000 init=1 video=11 frames=2 updates=1 x=400 y=12
+TOP_PROGRESS time=35000000000 init=1 video=11 frames=2 updates=1 x=600 y=43
+TOP_PROGRESS time=36000000000 init=1 video=11 frames=2 updates=1 x=0 y=75
+TOP_PROGRESS time=37000000000 init=1 video=11 frames=2 updates=1 x=200 y=106
+TOP_PROGRESS time=38000000000 init=1 video=11 frames=2 updates=1 x=400 y=137
+TOP_PROGRESS time=39000000000 init=1 video=11 frames=2 updates=1 x=600 y=168
+TOP_PROGRESS time=40000000000 init=1 video=11 frames=2 updates=1 x=0 y=200
+TOP_PROGRESS time=41000000000 init=1 video=11 frames=2 updates=1 x=200 y=231
+TOP_PROGRESS time=42000000000 init=1 video=11 frames=2 updates=1 x=400 y=262
+TOP_PROGRESS time=43000000000 init=1 video=11 frames=2 updates=1 x=600 y=293
+TOP_PROGRESS time=44000000000 init=1 video=11 frames=2 updates=1 x=0 y=325
+TOP_PROGRESS time=45000000000 init=1 video=11 frames=2 updates=1 x=200 y=356
+TOP_PROGRESS time=46000000000 init=1 video=11 frames=2 updates=1 x=400 y=387
+TOP_PROGRESS time=47000000000 init=1 video=11 frames=2 updates=1 x=600 y=418
+TOP_PROGRESS time=48000000000 init=1 video=11 frames=2 updates=1 x=0 y=450
+PASS top DDR2 status: pixels=307200 updates=2 sd_frames=2 errors=1 icon_publications=1 LEDs=1111
+$finish called at time : 48960230 ns : File "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/tests/tb_top_ddr2_video.sv" Line 95
+run: Time (s): cpu = 00:00:00.04 ; elapsed = 00:05:43 . Memory (MB): peak = 1417.629 ; gain = 0.000 ; free physical = 11085 ; free virtual = 30668
+exit
+INFO: xsimkernel Simulation Memory Usage: 226308 KB (Peak: 291844 KB), Simulation CPU Usage: 343920 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 10:19:37 2026...
