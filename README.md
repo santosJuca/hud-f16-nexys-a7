@@ -6,8 +6,10 @@
 
 Branch: `fix/hud-ddr2-indicadores-20261109`. Base publicada preservada: `52e223d`. Fonte RTL: `b38e538b330805b265fe1b9a7cf45d7c5501acec`.
 
-BIT: `hud-f16-ddr2-b38e538-status-experimental.bit`  
-SHA-256: `7c74a9d635f378c980f6378683126f182df92bcc0c3a16e19c1d11ecdd8df292`  
+BIT: `hud-f16-ddr2-b38e538-status-experimental.bit`
+
+SHA-256: `7c74a9d635f378c980f6378683126f182df92bcc0c3a16e19c1d11ecdd8df292`
+
 USERCODE esperado após carga: **B38E538B**. O manifesto dos assets identifica o commit exato da tag.
 
 ## Indicadores
