@@ -1,0 +1,5 @@
+             Checks found: 104
+| DPIP-1    | Warning  | Input pipelining       | 33     |
+| DPOP-1    | Warning  | PREG Output pipelining | 27     |
+| DPOP-2    | Warning  | MREG Output pipelining | 43     |
+| REQP-1709 | Warning  | Clock output buffering | 1      |

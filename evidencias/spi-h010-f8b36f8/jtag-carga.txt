@@ -1,0 +1,6 @@
+REGISTER.CONFIG_STATUS.BIT00_CRC_ERROR                              string  true       0
+REGISTER.CONFIG_STATUS.BIT04_END_OF_STARTUP_(EOS)_STATUS            string  true       1
+REGISTER.CONFIG_STATUS.BIT12_INIT_B_PIN                             string  true       1
+REGISTER.CONFIG_STATUS.BIT14_DONE_PIN                               string  true       1
+# puts "USERCODE = $uc  (esperado 5DF8B30A)"
+USERCODE = 5df8b30a  (esperado 5DF8B30A)

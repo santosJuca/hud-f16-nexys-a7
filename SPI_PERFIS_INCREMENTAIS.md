@@ -137,6 +137,24 @@ anterior passar. Os divisores mudam só contadores locais do domínio de 100 MHz
 assim, cada build precisa de nova conferência de setup/hold, porque a margem de hold do
 build anterior foi de apenas 0,017 ns.
 
+## 6.1 Resultado do perfil 5 MHz (READ_HALF=10)
+
+Build na máquina do usuário, Vivado 2026.1, commit `f8b36f8`. Evidências em
+`evidencias/spi-h010-f8b36f8/`.
+
+- **Timing:** WNS +0,391 ns / WHS +0,006 ns, TNS/THS zero. O hold está mais estreito que no
+  build `b38e538` (+0,017 ns) e precisa ser reconferido em cada novo perfil.
+- **DRC:** sem erros (só warnings DSP e o REQP-1709 conhecido).
+- **CDC:** igual ao build anterior: 46 CDC-3, 3 CDC-10, 1 CDC-8, 176 CDC-15.
+- **Bus skew:** positivo.
+- **Avisos críticos:** os já conhecidos (Constraints 18-1056 e Netlist 29-160 do XDC do MIG).
+- **BIT:** `hud-f16-ddr2-f8b36f8-spi-h010-experimental.bit`, SHA-256
+  `41503a5fbf86d8cf7d97c3007802cedb0231ab5efcacf7ece7defd86179ce49d`, USERID `5DF8B30A`.
+- **Carga JTAG (SRAM)** na Nexys 210292AD34F5A: DONE=1, INIT_B=1, EOS=1, CRC_ERROR=0,
+  USERCODE lido `5df8b30a`. O usuário relatou funcionamento.
+- **Pendente:** cronometrar o loop de 90 quadros (estimativa de ~12 s, ~7,4 FPS), 10 min com
+  LD15 apagado e medir SCK→MISO antes de subir para 10 MHz.
+
 ## 7. Ensaio físico incremental (um perfil por vez)
 
 1. Programar só a SRAM por JTAG e conferir o USERCODE do perfil (`5D…0A`, `5D…05`, `5D…04`).
