@@ -1,52 +1,42 @@
-# Teste físico da correção LD14/LD15
+# Teste físico do perfil SPI 5 MHz
 
-**EXPERIMENTAL — NÃO VALIDADO FISICAMENTE.** A correção muda somente diagnóstico. O agente não programou JTAG, Flash ou cartão nesta execução. A primeira fotografia foi atribuída pelo usuário à candidata anterior; a origem física DDR2 dos pixels não pôde ser comprovada nesta máquina, sem USB-JTAG enumerada.
+**EXPERIMENTAL.** Este procedimento prepara um ensaio futuro; não autoriza nem executa programação. Há um log histórico de JTAG do build anterior de mesmo código, mas o BIT reproduzido para esta publicação não tem ensaio físico novo. Não confundir integridade da configuração (CRC_ERROR) com integridade de setores, quadros ou pixels.
 
-## Baixar, verificar e identificar
+## Conferir o candidato
 
-Baixar todos os assets da nova pre-release numa pasta nova (o repositório é privado):
+Baixar todos os assets de `hud-f16-ddr2-spi5-rc-20261109` numa pasta nova, com autenticação do repositório privado, e conferir:
 
 ```bash
-mkdir hud-ddr2-status-rc
-cd hud-ddr2-status-rc
-gh release download hud-f16-ddr2-status-rc-20261109 \
- --repo santosJuca/Trabalho-display-aviao-v2 --dir .
+gh release download hud-f16-ddr2-spi5-rc-20261109 \
+ --repo santosJuca/Trabalho-display-aviao-v2 --dir ./hud-spi5-rc
+cd hud-spi5-rc
 sha256sum -c SHA256SUMS
-/home/santojuca/AMD/2026.1/Vivado/bin/vivado -mode gui
 ```
 
-Usar `hud-f16-ddr2-b38e538-status-experimental.bit`, identificado no manifesto e SHA256SUMS. Não confundir com o BIT anterior `hud-f16-ddr2-74b3541-experimental.bit` ou com o firmware funcional de recuperação.
+O nome do candidato é `hud-f16-ddr2-f8b36f8-spi-h010-experimental.bit`. O SHA exato está no manifesto e em SHA256SUMS. Há duas emissões conhecidas desse código e perfil; USERCODE sozinho não distingue seus arquivos. Nunca usar o hash histórico `41503a5f...` para identificar automaticamente o BIT desta publicação.
 
-Com o microSD conhecido já no slot e as conexões habituais, abrir Hardware Manager → Open Target → Auto Connect. Conferir a Nexys A7-100T e `xc7a100t_0`; serial histórico Digilent/210292AD34F5A. Program Device deve receber apenas o BIT corrigido no campo Bitstream File. Não selecionar configuração de memória/Flash. Esta operação é feita pelo usuário, não foi executada pelo agente.
+Após autorização específica, o usuário poderá abrir Hardware Manager, conferir Nexys A7-100T / `xc7a100t_0` (serial histórico Digilent/210292AD34F5A) e carregar somente SRAM com esse BIT. Não selecionar configuração de memória/Flash. Antes de programar, registrar caminho, SHA-256, dispositivo e escopo. A Flash e o cartão devem permanecer preservados.
 
-Guardar caminho, hash, log e DONE/INIT_B/EOS/CRC_ERROR disponíveis. Depois atualizar o dispositivo no Hardware Manager e consultar no Tcl Console, somente em leitura:
+Para identificar a versão, após a carga e atualização do dispositivo, consultar somente em leitura no console Tcl:
 
 ```tcl
 refresh_hw_device -update_hw_probes false [current_hw_device]
 get_property REGISTER.USERCODE [current_hw_device]
 ```
 
-O candidato corrigido deve informar **B38E538B**, correspondente ao commit RTL `b38e538b330805b265fe1b9a7cf45d7c5501acec`. USERCODE é identificador de versão, não SHA-256 recuperado da SRAM. Se o valor não conferir, não atribuir imagem/LEDs a esta candidata. A versão anterior usava USERID padrão FFFFFFFF, insuficiente para diferenciá-la de outros builds com o mesmo padrão.
+Esperado: **5DF8B30A**. Identifica o commit/perfil, não recupera o SHA do BIT da SRAM. Guardar o log de programação junto ao hash do arquivo efetivamente selecionado. Se o código não conferir, não atribuir resultados ao candidato.
 
-## Conferir os LEDs e o vídeo
+## Medir reprodução
 
-1. Logo após a carga, LD14/LD15 devem começar apagados. LD12 indica lock da referência; LD13, calibração MIG. Se LD12=0 ou LD13=0, registrar esse estado antes de avaliar vídeo.
-2. Aguardar 20–30 s após a carga, sem reiniciar repetidamente. Há liberação de vídeo por sensores/timeout de até 10 s e carga de pelo menos 1,569 s/quadro a 400 kHz, além de esperas. Não aumentar SPI para diagnosticar um LED apagado.
-3. **LD14 aceso:** houve commit íntegro de retorno DDR2 e ACK da seleção do banco de exibição. Ele permanece aceso durante o quadro seguinte e não prova que o fundo está habilitado ou visível sob o HUD. **LD15 aceso:** houve falha de vídeo/retorno/buffer nesta sessão; permanece aceso mesmo após recuperação. Os dois acesos significam sucesso e também falha no histórico.
-4. Com LD14=1, habilitar o fundo pelo controle existente BTNL e registrar a sequência de imagens mudando. Conferir proporção/canais, estabilidade VGA, ausência de mistura/tearing e manutenção da última imagem entre atualizações. Alternar vídeo/HUD ajuda a separar fundo e simbologia procedural; uma imagem estática isolada não comprova tráfego DDR2 contínuo.
-5. O cartão continua com 90 quadros RGB332 320×240/30 nominal, LBA absoluto 30028160 e 13501 setores contíguos. O perfil físico permanece 400 kHz: loop >=141,21 s antes de esperas. Registrar o retorno ao início e o tempo real. Não classificar isso como 30 FPS físicos.
-6. Exercitar modos, joystick, bússola e ajuste vertical: o fundo não deve desaparecer com o deslocamento do HUD. A orientação dos sensores não foi alterada; não compensar ângulos espontaneamente.
-7. Um CPU RESET do MIG não limpa o histórico de LD14/LD15 e pode registrar abort de transferência. Para uma sessão limpa, recarregar o BIT corrigido por JTAG e conferir novamente USERCODE/LEDs. Não remover cartão energizado nem desconectar a DDR2 para injetar falha. Em erro, registrar primeiro o estado e recuperar a versão anterior.
+1. Com o cartão conhecido já instalado e as conexões habituais preservadas, aguardar 20–30 s sem resets repetidos. LD12 e LD13 devem acender. LD14 deve registrar publicação íntegra de banco; LD15 deve permanecer apagado. Fotografar LD12–15. LD14 não garante fundo habilitado: observar também os controles de vídeo existentes.
+2. Confirmar fundo em movimento, proporção, canais e qualidade aprovada. Não confundir VGA ~59,52 Hz com quadros novos de vídeo. O arquivo continua 90 quadros 320×240 RGB332, 30 FPS nominais, LBA absoluto 30028160, 13501 setores.
+3. Cronometrar três ciclos completos, de uma transição visual identificável até a repetição da mesma transição. Excluir a espera inicial. Registrar T1, T2, T3, pausas e eventual congelamento. Gravar vídeo contínuo de alguns ciclos ajuda a revisar a sequência.
+4. Calcular **estimativa** `90/T` somente sob a hipótese de todos os 90 quadros publicados uma vez por ciclo. Se perdas/duplicações não forem observáveis, marcar essa hipótese como não verificada. Contagem instrumentada de ACKs de publicação por janela de tempo é a medida direta; nenhum acesso físico a contador foi acrescentado nesta consolidação.
+5. A SPI de 5 MHz tem teto bruto de ~8,14 quadros/s. O modelo CMD17 sem espera do cartão estima ~7,95 quadros/s de carga; sincronismo VGA/latências reduzem a publicação. ~12 s/ciclo é estimativa, não aprovação nem garantia. Não exigir 30 FPS neste perfil.
+6. Rodar 10 minutos: sem falha em LD15, perda da calibração, congelamento ou mistura de quadros. Testar modos, joystick, bússola, atitude e ajuste vertical. O fundo não deve desaparecer ao ajustar o HUD. Ausência de erro indicado só cobre os mecanismos monitorados.
+7. Se LD15 acender ou LD14 não acender após a partida, registrar firmware, LEDs, tempo até a falha, estado da imagem e comandos usados. Não aumentar a frequência para diagnosticar. CPU RESET do MIG não limpa o histórico de status; uma sessão limpa exige recarga do BIT autorizado. Não remover cartão energizado para provocar erro.
 
-| LD13 | LD14 | LD15 | Interpretação |
-|---|---|---|---|
-| 0 | qualquer | qualquer | MIG não está calibrado agora; histórico não substitui estado atual. |
-| 1 | 0 | 0 | Nenhuma publicação confirmada nesta sessão; aguardar partida/carga e observar atividade SD. |
-| 1 | 1 | 0 | Pelo menos um banco íntegro confirmado, sem falha registrada. |
-| 1 | 0 | 1 | Falha registrada sem publicação íntegra confirmada. |
-| 1 | 1 | 1 | Houve publicação e também falha; possível recuperação ou falha posterior. |
-
-LD7 é SD_READY, LD8 erro SD e LD9 atividade SD na pinagem existente. `sd_publications` é contador do ícone/overlay de setor, não de vídeo. `video_frames` conta conclusão SD, não banco VGA. `video_late` é esperado no perfil lento. As etapas e contadores estão detalhados em VALIDACAO_OFFLINE.md. Nem todas as páginas dos contadores são acessíveis na configuração de switches; não inventar leitura física. Não foi acrescentada ILA.
+O próximo perfil só deve ser considerado após a qualificação deste. O timing interno positivo não fecha o orçamento elétrico externo. Antes de aumentar novamente, medir com instrumentação a relação entre SCK, MISO estável e a borda efetiva de amostragem, incluindo margem e documentação do cartão. Não inferir sign-off elétrico de uma simulação com atraso estimado.
 
 ## Recuperação e Flash
 

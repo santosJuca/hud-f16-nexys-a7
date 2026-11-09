@@ -1,55 +1,39 @@
-# Correção do teste físico DDR2: vídeo e indicadores
+# Consolidação da candidata SPI 5 MHz
 
 ## CONFIRMADO
 
-O usuário confirmou carga JTAG de `hud-f16-ddr2-74b3541-experimental.bit` antes das fotos, sem power-cycle. O arquivo local e a release anterior correspondem ao SHA-256 `12b6781beaa60033be1ced9acc8fac564a28ada25f6019f32575c749e8b33370`. A identificação é por relato do usuário; não houve leitura independente da configuração nesta máquina, sem USB-JTAG enumerada. Nenhum SHA foi inferido da SRAM.
+Branch `perf/hud-spi-leitura-incremental-20261109`, base de consolidação `12bb27bdf73b1771599016909b59b38ed1f55f2a`, fonte do build `f8b36f814b6c530a54e6d597ef7c5c33e3e3dd03`. A main e as releases anteriores foram preservadas. O commit final da publicação está no manifesto dos assets/tag.
 
-LD12 e LD13 continuam indicando lock da referência e calibração MIG. Na candidata anterior, LD14 era `smoke_done && smoke_pass`, resultado da releitura/CRC32 no domínio UI, limpo no START seguinte. LD15 era `smoke_error`, também limpo na próxima tentativa. Eles não representavam histórico nem comprovavam troca de banco VGA.
+A emissão histórica de hash `41503a5f...` não foi encontrada nos diretórios locais consultados e não estava em release. Os resumos publicados eram insuficientes para conferir integralmente bus skew/CDC. Reproduzimos o build, sem modificar RTL, em `/home/santojuca/Downloads/hud_ddr2_spi5_build_20261109`. A consolidação está em `/home/santojuca/Downloads/hud_ddr2_spi5_publicacao_20261109`.
 
-## CAUSA RAIZ
+O perfil efetivo mantém inicialização a 400 kHz, leitura a 5 MHz, 320×240 RGB332, 30 FPS nominais no arquivo, DDR2_VIDEO=1, LBA 30028160 e 13501 setores. Os genéricos completos estão em `evidencias/spi-h010-reproducao/perfil-spi-build.json`. A fonte compilada foi fotografada por hashes antes do build e reconferida sem divergências.
 
-**Confirmado no RTL:** o início da próxima pré-carga apaga PASS e erro anteriores. LD14 pode ficar visualmente apagado mesmo após quadros válidos. O ACK de publicação do buffer de vídeo não estava conectado a esse indicador. Isso é um defeito de diagnóstico, não prova de falha no transporte DDR2. A espera de sensores pode chegar a 10 s e a carga a 400 kHz exige >=1,569 s/quadro; falta de espera também não foi excluída na fotografia.
+Nova execução: 23 cenários SPI PASS. Teste integrado de quadro completo com init=125, read=10 e LBA real passou: quatro publicações, quatro releituras DDR2 válidas, zero erros, 7.372.800 comparações RGB, escrita/leitura MIG e pré-carga exercitadas. Intervalos de publicação no modelo: 134,4 / 117,6 / 134,4 ms. Os quatro atrasos em relação à meta nominal de 30 FPS são esperados, não erros de CRC. Usa modelo SDHC/UI MIG e XPM real, sem PHY físico.
 
-**Origem física da imagem VGA: INDETERMINADA.** O relato identifica a candidata, mas ver HUD/F-16 não comprova pixels de fundo vindos da DDR2. No perfil real ENABLE_DDR2_VIDEO=1 não há bypass automático SD→BRAM: os bytes do banco vêm do retorno MIG; o compositor ainda pode mostrar apenas HUD. O teste corrigido torna observável a publicação do banco e acrescenta identificação de versão.
+Nova síntese/implementação Vivado 2026.1: **WNS +0,391 ns / WHS +0,006 ns**, TNS/THS zero. Oito grupos de bus skew passaram, mínimo +6,810 ns. Zero erros DRC, 104 ocorrências de warnings (33 DPIP-1, 27 DPOP-1, 43 DPOP-2, um REQP-1709). CDC mantém 46 CDC-3, três CDC-10, um CDC-8 e 176 CDC-15; sem waivers. Zero no_clock e endpoints internos sem constraints. As 132 atribuições IO/propriedades conferiram com a candidata anterior. Recursos: 20630 LUTs, 15389 FF, 64 BRAM tiles e 62 DSPs.
 
-## CORREÇÃO
+## CORRIGIDO
 
-Novo módulo `hud/rtl/ddr2_video_status.sv` e conexões pontuais em `hud/rtl/top_reticula.sv`:
+Nenhuma falha nova no RTL foi demonstrada; ele permanece intacto. O executor `scripts/test_sd_ddr2_vga.sh` agora aceita READ_HALF/INIT_HALF opcionais, preservando seus padrões, para exercitar o perfil real sem alterar o testbench. Documentação e proveniência foram atualizadas para separar o build histórico da nova emissão. A estimativa `90/T` agora explicita a hipótese de nenhum quadro perdido/duplicado.
 
-- LD14 registra commit íntegro de retorno DDR2 **seguido do ACK sincronizado da troca de banco**. Permanece aceso no próximo quadro. ACK sem commit e commit sem ACK não geram PASS.
-- LD15 mantém falha de vídeo/buffer ou ABORT após início de transferência. Ignora o ABORT normal da calibração inicial; erro não é apagado por sucesso posterior.
-- Eventos pertencem ao clock HUD; usa `wr_published`, não o pulso pixel `rd_updated` diretamente. Não há CDC novo, ILA, porta nova ou interferência em ready/dados/FSM.
-- O histórico limpa ao inicializar/recarregar o HUD. CPU RESET do MIG não limpa o diagnóstico. PASS e erro podem coexistir.
-- O modo BRAM e os indicadores legados permanecem quando ENABLE_DDR2_VIDEO=0. Sensores, orientação magnética, atitude, vídeo, pinagem, constraints e SPI=400 kHz foram preservados.
+## NÃO VALIDADO
 
-O BIT registra USERID **B38E538B**, legível como REGISTER.USERCODE, para identificar o commit RTL. Não é uma recuperação do hash do BIT por JTAG.
+Nenhum JTAG, Flash ou microSD foi programado nesta consolidação. O log JTAG anterior de `12bb27b` documenta DONE/INIT_B/EOS=1, CRC_ERROR=0 e USERCODE 5DF8B30A; não qualifica fisicamente o novo hash nem prova CRC do vídeo. FPS, latência Nac do cartão, ausência de tearing/perdas em operação contínua e orçamento elétrico SPI ainda dependem da placa/instrumentação. A qualidade aprovada pelo usuário refere-se ao ensaio anterior. Não há medição nova de sensores ou boot Flash.
 
-## TESTES E IMPLEMENTAÇÃO
+Hold de apenas 6 ps permanece uma ressalva importante. MIG/clocking/reset continuam com qualificações documentadas, não com zero críticos. `report_methodology` registra 43 TIMING-18 de IO sem delay; não inventamos atrasos para ocultá-los. Não subir para 10 MHz nesta entrega e não prometer 30 FPS a 5 MHz.
 
-Passaram o teste unitário de persistência/ausência de falso PASS/reset, 17 cenários XPM com novas assertions de status (incluindo quadro 76800 bytes, CRC ruim, timeout, FIFO cheia, backpressure, reset e última imagem), FIFO real de 3072 palavras, contrato/CRC, cinco testes do conversor e cadência XADC. O ajuste vertical passou novamente, incluindo clipping e preservação do fundo.
+## CANDIDATO
 
-O top completo passou com 307200 comparações RGB, duas publicações, um erro CRC16 injetado e LEDs=1111: LD14 permaneceu ligado com smoke_done já zero, e LD15 permaneceu após uma publicação íntegra. A repetição acelerada passou com três cargas SD e duas publicações. A recuperação BRAM passou com 307200 pixels, duas publicações e **zero leituras/escritas MIG**, com o MIG bloqueado apenas no modelo. Sensores NACK e modelo UI sem PHY; isso não é ensaio físico novo. Os 12 modos anteriores não foram repetidos integralmente porque sua lógica não mudou.
+BIT: `hud-f16-ddr2-f8b36f8-spi-h010-experimental.bit` (3825990 bytes).
 
-Vivado 2026.1 executou nova síntese/implementação: **WNS +0,468 ns / WHS +0,017 ns**, TNS/THS zero, oito grupos de skew aprovados (mínimo +6,449 ns), zero erros DRC, zero clocks ausentes e zero endpoints internos não temporizados. CDC permaneceu 46 CDC-3, 3 CDC-10, 1 CDC-8 e 176 CDC-15, sem novos alertas ou waivers. REQP-1709 e ressalvas MIG/SPI permanecem qualificadas para ensaio experimental. A margem de hold continua estreita. As 132 atribuições IO conferiram com a RC anterior. Utilização: 20616 LUTs, 15399 FF, 64 BRAM tiles, 62 DSP.
+SHA-256: `2fd3dbc1d0da6fb4d3a8962f811d740fed0b2b23317928c3b591f7c44e1157b2`
 
-O `write_bitstream` concluiu sem erros. Cabeçalho, part, USERID, payload, tamanho e hash conferidos. Não foi gerada MCS: modelo exato da Flash continua pendente.
+DCP: `110d421af4501b52c808f830582edb1f41ea61731e60f704aff6771b7faf4043`
 
-## NOVO CANDIDATO
+USERCODE **5DF8B30A**. O hash difere do BIT histórico porque esta é outra emissão; o identificador de código/perfil é o mesmo. Cabeçalho, part 7a100tcsg324, tamanho do payload, sync e SHA conferidos. O script de emissão confere hash do DCP, part, pinos, timing e DRC antes do write_bitstream.
 
-Branch `fix/hud-ddr2-indicadores-20261109`, derivada da publicada `52e223d22a190b61c868cfa2966d83ff715fd965`. Commit RTL: `b38e538b330805b265fe1b9a7cf45d7c5501acec`. O commit da tag publicada é vinculado no manifesto dos assets.
+[Pre-release experimental](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/hud-f16-ddr2-spi5-rc-20261109). Relatórios e logs novos em `evidencias/spi-h010-reproducao/`; os assets incluem BIT, DCP, recuperação, procedimentos, relatórios completos, manifestos e SHA256SUMS. A conferência final de upload/download fica registrada localmente em `validation/publicacao-spi5-verificada.json`.
 
-| Arquivo | SHA-256 |
-|---|---|
-| `hud-f16-ddr2-b38e538-status-experimental.bit` (3825990 bytes) | `7c74a9d635f378c980f6378683126f182df92bcc0c3a16e19c1d11ecdd8df292` |
-| DCP roteado correspondente | `57f162876e9e0f26cac82d4ce7f6770ad5fdc6561740e7d5b009bc129590ba10` |
-| BIT funcional anterior de recuperação | `b3e777d72dbdeb7921371346a58c939e7eecabe8d16e7901c59c0c3430f8092f` |
+## PRÓXIMO TESTE
 
-Área: `/home/santojuca/Downloads/hud_ddr2_indicadores_20261109`; BIT em `resultado-release-status/`, DCP em `resultado/routed.dcp`. Relatórios: `evidencias/relatorios-status/` e `relatorios-bit-status/`; logs de testes em `evidencias/status-*.txt` e `top-*.txt`. `fontes-status-build.json` registra a fonte sintetizada; `manifesto-release-fontes.json` cobre a árvore publicada, e manifesto-release.json/SHA256SUMS dos assets vinculam o commit exato aos binários.
-
-[Branch](https://github.com/santosJuca/Trabalho-display-aviao-v2/tree/fix/hud-ddr2-indicadores-20261109) · [Nova pre-release](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/hud-f16-ddr2-status-rc-20261109). A release `hud-f16-ddr2-rc-20261109`, o BIT anterior e a main permanecem preservados. A conclusão da publicação depende da conferência de retorno do GitHub.
-
-## TESTE FÍSICO
-
-Baixar todos os assets, executar `sha256sum -c SHA256SUMS` e seguir PROCEDIMENTO_TESTE_FPGA.md. O usuário deve carregar apenas SRAM por JTAG, conferir USERCODE B38E538B, aguardar 20–30 s e registrar LD12–15 com o fundo habilitado e mudando. O loop de 90 quadros ainda exige >=141,21 s no limite ideal; 30 FPS físicos não foram demonstrados. Testar modos, ajuste, referência angular e recuperação. Recarregar o candidato limpa o histórico; power-cycle volta à Flash anterior.
-
-**FPGA não alterada pelo agente. Flash não gravada. microSD não modificado. Candidato experimental sem validação física nova.**
+Após autorização do arquivo/alvo, seguir PROCEDIMENTO_TESTE_FPGA.md: conferir SHA, carregar somente SRAM, confirmar USERCODE 5DF8B30A, aguardar 20–30 s e observar LD12/13/14 acesos e LD15 apagado. Cronometrar três ciclos dos 90 quadros e registrar pausas; `90/T` é estimativa condicionada à sequência completa. Testar dez minutos, modos, ajuste vertical, bússola e atitude. Em falha, registrar antes de recuperar o BIT funcional incluído ou reiniciar pela Flash preservada. Nenhum MCS foi gerado.

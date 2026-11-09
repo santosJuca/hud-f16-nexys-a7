@@ -1,4 +1,6 @@
-# Validação offline da sprint noturna
+# Validação offline: histórico e candidata SPI 5 MHz
+
+Estado atual: seção final “Reprodução offline SPI 5 MHz”. As seções anteriores registram suas respectivas etapas históricas.
 
 ## Execução nova e referência anterior
 
@@ -259,3 +261,17 @@ Reprodução: `iverilog -g2012 -s tb_ddr2_video_status -o SAIDA_NOVA tests/tb_dd
 
 
 O novo BIT foi gerado e validado como arquivo: 3825990 bytes, part 7a100tcsg324, USERID B38E538B, payload/tamanho/sync conferidos, SHA-256 `7c74a9d635f378c980f6378683126f182df92bcc0c3a16e19c1d11ecdd8df292`. A primeira checagem de cabeçalho esperava o prefixo 0x usado pelo default anterior; a forma explícita retornada pelo Vivado é UserID=B38E538B, normalizada e conferida contra config_properties.txt. Não foi falha de RTL nem reemissão do BIT. Log `evidencias/bitgen-status.txt`; DCP SHA-256 `57f162876e9e0f26cac82d4ce7f6770ad5fdc6561740e7d5b009bc129590ba10`. Nenhum hardware foi programado.
+
+## Reprodução offline SPI 5 MHz nesta consolidação
+
+Fonte exata f8b36f8, build isolado, sem alteração de RTL/constraints. Snapshot das fontes/board/scripts e manifesto em `evidencias/spi-h010-reproducao/`. Os resumos `spi-h010-f8b36f8/` são históricos. O BIT histórico não foi localizado; o novo BIT tem SHA `2fd3dbc1d0da6fb4d3a8962f811d740fed0b2b23317928c3b591f7c44e1157b2`, DCP `110d421af4501b52c808f830582edb1f41ea61731e60f704aff6771b7faf4043`, USERCODE 5DF8B30A. Não houve JTAG/Flash/cartão nesta execução. Datas e metadados de nova emissão podem alterar hashes, e identidade binária não foi presumida.
+
+Comandos reais: `bash scripts/build_spi_profile.sh 10`; `bash scripts/test_spi_profiles.sh`; `SCENARIOS=6 READ_HALF=10 INIT_HALF=125 BASE_LBA=30028160 bash scripts/test_sd_ddr2_vga.sh`; `bash scripts/emit_spi_profile_bit.sh resultado-spi-h010-f8b36f8`. O executor integrado atualizado aceita os divisores opcionais; seus padrões foram mantidos. Para os relatórios adicionais, `resultado` foi um link local para a pasta produzida, seguido de `vivado -mode batch -nojournal -source scripts/qualificar_rc.tcl -tclargs RAIZ_BUILD`. Nenhum novo parâmetro elétrico ou exceção foi acrescentado.
+
+Os 23 cenários SPI passaram. O integrado passou com 7.372.800 comparações RGB, quatro publicações, quatro releituras válidas, 20273 escritas e 19200 leituras MIG e quatro pré-cargas, sem erros. Os quatro late_frames são esperados em 5 MHz frente à meta nominal 30 FPS; não são CRC ruim. Intervalos observados no modelo: 134,4 / 117,6 / 134,4 ms (três intervalos, amostra curta). Não se extrapola para estabilidade de longa duração ou FPS físico. XPM real e UI MIG modelada não simulam o PHY.
+
+Nova implementação: WNS +0,391 / WHS +0,006 ns, TNS/THS zero, oito grupos de bus skew com mínimo +6,810 ns. DRC sem erros, 104 ocorrências de warning; CDC 46/1/3/176 para CDC-3/8/10/15, respectivamente. Sem waivers. Clocks base 100 MHz, pixel 25 MHz, UI ~81,25 MHz. Zero no_clock/endpoints internos sem constraints. As 132 atribuições IO, incluindo drive/slew/terminação, são idênticas à candidata de status. Utilização 20630 LUT, 15389 FF, 64 BRAM tiles e 62 DSP. Logs completos acompanham os relatórios.
+
+Persistem três CDC-10 e um CDC-8, os mesmos resets/IP já analisados nas seções anteriores, e REQP-1709. `report_methodology` contém 43 TIMING-18; o orçamento elétrico externo não foi fechado. Hold de somente 6 ps restringe a margem de implementação. O emissor conferiu part, hash do checkpoint, timing positivo e DRC; cabeçalho, payload/sync e hash do BIT foram analisados depois. Perfil-spi-build.json é o registro ao terminar o build, antes da emissão (bitstream_generated=false naquele instante); manifesto-build.json registra o BIT efetivamente gerado depois.
+
+Os testes anteriores de status persistente, modos, sensores e BRAM não foram integralmente repetidos, pois suas fontes não mudaram. O diagnóstico físico precisa seguir PROCEDIMENTO_TESTE_FPGA.md. CRC_ERROR=0 do log de configuração histórico não qualifica CRC16 SD ou CRC32 do vídeo. As três cronometragens de loop são estimativas condicionadas à sequência completa; contagem instrumentada de publicação é outra evidência. A simulação de atraso MISO 0–30 ns permanece um modelo, sem comprovar os atrasos reais. Não houve aumento além de 5 MHz nem alteração de qualidade do vídeo.

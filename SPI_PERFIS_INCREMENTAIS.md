@@ -1,7 +1,6 @@
 # Aumento de FPS: perfis SPI de leitura incrementais
 
-**EXPERIMENTAL — NÃO VALIDADO FISICAMENTE.** Nenhum BIT foi gerado nesta etapa e nada foi
-programado (JTAG, Flash ou microSD). Base: `fix/hud-ddr2-indicadores-20261109`, commit
+**EXPERIMENTAL.** A seção 6.1 registra um build/JTAG histórico; a seção 6.2 registra a reprodução offline desta publicação. O agente não programou hardware nesta consolidação. Base: `fix/hud-ddr2-indicadores-20261109`, commit
 `f752a7404e2a4f390cf3c8d13329761f53ac7a04` (RTL `b38e538`). Branch desta etapa:
 `perf/hud-spi-leitura-incremental-20261109`.
 
@@ -117,12 +116,12 @@ Extras:
 Regressão do teste existente `tb_sd_read_400khz` com o modelo alterado (parâmetro novo
 `NAC_BYTES`, padrão 0): PASS.
 
-**Não executados nesta etapa (requerem Vivado 2026.1):** `test_sd_ddr2_vga.sh` (XPM/xsim),
+**Não executados na etapa inicial f8b36f8 (antes dos builds das seções 6.1/6.2):** `test_sd_ddr2_vga.sh` (XPM/xsim),
 `test_top_ddr2_video.sh`, síntese/implementação, timing, CDC, DRC, bus skew e geração de BIT.
 Esse pipeline integrado já foi exercitado no repositório a 12,5 e 25 MHz com o modelo da UI
 MIG (`evidencias/pipeline-preload.txt`, `cadencia-vga.txt`).
 
-## 6. Builds a executar (máquina com Vivado)
+## 6. Como reproduzir um build (máquina com Vivado)
 
 ```bash
 git checkout perf/hud-spi-leitura-incremental-20261109
@@ -155,6 +154,16 @@ Build na máquina do usuário, Vivado 2026.1, commit `f8b36f8`. Evidências em
 - **Pendente:** cronometrar o loop de 90 quadros (estimativa de ~12 s, ~7,4 FPS), 10 min com
   LD15 apagado e medir SCK→MISO antes de subir para 10 MHz.
 
+## 6.2 Reprodução offline e publicação de 5 MHz
+
+Nesta consolidação o BIT histórico não foi localizado; foi feito novo build do commit f8b36f8 com o mesmo perfil, sem alterar RTL ou constraints. WNS +0,391 ns / WHS +0,006 ns; oito grupos de skew aprovados (mínimo +6,810 ns), zero erros DRC, CDC inalterado e sem waivers. As 132 atribuições IO conferiram. A margem de hold continua de apenas 6 ps e o orçamento externo permanece pendente.
+
+Passaram novamente os 23 cenários SPI e o teste integrado com init=125/read=10/LBA=30028160: quatro publicações e releituras íntegras, zero erros, 7.372.800 comparações RGB. Os testes usam UI MIG/XPM/SDHC modelados, sem PHY físico.
+
+O novo `hud-f16-ddr2-f8b36f8-spi-h010-experimental.bit` tem SHA-256 `2fd3dbc1d0da6fb4d3a8962f811d740fed0b2b23317928c3b591f7c44e1157b2` e USERCODE 5DF8B30A. **É uma nova emissão, sem ensaio JTAG nesta consolidação.** O hash histórico 41503a5f... e o log da seção 6.1 não são atribuídos ao novo arquivo. A tag `hud-f16-ddr2-spi5-rc-20261109` e os manifestos vinculam o pacote ao código e ao build. Relatórios completos em `evidencias/spi-h010-reproducao/`.
+
+Seguir PROCEDIMENTO_TESTE_FPGA.md para identidade do arquivo, estimativa de cadência, diagnóstico e recuperação. Não aumentar novamente antes do ensaio/instrumentação. Nenhuma Flash, FPGA ou microSD foi programada nesta execução.
+
 ## 7. Ensaio físico incremental (um perfil por vez)
 
 1. Programar só a SRAM por JTAG e conferir o USERCODE do perfil (`5D…0A`, `5D…05`, `5D…04`).
@@ -162,11 +171,11 @@ Build na máquina do usuário, Vivado 2026.1, commit `f8b36f8`. Evidências em
 2. LD12 e LD13 acesos. Esperar 20–30 s. LD14 aceso (publicação íntegra), LD15 apagado.
 3. Ligar o fundo (BTNL) e **cronometrar o loop de 90 quadros**, do primeiro quadro até a
    volta a ele. Esperado: ~12 s (5 MHz), ~6 s (10 MHz), ~4,5 s (12,5 MHz), contra ~142 s hoje.
-   FPS medido = 90 / tempo. Repetir 3 loops.
+   Estimativa FPS = 90 / tempo, supondo todos os 90 quadros publicados uma vez por ciclo. Sem conferir perdas/duplicações, não tratar como contagem instrumentada. Repetir 3 loops.
 4. Deixar rodando 10 min: LD15 deve continuar apagado e a imagem sem mistura ou tearing.
    Testar modos, joystick, bússola e ajuste vertical.
 5. **Critério para subir de perfil:** LD15 apagado nos 10 min e loop estável. Se houver
-   osciloscópio, medir o atraso SCK↑ (descida) → MISO na placa e confirmar que cabe no meio
+   osciloscópio, medir da descida de SCK até MISO estável e conferir a borda real de amostragem; confirmar que cabe no meio
    período do próximo perfil com folga.
 6. Em falha: o loader faz três tentativas e depois para (LD15 aceso, última imagem mantida).
    Registrar LEDs e voltar ao perfil anterior. Desligar e religar a placa carrega a Flash

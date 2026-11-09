@@ -1,25 +1,18 @@
-# Pendências físicas
+# Pendências físicas do perfil SPI 5 MHz
 
-A confirmação do usuário de boot autônomo e HUD/sensores funcionando pertence ao firmware preservado. O candidato DDR2 desta sprint nunca foi programado.
+A publicação contém uma reprodução offline do commit f8b36f8. O log JTAG histórico pertence à emissão de hash 41503a5f..., não ao novo BIT. Nenhuma programação foi executada nesta consolidação.
 
-| Pendência | Evidência indispensável |
+| Pendência | Evidência necessária |
 |---|---|
-| Mapa SD | Concluído por leitura autenticada: LBA absoluto 30028160, 13501 setores de arquivo e cadeia contígua; refazer somente se houver mudança do cartão/arquivo. |
-| SPI rápido | Orçamento de setup/hold de saída e entrada com datasheet do cartão/interface, conexões e atrasos reais; só então qualificar a frequência e suas constraints. |
-| MIG e clocks | Calibração completa, estabilidade do XADC/temperatura e comportamento após reset/perda de calibração na placa; revisão do REQP-1709 do clocking gerado. |
-| Vídeo e DDR2 | Imagens íntegras, sem tearing, congelamento controlado da última imagem após falha e recuperação sem reset geral indevido. |
-| Taxa efetiva | Medição de quadros publicados ao longo do tempo e leitura útil do cartão. 30 FPS no arquivo não comprova 30 FPS exibidos. |
-| Sensores/controle | Horizonte, bússola com orientação preservada, altitude, joystick, modos e ajuste vertical no monitor VGA. |
-| Flash futura | Artefato físico aceito, chip identificado sem ambiguidade, backup verificado, autorização específica e teste de boot após desligar/religar. |
+| Identidade da emissão | Hash do arquivo selecionado, log de carga autorizado e USERCODE 5DF8B30A. O código identifica perfil, não SHA recuperado da SRAM. |
+| Publicação DDR2/VGA | LD12/13/14, ausência de falha LD15, fundo habilitado e sequência contínua. LD14 indica histórico de banco íntegro publicado. |
+| FPS | Três ciclos cronometrados; estimativa 90/T supõe todos os quadros publicados uma vez. Medida direta requer contagem de ACKs por tempo. |
+| Operação contínua | Dez minutos sem erro, congelamento ou mistura de quadros; testar modos/joystick/ajuste vertical/atitude/bússola. |
+| SPI externo | Latência real do cartão, datasheet/interface e medição de SCK/MISO/amostragem antes de subir a frequência. Timing interno e atraso estimado de modelo não bastam. |
+| MIG/reset/clocking | Calibração/PHY, temperatura e recuperação na placa; ressalvas CDC-10/CDC-8 e REQP-1709 permanecem documentadas. |
+| Hold | Margem roteada de somente +0,006 ns; reconferir a cada mudança/build. Não é margem elétrica do microSD. |
+| Flash | Identificar chip exato, aceitar fisicamente o candidato, preparar recuperação e obter autorização específica antes de gerar/gravar MCS. |
 
-O arquivo físico atual de 90 quadros foi comparado integralmente com a referência local no mapeador autenticado pelo usuário. O vídeo completo de 17.331 quadros permanece no computador. Não há bloqueio administrativo pendente para este mapa. O novo perfil corrige LBA/tamanho e preserva SPI=400 kHz; não deve ser interpretado como configuração de 30 FPS físicos.
+O mapa histórico do cartão permanece LBA absoluto 30028160, 13501 setores contíguos, 90 quadros 320×240 RGB332. Não houve nova leitura nem escrita do cartão; refazer o mapa se seu conteúdo mudar. O vídeo completo de 17.331 quadros permanece fora do cartão de teste conforme evidências anteriores, sem nova validação integral nesta consolidação.
 
-Os três CDC-10 foram rastreados no circuito roteado: dois no reset comum do espelho e um no MIG. Os ensaios digitais novos de pulso curto/parada de clock passaram, mas não comprovam largura mínima física de PRE, imunidade a glitches ou resets repetidos durante busy. REQP-1709 corresponde à topologia gerada; justificativa em VALIDACAO_OFFLINE.md, sem waiver específico ou aprovação física. Temporização externa SPI e ensaio do PHY continuam sendo condições de promoção. A missão posterior liberou a geração do bitstream experimental para ensaio JTAG; o artefato ainda não foi programado nem aprovado fisicamente. A qualificação e os limites estão na última seção de VALIDACAO_OFFLINE.md.
-
-
-Para a pre-release, não há falha elétrica conhecida que impeça um teste controlado por JTAG no perfil de 400 kHz e pinagem preservada. Restam validação do PHY/calibração, integridade real, reset, controles/sensores e publicação efetiva. A `.mcs` depende de confirmar o modelo exato da Flash e, para gravação, do aceite físico anterior. O microSD já está na placa segundo o usuário; seu conteúdo não foi alterado nesta missão.
-
-
-## Após correção dos indicadores
-
-A RC corrigida exige novo teste físico. O usuário identificou a RC anterior por relato de carga JTAG; nesta máquina não há leitura independente da SRAM nem origem física DDR2 dos pixels confirmada. Verificar primeiro USERCODE B38E538B no novo candidato. Confirmar LD14 persistente após publicação e LD15 persistente em falha, distinguindo histórico de estado atual da calibração. CPU RESET não limpa o histórico; recarregar a candidata limpa. Nenhum teste de falha foi injetado na placa pelo agente. SPI permanece 400 kHz e a Flash permanece intacta.
+A leitura de 5 MHz não sustenta 30 FPS nesse formato: limite bruto ~8,14 FPS, menor com overhead/esperas. Não reduzir qualidade para ocultar o gargalo. Preservar a Flash funcional e a alternativa BRAM. Procedimento detalhado e recuperação em PROCEDIMENTO_TESTE_FPGA.md.
