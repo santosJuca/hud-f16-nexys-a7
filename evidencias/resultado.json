@@ -1,0 +1,27 @@
+{
+  "status": "STA_INTERNO_PASS_CDC_SPI_CARTAO_E_FISICO_PENDENTES",
+  "code_commit": "6fbdbd119fcd527f61a5629f887a09e70572a617",
+  "WNS_ns": 0.539,
+  "WHS_ns": 0.049,
+  "bus_skew_groups": 8,
+  "bus_skew_min_slack_ns": 6.604,
+  "drc_errors": 0,
+  "cdc_critical": {
+    "CDC-1": 243,
+    "CDC-10": 3,
+    "CDC-13": 144
+  },
+  "REQP-1709": 1,
+  "xadc_model_max_interval_us": 113.578224,
+  "xadc_model_samples": 20,
+  "video_integrity": "PASS",
+  "video_frame_count": 17331,
+  "video_sector_crc16_count": 2599650,
+  "physical_fps": null,
+  "card_current_mapping": "INDETERMINADO",
+  "jtag_programmed": false,
+  "flash_written": false,
+  "sd_written": false,
+  "preserved_boot": "Usuario confirmou neste chat",
+  "main_docs_commit": "14d1bf00d26a621e5d1213a41ff8071a9026a91e"
+}

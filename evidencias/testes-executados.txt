@@ -1,0 +1,93 @@
+validation/stream-final-results.txt
+===== P4B short_good =====
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+/home/santojuca/Downloads/hud_ddr2_video_integracao/tests/tb_ddr2_sd_frame_mirror.sv:244: $finish called at 55767548 (1ps)
+===== P4B full_good =====
+DDR2_DISPLAY_PIXELS_PASS bytes=76800
+P4B_FRAME_PASS bytes=76800 words=4800
+/home/santojuca/Downloads/hud_ddr2_video_integracao/tests/tb_ddr2_sd_frame_mirror.sv:244: $finish called at 16601042708 (1ps)
+===== P4B corruption =====
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=16 reads=16
+/home/santojuca/Downloads/hud_ddr2_video_integracao/tests/tb_ddr2_sd_frame_mirror.sv:244: $finish called at 14708060 (1ps)
+===== P4B incomplete =====
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=8 reads=0
+/home/santojuca/Downloads/hud_ddr2_video_integracao/tests/tb_ddr2_sd_frame_mirror.sv:244: $finish called at 5440136 (1ps)
+===== P4B aborted =====
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=8 reads=0
+/home/santojuca/Downloads/hud_ddr2_video_integracao/tests/tb_ddr2_sd_frame_mirror.sv:244: $finish called at 5440136 (1ps)
+===== P4B stalled =====
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=0 reads=0
+/home/santojuca/Downloads/hud_ddr2_video_integracao/tests/tb_ddr2_sd_frame_mirror.sv:244: $finish called at 10511032 (1ps)
+P4B_ALL_SIMULATIONS_PASS
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+/home/santojuca/Downloads/hud_ddr2_video_integracao/tests/tb_ddr2_sd_frame_mirror.sv:244: $finish called at 61084604 (1ps)
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+/home/santojuca/Downloads/hud_ddr2_video_integracao/tests/tb_ddr2_sd_frame_mirror.sv:244: $finish called at 61084604 (1ps)
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+/home/santojuca/Downloads/hud_ddr2_video_integracao/tests/tb_ddr2_sd_frame_mirror.sv:244: $finish called at 61084604 (1ps)
+P4B_PYTHON_MODEL_PASS bytes=256 beats=16 crc32=d2be52cc
+P4B_PYTHON_MODEL_PASS bytes=76800 beats=4800 crc32=2f622165
+P4B_STATIC_CONTRACT_PASS
+P4C_ALL_SIMULATIONS_PASS
+
+
+validation/stream/loop.txt
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+tests/tb_ddr2_sd_frame_mirror.sv:244: $finish called at 166884172 (1ps)
+
+
+validation/stream/output_stall.txt
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+tests/tb_ddr2_sd_frame_mirror.sv:248: $finish called at 57330664 (1ps)
+
+
+validation/stream/bad_read_end.txt
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=16 reads=1
+tests/tb_ddr2_sd_frame_mirror.sv:248: $finish called at 10634112 (1ps)
+
+
+validation/stream/read_timeout.txt
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=16 reads=1
+tests/tb_ddr2_sd_frame_mirror.sv:248: $finish called at 24948316 (1ps)
+
+
+validation/stream/fifo_overflow.txt
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=0 reads=0
+tests/tb_ddr2_sd_frame_mirror.sv:248: $finish called at 10511032 (1ps)
+
+
+validation/stream/preserve.txt
+DDR2_DISPLAY_PIXELS_PASS bytes=256
+P4B_FRAME_PASS bytes=256 words=16
+DDR2_LAST_GOOD_FRAME_PRESERVED
+P4B_EXPECTED_ERROR_PASS bytes=256 writes=32 reads=32
+tests/tb_ddr2_sd_frame_mirror.sv:260: $finish called at 111202780 (1ps)
+
+
+validation/stream/golden-crc.txt
+DDR2_DISPLAY_PIXELS_PASS bytes=76800
+P4B_FRAME_PASS bytes=76800 words=4800
+tests/tb_ddr2_sd_frame_mirror.sv:264: $finish called at 16601042708 (1ps)
+
+
+validation/converter-approved-results.txt
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.440s
+
+OK
+
+
+validation/xadc/result-clock.txt
+XADC_CADENCE_PASS samples=20 max_interval_ns=113578.224000
+tests/tb_xadc_cadence.sv:29: $finish called at 2269945978 (1ps)

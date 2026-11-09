@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "file": "/home/santojuca/Downloads/hud_ddr2_video_integracao/validation/video-completo-320-30/HUDVIDEO.BIN",
+  "version": 1,
+  "width": 320,
+  "height": 240,
+  "fps": 30,
+  "pixel_format": "RGB332",
+  "frame_count": 17331,
+  "frame_bytes": 76800,
+  "frame_stride": 76800,
+  "total_bytes": 1331021312,
+  "data_sector": 1,
+  "sequence_id": "bf9a8c8c6a27417f84dde2dacca42e87",
+  "sha256": "fb5dfdb6bae21b7285d3053bd4725d8f86a06ef0d4a49b311a364075600b3643",
+  "crc16_sectors_checked": 2599650,
+  "physical_validation": false
+}

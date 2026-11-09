@@ -1,0 +1,13 @@
+{
+  "artefatos": {
+    "/home/santojuca/Downloads/hud-video-modos-20261106/validation/flash-preparo-20261108-0cez4ytv/hud-aprovado.bit": "b3e777d72dbdeb7921371346a58c939e7eecabe8d16e7901c59c0c3430f8092f",
+    "/home/santojuca/Downloads/hud-video-modos-20261106/validation/flash-preparo-20261108-0cez4ytv/hud-flash-spix1.mcs": "2ce2c7a98645656496aa59bc1773e0e09692087c13f95847ab1ef1e2a25201a1",
+    "/home/santojuca/Downloads/hud-video-modos-20261106/validation/flash-preparo-20261108-0cez4ytv/flash-atual-leitura1.bin": "6f0b00c5ef632a64c29b6136a091ce1ca8033116bb0dc0d13fb5354663d12e05",
+    "/home/santojuca/Downloads/hud-video-modos-20261106/validation/flash-preparo-20261108-0cez4ytv/flash-atual-leitura2.bin": "6f0b00c5ef632a64c29b6136a091ce1ca8033116bb0dc0d13fb5354663d12e05",
+    "/home/santojuca/Downloads/hud-video-modos-20261106/validation/flash-preparo-20261108-0cez4ytv/flash-depois-gravacao.bin": "b7f364dbce87e01ac0826dfbfe503a5d37cd821cfa8f2a19034a966bb0f6bd4b"
+  },
+  "boot_usuario_confirmou": true,
+  "relato_usuario": "Esta na Nexys e sim e esta funcionando",
+  "leitura_flash_nesta_execucao": false,
+  "restauracao_testada": false
+}

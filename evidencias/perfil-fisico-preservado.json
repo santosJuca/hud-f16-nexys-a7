@@ -1,0 +1,19 @@
+{
+  "source": "/home/santojuca/Downloads/hud-video-modos-20261106/validation/mpu-orientacao-20261108-0k3nizeb/contexto.json",
+  "source_sha256": "0f7ca5ba43ce26aad1e569b068f8c1000dd72053e7e1dd7686f35abb6afb48a2",
+  "approved_bit_sha256": "b3e777d72dbdeb7921371346a58c939e7eecabe8d16e7901c59c0c3430f8092f",
+  "generics": {
+    "MPU_GIRO_ESQUERDA_90": 0,
+    "FRENTE_INVERTIDA_180": 0,
+    "MAG_TROCAR_XY": 0,
+    "MAG_INVERTER_X": 1,
+    "MAG_INVERTER_Y": 1,
+    "MAG_OFFSET_X": 892,
+    "MAG_OFFSET_Y": -274,
+    "MAG_GAIN_X_Q12": 4546,
+    "MAG_GAIN_Y_Q12": 3727,
+    "MAG_ALINHAMENTO_GRAUS": 81
+  },
+  "used_in_offline_sta": false,
+  "note": "Parametros preservados do firmware aprovado; nao inclui mapa SD antigo. Requer teste fisico no novo candidato."
+}

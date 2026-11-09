@@ -1,0 +1,30 @@
+{
+  "resultado-qualificado/routed.dcp": {
+    "bytes": 15536498,
+    "sha256": "ca38d575e9f3b260d6841c23c787850d2d2ca50fcaa6d6ac1dd822374ce14ff0"
+  },
+  "resultado-qualificado/timing.rpt": {
+    "bytes": 624264,
+    "sha256": "d76f73551d2de4f185930702ed096b85d91bb58655b0877bdc08c74f41dc6400"
+  },
+  "resultado-qualificado/drc.rpt": {
+    "bytes": 52893,
+    "sha256": "b359c3800660d4ead30f508031cecb1285148f50b41fc792913c38627bd7d259"
+  },
+  "resultado-qualificado/cdc.rpt": {
+    "bytes": 195514,
+    "sha256": "1702dd7a1034246e586a3d8ceaea8c963a6bcfa0af9f1216d36db69d9caf08c4"
+  },
+  "resultado-qualificado/bus_skew.rpt": {
+    "bytes": 80772,
+    "sha256": "6be74325e65b56563f38781e6941bd272cc958d480c4cc6d24a8682b1d6f9232"
+  },
+  "validation/video-completo-320-30/HUDVIDEO.BIN": {
+    "bytes": 1331021312,
+    "sha256": "fb5dfdb6bae21b7285d3053bd4725d8f86a06ef0d4a49b311a364075600b3643"
+  },
+  "validation/video-completo-320-30/metadata.json": {
+    "bytes": 44183854,
+    "sha256": "3e2e3272b84b9b8cad3c130a609a7e4d0f7e2e8ff508f00d90ea05a4622b7f7f"
+  }
+}
