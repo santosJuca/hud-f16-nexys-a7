@@ -27,7 +27,8 @@ for scenario in ${SCENARIOS:-0 1 2 3 4 5 6}; do
  read_half=2
  if [[ "$scenario" == 6 ]]; then read_half=4; fi
  "$VB/xelab" -mt 4 -L xpm work.tb_sd_ddr2_vga work.glbl \
-   -generic_top SCENARIO="$scenario" -generic_top READ_HALF="$read_half" -s "pipeline_$scenario" > "$scenario-elaborate.txt" 2>&1
+   -generic_top SCENARIO="$scenario" -generic_top READ_HALF="$read_half" \
+   -generic_top BASE_LBA="${BASE_LBA:-1000}" -s "pipeline_$scenario" > "$scenario-elaborate.txt" 2>&1
  "$VB/xsim" "pipeline_$scenario" -runall -testplusarg "VIDEO_HEX=$OUT/video.hex" > "$scenario.txt" 2>&1
  if rg '(FATAL|Fatal:|Error:|ERROR:)' "$scenario.txt"; then exit 1; fi
  rg 'PASS sd_ddr2_vga|PASS invalid header|DDR2_TRAFFIC|DISPLAY_CADENCE' "$scenario.txt"

@@ -1,0 +1,29 @@
+Comando: OUT="$PWD/validation/pipeline-lba-real" BASE_LBA=30028160 SCENARIOS=0 bash scripts/test_sd_ddr2_vga.sh
+
+****** xsim v2026.1 (64-bit)
+  **** SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+  **** IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+  **** SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+  **** Start of session at: Mon Nov  9 07:06:04 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source xsim.dir/pipeline_0/xsim_script.tcl
+# xsim {pipeline_0} -testplusarg VIDEO_HEX=/home/santojuca/Downloads/hud_ddr2_fechamento_20261109/validation/pipeline-lba-real/video.hex -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_sd_ddr2_vga(BASE_LBA=30028160)/mirror/u_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_117  Scope: tb_sd_ddr2_vga(BASE_LBA=30028160).mirror.u_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+Warning: SIM_ASSERT_CHK (1) specifies simulation message reporting, messages related to potential misuse will be reported.
+Time: 1 ps  Iteration: 0  Process: /tb_sd_ddr2_vga(BASE_LBA=30028160)/mirror/g_output.u_output_fifo/u_xpm/gnuram_async_fifo.xpm_fifo_base_inst/Initial1559_215  Scope: tb_sd_ddr2_vga(BASE_LBA=30028160).mirror.g_output.u_output_fifo.u_xpm.gnuram_async_fifo.xpm_fifo_base_inst  File: /home/santojuca/AMD/2026.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv Line: 1566
+HEADER parsed=30657275747869662d616e7275746f6e000000010003860000012c0000012c00000000030001001e00f00140020000010031444956445548 valid=1 init_failed=0
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=2
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=3
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=4
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=0 frames=4 updates=4 errors=0 pixel_checks=2150400 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=22458 reads=19200 good_readbacks=4 preloads=0
+$finish called at time : 183743975 ns : File "/home/santojuca/Downloads/hud_ddr2_fechamento_20261109/tests/tb_sd_ddr2_vga.sv" Line 202
+run: Time (s): cpu = 00:00:00.01 ; elapsed = 00:01:27 . Memory (MB): peak = 1481.629 ; gain = 0.000 ; free physical = 11407 ; free virtual = 30782
+exit
+INFO: xsimkernel Simulation Memory Usage: 154300 KB (Peak: 211124 KB), Simulation CPU Usage: 87910 ms
+INFO: [Common 17-206] Exiting xsim at Mon Nov  9 07:07:33 2026...

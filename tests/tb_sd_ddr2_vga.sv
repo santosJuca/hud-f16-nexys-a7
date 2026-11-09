@@ -6,6 +6,7 @@ module tb_sd_ddr2_vga #(
     parameter integer TEST_CLK_HZ=100_000_000,
     parameter integer READ_HALF=2,
     parameter integer FPS=30,
+    parameter integer BASE_LBA=1000,
     parameter integer INIT_HALF=2
 );
     localparam integer BYTES=WIDTH*HEIGHT, STRIDE=(BYTES+511)/512*512;
@@ -37,7 +38,7 @@ module tb_sd_ddr2_vga #(
         .data_valid(data_valid),.data_byte(data_byte),.byte_index(byte_index));
     reg corrupt=0,timeout_token=0,bad_header=0;
     wire [31:0] reads;
-    sd_video_card_model #(.FILE_BYTES(FILE_BYTES)) card(.sck(sck),.cs_n(cs_n),.mosi(mosi),.rst(rst),
+    sd_video_card_model #(.FILE_BYTES(FILE_BYTES),.BASE_LBA(BASE_LBA)) card(.sck(sck),.cs_n(cs_n),.mosi(mosi),.rst(rst),
         .corrupt_crc(corrupt),.timeout_token(timeout_token),.bad_header(bad_header),.miso(miso),.reads(reads));
     wire ddr_ready;
     wire frame_start,abort_frame,commit_frame,write_frame,buffer_ready,header_valid,failed;
@@ -45,7 +46,7 @@ module tb_sd_ddr2_vga #(
     wire [AB-1:0] write_address,read_address;
     wire [31:0] frames_loaded,errors,late_frames,cycles;
     wire [3:0] state;
-    sd_video_loader #(.WIDTH(WIDTH),.HEIGHT(HEIGHT),.FPS(FPS),.BASE_LBA(1000),.MAX_FILE_SECTORS(FILE_BYTES/512),
+    sd_video_loader #(.WIDTH(WIDTH),.HEIGHT(HEIGHT),.FPS(FPS),.BASE_LBA(BASE_LBA),.MAX_FILE_SECTORS(FILE_BYTES/512),
         .CLK_HZ(TEST_CLK_HZ),.RETRY_CYCLES(50)) loader(
         .clk(clk),.rst(rst),.init_ready(ready),.init_failed(init_failed),.request(request),.grant(grant),
         .lba(lba),.read_busy(busy),.read_done(done),.read_error(error),.data_valid(data_valid),

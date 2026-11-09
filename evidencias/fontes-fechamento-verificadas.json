@@ -1,0 +1,11 @@
+{
+  "reference": "evidencias/fontes-preload-sha256.json",
+  "matched": {
+    "rtl": 76,
+    "ip": 3,
+    "constraints": 3,
+    "board_files": 4
+  },
+  "production_rtl_changed": false,
+  "ip_generated_edited": false
+}
