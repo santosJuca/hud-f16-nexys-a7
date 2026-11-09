@@ -99,6 +99,8 @@ set_max_delay 8.000 -datapath_only -from $req_s -to $req_d
 set_max_delay 8.000 -datapath_only -from $dat_s -to $dat_d
 set_bus_skew 8.000 -from $dat_s -to $dat_d
 
+source [file join $root scripts p4c_cdc.tcl]
+
 place_design
 phys_opt_design
 route_design
@@ -109,7 +111,7 @@ report_timing_summary -delay_type min_max -report_unconstrained \
     -file [file join $out timing_routed.rpt]
 check_timing -verbose -file [file join $out check_timing.rpt]
 report_drc -file [file join $out drc_routed.rpt]
-report_cdc -file [file join $out cdc_routed.rpt]
+report_cdc -details -file [file join $out cdc_routed.rpt]
 report_bus_skew -file [file join $out bus_skew_routed.rpt]
 set setup [get_timing_paths -delay_type max -max_paths 1]
 set hold [get_timing_paths -delay_type min -max_paths 1]

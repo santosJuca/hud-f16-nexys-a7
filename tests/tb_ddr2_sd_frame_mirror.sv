@@ -7,6 +7,7 @@ module tb_ddr2_sd_frame_mirror;
     parameter integer SHORT_COMMIT = 0;
     parameter integer ABORT_FRAME = 0;
     parameter integer STALL = 0;
+    parameter integer RESET_CASE = 0;
     localparam integer WORDS = TB_BYTES / 16;
     localparam integer ADDR_BITS = $clog2(TB_BYTES);
 
@@ -129,6 +130,27 @@ module tb_ddr2_sd_frame_mirror;
         frame_start = 1;
         @(negedge src_clk);
         frame_start = 0;
+        if (RESET_CASE != 0) begin
+            for (j=0; j<TB_BYTES/2; j=j+1) send_byte(j);
+            @(negedge src_clk);
+            if (RESET_CASE == 1) ui_rst = 1;
+            if (RESET_CASE == 2) src_rst = 1;
+            if (RESET_CASE == 3) calib = 0;
+            repeat (12) @(negedge src_clk);
+            ui_rst = 0; src_rst = 0; calib = 1;
+            begin : recovery_wait
+                integer retries;
+                for (retries=0; retries<1000; retries=retries+1) begin
+                    @(negedge src_clk);
+                    if (src_ready) disable recovery_wait;
+                end
+                $fatal(1,"Nao recuperou apos reset/perda de calibracao case=%0d",RESET_CASE);
+            end
+            @(negedge ui_clk);
+            writes=0; reads=0; pending=0;
+            @(negedge src_clk); frame_start=1;
+            @(negedge src_clk); frame_start=0;
+        end
         limit_bytes = (SHORT_COMMIT || ABORT_FRAME) ? TB_BYTES/2 : TB_BYTES;
         for (j=0; j<limit_bytes; j=j+1) send_byte(j);
         @(negedge src_clk);

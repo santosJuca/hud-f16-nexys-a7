@@ -57,6 +57,19 @@ module ddr2_sd_frame_mirror #(
         end
     endfunction
 
+    // Um reset parcial invalida toda a transacao, incluindo os dois ponteiros.
+    wire reset_request = src_rst || ui_rst || !init_calib_complete;
+    (* ASYNC_REG = "TRUE" *) reg [1:0] src_reset_pipe = 2'b11;
+    (* ASYNC_REG = "TRUE" *) reg [1:0] ui_reset_pipe = 2'b11;
+    always @(posedge src_clk or posedge reset_request)
+        if (reset_request) src_reset_pipe <= 2'b11;
+        else src_reset_pipe <= {src_reset_pipe[0], 1'b0};
+    always @(posedge ui_clk or posedge reset_request)
+        if (reset_request) ui_reset_pipe <= 2'b11;
+        else ui_reset_pipe <= {ui_reset_pipe[0], 1'b0};
+    wire src_local_rst = src_reset_pipe[1];
+    wire ui_local_rst = ui_reset_pipe[1];
+
     wire fifo_full, fifo_empty;
     wire [129:0] event_front;
     wire [1:0] event_kind = event_front[129:128];
@@ -65,9 +78,9 @@ module ddr2_sd_frame_mirror #(
     reg [129:0] event_in;
 
     ddr2_p4b_async_fifo #(.WIDTH(130), .ADDR_BITS(FIFO_ADDR_BITS)) u_fifo (
-        .wr_clk(src_clk), .wr_rst(src_rst),
+        .wr_clk(src_clk), .wr_rst(src_local_rst),
         .wr_en(event_push), .wr_data(event_in), .full(fifo_full),
-        .rd_clk(ui_clk), .rd_rst(ui_rst),
+        .rd_clk(ui_clk), .rd_rst(ui_local_rst),
         .rd_en(event_pop), .rd_data(event_front), .empty(fifo_empty)
     );
 
@@ -87,8 +100,13 @@ module ddr2_sd_frame_mirror #(
     (* ASYNC_REG = "TRUE" *) reg ui_ready_meta = 0, ui_ready_sync = 0;
     (* ASYNC_REG = "TRUE" *) reg ui_done_meta = 0, ui_done_sync = 0;
     reg ui_done_seen = 0;
-    wire ui_ready = ui_state == WAIT_START && init_calib_complete && !ui_rst;
-    assign src_ready = !src_rst && !src_busy && !fifo_full && ui_ready_sync;
+    // Registra a combinacao no dominio MIG antes do sincronizador de origem.
+    reg ui_ready = 0;
+    always @(posedge ui_clk) begin
+        if (ui_local_rst) ui_ready <= 0;
+        else ui_ready <= ui_state == WAIT_START && init_calib_complete;
+    end
+    assign src_ready = !src_local_rst && !reset_request && !src_busy && !fifo_full && ui_ready_sync;
 
     // Eventos têm prioridade fixa. Cada pulso de origem produz no maximo um
     // token; se a FIFO encher, aborta a tentativa, jamais publica quadro parcial.
@@ -128,10 +146,10 @@ module ddr2_sd_frame_mirror #(
         end
         event_in = {push_kind, push_payload};
     end
-    assign event_push = push && !fifo_full && !src_rst;
+    assign event_push = push && !fifo_full && !src_local_rst && !reset_request;
 
     always @(posedge src_clk) begin
-        if (src_rst) begin
+        if (src_local_rst) begin
             src_busy <= 0;
             src_terminal <= 0;
             abort_pending <= 0;
@@ -199,11 +217,11 @@ module ddr2_sd_frame_mirror #(
     wire read_accept = ui_state == READ_CMD && app_rdy;
     assign app_addr = {11'd0, ui_index, 3'd0};
     assign app_cmd = ui_state == READ_CMD ? 3'b001 : 3'b000;
-    assign app_en = write_accept || read_accept;
+    assign app_en = !ui_local_rst && !reset_request && (write_accept || read_accept);
     assign app_wdf_data = event_payload;
     assign app_wdf_mask = 16'd0;
-    assign app_wdf_wren = write_accept;
-    assign app_wdf_end = write_accept;
+    assign app_wdf_wren = !ui_local_rst && !reset_request && write_accept;
+    assign app_wdf_end = app_wdf_wren;
     assign event_pop = !fifo_empty &&
                        ((ui_state == WAIT_START && event_kind == EV_START && ui_ready) ||
                         (ui_state == WRITING &&
@@ -212,7 +230,7 @@ module ddr2_sd_frame_mirror #(
     wire [31:0] crc_next = crc32_byte(actual_crc, read_word[read_byte_pos*8 +: 8]);
 
     always @(posedge ui_clk) begin
-        if (ui_rst) begin
+        if (ui_local_rst) begin
             ui_state <= WAIT_START;
             ui_index <= 0;
             ui_elapsed <= 0;

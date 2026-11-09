@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-OUT="$ROOT/validation/p4b"
+OUT="${OUT:-$ROOT/validation/p4b}"
 command -v iverilog >/dev/null || { echo 'Icarus Verilog ausente' >&2; exit 1; }
 command -v vvp >/dev/null || { echo 'vvp ausente' >&2; exit 1; }
 test ! -e "$OUT" || { echo "P4B ja foi testado em $OUT. Preserve os resultados." >&2; exit 1; }
