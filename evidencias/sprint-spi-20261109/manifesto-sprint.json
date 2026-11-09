@@ -1,0 +1,147 @@
+{
+  "baseline_commit": "816205119db3abb69443b51ba8f46470539f911e",
+  "branch": "sprint/spi-ddr2-throughput-20261109",
+  "jtag_executed": false,
+  "flash_written": false,
+  "sd_written": false,
+  "push_executed": false,
+  "physical_release_allowed": false,
+  "profiles": {
+    "5": {
+      "spi_read_hz": 10000000,
+      "spi_init_hz": 400000,
+      "source_commit": "816205119db3abb69443b51ba8f46470539f911e",
+      "usercode": "5D816205",
+      "bit_path": "/home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h005-8162051/bitstream/hud-f16-ddr2-8162051-spi-h005-experimental.bit",
+      "bit_sha256": "eb266ae1818d0cc41c5bbc7a854e32533936222d20980011852d8264909fccf7",
+      "bit_bytes": 3825990,
+      "dcp_path": "/home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h005-8162051/routed.dcp",
+      "dcp_sha256": "bc76fc58b5fc36f6666da952d41f785a98f6a8500e566d8b054d5359767d4cea",
+      "wns_ns": 0.346,
+      "whs_ns": 0.026,
+      "bus_skew_groups": 8,
+      "bus_skew_min_slack_ns": 6.736,
+      "drc_errors": 0,
+      "cdc_counts": {
+        "CDC-3": 46,
+        "CDC-8": 1,
+        "CDC-10": 3,
+        "CDC-15": 176
+      },
+      "pins_identical_to_5mhz": 132,
+      "clock_to_sck_max_ns": 16.984,
+      "miso_setup_ns": 6.663,
+      "available_card_and_board_ns_screening": 26.352999999999998,
+      "physical_validation": false,
+      "stress_45ns": "8 leituras integras",
+      "physical_gate": "BLOQUEADO: validar emissao 5MHz e orcamento externo antes de considerar este perfil"
+    },
+    "4": {
+      "spi_read_hz": 12500000,
+      "spi_init_hz": 400000,
+      "source_commit": "816205119db3abb69443b51ba8f46470539f911e",
+      "usercode": "5D816204",
+      "bit_path": "/home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h004-8162051/bitstream/hud-f16-ddr2-8162051-spi-h004-experimental.bit",
+      "bit_sha256": "113f97b45cf3450aced15914cec1d4f9a5de399837c0a1072fddd88a5a2f32fc",
+      "bit_bytes": 3825990,
+      "dcp_path": "/home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h004-8162051/routed.dcp",
+      "dcp_sha256": "8258930d30e8ed95cb44fc5f830f659090385d569982dc99aed0a4a09aaa76e6",
+      "wns_ns": 0.251,
+      "whs_ns": 0.02,
+      "bus_skew_groups": 8,
+      "bus_skew_min_slack_ns": 6.991,
+      "drc_errors": 0,
+      "cdc_counts": {
+        "CDC-3": 46,
+        "CDC-8": 1,
+        "CDC-10": 3,
+        "CDC-15": 176
+      },
+      "pins_identical_to_5mhz": 132,
+      "clock_to_sck_max_ns": 17.022,
+      "miso_setup_ns": 5.67,
+      "available_card_and_board_ns_screening": 17.308,
+      "physical_validation": false,
+      "stress_45ns": "8 falhas detectadas, 5 CRC; nenhum bloco corrompido aceito",
+      "physical_gate": "BLOQUEADO: validar emissao 5MHz e orcamento externo antes de considerar este perfil"
+    }
+  },
+  "measurement_probe": {
+    "instantiated_in_candidates": false,
+    "ooc_luts": 37,
+    "ooc_ffs": 162,
+    "ooc_wns_ns": 6.985,
+    "ooc_whs_ns": 0.198
+  },
+  "tests_source_commit": "d23268d",
+  "probe_source_commit": "70360c4",
+  "spi_focused_cases_passed": 21,
+  "integrated_scenarios": {
+    "10MHz": [
+      {
+        "scenario": 6,
+        "result": "PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=6 frames=4 updates=4 errors=0 pixel_checks=4300800 load_cycles=7296291 late_frames=4",
+        "cadence_intervals_ms": [
+          "67.200000",
+          "84.000000",
+          "67.200000"
+        ]
+      },
+      {
+        "scenario": 1,
+        "result": "PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=1 frames=4 updates=4 errors=1 pixel_checks=4915200 load_cycles=7300451 late_frames=4",
+        "cadence_intervals_ms": [
+          "100.800000",
+          "84.000000",
+          "67.200000"
+        ]
+      },
+      {
+        "scenario": 2,
+        "result": "PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=2 frames=4 updates=4 errors=1 pixel_checks=4915200 load_cycles=7300451 late_frames=4",
+        "cadence_intervals_ms": [
+          "100.800000",
+          "84.000000",
+          "67.200000"
+        ]
+      },
+      {
+        "scenario": 5,
+        "result": "PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=5 frames=3 updates=3 errors=0 pixel_checks=2764800 load_cycles=7293331 late_frames=3",
+        "cadence_intervals_ms": [
+          "67.200000",
+          "84.000000"
+        ]
+      }
+    ],
+    "12.5MHz": [
+      {
+        "scenario": 6,
+        "result": "PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=6 frames=4 updates=4 errors=0 pixel_checks=3686400 load_cycles=5837123 late_frames=4",
+        "cadence_intervals_ms": [
+          "67.200000",
+          "50.400000",
+          "67.200000"
+        ]
+      },
+      {
+        "scenario": 1,
+        "result": "PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=1 frames=4 updates=4 errors=1 pixel_checks=4300800 load_cycles=5835523 late_frames=4",
+        "cadence_intervals_ms": [
+          "100.800000",
+          "50.400000",
+          "67.200000"
+        ]
+      },
+      {
+        "scenario": 2,
+        "result": "PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=2 frames=4 updates=4 errors=1 pixel_checks=4300800 load_cycles=5835523 late_frames=4",
+        "cadence_intervals_ms": [
+          "100.800000",
+          "50.400000",
+          "67.200000"
+        ]
+      }
+    ]
+  }
+}

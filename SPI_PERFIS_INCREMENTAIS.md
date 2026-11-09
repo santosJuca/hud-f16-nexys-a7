@@ -77,7 +77,7 @@ O `sd_spi_read_block` lança o SCK de subida e amostra o MISO no mesmo ciclo de 
 cartão muda o dado na descida anterior. Portanto o atraso total de ida e volta precisa
 caber em **meio período** (menos o setup do flip-flop):
 
-atraso = saída SCK da FPGA + trilha + tODLY do cartão (0–14 ns, especificação SD default speed) + trilha + entrada/roteamento até o FF.
+atraso = saída SCK da FPGA + trilha + tODLY do cartão (hipótese histórica 0–14 ns, sem datasheet identificado do cartão efetivo) + trilha + entrada/roteamento até o FF.
 
 Estimativa usada: **0–30 ns** (14 ns do cartão + ~16 ns de FPGA/placa). Esses ~16 ns precisam
 ser substituídos pelos valores de `report_datasheet` do build e pelo esquema da Nexys A7.
@@ -131,8 +131,7 @@ bash scripts/build_spi_profile.sh 10          # 5 MHz, primeiro candidato fisico
 bash scripts/emit_spi_profile_bit.sh resultado-spi-h010-<commit>
 ```
 
-Repetir com `5` (10 MHz) e depois `4` (12,5 MHz) **somente após** o ensaio físico do perfil
-anterior passar. Os divisores mudam só contadores locais do domínio de 100 MHz. Ainda
+A sprint posterior autorizou builds offline de `5` (10 MHz) e `4` (12,5 MHz) antes do ensaio anterior. **Uso na placa permanece bloqueado** até aprovação do perfil anterior e do orçamento externo. Os divisores mudam só contadores locais do domínio de 100 MHz. Ainda
 assim, cada build precisa de nova conferência de setup/hold, porque a margem de hold do
 build anterior foi de apenas 0,017 ns.
 
@@ -180,3 +179,43 @@ Seguir PROCEDIMENTO_TESTE_FPGA.md para identidade do arquivo, estimativa de cad�
 6. Em falha: o loader faz três tentativas e depois para (LD15 aceso, última imagem mantida).
    Registrar LEDs e voltar ao perfil anterior. Desligar e religar a placa carrega a Flash
    funcional.
+
+## Engenharia para aproximadamente 30 FPS — sprint local posterior
+
+Os novos perfis mudam só configuração de build a partir do commit 8162051. A inicialização continua 400 kHz. O build de 5 MHz, sua release e recuperação foram preservados. Os novos BITs são locais e não liberados para a placa. Os valores finais, hashes e testes estão em RESULTADO_FINAL.md e no manifesto da sprint.
+
+### Captura externa: o limite não é somente o divisor
+
+No RTL real, sd_spi_read_block alterna SCK num registrador habilitado por divisor no clock de 100 MHz. Captura MISO no mesmo posedge interno que solicita SCK↑. O cartão começa a disponibilizar o bit após a descida anterior; a FSM precisa recebê-lo antes da captura interna, considerando ida e volta. Após esse ponto, o sinal SCK ainda atravessa mux/roteamento/OBUF até o conector. MISO também atravessa IBUF, roteamento e lógica até os registradores de estado/byte/CRC. Não existe um clock SCK usado para clockar a lógica de recepção.
+
+A extração nova usa scripts/qualificar_spi_io.tcl, sem acrescentar constraints. No DCP de 5 MHz, o caminho do registrador SCK de leitura até o pino tem 12,713 ns de data path, dos quais 8,522 ns de roteamento; a chegada absoluta referida ao clock de entrada é 18,128 ns. O resumo geral reporta 18,153 ns. O caminho MISO até rx_shift tem 10,468 ns de data path, com seis níveis lógicos; o requisito geral de setup do pino é 6,174 ns. Esses números têm referências de clock diferentes: não somar novamente clock-tree delay ao orçamento baseado em report_datasheet.
+
+Como triagem conservadora, o orçamento disponível para cartão+trilhas é `meio_periodo - clock_to_output_max - input_setup`. Isso usa a mesma referência externa do datasheet report; é uma inferência de engenharia, não uma constraint fechada. No novo perfil de 10 MHz: 50 - 16,984 - 6,663 = **26,353 ns** disponíveis para cartão/trilhas/margem não modelada. Sob a hipótese ilustrativa de 14 ns do cartão, sobram 12,353 ns. O cartão real não foi identificado por datasheet nesta sprint; 14 ns não é garantia para ele. Conferir também hold, min delays e assimetria de bordas. Slack infinito dos relatórios IO significa ausência de restrição externa, não folga infinita na placa.
+
+No perfil roteado de 12,5 MHz: 40 - 17,022 - 5,670 = **17,308 ns** disponíveis para cartão/trilhas; sob a hipótese ilustrativa de 14 ns, restam somente **3,308 ns**, antes das lacunas de placa/cartão.
+
+O cenário MISO 0–30 ns passa nos dois perfis. O stress 0–45 ns aceita oito leituras íntegras a 10 MHz, mas a 12,5 MHz as oito tentativas falham de forma detectada (cinco por CRC), sem aceitar bloco corrompido. **45 ns é um stress, não medição do cartão.** Mostra a sensibilidade do perfil mais rápido e impede tratá-lo como genericamente robusto a atrasos desconhecidos. O mesmo problema já ocorre a 25 MHz no modelo 0–30 ns. Não habilitar 25 MHz na placa.
+
+### Solução candidata de interface para 25 MHz
+
+O menor caminho de engenharia identificado é tirar mux/rota longa do último estágio de saída e separar captura elétrica da FSM de bytes: registrar SCK/MOSI/CS finais junto ao IOB e capturar MISO em recurso de entrada dedicado. Manter clock global de 100 MHz; selecionar uma fase de captura posterior dentro da janela válida e transportar o bit com seu enable pela latência dos registradores. É necessário redesenhar/validar o motor de bits para que R1, token, CRC, encerramento de CS e reset respeitem essa latência. Acrescentar simplesmente dois FFs em MISO atrasaria os bits e não resolve o protocolo.
+
+Os recursos ILOGIC/IDDR/OLOGIC da Artix-7 são apropriados para estudar essa captura e saída registradas; IDDR permite estudar fases de captura do clock global sem usar SCK fabricado como clock. Isso é **proposta**, não PHY implementado ou validado. A próxima implementação deve qualificar setup E hold nas duas extremidades da janela, com valores reais do cartão/placa, e simular a FSM real em todas as fases. Não há motivo para editar IP MIG ou sensores para isso. Referência oficial: [AMD UG471, SelectIO 7 Series](https://docs.amd.com/api/khub/documents/IbGcnPFe6eF19RHma_Y~IA/content).
+
+### CMD17, CMD18 e filas
+
+O modelo do controlador mediu `8384*HALF+2` ciclos de 100 MHz por setor sem Nac/R1 extra. A 25 MHz isso daria ~25,155 ms por quadro; para 30 FPS sobrariam ~54,5 µs médios de Nac por setor, antes das demais esperas. Esses números não validam eletricidade a 25 MHz.
+
+O limite assintótico de CMD18 é ~4120 SCK/bloco (token+dados+CRC), contra ~4192 de CMD17 no modelo: economia máxima de apenas **1,72%** do custo de clocks, se Nac não mudar. A 12,5 MHz, nem CMD18 ideal passa de ~20,23 FPS RGB332. Não elimina automaticamente Nac por bloco. CMD18 só se justifica se a medição mostrar benefício adicional de acesso sequencial interno do cartão. Exigiria CMD12, resposta/ocupação de parada, CRC de cada bloco, aborto de quadro, timeout e pausa de SCK sob backpressure, preservando fallback CMD17. Não foi implementado porque ainda não resolve o gargalo comprovado. Comandos oficiais: [SD Association, tabela de comandos SPI SDMEM](https://www.sdcard.org/cms/wp-content/themes/sdcard-org/dl.php?f=PartE1_SDIO_Simplified_Specification_Ver3.00.pdf).
+
+A pré-carga existente já sobrepõe carga SD e publicação do banco anterior; os testes novos observam pré-cargas com MIG sob atrasos/backpressure. DDR2 não cria largura de banda do cartão. O payload exige 2,304 MB/s; escrita+releitura DDR2 exigem ao menos 4,608 MB/s, além do retorno ao buffer. O DDR2 deste projeto espelha e relê o quadro: não foi convertido em cache do filme inteiro.
+
+### Alternativas sem degradar a imagem
+
+Uma análise de PackBits sem perdas em 64 quadros distribuídos ao longo do filme reconstruiu cada byte amostrado. Tamanho médio de 69,31% do RGB332 original (máximo amostrado 73,88%). Com hipótese futura de 8 bytes de enquadramento e arredondamento a setores, ainda requer ~13,14 MHz de SCK para 30 FPS sem Nac. A 12,5 MHz: ~35,04 ms médios por quadro sem Nac e ~45,49 ms se Nac fosse 100 µs/setor. A amostra não é garantia do filme inteiro. Por isso não implementamos um codec FPGA ou novo formato de arquivo. O analisador/teste de roundtrip foi preservado; nenhum vídeo convertido foi gravado.
+
+O menor resultado praticável hoje mantém RGB332/qualidade e aceita a cadência menor dos perfis qualificados. Para um loop curto de 90 quadros, pré-carregar 6.912.000 bytes em DDR2 e reproduzir do cache a ~30 FPS é uma alternativa arquitetural futura, não implementada; não resolve streaming contínuo de 17.331 quadros (payload 1.331.020.800 bytes). Isso exigiria endereçamento de cache e controle de posse diferentes do espelho de um quadro atual. Não anunciar 30 FPS com base apenas em repetir um cache curto.
+
+### Placa e lacunas de medição
+
+O [esquema oficial Digilent, folhas 2 e 4](https://digilent.com/reference/_media/reference/programmable-logic/nexys-a7/nexys-a7-sch.pdf) mostra microSD com proteção ESD, pull-ups e conexões compartilhadas com o PIC via resistores. O esquema não fornece atraso completo nem a carga efetiva da montagem do usuário. Não assumir trilhas ou capacitância nulas. O download direto dos PDFs nesta sessão não disponibilizou cópias utilizáveis (SD vazio, Digilent HTTP 403); a consulta web oficial foi usada. O documento simplificado SD consultado não forneceu um limite identificado do cartão instalado para fechar o orçamento. Permanecem necessários datasheet real e medição de SCK/MISO.

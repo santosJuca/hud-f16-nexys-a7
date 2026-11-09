@@ -1,0 +1,24 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (lin64) Build 6511674 Tue Jun 16 11:01:26 MDT 2026
+| Date         : Mon Nov  9 14:48:05 2026
+| Host         : santojuca-System-Product-Name running 64-bit Ubuntu 24.04.5 LTS
+| Command      : report_waivers -file validation/spi10-io/waivers.rpt
+| Design       : top_reticula
+| Device       : 7a100tcsg324-1
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Waiver Report
+
+
+-----------------
+Table Of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS (DRC: no waivers)
+3. REPORT DETAILS (METHODOLOGY: no waivers)
+4. REPORT DETAILS (CDC: no waivers)
+
+
+No waivers found.

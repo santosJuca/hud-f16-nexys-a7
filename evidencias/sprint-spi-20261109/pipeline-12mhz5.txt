@@ -1,0 +1,15 @@
+DISPLAY_CADENCE interval_ms=67.200000 source_frame=2
+DISPLAY_CADENCE interval_ms=50.400000 source_frame=3
+DISPLAY_CADENCE interval_ms=67.200000 source_frame=4
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=6 frames=4 updates=4 errors=0 pixel_checks=3686400 load_cycles=5837123 late_frames=4
+DDR2_TRAFFIC writes=21564 reads=19200 good_readbacks=4 preloads=4
+DISPLAY_CADENCE interval_ms=100.800000 source_frame=2
+DISPLAY_CADENCE interval_ms=50.400000 source_frame=3
+DISPLAY_CADENCE interval_ms=67.200000 source_frame=4
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=1 frames=4 updates=4 errors=1 pixel_checks=4300800 load_cycles=5835523 late_frames=4
+DDR2_TRAFFIC writes=22137 reads=19200 good_readbacks=4 preloads=4
+DISPLAY_CADENCE interval_ms=100.800000 source_frame=2
+DISPLAY_CADENCE interval_ms=50.400000 source_frame=3
+DISPLAY_CADENCE interval_ms=67.200000 source_frame=4
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=2 frames=4 updates=4 errors=1 pixel_checks=4300800 load_cycles=5835523 late_frames=4
+DDR2_TRAFFIC writes=22105 reads=19200 good_readbacks=4 preloads=4

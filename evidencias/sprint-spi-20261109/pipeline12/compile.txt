@@ -1,0 +1,28 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/hud/rtl/sd_spi_cmd0.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_spi_cmd0
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/hud/rtl/sd_spi_command.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_spi_command
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/hud/rtl/sd_spi_controller.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_spi_controller
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/hud/rtl/sd_spi_init.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_spi_init
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/hud/rtl/sd_spi_preamble.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_spi_preamble
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/hud/rtl/sd_spi_read_block.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_spi_read_block
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/hud/rtl/sd_video_loader.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_video_loader
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/hud/rtl/sd_video_background.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_video_background
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/hud/rtl/vga_controller.sv" into library work
+INFO: [VRFC 10-311] analyzing module vga_controller
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/hud/rtl/ddr2_p4b_async_fifo.sv" into library work
+INFO: [VRFC 10-311] analyzing module ddr2_p4b_async_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/hud/rtl/ddr2_sd_frame_mirror.sv" into library work
+INFO: [VRFC 10-311] analyzing module ddr2_sd_frame_mirror
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/hud/rtl/sd_sector_buffer.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_sector_buffer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/tests/sd_video_card_model.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_video_card_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/tests/tb_sd_ddr2_vga.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_sd_ddr2_vga

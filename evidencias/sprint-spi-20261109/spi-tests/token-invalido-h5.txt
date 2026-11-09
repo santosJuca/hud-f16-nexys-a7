@@ -1,0 +1,5 @@
+WARNING: /home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/tests/sd_video_card_model.sv:24: $readmemh(/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/validation/spi-profiles/data.hex): Too many words in the file for the requested range [0:1023].
+READ idx=0 done=0 err=1 code=4 valid=0 cycles=802 t=1278285000
+READ idx=1 done=0 err=1 code=4 valid=0 cycles=802 t=1286365000
+PASS spi_profile scenario=6 init_half_ns=1250 read_half_ns=50 spi_read_hz=10000000 nac_bytes=0 miso_delay_ns=[0,0] ok=0 falhas=2 crc=0
+/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/tests/tb_sd_spi_freq_profiles.sv:223: $finish called at 1286415000 (1ps)

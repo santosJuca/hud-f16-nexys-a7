@@ -1,0 +1,20 @@
+nominal-h5: PASS spi_profile scenario=0 init_half_ns=1250 read_half_ns=50 spi_read_hz=10000000 nac_bytes=0 miso_delay_ns=[0,0] ok=4 falhas=0 crc=0 SECTOR_CYCLES avg=41922 ciclos_100MHz frame150_ms=62.883 fps_teto_carga=15.90 
+atraso-h5: PASS spi_profile scenario=0 init_half_ns=1250 read_half_ns=50 spi_read_hz=10000000 nac_bytes=0 miso_delay_ns=[0,30] ok=4 falhas=0 crc=0 SECTOR_CYCLES avg=41922 ciclos_100MHz frame150_ms=62.883 fps_teto_carga=15.90 
+crc-h5: PASS spi_profile scenario=1 init_half_ns=1250 read_half_ns=50 spi_read_hz=10000000 nac_bytes=0 miso_delay_ns=[0,0] ok=2 falhas=1 crc=1 SECTOR_CYCLES avg=41922 ciclos_100MHz frame150_ms=62.883 fps_teto_carga=15.90 
+reset-h5: PASS spi_profile scenario=2 init_half_ns=1250 read_half_ns=50 spi_read_hz=10000000 nac_bytes=0 miso_delay_ns=[0,0] ok=2 falhas=0 crc=0 SECTOR_CYCLES avg=41922 ciclos_100MHz frame150_ms=62.883 fps_teto_carga=15.90 
+nominal-h4: PASS spi_profile scenario=0 init_half_ns=1250 read_half_ns=40 spi_read_hz=12500000 nac_bytes=0 miso_delay_ns=[0,0] ok=4 falhas=0 crc=0 SECTOR_CYCLES avg=33538 ciclos_100MHz frame150_ms=50.307 fps_teto_carga=19.88 
+atraso-h4: PASS spi_profile scenario=0 init_half_ns=1250 read_half_ns=40 spi_read_hz=12500000 nac_bytes=0 miso_delay_ns=[0,30] ok=4 falhas=0 crc=0 SECTOR_CYCLES avg=33538 ciclos_100MHz frame150_ms=50.307 fps_teto_carga=19.88 
+crc-h4: PASS spi_profile scenario=1 init_half_ns=1250 read_half_ns=40 spi_read_hz=12500000 nac_bytes=0 miso_delay_ns=[0,0] ok=2 falhas=1 crc=1 SECTOR_CYCLES avg=33538 ciclos_100MHz frame150_ms=50.307 fps_teto_carga=19.88 
+reset-h4: PASS spi_profile scenario=2 init_half_ns=1250 read_half_ns=40 spi_read_hz=12500000 nac_bytes=0 miso_delay_ns=[0,0] ok=2 falhas=0 crc=0 SECTOR_CYCLES avg=33538 ciclos_100MHz frame150_ms=50.307 fps_teto_carga=19.88 
+nac-variavel-h5: PASS spi_profile scenario=0 init_half_ns=1250 read_half_ns=50 spi_read_hz=10000000 nac_bytes=5 miso_delay_ns=[0,30] ok=8 falhas=0 crc=0 SECTOR_CYCLES avg=49922 ciclos_100MHz frame150_ms=74.883 fps_teto_carga=13.35 
+timeout-h5: PASS spi_profile scenario=4 init_half_ns=1250 read_half_ns=50 spi_read_hz=10000000 nac_bytes=0 miso_delay_ns=[0,0] ok=2 falhas=1 crc=0 SECTOR_CYCLES avg=41922 ciclos_100MHz frame150_ms=62.883 fps_teto_carga=15.90 
+r1-invalido-h5: PASS spi_profile scenario=5 init_half_ns=1250 read_half_ns=50 spi_read_hz=10000000 nac_bytes=0 miso_delay_ns=[0,0] ok=0 falhas=2 crc=0 
+token-invalido-h5: PASS spi_profile scenario=6 init_half_ns=1250 read_half_ns=50 spi_read_hz=10000000 nac_bytes=0 miso_delay_ns=[0,0] ok=0 falhas=2 crc=0 
+nac-variavel-h4: PASS spi_profile scenario=0 init_half_ns=1250 read_half_ns=40 spi_read_hz=12500000 nac_bytes=5 miso_delay_ns=[0,30] ok=8 falhas=0 crc=0 SECTOR_CYCLES avg=39938 ciclos_100MHz frame150_ms=59.907 fps_teto_carga=16.69 
+timeout-h4: PASS spi_profile scenario=4 init_half_ns=1250 read_half_ns=40 spi_read_hz=12500000 nac_bytes=0 miso_delay_ns=[0,0] ok=2 falhas=1 crc=0 SECTOR_CYCLES avg=33538 ciclos_100MHz frame150_ms=50.307 fps_teto_carga=19.88 
+r1-invalido-h4: PASS spi_profile scenario=5 init_half_ns=1250 read_half_ns=40 spi_read_hz=12500000 nac_bytes=0 miso_delay_ns=[0,0] ok=0 falhas=2 crc=0 
+token-invalido-h4: PASS spi_profile scenario=6 init_half_ns=1250 read_half_ns=40 spi_read_hz=12500000 nac_bytes=0 miso_delay_ns=[0,0] ok=0 falhas=2 crc=0 
+nac100us-h5: PASS spi_profile scenario=0 init_half_ns=1250 read_half_ns=50 spi_read_hz=10000000 nac_bytes=125 miso_delay_ns=[0,0] ok=4 falhas=0 crc=0 SECTOR_CYCLES avg=51922 ciclos_100MHz frame150_ms=77.883 fps_teto_carga=12.84 
+nac100us-h4: PASS spi_profile scenario=0 init_half_ns=1250 read_half_ns=40 spi_read_hz=12500000 nac_bytes=157 miso_delay_ns=[0,0] ok=4 falhas=0 crc=0 SECTOR_CYCLES avg=43586 ciclos_100MHz frame150_ms=65.379 fps_teto_carga=15.30 
+atraso-h2-deve-detectar: PASS spi_profile scenario=3 init_half_ns=1250 read_half_ns=20 spi_read_hz=25000000 nac_bytes=0 miso_delay_ns=[0,30] ok=0 falhas=8 crc=1 
+PASS test_spi_profiles: logs em /home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/validation/spi-profiles

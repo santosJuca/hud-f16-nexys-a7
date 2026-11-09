@@ -1,0 +1,11 @@
+READ idx=0 done=1 err=0 code=0 valid=1 cycles=36482 t=1635085000
+READ idx=1 done=1 err=0 code=0 valid=1 cycles=38850 t=2023635000
+READ idx=2 done=1 err=0 code=0 valid=1 cycles=41218 t=2435865000
+READ idx=3 done=1 err=0 code=0 valid=1 cycles=43586 t=2871775000
+READ idx=4 done=1 err=0 code=0 valid=1 cycles=36290 t=3234725000
+READ idx=5 done=1 err=0 code=0 valid=1 cycles=38658 t=3621355000
+READ idx=6 done=1 err=0 code=0 valid=1 cycles=41026 t=4031665000
+READ idx=7 done=1 err=0 code=0 valid=1 cycles=43394 t=4465655000
+PASS spi_profile scenario=0 init_half_ns=1250 read_half_ns=40 spi_read_hz=12500000 nac_bytes=5 miso_delay_ns=[0,30] ok=8 falhas=0 crc=0
+SECTOR_CYCLES avg=39938 ciclos_100MHz frame150_ms=59.907 fps_teto_carga=16.69
+/home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109/tests/tb_sd_spi_freq_profiles.sv:223: $finish called at 4465695000 (1ps)

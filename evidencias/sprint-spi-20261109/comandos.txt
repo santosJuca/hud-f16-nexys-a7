@@ -1,0 +1,27 @@
+Referencia preservada: 816205119db3abb69443b51ba8f46470539f911e.
+Worktree de build congelado: /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109 (HEAD destacado 8162051).
+Worktree sprint: /home/santojuca/Downloads/hud_ddr2_spi_sprint_20261109.
+Vivado 2026.1 build 6511674; Icarus 12.0; Python 3.12.3.
+
+No build congelado:
+bash scripts/build_spi_profile.sh 5
+bash scripts/emit_spi_profile_bit.sh resultado-spi-h005-8162051
+bash scripts/build_spi_profile.sh 4
+bash scripts/emit_spi_profile_bit.sh resultado-spi-h004-8162051
+
+Na sprint, teste focado inicialmente com 19 cenarios e depois dois stresses de 45ns (logs individuais preservados); comando consolidado para repetir os 21:
+HALVES='5 4' bash scripts/test_spi_profiles.sh
+OUT/validation devem ser novos; o executor preserva diretorios existentes.
+
+SCENARIOS='6 1 2 5' READ_HALF=5 INIT_HALF=125 NAC_BYTES=5 NAC_JITTER_BYTES=150 R1_WAIT_BYTES=4 BASE_LBA=30028160 bash scripts/test_sd_ddr2_vga.sh
+OUT=validation/pipeline-12mhz5 SCENARIOS='6 1 2' READ_HALF=4 INIT_HALF=125 NAC_BYTES=5 NAC_JITTER_BYTES=150 R1_WAIT_BYTES=4 BASE_LBA=30028160 bash scripts/test_sd_ddr2_vga.sh
+
+vivado -mode batch -nojournal -source scripts/qualificar_spi_io.tcl -tclargs DCP SAIDA_NOVA
+vivado -mode batch -nojournal -source scripts/qualificar_video_metrics.tcl -tclargs RAIZ_SPRINT SAIDA_NOVA
+iverilog -g2012 -s tb_video_publication_metrics -o TESTE hud/rtl/video_publication_metrics.sv tests/tb_video_publication_metrics.sv
+vvp TESTE
+python3 tests/test_video_packbits_analysis.py
+python3 tools/analyze_video_throughput.py /home/santojuca/Downloads/hud_ddr2_video_integracao/validation/video-completo-320-30/HUDVIDEO.BIN
+
+video-completo-reconferido.json: parse_header + leitura sequencial SHA256 de todo o BIN, comparacao com evidencias/video-completo-integridade.json. Sem reexecutar os 2599650 CRCs historicos.
+A sonda de metricas e OOC; nenhum candidato a instancia. Nenhum JTAG, Flash, microSD ou push nesta sprint.

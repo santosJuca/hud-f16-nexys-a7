@@ -1,0 +1,89 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (lin64) Build 6511674 Tue Jun 16 11:01:26 MDT 2026
+| Date         : Mon Nov  9 14:48:05 2026
+| Host         : santojuca-System-Product-Name running 64-bit Ubuntu 24.04.5 LTS
+| Command      : report_timing -from [get_pins -hier -filter {NAME =~ *read_block/sd_sck_reg/C}] -to [get_ports SD_SCK] -delay_type min_max -max_paths 4 -file validation/spi10-io/sck_read_pin.rpt
+| Design       : top_reticula
+| Device       : 7a100t-csg324
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+| Design State : Physopt postRoute
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack:                    inf
+  Source:                 g_sd.u_sd_spi_controller/read_block/sd_sck_reg/C
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            SD_SCK
+                            (output port)
+  Path Group:             (none)
+  Path Type:              Max at Slow Process Corner
+  Data Path Delay:        11.048ns  (logic 4.129ns (37.373%)  route 6.919ns (62.627%))
+  Logic Levels:           2  (LUT5=1 OBUF=1)
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.096     3.602 r  u_hud_clock_bufg/O
+                         net (fo=10410, routed)       1.641     5.244    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X35Y50         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/sd_sck_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X35Y50         FDCE (Prop_fdce_C_Q)         0.456     5.700 r  g_sd.u_sd_spi_controller/read_block/sd_sck_reg/Q
+                         net (fo=48, routed)          1.175     6.875    g_sd.u_sd_spi_controller/init/preamble/read_sck
+    SLICE_X35Y49         LUT5 (Prop_lut5_I0_O)        0.124     6.999 r  g_sd.u_sd_spi_controller/init/preamble/SD_SCK_OBUF_inst_i_1/O
+                         net (fo=1, routed)           5.744    12.743    SD_SCK_OBUF
+    B1                   OBUF (Prop_obuf_I_O)         3.549    16.291 r  SD_SCK_OBUF_inst/O
+                         net (fo=0)                   0.000    16.291    SD_SCK
+    B1                                                                r  SD_SCK
+  -------------------------------------------------------------------    -------------------
+
+Slack:                    inf
+  Source:                 g_sd.u_sd_spi_controller/read_block/sd_sck_reg/C
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            SD_SCK
+                            (output port)
+  Path Group:             (none)
+  Path Type:              Min at Fast Process Corner
+  Data Path Delay:        4.145ns  (logic 1.436ns (34.630%)  route 2.710ns (65.370%))
+  Logic Levels:           2  (LUT5=1 OBUF=1)
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         0.250     0.250 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           0.644     0.894    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.026     0.920 r  u_hud_clock_bufg/O
+                         net (fo=10410, routed)       0.571     1.490    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X35Y50         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/sd_sck_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X35Y50         FDCE (Prop_fdce_C_Q)         0.141     1.631 r  g_sd.u_sd_spi_controller/read_block/sd_sck_reg/Q
+                         net (fo=48, routed)          0.475     2.107    g_sd.u_sd_spi_controller/init/preamble/read_sck
+    SLICE_X35Y49         LUT5 (Prop_lut5_I0_O)        0.045     2.152 r  g_sd.u_sd_spi_controller/init/preamble/SD_SCK_OBUF_inst_i_1/O
+                         net (fo=1, routed)           2.235     4.386    SD_SCK_OBUF
+    B1                   OBUF (Prop_obuf_I_O)         1.250     5.636 r  SD_SCK_OBUF_inst/O
+                         net (fo=0)                   0.000     5.636    SD_SCK
+    B1                                                                r  SD_SCK
+  -------------------------------------------------------------------    -------------------
+
+
+
+

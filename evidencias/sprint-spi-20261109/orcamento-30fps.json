@@ -1,0 +1,58 @@
+{
+  "scope": "Orcamento, nao aprovacao eletrica ou FPS fisico",
+  "payload_bytes_per_frame": 76800,
+  "payload_bytes_per_s_at_30fps": 2304000,
+  "sectors_per_frame": 150,
+  "cmd17_cost_fit": "8384*READ_HALF+2 ciclos de 100MHz por setor, modelo sem Nac e sem R1 extra",
+  "cmd18_cost_assumption": "4120 SCK por bloco (token+512 bytes+CRC), comando/stop amortizados; Nac por bloco NAO eliminado",
+  "cmd18_max_clock_overhead_saving_fraction": 0.01717557251908397,
+  "cases": [
+    {
+      "spi_hz": 5000000,
+      "cmd17_frame_s_zero_nac": 0.125763,
+      "cmd17_fps_ceiling": 7.951464262143873,
+      "nac_budget_us_at_30fps": -616.1977777777779,
+      "cmd18_asymptotic_frame_s_zero_nac": 0.1236,
+      "cmd18_asymptotic_fps_ceiling": 8.090614886731391
+    },
+    {
+      "spi_hz": 10000000,
+      "cmd17_frame_s_zero_nac": 0.062883,
+      "cmd17_fps_ceiling": 15.902549178633336,
+      "nac_budget_us_at_30fps": -196.99777777777774,
+      "cmd18_asymptotic_frame_s_zero_nac": 0.0618,
+      "cmd18_asymptotic_fps_ceiling": 16.181229773462782
+    },
+    {
+      "spi_hz": 12500000,
+      "cmd17_frame_s_zero_nac": 0.050307,
+      "cmd17_fps_ceiling": 19.877949390740852,
+      "nac_budget_us_at_30fps": -113.15777777777775,
+      "cmd18_asymptotic_frame_s_zero_nac": 0.04944,
+      "cmd18_asymptotic_fps_ceiling": 20.22653721682848
+    },
+    {
+      "spi_hz": 25000000,
+      "cmd17_frame_s_zero_nac": 0.025155,
+      "cmd17_fps_ceiling": 39.75352812562115,
+      "nac_budget_us_at_30fps": 54.52222222222222,
+      "cmd18_asymptotic_frame_s_zero_nac": 0.02472,
+      "cmd18_asymptotic_fps_ceiling": 40.45307443365696
+    }
+  ],
+  "memory": {
+    "one_rgb332_frame_bytes": 76800,
+    "two_display_banks_min_bytes": 153600,
+    "clip90_payload_bytes": 6912000,
+    "full17331_payload_bytes": 1331020800,
+    "full_file_sectors": 2599651,
+    "same_historical_lba_end_exclusive": 32627811
+  },
+  "card_output_delay_14ns": "Hipotese historica para ilustracao. Datasheet do cartao efetivo nao identificado; nao e limite garantido.",
+  "measurements_required": [
+    "latencia Nac por setor e cauda de distribuicao",
+    "atraso/assimetria SCK e MISO no conector",
+    "setup/hold na fase efetiva de captura",
+    "pinos/capacitancia compartilhada da interface"
+  ]
+}

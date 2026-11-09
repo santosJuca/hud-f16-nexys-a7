@@ -1,0 +1,29 @@
+{
+  "spi_read_hz": 10000000,
+  "spi_init_hz": 400000,
+  "source_commit": "816205119db3abb69443b51ba8f46470539f911e",
+  "usercode": "5D816205",
+  "bit_path": "/home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h005-8162051/bitstream/hud-f16-ddr2-8162051-spi-h005-experimental.bit",
+  "bit_sha256": "eb266ae1818d0cc41c5bbc7a854e32533936222d20980011852d8264909fccf7",
+  "bit_bytes": 3825990,
+  "dcp_path": "/home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h005-8162051/routed.dcp",
+  "dcp_sha256": "bc76fc58b5fc36f6666da952d41f785a98f6a8500e566d8b054d5359767d4cea",
+  "wns_ns": 0.346,
+  "whs_ns": 0.026,
+  "bus_skew_groups": 8,
+  "bus_skew_min_slack_ns": 6.736,
+  "drc_errors": 0,
+  "cdc_counts": {
+    "CDC-3": 46,
+    "CDC-8": 1,
+    "CDC-10": 3,
+    "CDC-15": 176
+  },
+  "pins_identical_to_5mhz": 132,
+  "clock_to_sck_max_ns": 16.984,
+  "miso_setup_ns": 6.663,
+  "available_card_and_board_ns_screening": 26.352999999999998,
+  "physical_validation": false,
+  "stress_45ns": "8 leituras integras",
+  "physical_gate": "BLOQUEADO: validar emissao 5MHz e orcamento externo antes de considerar este perfil"
+}

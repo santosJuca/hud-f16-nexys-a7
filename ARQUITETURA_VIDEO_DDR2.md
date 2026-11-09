@@ -37,3 +37,11 @@ Leitura SPI a 400 kHz preservada. A carga mínima ideal é 1,569 s por quadro; o
 A correção `b38e538` conecta o `wr_published` existente do buffer de vídeo ao diagnóstico `ddr2_video_status`. Esse ACK já cruza pixel→HUD pelo sincronizador interno e só retorna após a troca de banco e a drenagem de leitura. LD14 exige um `ddr_out_commit` seguido desse ACK; não usa diretamente `smoke_done && smoke_pass`. LD15 mantém falhas do loader/buffer e ABORT após iniciar transferência, ignorando a calibração inicial. Os registros de status não dirigem nenhuma FSM/ready/dado e não introduzem CDC novo. O histórico só limpa na inicialização/reconfiguração do HUD, não no CPU RESET do MIG.
 
 O perfil DDR2 não seleciona SD→BRAM diretamente: com ENABLE_DDR2_VIDEO=1 os bytes e controles do buffer vêm somente da FIFO de retorno MIG. O modo BRAM continua como outra configuração, sem fallback automático. A comparação de pixels dos testbenches comprova essas rotas no modelo; a fotografia sozinha não as comprova fisicamente.
+
+## Sprint de perfis rápidos e medição
+
+Os candidatos locais 10/12,5 MHz sintetizam o commit 8162051 com divisores de leitura 5/4 e inicialização 125. O pipeline CMD17 → CRC16 → XPM → espelho/releitura MIG → CRC32 → buffer de dois bancos → compositor → VGA permanece igual. Não há CMD18, codec ou novo PHY nos BITs. O espelho atual não armazena o filme inteiro para reprodução autônoma.
+
+A sonda opcional video_publication_metrics foi implementada e testada separadamente, sem conexão ao top destes candidatos. Distingue commit de retorno de ACK de publicação e mede intervalo no domínio HUD. O procedimento de futura integração/ILA, sem novo CDC e sujeito a novo fechamento do top, está em PROCEDIMENTO_TESTE_FPGA.md. Os contadores SD existentes são reutilizados; erros de tentativa, descarte de quadro único e retenção visual têm semânticas diferentes.
+
+A análise de 30 FPS e o orçamento externo SCK/MISO estão em SPI_PERFIS_INCREMENTAIS.md. Alterações de IOB/captura ou compressão descritas ali são propostas; a amostra PackBits é somente análise sem perdas no computador. Nenhum vídeo, sensor, algoritmo de atitude ou orientação magnética foi alterado.

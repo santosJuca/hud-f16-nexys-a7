@@ -1,0 +1,726 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (lin64) Build 6511674 Tue Jun 16 11:01:26 MDT 2026
+| Date         : Mon Nov  9 14:56:46 2026
+| Host         : santojuca-System-Product-Name running 64-bit Ubuntu 24.04.5 LTS
+| Command      : report_timing -from [get_ports SD_DAT0] -to [get_pins -hier -filter {NAME =~ *read_block/rx_shift_reg*/D || NAME =~ *read_block/r1_response_reg*/D || NAME =~ *read_block/data_byte_reg*/D}] -delay_type min_max -max_paths 20 -file validation/spi12-io/miso_capture.rpt
+| Design       : top_reticula
+| Device       : 7a100t-csg324
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+| Design State : Physopt postRoute
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[4]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Setup (Max at Slow Process Corner)
+  Data Path Delay:        8.693ns  (logic 2.003ns (23.043%)  route 6.690ns (76.957%))
+  Logic Levels:           5  (IBUF=1 LUT4=1 LUT5=2 LUT6=1)
+  Clock Path Skew:        5.137ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    5.137ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         1.507     1.507 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          4.736     6.243    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X75Y29         LUT4 (Prop_lut4_I2_O)        0.124     6.367 r  g_sd.u_sd_spi_controller/read_block/state[2]_i_4__1/O
+                         net (fo=1, routed)           0.433     6.800    g_sd.u_sd_spi_controller/read_block/state[2]_i_4__1_n_0
+    SLICE_X75Y29         LUT5 (Prop_lut5_I4_O)        0.124     6.924 f  g_sd.u_sd_spi_controller/read_block/state[2]_i_2__0/O
+                         net (fo=6, routed)           0.818     7.742    g_sd.u_sd_spi_controller/read_block/state[2]_i_2__0_n_0
+    SLICE_X76Y30         LUT5 (Prop_lut5_I4_O)        0.124     7.866 r  g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_3/O
+                         net (fo=6, routed)           0.703     8.569    g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_3_n_0
+    SLICE_X76Y30         LUT6 (Prop_lut6_I0_O)        0.124     8.693 r  g_sd.u_sd_spi_controller/read_block/rx_shift[4]_i_1/O
+                         net (fo=1, routed)           0.000     8.693    g_sd.u_sd_spi_controller/read_block/rx_shift[4]_i_1_n_0
+    SLICE_X76Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[4]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       1.715     5.137    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X76Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[4]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[5]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Setup (Max at Slow Process Corner)
+  Data Path Delay:        8.683ns  (logic 2.003ns (23.069%)  route 6.680ns (76.931%))
+  Logic Levels:           5  (IBUF=1 LUT4=1 LUT5=2 LUT6=1)
+  Clock Path Skew:        5.137ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    5.137ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         1.507     1.507 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          4.736     6.243    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X75Y29         LUT4 (Prop_lut4_I2_O)        0.124     6.367 r  g_sd.u_sd_spi_controller/read_block/state[2]_i_4__1/O
+                         net (fo=1, routed)           0.433     6.800    g_sd.u_sd_spi_controller/read_block/state[2]_i_4__1_n_0
+    SLICE_X75Y29         LUT5 (Prop_lut5_I4_O)        0.124     6.924 f  g_sd.u_sd_spi_controller/read_block/state[2]_i_2__0/O
+                         net (fo=6, routed)           0.818     7.742    g_sd.u_sd_spi_controller/read_block/state[2]_i_2__0_n_0
+    SLICE_X76Y30         LUT5 (Prop_lut5_I4_O)        0.124     7.866 r  g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_3/O
+                         net (fo=6, routed)           0.693     8.559    g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_3_n_0
+    SLICE_X76Y30         LUT6 (Prop_lut6_I0_O)        0.124     8.683 r  g_sd.u_sd_spi_controller/read_block/rx_shift[5]_i_1/O
+                         net (fo=1, routed)           0.000     8.683    g_sd.u_sd_spi_controller/read_block/rx_shift[5]_i_1_n_0
+    SLICE_X76Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[5]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       1.715     5.137    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X76Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[5]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[6]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Setup (Max at Slow Process Corner)
+  Data Path Delay:        8.607ns  (logic 2.003ns (23.275%)  route 6.603ns (76.725%))
+  Logic Levels:           5  (IBUF=1 LUT4=1 LUT5=2 LUT6=1)
+  Clock Path Skew:        5.137ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    5.137ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         1.507     1.507 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          4.736     6.243    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X75Y29         LUT4 (Prop_lut4_I2_O)        0.124     6.367 r  g_sd.u_sd_spi_controller/read_block/state[2]_i_4__1/O
+                         net (fo=1, routed)           0.433     6.800    g_sd.u_sd_spi_controller/read_block/state[2]_i_4__1_n_0
+    SLICE_X75Y29         LUT5 (Prop_lut5_I4_O)        0.124     6.924 f  g_sd.u_sd_spi_controller/read_block/state[2]_i_2__0/O
+                         net (fo=6, routed)           0.818     7.742    g_sd.u_sd_spi_controller/read_block/state[2]_i_2__0_n_0
+    SLICE_X76Y30         LUT5 (Prop_lut5_I4_O)        0.124     7.866 r  g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_3/O
+                         net (fo=6, routed)           0.616     8.483    g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_3_n_0
+    SLICE_X75Y30         LUT6 (Prop_lut6_I0_O)        0.124     8.607 r  g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_2/O
+                         net (fo=1, routed)           0.000     8.607    g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_2_n_0
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[6]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       1.715     5.137    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[6]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[3]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Setup (Max at Slow Process Corner)
+  Data Path Delay:        8.604ns  (logic 2.003ns (23.283%)  route 6.600ns (76.717%))
+  Logic Levels:           5  (IBUF=1 LUT4=1 LUT5=2 LUT6=1)
+  Clock Path Skew:        5.137ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    5.137ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         1.507     1.507 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          4.736     6.243    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X75Y29         LUT4 (Prop_lut4_I2_O)        0.124     6.367 r  g_sd.u_sd_spi_controller/read_block/state[2]_i_4__1/O
+                         net (fo=1, routed)           0.433     6.800    g_sd.u_sd_spi_controller/read_block/state[2]_i_4__1_n_0
+    SLICE_X75Y29         LUT5 (Prop_lut5_I4_O)        0.124     6.924 f  g_sd.u_sd_spi_controller/read_block/state[2]_i_2__0/O
+                         net (fo=6, routed)           0.818     7.742    g_sd.u_sd_spi_controller/read_block/state[2]_i_2__0_n_0
+    SLICE_X76Y30         LUT5 (Prop_lut5_I4_O)        0.124     7.866 r  g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_3/O
+                         net (fo=6, routed)           0.613     8.480    g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_3_n_0
+    SLICE_X75Y30         LUT6 (Prop_lut6_I0_O)        0.124     8.604 r  g_sd.u_sd_spi_controller/read_block/rx_shift[3]_i_1/O
+                         net (fo=1, routed)           0.000     8.604    g_sd.u_sd_spi_controller/read_block/rx_shift[3]_i_1_n_0
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[3]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       1.715     5.137    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[3]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[1]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Setup (Max at Slow Process Corner)
+  Data Path Delay:        8.328ns  (logic 2.003ns (24.055%)  route 6.324ns (75.945%))
+  Logic Levels:           5  (IBUF=1 LUT4=1 LUT5=2 LUT6=1)
+  Clock Path Skew:        5.137ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    5.137ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         1.507     1.507 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          4.736     6.243    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X75Y29         LUT4 (Prop_lut4_I2_O)        0.124     6.367 r  g_sd.u_sd_spi_controller/read_block/state[2]_i_4__1/O
+                         net (fo=1, routed)           0.433     6.800    g_sd.u_sd_spi_controller/read_block/state[2]_i_4__1_n_0
+    SLICE_X75Y29         LUT5 (Prop_lut5_I4_O)        0.124     6.924 f  g_sd.u_sd_spi_controller/read_block/state[2]_i_2__0/O
+                         net (fo=6, routed)           0.818     7.742    g_sd.u_sd_spi_controller/read_block/state[2]_i_2__0_n_0
+    SLICE_X76Y30         LUT5 (Prop_lut5_I4_O)        0.124     7.866 r  g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_3/O
+                         net (fo=6, routed)           0.337     8.204    g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_3_n_0
+    SLICE_X75Y30         LUT6 (Prop_lut6_I0_O)        0.124     8.328 r  g_sd.u_sd_spi_controller/read_block/rx_shift[1]_i_1/O
+                         net (fo=1, routed)           0.000     8.328    g_sd.u_sd_spi_controller/read_block/rx_shift[1]_i_1_n_0
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[1]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       1.715     5.137    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[1]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[2]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Setup (Max at Slow Process Corner)
+  Data Path Delay:        8.325ns  (logic 2.003ns (24.064%)  route 6.321ns (75.936%))
+  Logic Levels:           5  (IBUF=1 LUT4=1 LUT5=2 LUT6=1)
+  Clock Path Skew:        5.137ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    5.137ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         1.507     1.507 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          4.736     6.243    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X75Y29         LUT4 (Prop_lut4_I2_O)        0.124     6.367 r  g_sd.u_sd_spi_controller/read_block/state[2]_i_4__1/O
+                         net (fo=1, routed)           0.433     6.800    g_sd.u_sd_spi_controller/read_block/state[2]_i_4__1_n_0
+    SLICE_X75Y29         LUT5 (Prop_lut5_I4_O)        0.124     6.924 f  g_sd.u_sd_spi_controller/read_block/state[2]_i_2__0/O
+                         net (fo=6, routed)           0.818     7.742    g_sd.u_sd_spi_controller/read_block/state[2]_i_2__0_n_0
+    SLICE_X76Y30         LUT5 (Prop_lut5_I4_O)        0.124     7.866 r  g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_3/O
+                         net (fo=6, routed)           0.334     8.201    g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_3_n_0
+    SLICE_X75Y30         LUT6 (Prop_lut6_I0_O)        0.124     8.325 r  g_sd.u_sd_spi_controller/read_block/rx_shift[2]_i_1/O
+                         net (fo=1, routed)           0.000     8.325    g_sd.u_sd_spi_controller/read_block/rx_shift[2]_i_1_n_0
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[2]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       1.715     5.137    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[2]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[0]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Setup (Max at Slow Process Corner)
+  Data Path Delay:        7.169ns  (logic 1.755ns (24.485%)  route 5.413ns (75.515%))
+  Logic Levels:           3  (IBUF=1 LUT5=1 LUT6=1)
+  Clock Path Skew:        5.137ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    5.137ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 f  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         1.507     1.507 f  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          4.523     6.031    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X81Y31         LUT5 (Prop_lut5_I0_O)        0.124     6.155 r  g_sd.u_sd_spi_controller/read_block/rx_shift[0]_i_3/O
+                         net (fo=5, routed)           0.890     7.045    g_sd.u_sd_spi_controller/read_block/rx_shift[0]_i_3_n_0
+    SLICE_X76Y30         LUT6 (Prop_lut6_I1_O)        0.124     7.169 r  g_sd.u_sd_spi_controller/read_block/rx_shift[0]_i_1/O
+                         net (fo=1, routed)           0.000     7.169    g_sd.u_sd_spi_controller/read_block/rx_shift[0]_i_1_n_0
+    SLICE_X76Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       1.715     5.137    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X76Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[0]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/r1_response_reg[0]/D
+                            (rising edge-triggered cell FDPE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Setup (Max at Slow Process Corner)
+  Data Path Delay:        6.978ns  (logic 1.631ns (23.376%)  route 5.347ns (76.624%))
+  Logic Levels:           2  (IBUF=1 LUT4=1)
+  Clock Path Skew:        5.140ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    5.140ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         1.507     1.507 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          4.869     6.376    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X74Y31         LUT4 (Prop_lut4_I3_O)        0.124     6.500 r  g_sd.u_sd_spi_controller/read_block/r1_response[0]_i_1/O
+                         net (fo=2, routed)           0.478     6.978    g_sd.u_sd_spi_controller/read_block/r1_response[0]_i_1_n_0
+    SLICE_X74Y32         FDPE                                         r  g_sd.u_sd_spi_controller/read_block/r1_response_reg[0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       1.718     5.140    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X74Y32         FDPE                                         r  g_sd.u_sd_spi_controller/read_block/r1_response_reg[0]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/data_byte_reg[0]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Setup (Max at Slow Process Corner)
+  Data Path Delay:        5.060ns  (logic 1.507ns (29.785%)  route 3.553ns (70.215%))
+  Logic Levels:           1  (IBUF=1)
+  Clock Path Skew:        5.018ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    5.018ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         1.507     1.507 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          3.553     5.060    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X73Y54         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/data_byte_reg[0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.091     3.422 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       1.595     5.018    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X73Y54         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/data_byte_reg[0]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/data_byte_reg[0]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Hold (Min at Fast Process Corner)
+  Data Path Delay:        1.833ns  (logic 0.275ns (14.992%)  route 1.558ns (85.008%))
+  Logic Levels:           1  (IBUF=1)
+  Clock Path Skew:        2.032ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.032ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         0.275     0.275 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          1.558     1.833    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X73Y54         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/data_byte_reg[0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         0.438     0.438 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           0.699     1.136    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.029     1.165 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       0.867     2.032    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X73Y54         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/data_byte_reg[0]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[0]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Hold (Min at Fast Process Corner)
+  Data Path Delay:        2.220ns  (logic 0.320ns (14.405%)  route 1.900ns (85.595%))
+  Logic Levels:           2  (IBUF=1 LUT6=1)
+  Clock Path Skew:        2.085ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.085ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         0.275     0.275 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          1.900     2.175    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X76Y30         LUT6 (Prop_lut6_I4_O)        0.045     2.220 r  g_sd.u_sd_spi_controller/read_block/rx_shift[0]_i_1/O
+                         net (fo=1, routed)           0.000     2.220    g_sd.u_sd_spi_controller/read_block/rx_shift[0]_i_1_n_0
+    SLICE_X76Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         0.438     0.438 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           0.699     1.136    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.029     1.165 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       0.920     2.085    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X76Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[0]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[2]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Hold (Min at Fast Process Corner)
+  Data Path Delay:        2.307ns  (logic 0.320ns (13.859%)  route 1.988ns (86.141%))
+  Logic Levels:           2  (IBUF=1 LUT6=1)
+  Clock Path Skew:        2.085ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.085ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         0.275     0.275 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          1.988     2.262    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X75Y30         LUT6 (Prop_lut6_I4_O)        0.045     2.307 r  g_sd.u_sd_spi_controller/read_block/rx_shift[2]_i_1/O
+                         net (fo=1, routed)           0.000     2.307    g_sd.u_sd_spi_controller/read_block/rx_shift[2]_i_1_n_0
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[2]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         0.438     0.438 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           0.699     1.136    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.029     1.165 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       0.920     2.085    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[2]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[3]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Hold (Min at Fast Process Corner)
+  Data Path Delay:        2.315ns  (logic 0.320ns (13.814%)  route 1.995ns (86.186%))
+  Logic Levels:           2  (IBUF=1 LUT6=1)
+  Clock Path Skew:        2.085ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.085ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         0.275     0.275 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          1.995     2.270    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X75Y30         LUT6 (Prop_lut6_I4_O)        0.045     2.315 r  g_sd.u_sd_spi_controller/read_block/rx_shift[3]_i_1/O
+                         net (fo=1, routed)           0.000     2.315    g_sd.u_sd_spi_controller/read_block/rx_shift[3]_i_1_n_0
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[3]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         0.438     0.438 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           0.699     1.136    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.029     1.165 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       0.920     2.085    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[3]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[1]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Hold (Min at Fast Process Corner)
+  Data Path Delay:        2.349ns  (logic 0.320ns (13.617%)  route 2.029ns (86.383%))
+  Logic Levels:           2  (IBUF=1 LUT6=1)
+  Clock Path Skew:        2.085ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.085ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         0.275     0.275 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          2.029     2.304    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X75Y30         LUT6 (Prop_lut6_I4_O)        0.045     2.349 r  g_sd.u_sd_spi_controller/read_block/rx_shift[1]_i_1/O
+                         net (fo=1, routed)           0.000     2.349    g_sd.u_sd_spi_controller/read_block/rx_shift[1]_i_1_n_0
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[1]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         0.438     0.438 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           0.699     1.136    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.029     1.165 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       0.920     2.085    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[1]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[6]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Hold (Min at Fast Process Corner)
+  Data Path Delay:        2.391ns  (logic 0.320ns (13.375%)  route 2.071ns (86.625%))
+  Logic Levels:           2  (IBUF=1 LUT6=1)
+  Clock Path Skew:        2.085ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.085ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         0.275     0.275 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          2.071     2.346    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X75Y30         LUT6 (Prop_lut6_I4_O)        0.045     2.391 r  g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_2/O
+                         net (fo=1, routed)           0.000     2.391    g_sd.u_sd_spi_controller/read_block/rx_shift[6]_i_2_n_0
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[6]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         0.438     0.438 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           0.699     1.136    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.029     1.165 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       0.920     2.085    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X75Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[6]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[5]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Hold (Min at Fast Process Corner)
+  Data Path Delay:        2.416ns  (logic 0.320ns (13.236%)  route 2.096ns (86.764%))
+  Logic Levels:           2  (IBUF=1 LUT6=1)
+  Clock Path Skew:        2.085ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.085ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         0.275     0.275 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          2.096     2.371    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X76Y30         LUT6 (Prop_lut6_I4_O)        0.045     2.416 r  g_sd.u_sd_spi_controller/read_block/rx_shift[5]_i_1/O
+                         net (fo=1, routed)           0.000     2.416    g_sd.u_sd_spi_controller/read_block/rx_shift[5]_i_1_n_0
+    SLICE_X76Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[5]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         0.438     0.438 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           0.699     1.136    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.029     1.165 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       0.920     2.085    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X76Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[5]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/rx_shift_reg[4]/D
+                            (rising edge-triggered cell FDCE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Hold (Min at Fast Process Corner)
+  Data Path Delay:        2.418ns  (logic 0.320ns (13.225%)  route 2.098ns (86.775%))
+  Logic Levels:           2  (IBUF=1 LUT6=1)
+  Clock Path Skew:        2.085ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.085ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         0.275     0.275 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          2.098     2.373    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X76Y30         LUT6 (Prop_lut6_I4_O)        0.045     2.418 r  g_sd.u_sd_spi_controller/read_block/rx_shift[4]_i_1/O
+                         net (fo=1, routed)           0.000     2.418    g_sd.u_sd_spi_controller/read_block/rx_shift[4]_i_1_n_0
+    SLICE_X76Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[4]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         0.438     0.438 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           0.699     1.136    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.029     1.165 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       0.920     2.085    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X76Y30         FDCE                                         r  g_sd.u_sd_spi_controller/read_block/rx_shift_reg[4]/C
+
+Slack:                    inf
+  Source:                 SD_DAT0
+                            (input port)
+  Destination:            g_sd.u_sd_spi_controller/read_block/r1_response_reg[0]/D
+                            (rising edge-triggered cell FDPE clocked by u_ui_test/u_mig/sys_clk_i  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             (none)
+  Path Type:              Hold (Min at Fast Process Corner)
+  Data Path Delay:        2.543ns  (logic 0.320ns (12.576%)  route 2.223ns (87.424%))
+  Logic Levels:           2  (IBUF=1 LUT4=1)
+  Clock Path Skew:        2.087ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.087ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+    C2                                                0.000     0.000 r  SD_DAT0
+                         net (fo=0)                   0.000     0.000    SD_DAT0
+    C2                   IBUF (Prop_ibuf_I_O)         0.275     0.275 r  SD_DAT0_IBUF_inst/O
+                         net (fo=41, routed)          2.069     2.344    g_sd.u_sd_spi_controller/read_block/SD_DAT0_IBUF
+    SLICE_X74Y31         LUT4 (Prop_lut4_I3_O)        0.045     2.389 r  g_sd.u_sd_spi_controller/read_block/r1_response[0]_i_1/O
+                         net (fo=2, routed)           0.154     2.543    g_sd.u_sd_spi_controller/read_block/r1_response[0]_i_1_n_0
+    SLICE_X74Y32         FDPE                                         r  g_sd.u_sd_spi_controller/read_block/r1_response_reg[0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock u_ui_test/u_mig/sys_clk_i rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         0.438     0.438 r  clk_IBUF_inst/O
+                         net (fo=3, routed)           0.699     1.136    clk_IBUF
+    BUFGCTRL_X0Y18       BUFG (Prop_bufg_I_O)         0.029     1.165 r  u_hud_clock_bufg/O
+                         net (fo=10289, routed)       0.922     2.087    g_sd.u_sd_spi_controller/read_block/clk_hud
+    SLICE_X74Y32         FDPE                                         r  g_sd.u_sd_spi_controller/read_block/r1_response_reg[0]/C
+
+
+
+

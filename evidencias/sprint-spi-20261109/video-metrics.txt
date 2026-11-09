@@ -1,0 +1,2 @@
+PASS video_metrics: etapas separadas, intervalo, wrap, ausencia de evento e reset
+tests/tb_video_publication_metrics.sv:33: $finish called at 2866000 (1ps)

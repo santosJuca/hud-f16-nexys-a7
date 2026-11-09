@@ -1,0 +1,567 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (lin64) Build 6511674 Tue Jun 16 11:01:26 MDT 2026
+| Date         : Mon Nov  9 14:48:05 2026
+| Host         : santojuca-System-Product-Name running 64-bit Ubuntu 24.04.5 LTS
+| Command      : report_datasheet -file validation/spi10-io/datasheet.rpt
+| Design       : top_reticula
+| Device       : 7a100t-csg324
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+| Design State : Physopt postRoute
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Data Sheet Report
+
+Input Ports Setup/Hold
+
+--------------------------+---------------------+----------------+----------+---------------+---------+---------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+Reference                 | Input               | IO Reg         | Delay    |     Setup(ns) | Process |      Hold(ns) | Process | Internal                                                                                                                                                  |
+Clock                     | Port                | Type           | Type     | to Clk (Edge) | Corner  | to Clk (Edge) | Corner  | Clock                                                                                                                                                     |
+--------------------------+---------------------+----------------+----------+---------------+---------+---------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+u_ui_test/u_mig/sys_clk_i | SD_DAT0             | FDCE           | -        |     6.663 (r) | SLOW    |     0.477 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | SD_DIAG_PAGE[0]     | FDRE           | -        |     1.085 (r) | FAST    |     0.703 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | SD_DIAG_PAGE[1]     | FDRE           | -        |     0.898 (r) | FAST    |     1.569 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | SD_DIAG_PAGE[2]     | FDRE           | -        |     0.870 (r) | FAST    |     2.161 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | SD_DIAG_PAGE[3]     | FDRE           | -        |     0.602 (r) | FAST    |     1.990 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | SD_READ_SWITCH      | FDRE           | -        |     0.478 (r) | FAST    |     2.521 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | VIDEO_TOGGLE_BUTTON | FDRE           | -        |     0.081 (r) | FAST    |     2.195 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | ack_btn             | FDRE           | -        |     0.365 (r) | FAST    |     1.586 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | baro_scl            | FDRE           | -        |     0.455 (r) | FAST    |     1.625 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | baro_sda            | FDRE           | -        |     0.566 (r) | FAST    |     1.466 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | btn_heading[0]      | FDRE           | -        |     0.862 (r) | FAST    |     0.958 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | btn_heading[1]      | FDRE           | -        |     0.972 (r) | FAST    |     0.795 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | cpu_resetn          | FDCE           | -        |     1.101 (r) | FAST    |     0.251 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | i2c_scl             | FDRE           | -        |     1.402 (r) | FAST    |     0.199 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | i2c_sda             | FDRE           | -        |     1.243 (r) | FAST    |     0.414 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | joystick_sw_n       | FDSE           | -        |     0.934 (r) | FAST    |     1.072 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | mag_scl             | FDRE           | -        |     0.593 (r) | FAST    |     1.383 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | mag_sda             | FDRE           | -        |     0.503 (r) | FAST    |     1.566 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | operacao_sw[0]      | FDRE           | -        |     0.211 (r) | FAST    |     1.871 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | operacao_sw[1]      | FDRE           | -        |     0.520 (r) | FAST    |     1.502 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | sw[9]               | FDRE           | -        |     0.938 (r) | FAST    |     1.313 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | sw[10]              | FDRE           | -        |     0.491 (r) | FAST    |     1.576 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | sw[11]              | FDRE           | -        |     0.687 (r) | FAST    |     1.196 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | sw[12]              | FDRE           | -        |     0.401 (r) | FAST    |     1.730 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | sw[13]              | FDRE           | -        |     0.530 (r) | FAST    |     1.550 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | sw[14]              | FDRE           | -        |     0.465 (r) | FAST    |     1.606 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | sw[15]              | FDRE           | -        |     0.509 (r) | FAST    |     1.594 (r) | SLOW    |                                                                                                                                                           |
+u_ui_test/u_mig/sys_clk_i | display_mode        | FDRE           | -        |    -0.698 (r) | FAST    |     4.708 (r) | SLOW    | pixel_clk                                                                                                                                                 |
+u_ui_test/u_mig/sys_clk_i | style_mode          | FDRE           | -        |    -0.669 (r) | FAST    |     4.603 (r) | SLOW    | pixel_clk                                                                                                                                                 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[0]          | ISERDESE2 (IO) | VARIABLE |    -1.688 (r) | FAST    |     4.206 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[0]          | ISERDESE2 (IO) | VARIABLE |    -1.616 (f) | FAST    |     4.206 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[1]          | ISERDESE2 (IO) | VARIABLE |    -1.689 (r) | FAST    |     4.208 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[1]          | ISERDESE2 (IO) | VARIABLE |    -1.617 (f) | FAST    |     4.208 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[2]          | ISERDESE2 (IO) | VARIABLE |    -1.704 (r) | FAST    |     4.222 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[2]          | ISERDESE2 (IO) | VARIABLE |    -1.632 (f) | FAST    |     4.222 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[3]          | ISERDESE2 (IO) | VARIABLE |    -1.687 (r) | FAST    |     4.206 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[3]          | ISERDESE2 (IO) | VARIABLE |    -1.615 (f) | FAST    |     4.206 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[4]          | ISERDESE2 (IO) | VARIABLE |    -1.684 (r) | FAST    |     4.204 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[4]          | ISERDESE2 (IO) | VARIABLE |    -1.612 (f) | FAST    |     4.204 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[5]          | ISERDESE2 (IO) | VARIABLE |    -1.699 (r) | FAST    |     4.219 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[5]          | ISERDESE2 (IO) | VARIABLE |    -1.627 (f) | FAST    |     4.219 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[6]          | ISERDESE2 (IO) | VARIABLE |    -1.684 (r) | FAST    |     4.203 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[6]          | ISERDESE2 (IO) | VARIABLE |    -1.612 (f) | FAST    |     4.203 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[7]          | ISERDESE2 (IO) | VARIABLE |    -1.709 (r) | FAST    |     4.228 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[7]          | ISERDESE2 (IO) | VARIABLE |    -1.637 (f) | FAST    |     4.228 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[8]          | ISERDESE2 (IO) | VARIABLE |    -1.677 (r) | FAST    |     4.178 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[8]          | ISERDESE2 (IO) | VARIABLE |    -1.605 (f) | FAST    |     4.178 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[9]          | ISERDESE2 (IO) | VARIABLE |    -1.663 (r) | FAST    |     4.165 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[9]          | ISERDESE2 (IO) | VARIABLE |    -1.591 (f) | FAST    |     4.165 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[10]         | ISERDESE2 (IO) | VARIABLE |    -1.667 (r) | FAST    |     4.169 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[10]         | ISERDESE2 (IO) | VARIABLE |    -1.595 (f) | FAST    |     4.169 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[11]         | ISERDESE2 (IO) | VARIABLE |    -1.660 (r) | FAST    |     4.162 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[11]         | ISERDESE2 (IO) | VARIABLE |    -1.588 (f) | FAST    |     4.162 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[12]         | ISERDESE2 (IO) | VARIABLE |    -1.655 (r) | FAST    |     4.157 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[12]         | ISERDESE2 (IO) | VARIABLE |    -1.583 (f) | FAST    |     4.157 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[13]         | ISERDESE2 (IO) | VARIABLE |    -1.681 (r) | FAST    |     4.183 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[13]         | ISERDESE2 (IO) | VARIABLE |    -1.609 (f) | FAST    |     4.183 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[14]         | ISERDESE2 (IO) | VARIABLE |    -1.667 (r) | FAST    |     4.169 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[14]         | ISERDESE2 (IO) | VARIABLE |    -1.595 (f) | FAST    |     4.169 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[15]         | ISERDESE2 (IO) | VARIABLE |    -1.681 (r) | FAST    |     4.182 (r) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[15]         | ISERDESE2 (IO) | VARIABLE |    -1.609 (f) | FAST    |     4.182 (f) | SLOW    | u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/iserdes_clk |
+--------------------------+---------------------+----------------+----------+---------------+---------+---------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+Output Ports Clock-to-out
+
+--------------------------+--------------------+----------------+-------+----------------+---------+----------------+---------+---------------+
+Reference                 | Output             | IO Reg         | Delay | Max Clk (Edge) | Process | Min Clk (Edge) | Process | Internal      |
+Clock                     | Port               | Type           | Type  |    to port(ns) | Corner  |    to port(ns) | Corner  | Clock         |
+--------------------------+--------------------+----------------+-------+----------------+---------+----------------+---------+---------------+
+u_ui_test/u_mig/sys_clk_i | BARO_LED           | FDRE           | -     |     18.495 (r) | SLOW    |      5.008 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | DDR2_STATUS_LED[2] | FDRE           | -     |     12.188 (r) | SLOW    |      3.826 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | DDR2_STATUS_LED[3] | FDRE           | -     |     12.389 (r) | SLOW    |      3.901 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | GYRO_LED           | FDRE           | -     |     13.597 (r) | SLOW    |      4.238 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | JOY_LED[0]         | FDRE           | -     |     17.806 (r) | SLOW    |      5.147 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | JOY_LED[1]         | FDRE           | -     |     18.127 (r) | SLOW    |      4.753 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | JOY_LED[2]         | FDRE           | -     |     16.818 (r) | SLOW    |      4.525 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | JOY_LED[3]         | FDRE           | -     |     18.153 (r) | SLOW    |      5.198 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | MAG_LED            | FDRE           | -     |     14.753 (r) | SLOW    |      4.734 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_AN[0]           | FDRE           | -     |     14.108 (r) | SLOW    |      4.424 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_AN[1]           | FDRE           | -     |     14.206 (r) | SLOW    |      4.525 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_AN[2]           | FDRE           | -     |     13.186 (r) | SLOW    |      4.115 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_AN[3]           | FDRE           | -     |     14.804 (r) | SLOW    |      4.779 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_AN[4]           | FDRE           | -     |     13.869 (r) | SLOW    |      4.345 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_AN[5]           | FDRE           | -     |     13.573 (r) | SLOW    |      4.183 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_AN[6]           | FDRE           | -     |     15.409 (r) | SLOW    |      5.041 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_AN[7]           | FDRE           | -     |     13.849 (r) | SLOW    |      4.318 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_BUSY_LED        | FDRE           | -     |     16.493 (r) | SLOW    |      4.469 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_CMD             | FDCE           | -     |     16.414 (r) | SLOW    |      5.375 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_CRC_OK_LED      | FDRE           | -     |     12.398 (r) | SLOW    |      3.924 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_DAT3            | FDCE           | -     |     16.568 (r) | SLOW    |      5.236 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_ERROR_LED       | FDCE           | -     |     13.995 (r) | SLOW    |      4.245 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_READY_LED       | FDCE           | -     |     14.203 (r) | SLOW    |      4.429 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_RESET           | FDPE           | -     |     15.133 (r) | SLOW    |      5.119 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_SCK             | FDCE           | -     |     16.984 (r) | SLOW    |      5.372 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_SEG[0]          | FDRE           | -     |     19.911 (r) | SLOW    |      4.312 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_SEG[1]          | FDRE           | -     |     19.383 (r) | SLOW    |      4.278 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_SEG[2]          | FDRE           | -     |     20.555 (r) | SLOW    |      4.518 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_SEG[3]          | FDRE           | -     |     20.871 (r) | SLOW    |      4.675 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_SEG[4]          | FDRE           | -     |     19.839 (r) | SLOW    |      4.223 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_SEG[5]          | FDRE           | -     |     19.423 (r) | SLOW    |      4.330 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | SD_SEG[6]          | FDRE           | -     |     19.814 (r) | SLOW    |      4.294 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | VGA_G[0]           | FDRE           | -     |     12.967 (r) | SLOW    |              - | -       |               |
+u_ui_test/u_mig/sys_clk_i | VGA_G[1]           | FDRE           | -     |     13.072 (r) | SLOW    |              - | -       |               |
+u_ui_test/u_mig/sys_clk_i | VGA_G[2]           | FDRE           | -     |     13.063 (r) | SLOW    |              - | -       |               |
+u_ui_test/u_mig/sys_clk_i | VGA_G[3]           | FDRE           | -     |     13.462 (r) | SLOW    |              - | -       |               |
+u_ui_test/u_mig/sys_clk_i | VGA_R[0]           | FDRE           | -     |     13.202 (r) | SLOW    |              - | -       |               |
+u_ui_test/u_mig/sys_clk_i | VGA_R[1]           | FDRE           | -     |     13.464 (r) | SLOW    |              - | -       |               |
+u_ui_test/u_mig/sys_clk_i | VGA_R[2]           | FDRE           | -     |     13.953 (r) | SLOW    |              - | -       |               |
+u_ui_test/u_mig/sys_clk_i | VGA_R[3]           | FDRE           | -     |     13.339 (r) | SLOW    |              - | -       |               |
+u_ui_test/u_mig/sys_clk_i | baro_scl           | FDSE           | -     |     12.815 (r) | SLOW    |      3.984 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | baro_sda           | FDSE           | -     |     13.111 (r) | SLOW    |      4.132 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | buzzer_out         | FDRE           | -     |     18.643 (r) | SLOW    |      4.518 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | i2c_scl            | FDRE           | -     |     14.498 (r) | SLOW    |      4.771 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | i2c_sda            | FDRE           | -     |     14.187 (r) | SLOW    |      4.631 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | mag_scl            | FDSE           | -     |     13.023 (r) | SLOW    |      4.056 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | mag_sda            | FDSE           | -     |     13.152 (r) | SLOW    |      4.097 (r) | FAST    |               |
+u_ui_test/u_mig/sys_clk_i | DDR2_STATUS_LED[1] | FDRE           | -     |     13.307 (r) | SLOW    |      4.185 (r) | FAST    | clk_pll_i     |
+u_ui_test/u_mig/sys_clk_i | ddr2_dm[0]         | OSERDESE2 (IO) | -     |      9.478 (r) | SLOW    |      3.537 (r) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[0]         | OSERDESE2 (IO) | -     |      9.478 (r) | SLOW    |      3.541 (r) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[1]         | PHASER_OUT_PHY | -     |      9.482 (r) | SLOW    |      3.542 (r) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[2]         | OSERDESE2 (IO) | -     |      9.480 (r) | SLOW    |      3.526 (r) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[3]         | OSERDESE2 (IO) | -     |      9.477 (r) | SLOW    |      3.540 (r) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[4]         | PHASER_OUT_PHY | -     |      9.482 (r) | SLOW    |      3.549 (r) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[5]         | PHASER_OUT_PHY | -     |      9.498 (r) | SLOW    |      3.534 (r) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[6]         | OSERDESE2 (IO) | -     |      9.477 (r) | SLOW    |      3.543 (r) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[7]         | PHASER_OUT_PHY | -     |      9.498 (r) | SLOW    |      3.525 (r) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_dqs_n[0]      | ODDR (IO)      | -     |     10.280 (r) | SLOW    |      4.189 (r) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_dqs_n[0]      | ODDR (IO)      | -     |     10.280 (f) | SLOW    |      4.189 (f) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_dqs_p[0]      | ODDR (IO)      | -     |     10.281 (r) | SLOW    |      4.191 (r) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_dqs_p[0]      | ODDR (IO)      | -     |     10.281 (f) | SLOW    |      4.191 (f) | FAST    | oserdes_clk   |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[0]       | OSERDESE2 (IO) | -     |      8.548 (r) | SLOW    |      3.793 (r) | FAST    | oserdes_clk_1 |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[1]       | OSERDESE2 (IO) | -     |      8.572 (r) | SLOW    |      3.816 (r) | FAST    | oserdes_clk_1 |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[2]       | OSERDESE2 (IO) | -     |      8.574 (r) | SLOW    |      3.817 (r) | FAST    | oserdes_clk_1 |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[3]       | OSERDESE2 (IO) | -     |      8.575 (r) | SLOW    |      3.818 (r) | FAST    | oserdes_clk_1 |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[5]       | OSERDESE2 (IO) | -     |      8.576 (r) | SLOW    |      3.820 (r) | FAST    | oserdes_clk_1 |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[9]       | OSERDESE2 (IO) | -     |      8.577 (r) | SLOW    |      3.819 (r) | FAST    | oserdes_clk_1 |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[10]      | OSERDESE2 (IO) | -     |      8.569 (r) | SLOW    |      3.815 (r) | FAST    | oserdes_clk_1 |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[12]      | OSERDESE2 (IO) | -     |      8.572 (r) | SLOW    |      3.814 (r) | FAST    | oserdes_clk_1 |
+u_ui_test/u_mig/sys_clk_i | ddr2_ba[0]         | OSERDESE2 (IO) | -     |      8.574 (r) | SLOW    |      3.819 (r) | FAST    | oserdes_clk_1 |
+u_ui_test/u_mig/sys_clk_i | ddr2_ba[1]         | OSERDESE2 (IO) | -     |      8.569 (r) | SLOW    |      3.813 (r) | FAST    | oserdes_clk_1 |
+u_ui_test/u_mig/sys_clk_i | ddr2_ba[2]         | OSERDESE2 (IO) | -     |      8.571 (r) | SLOW    |      3.816 (r) | FAST    | oserdes_clk_1 |
+u_ui_test/u_mig/sys_clk_i | ddr2_ras_n         | OSERDESE2 (IO) | -     |      8.559 (r) | SLOW    |      3.804 (r) | FAST    | oserdes_clk_1 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dm[1]         | PHASER_OUT_PHY | -     |      9.486 (r) | SLOW    |      3.542 (r) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[8]         | OSERDESE2 (IO) | -     |      9.464 (r) | SLOW    |      3.535 (r) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[9]         | PHASER_OUT_PHY | -     |      9.467 (r) | SLOW    |      3.550 (r) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[10]        | OSERDESE2 (IO) | -     |      9.461 (r) | SLOW    |      3.543 (r) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[11]        | PHASER_OUT_PHY | -     |      9.467 (r) | SLOW    |      3.556 (r) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[12]        | OSERDESE2 (IO) | -     |      9.461 (r) | SLOW    |      3.554 (r) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[13]        | OSERDESE2 (IO) | -     |      9.464 (r) | SLOW    |      3.530 (r) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[14]        | PHASER_OUT_PHY | -     |      9.486 (r) | SLOW    |      3.549 (r) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dq[15]        | OSERDESE2 (IO) | -     |      9.462 (r) | SLOW    |      3.530 (r) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dqs_n[1]      | ODDR (IO)      | -     |     10.273 (r) | SLOW    |      4.189 (r) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dqs_n[1]      | ODDR (IO)      | -     |     10.273 (f) | SLOW    |      4.189 (f) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dqs_p[1]      | ODDR (IO)      | -     |     10.274 (r) | SLOW    |      4.189 (r) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_dqs_p[1]      | ODDR (IO)      | -     |     10.274 (f) | SLOW    |      4.189 (f) | FAST    | oserdes_clk_2 |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[4]       | OSERDESE2 (IO) | -     |      8.581 (r) | SLOW    |      3.814 (r) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[6]       | OSERDESE2 (IO) | -     |      8.587 (r) | SLOW    |      3.822 (r) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[7]       | OSERDESE2 (IO) | -     |      8.588 (r) | SLOW    |      3.823 (r) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[8]       | OSERDESE2 (IO) | -     |      8.581 (r) | SLOW    |      3.815 (r) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_addr[11]      | OSERDESE2 (IO) | -     |      8.569 (r) | SLOW    |      3.803 (r) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_cas_n         | OSERDESE2 (IO) | -     |      8.602 (r) | SLOW    |      3.833 (r) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_ck_n[0]       | ODDR (IO)      | -     |      8.664 (r) | SLOW    |      3.795 (r) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_ck_n[0]       | ODDR (IO)      | -     |      8.664 (f) | SLOW    |      3.795 (f) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_ck_p[0]       | ODDR (IO)      | -     |      8.677 (r) | SLOW    |      3.808 (r) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_ck_p[0]       | ODDR (IO)      | -     |      8.677 (f) | SLOW    |      3.808 (f) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_cke[0]        | OSERDESE2 (IO) | -     |      8.592 (r) | SLOW    |      3.825 (r) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_cs_n[0]       | OSERDESE2 (IO) | -     |      8.551 (r) | SLOW    |      3.783 (r) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_odt[0]        | OSERDESE2 (IO) | -     |      8.583 (r) | SLOW    |      3.817 (r) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | ddr2_we_n          | OSERDESE2 (IO) | -     |      8.601 (r) | SLOW    |      3.835 (r) | FAST    | oserdes_clk_3 |
+u_ui_test/u_mig/sys_clk_i | VGA_B[0]           | FDRE           | -     |     41.039 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_B[1]           | FDRE           | -     |     40.858 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_B[2]           | FDRE           | -     |     40.539 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_B[3]           | FDRE           | -     |     40.858 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_G[0]           | FDRE           | -     |     40.766 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_G[1]           | FDRE           | -     |     40.654 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_G[2]           | FDRE           | -     |     40.934 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_G[3]           | FDRE           | -     |     40.745 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_HS             | FDRE           | -     |      0.796 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_R[0]           | FDRE           | -     |     40.284 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_R[1]           | FDRE           | -     |     40.558 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_R[2]           | FDRE           | -     |     41.047 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_R[3]           | FDRE           | -     |     40.421 (r) | SLOW    |              - | -       | pixel_clk     |
+u_ui_test/u_mig/sys_clk_i | VGA_VS             | FDRE           | -     |      1.631 (r) | SLOW    |              - | -       | pixel_clk     |
+--------------------------+--------------------+----------------+-------+----------------+---------+----------------+---------+---------------+
+
+
+Setup between Clocks
+
+--------------------------+---------------------------+---------------+---------+---------------+---------+---------------+---------+---------------+---------+
+Source                    | Destination               |  Src:Rise     | Process |  Src:Rise     | Process |  Src:Fall     | Process |  Src:Fall     | Process |
+Clock                     | Clock                     | Dest:Rise(ns) | Corner  | Dest:Fall(ns) | Corner  | Dest:Rise(ns) | Corner  | Dest:Fall(ns) | Corner  |
+--------------------------+---------------------------+---------------+---------+---------------+---------+---------------+---------+---------------+---------+
+u_ui_test/u_mig/sys_clk_i | u_ui_test/u_mig/sys_clk_i |        14.581 | SLOW    |         7.225 | SLOW    |         1.749 | SLOW    |               |         |
+--------------------------+---------------------------+---------------+---------+---------------+---------+---------------+---------+---------------+---------+
+
+
+Setup / Hold times for input bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Worst Case Data Window: 3.246 ns
+Ideal Clock Offset to Actual Clock: 0.538 ns
+-------------------+-------------+---------+-------------+---------+-----------+-----------+---------------+
+                   |             | Process |             | Process | Setup     |  Hold     | Source Offset |
+Source             |   Setup(ns) | Corner  |    Hold(ns) | Corner  | Slack(ns) | Slack(ns) | to Center(ns) |
+-------------------+-------------+---------+-------------+---------+-----------+-----------+---------------+
+SD_DIAG_PAGE[0]    |   1.085 (r) | FAST    |   0.703 (r) | SLOW    |       inf |       inf |             - |
+SD_DIAG_PAGE[1]    |   0.898 (r) | FAST    |   1.569 (r) | SLOW    |       inf |       inf |             - |
+SD_DIAG_PAGE[2]    |   0.870 (r) | FAST    |   2.161 (r) | SLOW    |       inf |       inf |             - |
+SD_DIAG_PAGE[3]    |   0.602 (r) | FAST    |   1.990 (r) | SLOW    |       inf |       inf |             - |
+-------------------+-------------+---------+-------------+---------+-----------+-----------+---------------+
+<hidden>           |   1.085 (r) | FAST    |   2.161 (r) | SLOW    |       inf |       inf |             - |
+-------------------+-------------+---------+-------------+---------+-----------+-----------+---------------+
+
+
+
+Setup / Hold times for input bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Worst Case Data Window: 1.929 ns
+Ideal Clock Offset to Actual Clock: -0.007 ns
+-------------------+------------+---------+------------+---------+-----------+-----------+---------------+
+                   |            | Process |            | Process | Setup     |  Hold     | Source Offset |
+Source             |  Setup(ns) | Corner  |   Hold(ns) | Corner  | Slack(ns) | Slack(ns) | to Center(ns) |
+-------------------+------------+---------+------------+---------+-----------+-----------+---------------+
+btn_heading[0]     |  0.862 (r) | FAST    |  0.958 (r) | SLOW    |       inf |       inf |             - |
+btn_heading[1]     |  0.972 (r) | FAST    |  0.795 (r) | SLOW    |       inf |       inf |             - |
+-------------------+------------+---------+------------+---------+-----------+-----------+---------------+
+<hidden>           |  0.972 (r) | FAST    |  0.958 (r) | SLOW    |       inf |       inf |             - |
+-------------------+------------+---------+------------+---------+-----------+-----------+---------------+
+
+
+
+Setup / Hold times for input bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Worst Case Data Window: 2.645 ns
+Ideal Clock Offset to Actual Clock: 2.906 ns
+-------------------+-------------+---------+-------------+---------+-----------+-----------+---------------+
+                   |             | Process |             | Process | Setup     |  Hold     | Source Offset |
+Source             |   Setup(ns) | Corner  |    Hold(ns) | Corner  | Slack(ns) | Slack(ns) | to Center(ns) |
+-------------------+-------------+---------+-------------+---------+-----------+-----------+---------------+
+ddr2_dq[0]         |  -1.688 (r) | FAST    |   4.206 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[0]         |  -1.616 (f) | FAST    |   4.206 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[1]         |  -1.689 (r) | FAST    |   4.208 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[1]         |  -1.617 (f) | FAST    |   4.208 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[2]         |  -1.704 (r) | FAST    |   4.222 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[2]         |  -1.632 (f) | FAST    |   4.222 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[3]         |  -1.687 (r) | FAST    |   4.206 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[3]         |  -1.615 (f) | FAST    |   4.206 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[4]         |  -1.684 (r) | FAST    |   4.204 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[4]         |  -1.612 (f) | FAST    |   4.204 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[5]         |  -1.699 (r) | FAST    |   4.219 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[5]         |  -1.627 (f) | FAST    |   4.219 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[6]         |  -1.684 (r) | FAST    |   4.203 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[6]         |  -1.612 (f) | FAST    |   4.203 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[7]         |  -1.709 (r) | FAST    |   4.228 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[7]         |  -1.637 (f) | FAST    |   4.228 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[8]         |  -1.677 (r) | FAST    |   4.178 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[8]         |  -1.605 (f) | FAST    |   4.178 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[9]         |  -1.663 (r) | FAST    |   4.165 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[9]         |  -1.591 (f) | FAST    |   4.165 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[10]        |  -1.667 (r) | FAST    |   4.169 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[10]        |  -1.595 (f) | FAST    |   4.169 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[11]        |  -1.660 (r) | FAST    |   4.162 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[11]        |  -1.588 (f) | FAST    |   4.162 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[12]        |  -1.655 (r) | FAST    |   4.157 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[12]        |  -1.583 (f) | FAST    |   4.157 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[13]        |  -1.681 (r) | FAST    |   4.183 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[13]        |  -1.609 (f) | FAST    |   4.183 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[14]        |  -1.667 (r) | FAST    |   4.169 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[14]        |  -1.595 (f) | FAST    |   4.169 (f) | SLOW    |       inf |       inf |             - |
+ddr2_dq[15]        |  -1.681 (r) | FAST    |   4.182 (r) | SLOW    |       inf |       inf |             - |
+ddr2_dq[15]        |  -1.609 (f) | FAST    |   4.182 (f) | SLOW    |       inf |       inf |             - |
+-------------------+-------------+---------+-------------+---------+-----------+-----------+---------------+
+<hidden>           |  -1.583 (f) | FAST    |   4.228 (r) | SLOW    |       inf |       inf |             - |
+-------------------+-------------+---------+-------------+---------+-----------+-----------+---------------+
+
+
+
+Setup / Hold times for input bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Worst Case Data Window: 2.391 ns
+Ideal Clock Offset to Actual Clock: 0.676 ns
+-------------------+------------+---------+-------------+---------+-----------+-----------+---------------+
+                   |            | Process |             | Process | Setup     |  Hold     | Source Offset |
+Source             |  Setup(ns) | Corner  |    Hold(ns) | Corner  | Slack(ns) | Slack(ns) | to Center(ns) |
+-------------------+------------+---------+-------------+---------+-----------+-----------+---------------+
+operacao_sw[0]     |  0.211 (r) | FAST    |   1.871 (r) | SLOW    |       inf |       inf |             - |
+operacao_sw[1]     |  0.520 (r) | FAST    |   1.502 (r) | SLOW    |       inf |       inf |             - |
+-------------------+------------+---------+-------------+---------+-----------+-----------+---------------+
+<hidden>           |  0.520 (r) | FAST    |   1.871 (r) | SLOW    |       inf |       inf |             - |
+-------------------+------------+---------+-------------+---------+-----------+-----------+---------------+
+
+
+
+Setup / Hold times for input bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Worst Case Data Window: 2.668 ns
+Ideal Clock Offset to Actual Clock: 0.396 ns
+-------------------+------------+---------+-------------+---------+-----------+-----------+---------------+
+                   |            | Process |             | Process | Setup     |  Hold     | Source Offset |
+Source             |  Setup(ns) | Corner  |    Hold(ns) | Corner  | Slack(ns) | Slack(ns) | to Center(ns) |
+-------------------+------------+---------+-------------+---------+-----------+-----------+---------------+
+sw[9]              |  0.938 (r) | FAST    |   1.313 (r) | SLOW    |       inf |       inf |             - |
+sw[10]             |  0.491 (r) | FAST    |   1.576 (r) | SLOW    |       inf |       inf |             - |
+sw[11]             |  0.687 (r) | FAST    |   1.196 (r) | SLOW    |       inf |       inf |             - |
+sw[12]             |  0.401 (r) | FAST    |   1.730 (r) | SLOW    |       inf |       inf |             - |
+sw[13]             |  0.530 (r) | FAST    |   1.550 (r) | SLOW    |       inf |       inf |             - |
+sw[14]             |  0.465 (r) | FAST    |   1.606 (r) | SLOW    |       inf |       inf |             - |
+sw[15]             |  0.509 (r) | FAST    |   1.594 (r) | SLOW    |       inf |       inf |             - |
+-------------------+------------+---------+-------------+---------+-----------+-----------+---------------+
+<hidden>           |  0.938 (r) | FAST    |   1.730 (r) | SLOW    |       inf |       inf |             - |
+-------------------+------------+---------+-------------+---------+-----------+-----------+---------------+
+
+
+
+Max / Min delays for output bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Bus Skew: 1.120 ns
+-------------------+--------------+---------+-------------+---------+----------+
+                   |      Max     | Process |     Min     | Process | Edge     |
+Pad                |    Delay(ns) | Corner  |   Delay(ns) | Corner  | Skew(ns) |
+-------------------+--------------+---------+-------------+---------+----------+
+DDR2_STATUS_LED[0] |            - | -       |           - | -       |        - |
+DDR2_STATUS_LED[1] |   13.307 (r) | SLOW    |   4.185 (r) | FAST    |    1.120 |
+DDR2_STATUS_LED[2] |   12.188 (r) | SLOW    |   3.826 (r) | FAST    |    0.000 |
+DDR2_STATUS_LED[3] |   12.389 (r) | SLOW    |   3.901 (r) | FAST    |    0.202 |
+-------------------+--------------+---------+-------------+---------+----------+
+<hidden>           |   13.307 (r) | SLOW    |   3.826 (r) | FAST    |    1.120 |
+-------------------+--------------+---------+-------------+---------+----------+
+
+
+
+Max / Min delays for output bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Bus Skew: 1.335 ns
+-------------------+--------------+---------+-------------+---------+----------+
+                   |      Max     | Process |     Min     | Process | Edge     |
+Pad                |    Delay(ns) | Corner  |   Delay(ns) | Corner  | Skew(ns) |
+-------------------+--------------+---------+-------------+---------+----------+
+JOY_LED[0]         |   17.806 (r) | SLOW    |   5.147 (r) | FAST    |    0.987 |
+JOY_LED[1]         |   18.127 (r) | SLOW    |   4.753 (r) | FAST    |    1.309 |
+JOY_LED[2]         |   16.818 (r) | SLOW    |   4.525 (r) | FAST    |    0.000 |
+JOY_LED[3]         |   18.153 (r) | SLOW    |   5.198 (r) | FAST    |    1.335 |
+-------------------+--------------+---------+-------------+---------+----------+
+<hidden>           |   18.153 (r) | SLOW    |   4.525 (r) | FAST    |    1.335 |
+-------------------+--------------+---------+-------------+---------+----------+
+
+
+
+Max / Min delays for output bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Bus Skew: 2.223 ns
+-------------------+--------------+---------+-------------+---------+----------+
+                   |      Max     | Process |     Min     | Process | Edge     |
+Pad                |    Delay(ns) | Corner  |   Delay(ns) | Corner  | Skew(ns) |
+-------------------+--------------+---------+-------------+---------+----------+
+SD_AN[0]           |   14.108 (r) | SLOW    |   4.424 (r) | FAST    |    0.922 |
+SD_AN[1]           |   14.206 (r) | SLOW    |   4.525 (r) | FAST    |    1.021 |
+SD_AN[2]           |   13.186 (r) | SLOW    |   4.115 (r) | FAST    |    0.000 |
+SD_AN[3]           |   14.804 (r) | SLOW    |   4.779 (r) | FAST    |    1.618 |
+SD_AN[4]           |   13.869 (r) | SLOW    |   4.345 (r) | FAST    |    0.683 |
+SD_AN[5]           |   13.573 (r) | SLOW    |   4.183 (r) | FAST    |    0.387 |
+SD_AN[6]           |   15.409 (r) | SLOW    |   5.041 (r) | FAST    |    2.223 |
+SD_AN[7]           |   13.849 (r) | SLOW    |   4.318 (r) | FAST    |    0.663 |
+-------------------+--------------+---------+-------------+---------+----------+
+<hidden>           |   15.409 (r) | SLOW    |   4.115 (r) | FAST    |    2.223 |
+-------------------+--------------+---------+-------------+---------+----------+
+
+
+
+Max / Min delays for output bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Bus Skew: 1.488 ns
+-------------------+--------------+---------+-------------+---------+----------+
+                   |      Max     | Process |     Min     | Process | Edge     |
+Pad                |    Delay(ns) | Corner  |   Delay(ns) | Corner  | Skew(ns) |
+-------------------+--------------+---------+-------------+---------+----------+
+SD_SEG[0]          |   19.911 (r) | SLOW    |   4.312 (r) | FAST    |    0.528 |
+SD_SEG[1]          |   19.383 (r) | SLOW    |   4.278 (r) | FAST    |    0.055 |
+SD_SEG[2]          |   20.555 (r) | SLOW    |   4.518 (r) | FAST    |    1.172 |
+SD_SEG[3]          |   20.871 (r) | SLOW    |   4.675 (r) | FAST    |    1.488 |
+SD_SEG[4]          |   19.839 (r) | SLOW    |   4.223 (r) | FAST    |    0.456 |
+SD_SEG[5]          |   19.423 (r) | SLOW    |   4.330 (r) | FAST    |    0.107 |
+SD_SEG[6]          |   19.814 (r) | SLOW    |   4.294 (r) | FAST    |    0.432 |
+-------------------+--------------+---------+-------------+---------+----------+
+<hidden>           |   20.871 (r) | SLOW    |   4.223 (r) | FAST    |    1.488 |
+-------------------+--------------+---------+-------------+---------+----------+
+
+
+
+Max / Min delays for output bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Bus Skew: 0.500 ns
+-------------------+--------------+---------+-----------+---------+----------+
+                   |      Max     | Process |   Min     | Process | Edge     |
+Pad                |    Delay(ns) | Corner  | Delay(ns) | Corner  | Skew(ns) |
+-------------------+--------------+---------+-----------+---------+----------+
+VGA_B[0]           |   41.039 (r) | SLOW    |         - | -       |    0.500 |
+VGA_B[1]           |   40.858 (r) | SLOW    |         - | -       |    0.319 |
+VGA_B[2]           |   40.539 (r) | SLOW    |         - | -       |    0.000 |
+VGA_B[3]           |   40.858 (r) | SLOW    |         - | -       |    0.319 |
+-------------------+--------------+---------+-----------+---------+----------+
+<hidden>           |   41.039 (r) | SLOW    |         - | -       |    0.500 |
+-------------------+--------------+---------+-----------+---------+----------+
+
+
+
+Max / Min delays for output bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Bus Skew: 0.280 ns
+-------------------+--------------+---------+-----------+---------+----------+
+                   |      Max     | Process |   Min     | Process | Edge     |
+Pad                |    Delay(ns) | Corner  | Delay(ns) | Corner  | Skew(ns) |
+-------------------+--------------+---------+-----------+---------+----------+
+VGA_G[0]           |   40.766 (r) | SLOW    |         - | -       |    0.112 |
+VGA_G[1]           |   40.654 (r) | SLOW    |         - | -       |    0.000 |
+VGA_G[2]           |   40.934 (r) | SLOW    |         - | -       |    0.280 |
+VGA_G[3]           |   40.745 (r) | SLOW    |         - | -       |    0.091 |
+-------------------+--------------+---------+-----------+---------+----------+
+<hidden>           |   40.934 (r) | SLOW    |         - | -       |    0.280 |
+-------------------+--------------+---------+-----------+---------+----------+
+
+
+
+Max / Min delays for output bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Bus Skew: 0.763 ns
+-------------------+--------------+---------+-----------+---------+----------+
+                   |      Max     | Process |   Min     | Process | Edge     |
+Pad                |    Delay(ns) | Corner  | Delay(ns) | Corner  | Skew(ns) |
+-------------------+--------------+---------+-----------+---------+----------+
+VGA_R[0]           |   40.284 (r) | SLOW    |         - | -       |    0.000 |
+VGA_R[1]           |   40.558 (r) | SLOW    |         - | -       |    0.274 |
+VGA_R[2]           |   41.047 (r) | SLOW    |         - | -       |    0.763 |
+VGA_R[3]           |   40.421 (r) | SLOW    |         - | -       |    0.137 |
+-------------------+--------------+---------+-----------+---------+----------+
+<hidden>           |   41.047 (r) | SLOW    |         - | -       |    0.763 |
+-------------------+--------------+---------+-----------+---------+----------+
+
+
+
+Max / Min delays for output bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Bus Skew: 0.040 ns
+-------------------+-------------+---------+-------------+---------+----------+
+                   |     Max     | Process |     Min     | Process | Edge     |
+Pad                |   Delay(ns) | Corner  |   Delay(ns) | Corner  | Skew(ns) |
+-------------------+-------------+---------+-------------+---------+----------+
+ddr2_addr[0]       |   8.548 (r) | SLOW    |   3.793 (r) | FAST    |    0.000 |
+ddr2_addr[1]       |   8.572 (r) | SLOW    |   3.816 (r) | FAST    |    0.025 |
+ddr2_addr[2]       |   8.574 (r) | SLOW    |   3.817 (r) | FAST    |    0.026 |
+ddr2_addr[3]       |   8.575 (r) | SLOW    |   3.818 (r) | FAST    |    0.027 |
+ddr2_addr[4]       |   8.581 (r) | SLOW    |   3.814 (r) | FAST    |    0.033 |
+ddr2_addr[5]       |   8.576 (r) | SLOW    |   3.820 (r) | FAST    |    0.029 |
+ddr2_addr[6]       |   8.587 (r) | SLOW    |   3.822 (r) | FAST    |    0.040 |
+ddr2_addr[7]       |   8.588 (r) | SLOW    |   3.823 (r) | FAST    |    0.040 |
+ddr2_addr[8]       |   8.581 (r) | SLOW    |   3.815 (r) | FAST    |    0.033 |
+ddr2_addr[9]       |   8.577 (r) | SLOW    |   3.819 (r) | FAST    |    0.030 |
+ddr2_addr[10]      |   8.569 (r) | SLOW    |   3.815 (r) | FAST    |    0.022 |
+ddr2_addr[11]      |   8.569 (r) | SLOW    |   3.803 (r) | FAST    |    0.021 |
+ddr2_addr[12]      |   8.572 (r) | SLOW    |   3.814 (r) | FAST    |    0.025 |
+-------------------+-------------+---------+-------------+---------+----------+
+<hidden>           |   8.588 (r) | SLOW    |   3.793 (r) | FAST    |    0.040 |
+-------------------+-------------+---------+-------------+---------+----------+
+
+
+
+Max / Min delays for output bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Bus Skew: 0.005 ns
+-------------------+-------------+---------+-------------+---------+----------+
+                   |     Max     | Process |     Min     | Process | Edge     |
+Pad                |   Delay(ns) | Corner  |   Delay(ns) | Corner  | Skew(ns) |
+-------------------+-------------+---------+-------------+---------+----------+
+ddr2_ba[0]         |   8.574 (r) | SLOW    |   3.819 (r) | FAST    |    0.005 |
+ddr2_ba[1]         |   8.569 (r) | SLOW    |   3.813 (r) | FAST    |    0.000 |
+ddr2_ba[2]         |   8.571 (r) | SLOW    |   3.816 (r) | FAST    |    0.003 |
+-------------------+-------------+---------+-------------+---------+----------+
+<hidden>           |   8.574 (r) | SLOW    |   3.813 (r) | FAST    |    0.005 |
+-------------------+-------------+---------+-------------+---------+----------+
+
+
+
+Max / Min delays for output bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Bus Skew: 0.008 ns
+-------------------+-------------+---------+-------------+---------+----------+
+                   |     Max     | Process |     Min     | Process | Edge     |
+Pad                |   Delay(ns) | Corner  |   Delay(ns) | Corner  | Skew(ns) |
+-------------------+-------------+---------+-------------+---------+----------+
+ddr2_dm[0]         |   9.478 (r) | SLOW    |   3.537 (r) | FAST    |    0.000 |
+ddr2_dm[1]         |   9.486 (r) | SLOW    |   3.542 (r) | FAST    |    0.008 |
+-------------------+-------------+---------+-------------+---------+----------+
+<hidden>           |   9.486 (r) | SLOW    |   3.537 (r) | FAST    |    0.008 |
+-------------------+-------------+---------+-------------+---------+----------+
+
+
+
+Max / Min delays for output bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Bus Skew: 0.037 ns
+-------------------+-------------+---------+-------------+---------+----------+
+                   |     Max     | Process |     Min     | Process | Edge     |
+Pad                |   Delay(ns) | Corner  |   Delay(ns) | Corner  | Skew(ns) |
+-------------------+-------------+---------+-------------+---------+----------+
+ddr2_dq[0]         |   9.478 (r) | SLOW    |   3.541 (r) | FAST    |    0.017 |
+ddr2_dq[1]         |   9.482 (r) | SLOW    |   3.542 (r) | FAST    |    0.021 |
+ddr2_dq[2]         |   9.480 (r) | SLOW    |   3.526 (r) | FAST    |    0.019 |
+ddr2_dq[3]         |   9.477 (r) | SLOW    |   3.540 (r) | FAST    |    0.016 |
+ddr2_dq[4]         |   9.482 (r) | SLOW    |   3.549 (r) | FAST    |    0.024 |
+ddr2_dq[5]         |   9.498 (r) | SLOW    |   3.534 (r) | FAST    |    0.037 |
+ddr2_dq[6]         |   9.477 (r) | SLOW    |   3.543 (r) | FAST    |    0.018 |
+ddr2_dq[7]         |   9.498 (r) | SLOW    |   3.525 (r) | FAST    |    0.037 |
+ddr2_dq[8]         |   9.464 (r) | SLOW    |   3.535 (r) | FAST    |    0.010 |
+ddr2_dq[9]         |   9.467 (r) | SLOW    |   3.550 (r) | FAST    |    0.025 |
+ddr2_dq[10]        |   9.461 (r) | SLOW    |   3.543 (r) | FAST    |    0.018 |
+ddr2_dq[11]        |   9.467 (r) | SLOW    |   3.556 (r) | FAST    |    0.031 |
+ddr2_dq[12]        |   9.461 (r) | SLOW    |   3.554 (r) | FAST    |    0.029 |
+ddr2_dq[13]        |   9.464 (r) | SLOW    |   3.530 (r) | FAST    |    0.005 |
+ddr2_dq[14]        |   9.486 (r) | SLOW    |   3.549 (r) | FAST    |    0.025 |
+ddr2_dq[15]        |   9.462 (r) | SLOW    |   3.530 (r) | FAST    |    0.005 |
+-------------------+-------------+---------+-------------+---------+----------+
+<hidden>           |   9.498 (r) | SLOW    |   3.525 (r) | FAST    |    0.037 |
+-------------------+-------------+---------+-------------+---------+----------+
+
+
+
+Max / Min delays for output bus
+Clocked by: u_ui_test/u_mig/sys_clk_i
+Bus Skew: 0.008 ns
+-------------------+--------------+---------+-------------+---------+----------+
+                   |      Max     | Process |     Min     | Process | Edge     |
+Pad                |    Delay(ns) | Corner  |   Delay(ns) | Corner  | Skew(ns) |
+-------------------+--------------+---------+-------------+---------+----------+
+ddr2_dqs_n[0]      |   10.280 (r) | SLOW    |   4.189 (r) | FAST    |    0.007 |
+ddr2_dqs_n[0]      |   10.280 (f) | SLOW    |   4.189 (f) | FAST    |    0.007 |
+ddr2_dqs_n[1]      |   10.273 (r) | SLOW    |   4.189 (r) | FAST    |    0.000 |
+ddr2_dqs_n[1]      |   10.273 (f) | SLOW    |   4.189 (f) | FAST    |    0.000 |
+ddr2_dqs_p[0]      |   10.281 (r) | SLOW    |   4.191 (r) | FAST    |    0.008 |
+ddr2_dqs_p[0]      |   10.281 (f) | SLOW    |   4.191 (f) | FAST    |    0.008 |
+ddr2_dqs_p[1]      |   10.274 (r) | SLOW    |   4.189 (r) | FAST    |    0.001 |
+ddr2_dqs_p[1]      |   10.274 (f) | SLOW    |   4.189 (f) | FAST    |    0.001 |
+-------------------+--------------+---------+-------------+---------+----------+
+<hidden>           |   10.281 (r) | SLOW    |   4.189 (r) | FAST    |    0.008 |
+-------------------+--------------+---------+-------------+---------+----------+
+
+
+

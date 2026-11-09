@@ -1,0 +1,2 @@
+WNS=6.985 WHS=0.198
+Sonda OOC isolada. Nao qualifica integracao no top nem interfaces externas.

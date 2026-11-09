@@ -1,0 +1,140 @@
+INFO: [Common 17-3922] A valid Vivado Design Suite BASIC license has been detected. Your current license is active and will expire on 04-sep-2027.
+#-----------------------------------------------------------
+# Vivado v2026.1 (64-bit)
+# SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+# IP Build 6504888 on Tue Jun 09 09:05:25 MDT 2026
+# SharedData Build 6501428 on Mon Jun 08 17:34:18 MDT 2026
+# Start of session at: Mon Nov  9 14:56:23 2026
+# Process ID         : 248782
+# Current directory  : /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109
+# Command line       : vivado -mode batch -nojournal -log /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h004-8162051/bitgen.log -source /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/scripts/emit_spi_profile_bit.tcl -tclargs /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h004-8162051/routed.dcp /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h004-8162051/bitstream 8258930d30e8ed95cb44fc5f830f659090385d569982dc99aed0a4a09aaa76e6 5D816204 hud-f16-ddr2-8162051-spi-h004-experimental.bit
+# Log file           : /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h004-8162051/bitgen.log
+# Journal file       : 
+# Running On         : santojuca-System-Product-Name
+# Platform           : Ubuntu
+# Operating System   : Ubuntu 24.04.5 LTS
+# Processor Detail   : AMD Ryzen 7 5700X3D 8-Core Processor
+# CPU Frequency      : 3194.265 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 33553 MB
+# Swap memory        : 8589 MB
+# Total Virtual      : 42143 MB
+# Available Virtual  : 34279 MB
+#-----------------------------------------------------------
+source /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/scripts/emit_spi_profile_bit.tcl
+# if {$argc != 5} {error "USO: emit_spi_profile_bit.tcl routed.dcp saida_nova sha256 usercode nome.bit"}
+# lassign $argv checkpoint out expected usercode name
+# set checkpoint [file normalize $checkpoint]
+# set out [file normalize $out]
+# if {[file exists $out]} {error "Saida existente preservada: $out"}
+# if {![regexp {^5D[0-9A-F]{6}$} $usercode]} {error "USERCODE fora do padrao de perfil SPI: $usercode"}
+# set digest [lindex [exec sha256sum -- $checkpoint] 0]
+# if {$digest ne $expected} {error "Checkpoint diverge do perfil-spi.json"}
+# open_checkpoint $checkpoint
+Command: open_checkpoint /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h004-8162051/routed.dcp
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 1454.277 ; gain = 7.938 ; free physical = 11333 ; free virtual = 32091
+INFO: [Device 21-403] Loading part xc7a100tcsg324-1
+Netlist sorting complete. Time (s): cpu = 00:00:00.11 ; elapsed = 00:00:00.11 . Memory (MB): peak = 1905.266 ; gain = 0.000 ; free physical = 10607 ; free virtual = 31365
+INFO: [Netlist 29-17] Analyzing 3517 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2026.1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+WARNING: [Constraints 18-550] Could not create 'IBUF_LOW_PWR' constraint because net 'u_ui_test/u_mig/sys_clk_i' is not directly connected to top level port. 'IBUF_LOW_PWR' is ignored for synthesis but preserved for implementation.
+WARNING: [Constraints 18-550] Could not create 'IOSTANDARD' constraint because net 'u_ui_test/u_mig/sys_clk_i' is not directly connected to top level port. 'IOSTANDARD' is ignored for synthesis but preserved for implementation.
+Read ShapeDB Complete: Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.08 . Memory (MB): peak = 2039.547 ; gain = 0.000 ; free physical = 10395 ; free virtual = 31153
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Constraints 18-5170] The checkpoint was created with non-default parameter values which do not match the current Vivado settings.  Mismatching parameters are:
+  general.maxThreads
+INFO: [Project 1-853] Binary constraint restore complete.
+INFO: [Designutils 20-5722] Start Reading Physical Databases.
+Reading placement.
+Read Netlist Cache: Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 2649.555 ; gain = 0.000 ; free physical = 9218 ; free virtual = 29976
+Reading placer database...
+Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2649.555 ; gain = 0.000 ; free physical = 9218 ; free virtual = 29976
+Read PlaceDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2649.555 ; gain = 0.000 ; free physical = 9218 ; free virtual = 29976
+Read placeStorage: Time (s): cpu = 00:00:00.76 ; elapsed = 00:00:00.76 . Memory (MB): peak = 2690.633 ; gain = 41.078 ; free physical = 9148 ; free virtual = 29906
+Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2690.633 ; gain = 0.000 ; free physical = 9148 ; free virtual = 29906
+Reading routing.
+Read RouteStorage: Time (s): cpu = 00:00:00.89 ; elapsed = 00:00:00.26 . Memory (MB): peak = 2690.633 ; gain = 0.000 ; free physical = 9130 ; free virtual = 29888
+Read Physdb Files: Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 2690.633 ; gain = 41.078 ; free physical = 9130 ; free virtual = 29888
+Restored from archive | CPU: 1.780000 secs | Memory: 35.231773 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 2690.633 ; gain = 47.016 ; free physical = 9130 ; free virtual = 29888
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2696.016 ; gain = 0.000 ; free physical = 9114 ; free virtual = 29872
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 141 instances were transformed.
+  IBUFDS_INTERMDISABLE => IBUFDS_INTERMDISABLE (IBUFDS_INTERMDISABLE_INT(x2)): 2 instances
+  IOBUF => IOBUF (IBUF, OBUFT): 6 instances
+  IOBUFDS_INTERMDISABLE => IOBUFDS_INTERMDISABLE (IBUFDS_INTERMDISABLE_INT(x2), INV, OBUFTDS(x2)): 2 instances
+  IOBUF_INTERMDISABLE => IOBUF_INTERMDISABLE (IBUF_INTERMDISABLE, OBUFT): 16 instances
+  OBUFDS => OBUFDS_DUAL_BUF (INV, OBUFDS(x2)): 1 instance 
+  OBUFTDS => OBUFTDS_DUAL_BUF (INV, OBUFTDS(x2)): 2 instances
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 112 instances
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2026.1 (64-bit) build 6511674
+open_checkpoint: Time (s): cpu = 00:00:24 ; elapsed = 00:00:16 . Memory (MB): peak = 2704.051 ; gain = 1260.680 ; free physical = 9107 ; free virtual = 29865
+# if {[get_property PART [current_design]] ne "xc7a100tcsg324-1"} {error "Part incorreto"}
+# set setup [get_property SLACK [get_timing_paths -delay_type max -max_paths 1]]
+# set hold [get_property SLACK [get_timing_paths -delay_type min -max_paths 1]]
+# if {$setup <= 0 || $hold <= 0} {error "Timing nao positivo"}
+# foreach port {SD_RESET SD_SCK SD_CMD SD_DAT0 SD_DAT3 SD_CD clk} pin {E2 B1 C1 C2 D2 A1 E3} {
+#     set p [get_ports $port]
+#     if {[get_property PACKAGE_PIN $p] ne $pin || [get_property IOSTANDARD $p] ne "LVCMOS33"} {
+#         error "Pinagem/nivel incompativel: $port"
+#     }
+# }
+# file mkdir $out
+# report_drc -file [file join $out drc_bitstream.rpt]
+Command: report_drc -file /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h004-8162051/bitstream/drc_bitstream.rpt
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/santojuca/AMD/2026.1/data/ip'.
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h004-8162051/bitstream/drc_bitstream.rpt.
+report_drc completed successfully
+# if {[llength [get_drc_violations -quiet -filter {SEVERITY == Error}]] != 0} {error "DRC impeditivo"}
+# report_route_status -file [file join $out route_status.rpt]
+# report_datasheet -file [file join $out datasheet.rpt]
+# set_property BITSTREAM.CONFIG.SPI_BUSWIDTH 1 [current_design]
+# set_property BITSTREAM.CONFIG.CONFIGRATE 3 [current_design]
+# set_property BITSTREAM.CONFIG.USERID 0x[string tolower $usercode] [current_design]
+# set f [open [file join $out config_properties.txt] {WRONLY CREAT EXCL}]
+# foreach prop {PART CFGBVS CONFIG_VOLTAGE BITSTREAM.CONFIG.SPI_BUSWIDTH BITSTREAM.CONFIG.CONFIGRATE BITSTREAM.CONFIG.USERID} {
+#     puts $f "$prop=[get_property $prop [current_design]]"
+# }
+# puts $f "WNS=$setup WHS=$hold"
+# puts $f "SOURCE_CHECKPOINT=$checkpoint"
+# close $f
+# write_bitstream [file join $out $name]
+Command: write_bitstream /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h004-8162051/bitstream/hud-f16-ddr2-8162051-spi-h004-experimental.bit
+Attempting to get a license for feature 'Vivado_Implementation' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Vivado_Implementation' and/or device 'xc7a100t'
+Running DRC as a precondition to command write_bitstream
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado 12-3199] DRC finished with 0 Errors
+INFO: [Vivado 12-3200] Please refer to the DRC report (report_drc) for more information.
+Integrating Hard IP ELF/MEM with the PDI.
+INFO: [Designutils 20-2272] Running write_bitstream with 8 threads.
+Initializing bitstream generation complete. Time (s): cpu = 00:00:00.51 ; elapsed = 00:00:00.54 . Memory (MB): peak = 3078.531 ; gain = 29.781 ; free physical = 10493 ; free virtual = 31251
+Loading data files...
+Loading site data...
+Loading route data...
+Processing options...
+Creating bitmap...
+Creating bitstream...
+Writing bitstream /home/santojuca/Downloads/hud_ddr2_spi_fast_build_20261109/resultado-spi-h004-8162051/bitstream/hud-f16-ddr2-8162051-spi-h004-experimental.bit...
+Generate Bitstream complete. Time (s): cpu = 00:00:36 ; elapsed = 00:00:09 . Memory (MB): peak = 3331.203 ; gain = 282.453 ; free physical = 10214 ; free virtual = 30976
+INFO: [Vivado 12-1842] Bitgen Completed Successfully.
+INFO: [Common 17-83] Releasing license: Vivado_Implementation
+8 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+write_bitstream completed successfully
+write_bitstream: Time (s): cpu = 00:00:43 ; elapsed = 00:00:47 . Memory (MB): peak = 3363.332 ; gain = 338.363 ; free physical = 10217 ; free virtual = 30979
+# puts "EXPERIMENTAL_BIT_WRITTEN; NAO VALIDADO FISICAMENTE; NENHUM HARDWARE ACESSADO"
+EXPERIMENTAL_BIT_WRITTEN; NAO VALIDADO FISICAMENTE; NENHUM HARDWARE ACESSADO
+INFO: [Common 17-206] Exiting Vivado at Mon Nov  9 14:57:36 2026...
