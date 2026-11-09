@@ -1,0 +1,35 @@
+{
+  "test": "tb_top_ddr2_video",
+  "frames": "640x480 VGA; video de amostra 160x120/10, temporizador acelerado apenas no teste",
+  "ui_model_only": true,
+  "sensors": "sem resposta I2C; avisos esperados; nao valida sensores fisicos",
+  "captures": [
+    {
+      "combination": 0,
+      "label": "Normal / Solo",
+      "file": "evidencias/previas/hud-modo-0.png",
+      "sha256": "12070f9aabb4f8af9460bb74858181417679c6faea4e54759a9a14aeecf0b548"
+    },
+    {
+      "combination": 1,
+      "label": "Caca / Solo",
+      "file": "evidencias/previas/hud-modo-1.png",
+      "sha256": "20aa2e5b1b886adfcda685bdeda79c564deb04386b57ceaa10ed5eae9fad081b"
+    },
+    {
+      "combination": 4,
+      "label": "Normal / Voo",
+      "file": "evidencias/previas/hud-modo-4.png",
+      "sha256": "a1b6f7de8f6dfab36e0f6baa6b21753c394701c7492aa1382b07130d9a267ac8"
+    },
+    {
+      "combination": 8,
+      "label": "Normal / Pouso",
+      "file": "evidencias/previas/hud-modo-8.png",
+      "sha256": "0438d29e9a5c3353ec0719beecf3b1fd976012e351eec9c8591c9b6d08ca1a54"
+    }
+  ],
+  "pixel_checks": 4608000,
+  "combinations_passed": 12,
+  "physical_validation": false
+}

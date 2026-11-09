@@ -1,0 +1,1 @@
+PASS top DDR2 video+HUD+icone: 4608000 pixels, 12 combinacoes, BTNL retorna ao HUD, diagnostico isolado
