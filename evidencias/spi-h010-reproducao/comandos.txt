@@ -1,0 +1,7 @@
+Fonte do build: f8b36f814b6c530a54e6d597ef7c5c33e3e3dd03 (worktree separado, sem alteracoes).
+Build: bash scripts/build_spi_profile.sh 10
+Teste SPI: bash scripts/test_spi_profiles.sh
+Teste integrado (executor atualizado nesta consolidacao):
+SCENARIOS=6 READ_HALF=10 INIT_HALF=125 BASE_LBA=30028160 bash scripts/test_sd_ddr2_vga.sh
+Modelos: SDHC, XPM real, UI MIG; nao simula PHY nem atrasos reais da placa.
+Nenhuma programacao JTAG, Flash ou escrita no microSD nesta execucao.
