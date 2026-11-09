@@ -1,0 +1,29 @@
+DESTINO u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe_reg[0]/PRE REF=FDPE
+CLOCK u_ui_test/u_mig/sys_clk_i
+ORIGEM inicio_operacao_reg[3]__0/C CLOCK=u_ui_test/u_mig/sys_clk_i
+ORIGEM u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg/C CLOCK=clk_pll_i
+ORIGEM u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_calib_top/init_calib_complete_reg/C CLOCK=clk_pll_i
+LOGICA u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe[4]_i_1 REF=LUT3 INIT=8'hDF
+  u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe[4]_i_1/I0 NET=u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe_reg[4]_1[0]
+  u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe[4]_i_1/I1 NET=u_ui_test/g_sd_mirror.u_mirror/SR[0]
+  u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe[4]_i_1/I2 NET=u_ui_test/g_sd_mirror.u_mirror/inicio_operacao[0]
+DESTINO u_ui_test/g_sd_mirror.u_mirror/ui_reset_pipe_reg[0]/PRE REF=FDPE
+CLOCK clk_pll_i
+ORIGEM inicio_operacao_reg[3]__0/C CLOCK=u_ui_test/u_mig/sys_clk_i
+ORIGEM u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg/C CLOCK=clk_pll_i
+ORIGEM u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_calib_top/init_calib_complete_reg/C CLOCK=clk_pll_i
+LOGICA u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe[4]_i_1 REF=LUT3 INIT=8'hDF
+  u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe[4]_i_1/I0 NET=u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe_reg[4]_1[0]
+  u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe[4]_i_1/I1 NET=u_ui_test/g_sd_mirror.u_mirror/SR[0]
+  u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe[4]_i_1/I2 NET=u_ui_test/g_sd_mirror.u_mirror/inicio_operacao[0]
+DESTINO u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/rstdiv0_sync_r_reg[0]/PRE REF=FDPE
+CLOCK clk_pll_i
+ORIGEM mig_resetn_reg/C CLOCK=u_ui_test/u_mig/sys_clk_i
+ORIGEM u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/gen_mmcm.mmcm_i/LOCKED CLOCK=
+ORIGEM u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_iodelay_ctrl/u_idelayctrl_200/RDY CLOCK=
+ORIGEM u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_memc_ui_top_std/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/phaser_ref_i/LOCKED CLOCK=
+LOGICA u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_iodelay_ctrl/rstdiv2_sync_r[11]_i_1 REF=LUT4 INIT=16'h7FFF
+  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_iodelay_ctrl/rstdiv2_sync_r[11]_i_1/I0 NET=u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_iodelay_ctrl/rstdiv2_sync_r_reg[11]
+  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_iodelay_ctrl/rstdiv2_sync_r[11]_i_1/I1 NET=u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_iodelay_ctrl/iodelay_ctrl_rdy[0]
+  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_iodelay_ctrl/rstdiv2_sync_r[11]_i_1/I2 NET=u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_iodelay_ctrl/sys_rst_i
+  u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_iodelay_ctrl/rstdiv2_sync_r[11]_i_1/I3 NET=u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_iodelay_ctrl/ref_dll_lock

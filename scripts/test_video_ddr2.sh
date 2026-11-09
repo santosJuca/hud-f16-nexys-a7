@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-OUT="${OUT:-$ROOT/validation/video-ddr2-xpm}"
+case "${1:-}" in
+ "") DEFAULT_OUT="$ROOT/validation/video-ddr2-xpm" ;;
+ --reset-only) DEFAULT_OUT="$ROOT/validation/reset-fechamento" ;;
+ *) echo "Uso: $0 [--reset-only]" >&2; exit 2 ;;
+esac
+OUT="${OUT:-$DEFAULT_OUT}"
 VIVADO_BIN="${VIVADO_BIN:-$HOME/AMD/2026.1/Vivado/bin}"
 test ! -e "$OUT" || { echo "Resultados existentes preservados: $OUT" >&2; exit 1; }
 mkdir -p "$OUT"
@@ -24,6 +29,13 @@ run_case() {
  rg 'P4B_FRAME_PASS|P4B_EXPECTED_ERROR_PASS' "$name.txt" >/dev/null
  echo "XPM_CASE_PASS $name"
 }
+if [[ "${1:-}" == --reset-only ]]; then
+ run_case nominal
+ for n in 1 2 3; do run_case "pulse_$n" RESET_CASE="$n" RESET_PULSE_NS=1; done
+ run_case clock_pause RESET_CASE=3 RESET_PULSE_NS=1 PAUSE_UI_RESET=1
+ run_case reset_return RESET_PHASE=2
+ exit 0
+fi
 run_case short_good
 run_case full_good TB_BYTES=76800
 run_case corruption CORRUPT=1

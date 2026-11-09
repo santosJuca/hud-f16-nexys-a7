@@ -9,6 +9,8 @@ module tb_ddr2_sd_frame_mirror;
     parameter integer STALL = 0;
     parameter integer RESET_CASE = 0;
     parameter integer RESET_PHASE = 0;
+    parameter integer RESET_PULSE_NS = 0;
+    parameter integer PAUSE_UI_RESET = 0;
     parameter integer STREAM = 0;
     parameter integer TB_FRAMES = 1;
     parameter integer HOLD_OUTPUT = 0;
@@ -22,9 +24,9 @@ module tb_ddr2_sd_frame_mirror;
     localparam integer ADDR_BITS = $clog2(TB_BYTES);
 
     wire corrupt_now = CORRUPT || (CORRUPT_ON_SECOND && epoch != 0);
-    reg src_clk = 0, ui_clk = 0;
+    reg src_clk = 0, ui_clk = 0, ui_clock_running = 1;
     always #5 src_clk = ~src_clk;        // 100 MHz
-    always #6.154 ui_clk = ~ui_clk;      // ~81.25 MHz, assincrono
+    always #6.154 if (ui_clock_running) ui_clk = ~ui_clk; // ~81.25 MHz
     reg src_rst = 1, ui_rst = 1, calib = 0;
     reg frame_start = 0, frame_abort = 0, frame_commit = 0, frame_write = 0;
     reg [ADDR_BITS-1:0] frame_address = 0;
@@ -190,12 +192,25 @@ module tb_ddr2_sd_frame_mirror;
         frame_start = 0;
         if (RESET_CASE != 0) begin
             for (j=0; j<TB_BYTES/2; j=j+1) send_byte(j);
+            if (PAUSE_UI_RESET) begin
+                @(negedge ui_clk); ui_clock_running=0;
+            end
             @(negedge src_clk);
             if (RESET_CASE == 1) ui_rst = 1;
             if (RESET_CASE == 2) src_rst = 1;
             if (RESET_CASE == 3) calib = 0;
-            repeat (12) @(negedge src_clk);
+            if (RESET_PULSE_NS != 0) #(RESET_PULSE_NS);
+            else repeat (12) @(negedge src_clk);
+            #0.001;
+            if (!dut.src_local_rst || !dut.ui_local_rst)
+                $fatal(1,"Reset nao afirmou nos dois dominios");
             ui_rst = 0; src_rst = 0; calib = 1;
+            if (PAUSE_UI_RESET) begin
+                repeat (20) @(negedge src_clk);
+                if (!dut.ui_local_rst || src_ready || buffer_pending)
+                    $fatal(1,"Transacao liberada com clock UI parado");
+                ui_clock_running=1;
+            end
             begin : recovery_wait
                 integer retries;
                 for (retries=0; retries<1000; retries=retries+1) begin
