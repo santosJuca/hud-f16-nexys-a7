@@ -170,3 +170,35 @@ O build concluiu às 07:12:20 de 09/11/2026, fuso America/Sao_Paulo. O vetor exe
 A consulta complementar executou `scripts/qualificar_rc.tcl` e `scripts/qualificar_clock_reset.tcl` com esta raiz, depois `scripts/inspecionar_reset_routed.tcl resultado/routed.dcp evidencias/reset-cones-mapeado-20261109.txt`, usando Vivado em batch e logs novos em `validation/fechamento-reset/`. Os cones de reset do novo DCP são textualmente iguais aos da referência. Os cinco FF de origem ficaram em SLICE_X59Y62 e os cinco UI em SLICE_X61Y63, todos ASYNC_REG=1. O código gerado `mig_7series_v4_2_infrastructure.v` também é idêntico ao anterior, SHA-256 `2dbb9bb2a1a4b95407c16b87d9ab421ba1d25c516a6faddff50fa46392035c52`.
 
 A metodologia continua com 134 ocorrências e nenhum waiver. CDC mantém 46 CDC-3, 3 CDC-10, 1 CDC-8 e 176 CDC-15. O pior hold de 16 ps é interno ao domínio pixel, no caminho attitude_pending_reg[146]→attitude_display_reg[146], canto rápido do modelo; é positivo, mas estreito. Sem defeito de RTL demonstrado, não se alterou a atitude nem se iniciou uma busca de seeds apenas para aumentar a margem. Ficam retidos os checkpoints; nenhum `.bit` foi gerado enquanto reset/clocking e a interface externa não têm qualificação suficiente. Os relatórios brutos novos estão em `evidencias/relatorios-fechamento/`, sem tratamento de whitespace, e o log integral em `evidencias/build-fechamento.txt`.
+
+
+## Liberação experimental do bitstream em 09/11/2026
+
+A missão posterior autorizou explicitamente gerar um `.bit` experimental sem esperar a validação física, mantendo a proibição de programar hardware. A análise anterior não identificou contenção de barramento, tensão incompatível ou falha funcional demonstrada nos três cones de reset. Por isso, os avisos qualificados abaixo não impedem este ensaio controlado. Isso revisa o gate conservador da entrega `74b3541`; não declara resolvida a qualificação física nem altera o RTL para remover avisos.
+
+| Item | Decisão para o candidato experimental | Limite preservado |
+|---|---|---|
+| Dois CDC-10 próprios | Reset comum chega a PRE, nunca a payload. Cinco estágios locais, ASYNC_REG, agrupamento em slice, exceções apenas nos PRE e bloqueio XPM busy. Os testes de reset, perda de calibração e parada/retorno UI passaram. Não há falha de dados demonstrada que exija nova topologia. | Pulso físico, metastabilidade, glitches e reset repetido durante busy não foram medidos. Evitar reset repetido antes da recuperação. Não há waiver. |
+| CDC-10/CDC-8 MIG | Cones e código gerado conferidos; cadeia interna de reset do MIG, sem edição. A calibração e os locks condicionam a liberação. | A qualificação estrutural não é prova de calibração física; não se concede dispensa AMD inexistente. |
+| REQP-1709 | CLKOUT0–2→PHASER/controle e CLKOUT3→BUFH→MMCM BUF_IN correspondem ao RTL gerado e às relações de clock UG586 já documentadas. Preservar o IP. | Alerta permanece no DRC e estabilidade real é requisito de teste. Não trocar buffers por preferência. |
+| SPI/microSD | Inicialização e leitura em 400 kHz, divisor 125; SD_RESET E2, SCK B1, MOSI C1, MISO C2, CS D2, CD A1, todos LVCMOS33. SD_DAT0 permanece entrada. Controlador executa leitura CMD17/CRC16; não há alteração do cartão. | Existem IOs sem delay externo. Não há sign-off de setup/hold do cartão, nem autorização técnica para 25 MHz físicos ou 30 FPS. CRC/timeout detectam falha funcional; não substituem medição elétrica. |
+| Pinagem e alimentação | CFGBVS=VCCO, CONFIG_VOLTAGE=3.3; 132 atribuições IO iguais ao build preservado, incluindo DDR2. Oscilador E3=100 MHz. Não houve mudança em sensor/pino/drive/slew. | Exige a placa e conexões conhecidas, sem reconfiguração elétrica. |
+
+A referência primária [manual Nexys A7, seções 5 e 11](https://digilent.com/reference/_media/reference/programmable-logic/nexys-a7/nexys-a7_rm.pdf) confirma oscilador E3, uso SPI do slot, entrega do barramento à FPGA após configuração e SD_RESET ativo baixo para alimentar o slot. As atribuições de SD conferem com [Master XDC Digilent](https://github.com/Digilent/Nexys-A7-100T-OOB/blob/master/src/constraints/Nexys-A7-100T-Master.xdc). O candidato usa a interface nativa da placa, sem adaptador ou nível novo. A inferência de segurança elétrica para o ensaio decorre de direções/níveis compatíveis e da preservação do circuito conhecido; não de uma promessa de desempenho do cartão.
+
+Foi executado um novo teste a 400 kHz do `sd_spi_read_block` real, usando o cabeçalho de 512 bytes da amostra mapeada e modelo SDHC. Verificou CMD17 no LBA 30028160, cada byte/endereço, CRC16 e cada meio período SCK de 1250 ns. PASS em `evidencias/spi-400khz.txt`. O modelo não inclui atraso analógico. Reprodução:
+
+```bash
+mkdir -p validation/spi-400khz
+iverilog -g2012 -s tb_sd_read_400khz -o validation/spi-400khz/test.vvp \
+ tests/tb_sd_read_400khz.sv tests/sd_video_card_model.sv hud/rtl/sd_spi_read_block.sv
+vvp validation/spi-400khz/test.vvp +VIDEO_HEX=tests/sd_header_90.hex
+```
+
+O contrato de fontes/CRC também passou novamente. Os seis cenários de reset e o integrado no LBA real da entrega `74b3541` continuam válidos, pois nenhum RTL/XDC foi alterado. A regressão longa anterior não foi repetida. A proveniência do DCP foi conferida por SHA-256 antes da emissão.
+
+`write_bitstream` foi executado no checkpoint roteado SHA-256 `99edc5c8f61a2b272b53a8a9dad6c6c200a48095d1c210a52e9f38f0e8e3c3e3`. Não houve nova síntese/route nesta etapa, porque o RTL e o perfil mapeado são idênticos ao build já aprovado internamente (+0,335/+0,016 ns). A geração terminou com zero erros, sem reduzir severidades ou acrescentar exceções. Configuração serial x1 e CONFIGRATE=3, somente para opções de configuração; não altera o SPI do microSD. Registro: `evidencias/relatorios-release/config_properties.txt`. O script recusa DCP cujo SHA não corresponda; o guard passou com entrada correta e rejeitou entrada diferente.
+
+O `.bit` tem 3825992 bytes, cabeçalho `7a100tcsg324`, payload com tamanho consistente e sync word AA995566. SHA-256 `12b6781beaa60033be1ced9acc8fac564a28ada25f6019f32575c749e8b33370`. Log completo: `evidencias/bitgen-release.txt`; DRC/route status: `evidencias/relatorios-release/`. Nenhum hardware manager/JTAG foi aberto.
+
+A `.mcs` não foi gerada: o modelo físico exato ainda não é identificável offline. A [página oficial Digilent](https://digilent.com/shop/nexys-a7-amd-artix-7-fpga-trainer-board-recommended-for-ece-curriculum/) informa variantes S25FL127S/S25FL128S; o RDID histórico comum não resolve a revisão. CONFIGRATE e largura x1 registrados no BIT não identificam a Flash. Não selecionar um part de programação por aproximação.

@@ -1,10 +1,10 @@
 {
-  "status": "PERFIL_REAL_IMPLEMENTADO_PROMOCAO_FISICA_PENDENTE",
-  "branch": "sprint/fechamento-tecnico-20261109",
+  "status": "EXPERIMENTAL_BIT_GERADO_NAO_VALIDADO_FISICAMENTE",
+  "branch": "release/hud-f16-ddr2-video-rc",
   "base_commit": "3fc45f2a782f54fff0e22338775fd8697d405700",
   "production_rtl_changed": false,
   "tests_commit": "e199ea6",
-  "consolidated_at": "2026-11-09T07:14:32.238446-03:00",
+  "consolidated_at": "2026-11-09T07:31:02.316882-03:00",
   "historical_results": {
     "root": "/home/santojuca/Downloads/hud_ddr2_noturna_20261108",
     "report": "evidencias/resultado.json",
@@ -25,7 +25,8 @@
       "mig": 3,
       "xdc": 3,
       "board": 4
-    }
+    },
+    "spi_400khz_cmd17_crc16_bytes": 512
   },
   "timing": {
     "wns_ns": 0.335,
@@ -72,7 +73,7 @@
   "video_profile": "evidencias/perfil-cartao-fechamento.json",
   "spi_hz": 400000,
   "physical_fps_measured": false,
-  "bitstream_generated": false,
+  "bitstream_generated": true,
   "jtag_performed": false,
   "flash_modified": false,
   "main_modified": false,
@@ -87,10 +88,31 @@
       "sha256": "9c59c8d019cf64d0c52cb9c47cf4a9f0f70389c835fc3d8462ea1b1e28bbb305"
     }
   },
-  "promotion_blockers": [
+  "video_quality": "Existing conversion preserved; no new full conversion or subjective HUD redesign",
+  "release_base_commit": "74b354144c75274c4ff59dff83c80a68dabe1dd8",
+  "bitstream": {
+    "path": "/home/santojuca/Downloads/hud_ddr2_release_20261109/resultado-release/hud-f16-ddr2-74b3541-experimental.bit",
+    "bytes": 3825992,
+    "sha256": "12b6781beaa60033be1ced9acc8fac564a28ada25f6019f32575c749e8b33370",
+    "header": {
+      "a": "top_reticula;UserID=0XFFFFFFFF;Version=2026.1;SW_CRC=c1fb15f8;SW_HDR_SHA256=142b8e7caa065966093a787c8733386056400fef4c915e310f9df6e596ed046d",
+      "b": "7a100tcsg324",
+      "c": "2026/11/09",
+      "d": "07:26:15"
+    },
+    "payload_bytes": 3825788,
+    "header_valid": true,
+    "sync_word_found": true,
+    "physical_validation": false
+  },
+  "mcs_generated": false,
+  "mcs_blocker": "Modelo fisico exato da Flash S25FL127S/S25FL128S nao confirmado offline",
+  "experimental_generation_authorized": true,
+  "physical_validation": false,
+  "physical_pending": [
     "External SPI IO timing not fully constrained",
     "Reset source pulse/glitch and repeated-reset behavior not electrically qualified",
     "MIG/REQP-1709 and calibration lack physical evidence"
   ],
-  "video_quality": "Existing conversion preserved; no new full conversion or subjective HUD redesign"
+  "experimental_classification": "Avisos qualificados estruturalmente para ensaio JTAG controlado a 400kHz; nao constituem sign-off eletrico/performance nem aprovacao QSPI"
 }
