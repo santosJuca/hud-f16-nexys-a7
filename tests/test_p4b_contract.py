@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+"""Contrato estatico + referencia de empacotamento/CRC. Nao executa HDL."""
+from pathlib import Path
+import hashlib
+import zlib
+
+ROOT = Path(__file__).resolve().parents[1]
+rtl = ROOT / "hud/rtl"
+read = lambda name: (rtl / name).read_text()
+top = read("top_reticula.sv")
+wrapper = read("ddr2_ui_smoke_top.v")
+mirror = read("ddr2_sd_frame_mirror.sv")
+fifo = read("ddr2_p4b_async_fifo.sv")
+assert "parameter bit ENABLE_DDR2_SD_MIRROR = 1'b0" in top
+assert ".src_frame_write(p4b_frame_write)" in top
+assert "assign p4b_frame_write = frame_write;" in top
+assert "sd_sector_buffer #(.BYTES(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT))" in top
+assert ".buffer_ready(frame_ready)" in top
+assert ".rd_clk(pixel_clk)" in top
+assert "SD_VIDEO_LBA == 0 || SD_VIDEO_SECTORS <= 1" in top
+assert "ddr2_sd_frame_mirror" in wrapper
+assert "generate if (ENABLE_SD_MIRROR != 0)" in wrapper
+assert "FRAME_TEST_WORDS > 0" in wrapper
+assert "ddr2_ui_smoke #(.WORDS(16))" in wrapper
+assert "app_wdf_wren = write_accept" in mirror
+assert "app_en = write_accept || read_accept" in mirror
+assert "app_addr = {11'd0, ui_index, 3'd0}" in mirror
+assert "event_kind == EV_COMMIT" in mirror
+assert "event_kind == EV_ABORT" in mirror
+assert "~crc_next == expected_crc" in mirror
+assert "ASYNC_REG" in fifo and "rgray_sync" in fifo and "wgray_sync" in fifo
+# Os fontes criticos nao devem ter mudado desde P3D/P4A.
+expected = {
+    "atitude_vetorial.sv": "a71500526bf475e804835a7ed112b2a7f1c2543c29af66e5999baf50c029e147",
+    "sd_video_loader.sv": "0e263464a4bdc57d2b84e35ab9804a64f34b00c97d17ab3c8b44e16b0682b11a",
+    "sd_sector_buffer.sv": "3f637d6b82044af68e28d5ee9dfa9997d1ac4d65a25d76fdbdff391cef5b32e3",
+    "ddr2_ui_frame_test.v": "9e3cf12bc58e95f497d14d5902103ec31f38052f58f0b9649e40a3b2a300e7af",
+}
+for filename, sha in expected.items():
+    actual = hashlib.sha256((rtl / filename).read_bytes()).hexdigest()
+    assert actual == sha, f"Fonte fora da base homologada: {filename}: {actual}"
+
+for size in (256, 76800):
+    raw = bytes((((i * 37) ^ (i >> 5) ^ (i >> 11) ^ 0xA5) & 0xFF) for i in range(size))
+    beats = [raw[i:i + 16] for i in range(0, size, 16)]
+    assert all(len(beat) == 16 for beat in beats)
+    assert len(beats) == size // 16
+    reconstructed = b"".join(beats)
+    assert reconstructed == raw
+    crc = zlib.crc32(raw)
+    assert crc == zlib.crc32(reconstructed)
+    corrupt = bytearray(reconstructed)
+    corrupt[71] ^= 1
+    assert zlib.crc32(corrupt) != crc
+    print(f"P4B_PYTHON_MODEL_PASS bytes={size} beats={len(beats)} crc32={crc:08x}")
+print("P4B_STATIC_CONTRACT_PASS")

@@ -1,0 +1,7 @@
+resultado*/
+validation/
+__pycache__/
+*.pyc
+*.jou
+*.log
+.Xil/

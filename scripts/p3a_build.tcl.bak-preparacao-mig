@@ -1,0 +1,97 @@
+# P3A: compile/route only, no bitstream, no JTAG.
+if {$argc < 1} { error "USO: p3a_build.tcl <project-root> ?GENERIC=VALOR ...?" }
+set root [file normalize [lindex $argv 0]]
+set extra [lrange $argv 1 end]
+set out [file join $root resultado]
+if {[file exists [file join $out projeto]]} {
+    error "Diretorio de build ja existe, nao sobrescrever: $out/projeto"
+}
+file mkdir $out
+set_param general.maxThreads 4
+set boardrepo [file join $root digilent-vivado-boards new board_files]
+
+if {![file isdirectory $boardrepo]} {
+    error "Repositorio de placas nao encontrado: $boardrepo"
+}
+
+set_param board.repoPaths [list $boardrepo]
+
+create_project hud_ddr2_p3a [file join $out projeto] -part xc7a100tcsg324-1
+
+set required_board {digilentinc.com:nexys-a7-100t:part0:1.3}
+set available [get_board_parts -quiet $required_board]
+
+if {[llength $available] != 1} {
+    error "Board part Nexys A7 100T v1.3 nao encontrado"
+}
+
+set_property BOARD_PART $required_board [current_project]
+
+set actual_part [get_property PART [current_project]]
+
+if {$actual_part ne "xc7a100tcsg324-1"} {
+    error "FPGA inesperada apos selecao da placa: $actual_part"
+}
+
+puts "P3A_BOARD_CONFIRMED: $required_board ($actual_part)"
+
+set_property target_language Verilog [current_project]
+set rtl [concat [lsort [glob -nocomplain [file join $root hud rtl *.sv]]] \
+               [lsort [glob -nocomplain [file join $root hud rtl *.v]]]]
+if {[llength $rtl] < 60} { error "Faltam fontes HUD/DDR2: [llength $rtl]" }
+read_verilog -sv {*}$rtl
+set ip [file join $root mig ddr2_p0_mig_nexys.xci]
+set prj [file join $root mig mig_a.prj]
+if {![file isfile $ip] || ![file isfile $prj]} { error "MIG ou mig_a.prj ausente" }
+read_ip $ip
+generate_target all [get_ips ddr2_p0_mig_nexys]
+synth_ip [get_ips ddr2_p0_mig_nexys]
+foreach name {attitude_capture.xdc sd_video.xdc nexys_a7_reticula.xdc} {
+    set f [file join $root hud constraints $name]
+    if {![file isfile $f]} {error "XDC ausente: $f"}
+    read_xdc $f
+}
+set xdc [get_files [file join $root hud constraints nexys_a7_reticula.xdc]]
+set_property PROCESSING_ORDER LATE $xdc
+set_property top top_reticula [get_filesets sources_1]
+update_compile_order -fileset sources_1
+set args [list -top top_reticula -part xc7a100tcsg324-1 -flatten_hierarchy rebuilt]
+foreach generic $extra {
+    if {![regexp {^[A-Za-z_][A-Za-z0-9_]*=.+$} $generic]} {
+        error "Generico invalido: $generic"
+    }
+    lappend args -generic $generic
+}
+puts "P3A: synth_design - sem escrever bitstream"
+synth_design {*}$args
+report_utilization -file [file join $out synthesis_utilization.rpt]
+write_checkpoint [file join $out synthesized.dcp]
+opt_design
+place_design
+phys_opt_design
+route_design
+write_checkpoint [file join $out routed.dcp]
+report_utilization -file [file join $out utilization_routed.rpt]
+report_timing_summary -delay_type min_max -report_unconstrained \
+    -file [file join $out timing_routed.rpt]
+check_timing -verbose -file [file join $out check_timing.rpt]
+report_drc -file [file join $out drc_routed.rpt]
+report_cdc -file [file join $out cdc_routed.rpt]
+report_bus_skew -file [file join $out bus_skew_routed.rpt]
+set setup [get_timing_paths -delay_type max -max_paths 1]
+set hold [get_timing_paths -delay_type min -max_paths 1]
+if {[llength $setup] == 0 || [llength $hold] == 0} {
+    error "STA sem caminhos suficientes"
+}
+set wns [get_property SLACK [lindex $setup 0]]
+set whs [get_property SLACK [lindex $hold 0]]
+puts "P3A: WNS=$wns WHS=$whs"
+if {$wns < 0 || $whs < 0} {error "Timing negativo; candidato reprovado"}
+set f [open [file join $out check_timing.rpt] r]
+set txt [read $f]
+close $f
+if {![regexp {checking no_clock \(0\)} $txt] ||
+    ![regexp {checking unconstrained_internal_endpoints \(0\)} $txt]} {
+    error "Caminhos nao temporizados; candidato reprovado"
+}
+puts "P3A_BUILD_ROUTED; candidato sem bitstream nem JTAG"
