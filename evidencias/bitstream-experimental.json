@@ -1,0 +1,15 @@
+{
+  "path": "/home/santojuca/Downloads/hud_ddr2_release_20261109/resultado-release/hud-f16-ddr2-74b3541-experimental.bit",
+  "bytes": 3825992,
+  "sha256": "12b6781beaa60033be1ced9acc8fac564a28ada25f6019f32575c749e8b33370",
+  "header": {
+    "a": "top_reticula;UserID=0XFFFFFFFF;Version=2026.1;SW_CRC=c1fb15f8;SW_HDR_SHA256=142b8e7caa065966093a787c8733386056400fef4c915e310f9df6e596ed046d",
+    "b": "7a100tcsg324",
+    "c": "2026/11/09",
+    "d": "07:26:15"
+  },
+  "payload_bytes": 3825788,
+  "header_valid": true,
+  "sync_word_found": true,
+  "physical_validation": false
+}

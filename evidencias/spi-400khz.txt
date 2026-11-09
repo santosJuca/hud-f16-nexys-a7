@@ -1,0 +1,2 @@
+SD_400KHZ_CMD17_CRC16_PASS lba=30028160 bytes=512 half_period_ns=1250
+tests/tb_sd_read_400khz.sv:38: $finish called at 10480120000 (1ps)
