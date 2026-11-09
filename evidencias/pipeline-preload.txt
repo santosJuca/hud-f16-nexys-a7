@@ -1,0 +1,5 @@
+DISPLAY_CADENCE interval_ms=50.400000 source_frame=2
+DISPLAY_CADENCE interval_ms=50.400000 source_frame=3
+DISPLAY_CADENCE interval_ms=50.400000 source_frame=4
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=6 frames=4 updates=4 errors=0 pixel_checks=3072000 load_cycles=5030851 late_frames=4
+DDR2_TRAFFIC writes=21828 reads=19200 good_readbacks=4

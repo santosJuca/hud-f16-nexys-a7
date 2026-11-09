@@ -1,0 +1,28 @@
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=2
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=3
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=4
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=0 frames=4 updates=4 errors=0 pixel_checks=2150400 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=22458 reads=19200 good_readbacks=4 preloads=0
+DISPLAY_CADENCE interval_ms=67.200000 source_frame=2
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=3
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=4
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=1 frames=4 updates=4 errors=1 pixel_checks=2764800 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=22541 reads=19200 good_readbacks=4 preloads=1
+DISPLAY_CADENCE interval_ms=67.200000 source_frame=2
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=3
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=4
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=2 frames=4 updates=4 errors=1 pixel_checks=2764800 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=22509 reads=19200 good_readbacks=4 preloads=1
+PASS invalid header: fallback, nenhum quadro publicado
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=2
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=4 frames=2 updates=2 errors=3 pixel_checks=1843200 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=9696 reads=9600 good_readbacks=2 preloads=0
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=2
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=3
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=5 frames=3 updates=3 errors=0 pixel_checks=1228800 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=14400 reads=14400 good_readbacks=3 preloads=0
+DISPLAY_CADENCE interval_ms=50.400000 source_frame=2
+DISPLAY_CADENCE interval_ms=50.400000 source_frame=3
+DISPLAY_CADENCE interval_ms=50.400000 source_frame=4
+PASS sd_ddr2_vga WIDTH=320 FPS=30 scenario=6 frames=4 updates=4 errors=0 pixel_checks=3072000 load_cycles=5030851 late_frames=4
+DDR2_TRAFFIC writes=21828 reads=19200 good_readbacks=4 preloads=4

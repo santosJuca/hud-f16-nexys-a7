@@ -1550,7 +1550,8 @@ wire [9:0] velocidade_hud_entrada =
             .read_busy(sd_read_busy && video_owner),.read_done(sd_read_done && video_owner),
             .read_error(sd_read_error && video_owner),.data_valid(sd_data_valid && video_owner),
             .block_valid(sd_block_valid && video_owner),.byte_index(sd_byte_index),.data_byte(sd_data_byte),
-            .buffer_ready(frame_ready && (!ENABLE_DDR2_VIDEO || ddr_src_ready)),.frame_start(frame_start),.frame_abort(frame_abort),
+            // DDR2 pode receber o proximo quadro enquanto a BRAM aguarda o blanking.
+            .buffer_ready(ENABLE_DDR2_VIDEO ? ddr_src_ready : frame_ready),.frame_start(frame_start),.frame_abort(frame_abort),
             .frame_commit(frame_commit),.frame_write(frame_write),.frame_address(frame_address),
             .header_valid(),.failed(video_failed),.frames_loaded(video_frames),.errors(video_errors),
             .late_frames(video_late),.transfer_cycles(video_cycles),.state(video_state));
