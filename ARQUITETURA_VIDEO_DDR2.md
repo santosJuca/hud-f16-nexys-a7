@@ -23,3 +23,10 @@ Os status `ui_ready`, conclusão e ocupação usam sincronizadores e handshakes.
 `ENABLE_DDR2_VIDEO=0` conserva o caminho SD → BRAM → compositor. Nenhum algoritmo de atitude, rotação do magnetômetro, fonte de sensores, pinagem ou desenho do HUD foi alterado na sprint. O perfil aprovado de calibração é aplicado pelo script de build e registrado em `evidencias/perfil-fisico-preservado.json`.
 
 A seleção de recuperação exige outro artefato identificado e autorização para programar. O firmware já funcional na Flash não foi substituído.
+
+
+## Perfil mapeado para a próxima validação
+
+O fechamento mantém exatamente esse RTL e os genéricos de calibração. A alteração de configuração está em `evidencias/perfil-cartao-fechamento.json`: LBA absoluto 30028160, 13501 setores, 90 quadros RGB332 320×240/30 nominal. O mapa autenticado prova uma extensão FAT contígua de 13504 setores; o loader deve limitar-se aos 13501 setores do arquivo. O build noturno sintético apontava para outro tamanho e não aceitaria esse cabeçalho.
+
+Leitura SPI a 400 kHz preservada. A carga mínima ideal é 1,569 s por quadro; o compositor continua varrendo VGA a ~59,52 Hz e repetindo o último banco entre atualizações do fundo. Os contadores de atraso não indicam por si só corrupção. A meta de 30 FPS exige outra frequência qualificada e vazão física comprovada.

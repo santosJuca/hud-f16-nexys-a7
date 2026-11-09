@@ -1,105 +1,96 @@
 {
-  "status": "AVANCO_FUNCIONAL_OFFLINE_COM_MAPA_E_HARDWARE_PENDENTES",
-  "branch": "sprint/noturna-ddr2-20261108",
-  "base_tag": "rc/hud-ddr2-offline-20261108",
-  "base_commit": "93ee5a61a5e53dcf91c5845c0b14c5f446265284",
-  "rtl_commit": "415149935a67f0825a995a6aa793366c03683701",
-  "tests_commit": "fbea5096ae0a95844fa10e43638fac74b2130883",
-  "consolidated_at": "2026-11-09T06:39:04.816202-03:00",
-  "tests_finished_local": "2026-11-09T01:06:54-03:00",
-  "consolidation_after_deadline_user_continue": true,
+  "status": "PERFIL_REAL_IMPLEMENTADO_PROMOCAO_FISICA_PENDENTE",
+  "branch": "sprint/fechamento-tecnico-20261109",
+  "base_commit": "3fc45f2a782f54fff0e22338775fd8697d405700",
+  "production_rtl_changed": false,
+  "tests_commit": "e199ea6",
+  "consolidated_at": "2026-11-09T07:14:32.238446-03:00",
+  "historical_results": {
+    "root": "/home/santojuca/Downloads/hud_ddr2_noturna_20261108",
+    "report": "evidencias/resultado.json",
+    "full_regression_repeated": false,
+    "ddr2_cases": 17,
+    "integrated_rgb_checks": 18432000,
+    "mode_combinations": 12
+  },
+  "new_tests": {
+    "reset_scenarios": 6,
+    "reset_bytes_per_frame": 256,
+    "real_lba_pipeline_cases": 1,
+    "real_lba_pipeline_rgb_checks": 2150400,
+    "functional_failures": 0,
+    "static_contract_pass": true,
+    "frozen_sources_matched": {
+      "rtl": 76,
+      "mig": 3,
+      "xdc": 3,
+      "board": 4
+    }
+  },
   "timing": {
-    "wns_ns": 0.23,
-    "whs_ns": 0.011,
+    "wns_ns": 0.335,
+    "whs_ns": 0.016,
+    "minimum_pulse_width_slack_ns": 0.206,
+    "tns_ns": 0,
+    "ths_ns": 0,
     "bus_skew_groups": 8,
-    "minimum_bus_skew_slack_ns": 6.543,
+    "minimum_bus_skew_slack_ns": 6.863,
     "drc_errors": 0,
-    "external_spi_timing_qualified": false
+    "no_clock": 0,
+    "unconstrained_internal_endpoints": 0,
+    "no_input_delay": 29,
+    "no_output_delay": 40,
+    "external_spi_timing_qualified": false,
+    "hold_worst_path": "attitude_pending_reg[146]/C -> attitude_display_reg[146]/D; pixel_clk; fast corner"
   },
   "cdc": {
-    "CDC-1": 0,
-    "CDC-13": 0,
-    "CDC-6": 0,
     "CDC-3": 46,
     "CDC-8": 1,
     "CDC-10": 3,
     "CDC-15": 176,
-    "fully_clean": false,
     "waivers": 0,
-    "qualification": "Reset assincrono intencional e payloads protegidos; ressalvas geradas MIG e clocking preservadas"
+    "fully_clean": false,
+    "own_reset_cones_inspected": 2,
+    "mig_reset_cones_inspected": 1,
+    "REQP-1709": 1,
+    "methodology_occurrences": 134
   },
-  "tests": {
-    "xpm_frame_scenarios": 17,
-    "fifo_words_compared": 3072,
-    "converter_python_cases": 5,
-    "fat32_map_python_cases": 5,
-    "xadc_samples": 20,
-    "xadc_max_interval_us": 113.578224,
-    "pipeline_scenarios": 7,
-    "pipeline_rgb_checks": 13824000,
-    "full_top_combinations": 12,
-    "full_top_rgb_checks": 4608000,
-    "hud_offset_background_preserved": true,
-    "final_functional_failures": 0
-  },
-  "performance_model": {
-    "physical_fps_measured": false,
-    "spi_25mhz_load_ms": 25.15651,
-    "nominal_display_interval_ms": 33.6,
-    "nominal_display_fps": 29.76190476190476,
-    "spi_12_5mhz_interval_before_ms": 67.2,
-    "spi_12_5mhz_interval_after_ms": 50.4,
-    "note": "Modelo UI MIG e cartao sem esperas adicionais; sem PHY DDR2"
-  },
-  "video": {
-    "width": 320,
-    "height": 240,
-    "fps_file_nominal": 30,
-    "frame_count": 17331,
-    "chosen_conversion": "area + rgb8 nativo, proporcao preservada com barras",
-    "full_file_reconverted_this_sprint": false,
-    "full_file_sha256_historical": "fb5dfdb6bae21b7285d3053bd4725d8f86a06ef0d4a49b311a364075600b3643"
-  },
-  "build": {
-    "sd_lba": 1,
-    "card_mapping_kind": "synthetic",
-    "card_mapping_verified": false,
-    "spi_read_mhz": 0.4,
-    "sensor_profile": "evidencias/perfil-fisico-preservado.json",
-    "ddr2_work_frames": 1,
-    "bram_display_banks": 2
-  },
-  "hardware_actions": {
-    "jtag_programmed": false,
-    "flash_written": false,
-    "sd_written": false,
-    "board_electrical_changes": false,
-    "new_bitstream_generated": false,
-    "new_mcs_generated": false,
-    "physical_approval": false
-  },
-  "publication": {
-    "night_push": false,
-    "night_merge": false,
-    "atlas_published_before_sprint_commit": "14d1bf00d26a621e5d1213a41ff8071a9026a91e",
-    "main_changed_in_sprint": false
-  },
-  "blockers": [
-    "LBA e fragmentacao atuais do microSD ainda nao lidos: falta autenticacao administrativa; arquivo atual de 90 quadros ja foi conferido em montagem ro",
-    "SPI externo e REQP-1709/infraestrutura MIG exigem qualificacao antes de promocao",
-    "DDR2, sensores, VGA, resets e FPS do candidato nao foram validados fisicamente"
-  ],
-  "card_update": {
-    "reader_serial": "816820130806",
-    "filesystem_uuid": "3562-6631",
-    "filesystem": "FAT32",
-    "mounted_read_only": true,
-    "file_verified": true,
-    "file_frames": 90,
+  "card": {
+    "map": "evidencias/mapa-cartao-20261109.json",
+    "map_sha256": "066823aa6b90d362ae600991e955ef46aa1a9c9ad522c931eb2ae01ab097349d",
+    "raw_mapping_verified": true,
+    "contiguous": true,
+    "partition_start_lba": 8192,
+    "file_start_absolute_lba": 30028160,
+    "file_sectors": 13501,
+    "allocation_sectors": 13504,
+    "frame_count": 90,
     "file_sha256": "24f17b8a9bb7ec6b52aeb55a1301f065aadc05df1c03fa34b673222a4d8bdea2",
-    "frame_hashes_checked": 90,
-    "crc16_sector_checks": 13500,
-    "raw_mapping_verified": false,
-    "blocker": "Autenticacao administrativa para setores brutos; comando enviado ao usuario"
-  }
+    "root_read_executed_by": "user",
+    "physical_device_writes": false
+  },
+  "video_profile": "evidencias/perfil-cartao-fechamento.json",
+  "spi_hz": 400000,
+  "physical_fps_measured": false,
+  "bitstream_generated": false,
+  "jtag_performed": false,
+  "flash_modified": false,
+  "main_modified": false,
+  "push_performed": false,
+  "candidate_checkpoints": {
+    "routed.dcp": {
+      "path": "/home/santojuca/Downloads/hud_ddr2_fechamento_20261109/resultado/routed.dcp",
+      "sha256": "99edc5c8f61a2b272b53a8a9dad6c6c200a48095d1c210a52e9f38f0e8e3c3e3"
+    },
+    "synthesized.dcp": {
+      "path": "/home/santojuca/Downloads/hud_ddr2_fechamento_20261109/resultado/synthesized.dcp",
+      "sha256": "9c59c8d019cf64d0c52cb9c47cf4a9f0f70389c835fc3d8462ea1b1e28bbb305"
+    }
+  },
+  "promotion_blockers": [
+    "External SPI IO timing not fully constrained",
+    "Reset source pulse/glitch and repeated-reset behavior not electrically qualified",
+    "MIG/REQP-1709 and calibration lack physical evidence"
+  ],
+  "video_quality": "Existing conversion preserved; no new full conversion or subjective HUD redesign"
 }

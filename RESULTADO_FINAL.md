@@ -1,52 +1,48 @@
-# Resultado da sprint noturna HUD F-16
+# Resultado do fechamento técnico HUD F-16
 
-## Estado da entrega
+## CONFIRMADO
 
-**Candidato offline com avanço funcional demonstrado; programação física bloqueada pelos itens identificados abaixo.** A FPGA, a Flash, o microSD e a main não foram modificados durante a sprint. Nenhum novo `.bit`/`.mcs` foi gerado ou liberado para programação.
+Área isolada: `/home/santojuca/Downloads/hud_ddr2_fechamento_20261109`, branch `sprint/fechamento-tecnico-20261109`, derivada de `3fc45f2a782f54fff0e22338775fd8697d405700`. A referência noturna permanece preservada. A FPGA, a Flash, o cartão e a main não foram modificados; não houve JTAG ou publicação.
 
-- Diretório: `/home/santojuca/Downloads/hud_ddr2_noturna_20261108`.
-- Branch: `sprint/noturna-ddr2-20261108`.
-- Referência inicial preservada: tag `rc/hud-ddr2-offline-20261108`, commit `93ee5a61a5e53dcf91c5845c0b14c5f446265284`, no diretório original `/home/santojuca/Downloads/hud_ddr2_video_integracao`.
-- Mudança funcional implementada no commit `4309c53`, com pré-carga adicionada posteriormente e seguida por commits locais de robustez, testes e documentação. O HEAD final é informado na entrega e pode ser conferido com `git rev-parse HEAD`; não há remotos configurados nesta cópia.
+O mapa físico foi concluído pelo usuário com o mapeador O_RDONLY. A partição começa em LBA 8192; `HUDVIDEO.BIN` começa no **LBA absoluto 30028160**, com **13501 setores de conteúdo**, uma extensão contígua de 13504 setores e hash integral idêntico à amostra local. São 90 quadros RGB332 de 320×240/30 nominal. A montagem continua ro. Relatório exato: `evidencias/mapa-cartao-20261109.json`.
 
-## Alterações implementadas e verificadas
+Foram executados seis cenários focados com XPM real: nominal, pulsos lógicos de 1 ns nas três fontes de reset, perda de calibração com clock UI parado/retornado e reset durante retorno à BRAM. Todos passaram com recuperação, CRC e comparação dos bytes da imagem. O teste integrado no LBA alto passou com quatro publicações, loop ao quadro zero, zero erros e **2.150.400 comparações RGB**. Usa fixture sintética de três quadros, SPI de modelo 25 MHz e modelo UI MIG, sem PHY. Não é reprodução física dos 90 quadros. O contrato estático também passou; os 86 arquivos congelados de RTL/MIG/XDC/placa conferiram por hash.
 
-As duas FIFOs próprias foram substituídas por XPM AMD, mantendo FWFT e as portas existentes. Reset coordenado com liberação por cinco estágios locais, bloqueio por busy e constraints oficiais de ponteiros/skew. A saída DDR2 continua entregando apenas quadros completos e íntegros à BRAM de exibição. A seleção do loader DDR2 agora permite pré-carregar o próximo quadro enquanto a BRAM aguarda publicação. No cenário SPI lento, o intervalo caiu de 67,2 para 50,4 ms, mantendo integridade. O caminho BRAM anterior permanece selecionável. Sensores, algoritmo de atitude, correção magnética, pinagem e desenho do HUD foram preservados. O build agora aplica os parâmetros físicos de calibração guardados na referência anterior.
+A nova síntese e implementação Vivado 2026.1 aplicaram o perfil real do cartão e calibração preservada: **WNS +0,335 ns, WHS +0,016 ns**, TNS/THS zero, pulse-width mínimo +0,206 ns; **oito grupos de skew aprovados**, menor folga +6,863 ns; **zero erros DRC**. Clocks ausentes e endpoints internos não temporizados: zero. Utilização: 20656 LUTs, 15391 registradores, 64 tiles BRAM, 62 DSP e 131 IOB. Genéricos conferidos no projeto Vivado, não apenas no comando de entrada.
 
-O build Vivado 2026.1 desta sprint terminou com **WNS +0,230 ns, WHS +0,011 ns**, oito grupos de bus skew aprovados (menor folga +6,543 ns), zero erros DRC e gate interno de clocks/endpoints aprovado. Os WNS +0,539 / WHS +0,049 ns da versão inicial são históricos.
+Os resultados anteriores de 17 cenários DDR2, 18.432.000 comparações RGB e 12 combinações de modos são históricos confirmados nos arquivos da referência. Não foram repetidos integralmente. As mudanças desta sprint estão nos testes, perfil e documentação; **não houve alteração do RTL de produção, sensores, atitude, orientação magnética ou constraints**. O caminho BRAM permanece disponível.
 
-O novo CDC não apresenta os antigos 243 CDC-1, 144 CDC-13 ou CDC-6. Conserva **3 CDC-10 de reset**, **1 CDC-8 interno MIG** e **176 CDC-15 de payloads protegidos**. Não foram aplicados waivers. A classificação, endpoints, propriedades reais dos sincronizadores e ressalvas estão em `VALIDACAO_OFFLINE.md`. O clocking gerado mantém REQP-1709 e exige revisão/ensaio físico; não foi modificado internamente para suprimir avisos.
+## CORRIGIDO
 
-Passaram 17 cenários XPM do caminho DDR2, incluindo quadro de 76.800 bytes, corrupção, saturação, backpressure, reset em escrita/releitura/retorno e recuperação. O teste direto comparou 3.072 palavras atravessando full/empty, wraparound e reset. Cinco testes do conversor, cinco do mapa FAT32 e o teste de cadência do XADC também passaram. O overflow foi observado explicitamente como FIFO cheia e abort pendente.
+O build anterior usava LBA=1 sintético e 2599651 setores do vídeo completo. Esse perfil rejeitaria o cabeçalho físico de 90 quadros pelo teste de tamanho/frame_count do loader. A implementação nova usa **LBA=30028160 e 13501 setores**, sem incluir os três setores extras da alocação FAT. Parâmetros e comando reproduzível: `evidencias/perfil-cartao-fechamento.json`.
 
-O pipeline SPI/CMD17/CRC16 → XPM → modelo UI MIG → BRAM → VGA passou inicialmente nos três cenários nominal, CRC recuperado e vídeo desligado/religado, com **6.144.000 comparações de pixels**. A medição nominal adicional obteve carga de 25,15651 ms e publicação a cada 33,600 ms (~29,76 FPS) no modelo a SPI 25 MHz, sem esperas extras de cartão. Não é medição física.
+A lacuna de cobertura de pulso curto e parada do clock UI foi preenchida. Os três CDC-10 foram rastreados no circuito roteado, com todas as origens, LUTs, clocks e PRE identificados. Dois são o reset próprio comum, liberado por cinco estágios locais; o terceiro é a cadeia de 12 estágios gerada pelo MIG. Não foi encontrado defeito funcional que justifique mudar esses cones. A infraestrutura de clock/reset gerada também confere por hash com a referência.
 
-A regressão final dos sete cenários integrados passou com **13.824.000 comparações RGB**: nominal, CRC recuperado, timeout recuperado, cabeçalho inválido, tentativas esgotadas com última imagem preservada, vídeo desligado/religado e leitura lenta com pré-carga observada. O commit RTL qualificado é `415149935a67f0825a995a6aa793366c03683701`. O cenário lento ficou em 50,400 ms por publicação (~19,84 FPS), contra 67,200 ms antes da mudança, sem aumentar o clock SPI.
+## NÃO VALIDADO
 
-O top completo também passou: **12 combinações** de estilo/declutter/Solo/Voo/Pouso, **4.608.000 pixels**, retorno do vídeo ao HUD e diagnóstico/ícone isolados. Com os sete cenários anteriores, são **18.432.000 comparações RGB** nesses dois ensaios finais. O teste específico do ajuste vertical passou em passo, commit na fronteira, saturação, clipping e preservação do vídeo de fundo. Esse teste usa fundo constante no compositor; não é ensaio físico.
+Continuam **3 CDC-10 críticos, 1 CDC-8 interno MIG e 176 CDC-15 de payloads protegidos**, sem waivers. O detalhamento e a comparação com documentação AMD estão em `VALIDACAO_OFFLINE.md`. A liberação sincronizada e os testes digitais não provam imunidade física a glitches, largura mínima de PRE, metastabilidade ou resets repetidos durante busy. O REQP-1709 corresponde ao caminho gerado PLL→BUFH→MMCM/BUF_IN em paralelo às referências PHASER; foi explicado, não ocultado ou declarado dispensado pela AMD. O relatório de metodologia mantém 134 ocorrências.
 
-As execuções de simulação terminaram às 01:06 de 09/11/2026 (America/Sao_Paulo). A consolidação documental foi retomada após as 06:00, mediante a mensagem “Continue”, sem iniciar outros builds ou simulações. Capturas reais da simulação: evidencias/previas/hud-comparativo.png; sensores sem resposta e vídeo de amostra 160×120/10 com temporizador acelerado apenas no ensaio. Não há prova de sensores físicos nessas capturas.
+A margem de hold é positiva, mas estreita: 16 ps no caminho `attitude_pending_reg[146]`→`attitude_display_reg[146]`, domínio pixel, canto rápido do modelo. Não foi modificado o algoritmo de atitude para aumentar esse número. Permanecem 29 entradas e 40 saídas sem delay externo; SD_DAT0 exige orçamento real da interface. Não se inventaram constraints para aprovar a placa.
 
-## Vídeo e acabamento
+**Não foi gerado `.bit` novo**, pois essas ressalvas ainda impedem promoção. A implementação mapeada está preservada como DCP. Calibração/recalibração física, DDR2 contínua, sensores, SPI e taxa efetiva permanecem sem ensaio desta candidata.
 
-O vídeo completo anterior foi preservado: RGB332, 320×240, 30 FPS nominais de arquivo, 17.331 quadros, 1.331.021.312 bytes. Caminho: `/home/santojuca/Downloads/hud_ddr2_video_integracao/validation/video-completo-320-30/HUDVIDEO.BIN`; SHA-256 histórico `fb5dfdb6bae21b7285d3053bd4725d8f86a06ef0d4a49b311a364075600b3643`. A validação integral anterior de 2.599.650 CRC16 não foi repetida nesta sprint.
+SPI de leitura permanece **400 kHz**: capacidade bruta 50 kB/s, carga mínima ideal 1,569 s/quadro, loop de 90 quadros >=141,21 s, antes de esperas. O arquivo de 30 FPS não implica essa taxa na tela. O perfil de 25 MHz foi apenas modelado; 30 FPS exigem 2.304.000 bytes/s úteis, e 60 FPS excedem a capacidade bruta de 25 MHz. Não foi alterada a frequência física.
 
-A comparação nova entre quatro perfis e quatro cenas, com prévias inspecionadas, favoreceu manter area + RGB8 nativo com dither. Preserva aspecto 16:9 em 320×180 mais barras. Bicubic/lanczos não mostraram ganho objetivo suficiente para uma nova conversão completa. Foram identificados 51 pares idênticos no encerramento; amostras da origem confirmam o logo final estático. Não foram removidos quadros arbitrariamente. Prévia comparativa versionada: `evidencias/previas/comparativo-video.png`.
+A conversão completa de 17331 quadros, a origem e as prévias anteriores foram preservadas. Dimensões, cabeçalhos e tamanhos dos dois arquivos locais foram conferidos; a validação integral antiga do vídeo completo não foi repetida. Não houve nova conversão, filtro subjetivo ou redesenho do HUD. As capturas e testes anteriores de modos/ajuste permanecem a evidência offline, sem novo monitor VGA físico.
 
-O HUD não recebeu redesenho subjetivo. As capturas offline e testes do compositor devem ser interpretados com sensores simulados sem resposta, sem prova de legibilidade no monitor VGA físico.
+## ARTEFATOS
 
-## Limites e próxima ação
+O estado estruturado está em `evidencias/resultado.json`; hashes em `evidencias/manifesto-fechamento.json`, que exclui a si próprio. Relatórios novos e brutos: `evidencias/relatorios-fechamento/`; logs novos: `evidencias/reset-fechamento-20261109.txt`, `pipeline-lba-real.txt` e `build-fechamento.txt`. As referências noturnas continuam em `evidencias/relatorios-noturna/` e na área original. Commits locais: `695c4e0` (reset/clock) e `e199ea6` (LBA e perfil); o commit de consolidação pode ser obtido com `git rev-parse HEAD`.
 
-Após a sprint, o usuário disponibilizou o cartão no PC. O leitor foi identificado como /dev/sdc, USB serial 816820130806, partição FAT32 UUID 3562-6631. A montagem automática inicial estava em escrita; foi desmontada normalmente e remontada somente leitura antes de acessar o arquivo. O arquivo atual é a **amostra 320×240/30 de 90 quadros**, 6.912.512 bytes, SHA-256 `24f17b8a9bb7ec6b52aeb55a1301f065aadc05df1c03fa34b673222a4d8bdea2`, idêntica à referência local. Os 90 hashes de quadro e 13.500 CRC16 da cópia extraída passaram. Não é o vídeo completo de 17.331 quadros.
+| Artefato | SHA-256 |
+|---|---|
+| `resultado/routed.dcp` | `99edc5c8f61a2b272b53a8a9dad6c6c200a48095d1c210a52e9f38f0e8e3c3e3` |
+| `resultado/synthesized.dcp` | `9c59c8d019cf64d0c52cb9c47cf4a9f0f70389c835fc3d8462ea1b1e28bbb305` |
+| Mapa do cartão | `066823aa6b90d362ae600991e955ef46aa1a9c9ad522c931eb2ae01ab097349d` |
+| Vídeo físico conferido | `24f17b8a9bb7ec6b52aeb55a1301f065aadc05df1c03fa34b673222a4d8bdea2` |
 
-O acesso bruto aos setores foi negado pelas permissões do Linux; sudo exige senha e UDisks OpenForBackup também não autorizou a leitura. Foi enviado ao usuário um comando de leitura para autenticação no Terminal. **Fragmentação, contiguidade e LBA físico continuam INDETERMINADOS** até essa execução. O build usa LBA=1 sintético e SPI conservador de 400 kHz; incorpora o formato completo e a calibração preservada, mas não é imagem de programação física de 30 FPS. A geração de bitstream foi retida porque o mapa e a temporização externa/clocking ainda não satisfazem os critérios de promoção.
+## PRÓXIMO TESTE FÍSICO
 
-A arquitetura contém um quadro DDR2 de trabalho e dois bancos BRAM, sem dupla superfície DDR2 ou leitura/escrita simultâneas. Os testes usam modelo UI, sem PHY DDR2. Permanecem não validados fisicamente: calibração/recalibração, temperatura MIG, clocking/SPI, DDR2 contínua, sensores, vídeo e FPS. O relatório não declara CDC totalmente limpo ou aprovação de hardware.
+Primeiro fechar as ressalvas offline e gerar/identificar o `.bit` mapeado; então obter autorização específica para JTAG SRAM. Não programar o DCP nem usar o bitstream antigo como se contivesse esta integração. O passo a passo em `PROCEDIMENTO_TESTE_FPGA.md` cobre retorno do SD com a placa desligada, LD12–15, calibração, carga lenta, loop dos 90 quadros, modos, ajuste vertical, bússola, reset e recuperação. Distingue observação visual de contagem instrumentada de publicação VGA.
 
-A menor ação indispensável agora é autenticar no Terminal o comando de mapeamento somente leitura enviado no chat, usando a cópia local conferida da amostra de 90 quadros. Não reutilizar o LBA histórico. Depois, preparar outro build com mapa real e perfil preservado, fechar as ressalvas e obter autorização específica para JTAG. O passo a passo está em `PROCEDIMENTO_TESTE_FPGA.md`; a futura Flash, em `PROCEDIMENTO_FLASH_QSPI.md`.
-
-A recuperação funcional foi revalidada por hash no início da sprint: `/home/santojuca/Downloads/hud-video-modos-20261106/validation/flash-preparo-20261108-0cez4ytv/hud-aprovado.bit`, SHA-256 `b3e777d72dbdeb7921371346a58c939e7eecabe8d16e7901c59c0c3430f8092f`. A confirmação de boot autônomo pelo usuário pertence a esse firmware, preservado na placa. A origem E4DvcvNDQoQ.mp4 foi identificada por SHA-256 89075ad5f74204622fb25c0c0da445cb9a8c18c01515a3f0274216ed1fa0c9a0 nesta sprint. Atlas elétrico já disponível na main desde a execução anterior, commit `14d1bf00d26a621e5d1213a41ff8071a9026a91e`; nenhuma publicação noturna.
-
-Relatórios: `resultado/` e cópia versionada em `evidencias/relatorios-noturna/`. Estado estruturado e hashes finais estão em `evidencias/resultado.json` e `evidencias/manifesto-noturna.json`. Arquitetura: `ARQUITETURA_VIDEO_DDR2.md`. Reprodução: `README.md`.
-
-Checkpoint roteado final: resultado/routed.dcp, SHA-256 `e83af26c3baf3a37f57d602ea6648ecef6f1ac1782bb4184fdfe6077e5657d98`. Checkpoint sintetizado: resultado/synthesized.dcp, SHA-256 `aea47fc86fac7c4acb2a429e54874bcadae2823146e08e9d60876c480faae87f`. A referência XPM anterior permanece em resultado-xpm-4309c53/.
+Recuperação preservada: `/home/santojuca/Downloads/hud-video-modos-20261106/validation/flash-preparo-20261108-0cez4ytv/hud-aprovado.bit`, SHA-256 `b3e777d72dbdeb7921371346a58c939e7eecabe8d16e7901c59c0c3430f8092f`. O usuário confirmou o boot do firmware anterior; isso não valida a candidata DDR2. Flash futura somente após aceite físico e autorização específica, conforme `PROCEDIMENTO_FLASH_QSPI.md`. Atlas elétrico da main preservado.

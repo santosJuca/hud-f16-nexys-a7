@@ -4,7 +4,7 @@ A confirmação do usuário de boot autônomo e HUD/sensores funcionando pertenc
 
 | Pendência | Evidência indispensável |
 |---|---|
-| Mapa SD | Arquivo e FAT32 identificados após a sprint; falta acesso administrativo somente leitura aos setores para provar cadeia contígua e LBA atual. |
+| Mapa SD | Concluído por leitura autenticada: LBA absoluto 30028160, 13501 setores de arquivo e cadeia contígua; refazer somente se houver mudança do cartão/arquivo. |
 | SPI rápido | Orçamento de setup/hold de saída e entrada com datasheet do cartão/interface, conexões e atrasos reais; só então qualificar a frequência e suas constraints. |
 | MIG e clocks | Calibração completa, estabilidade do XADC/temperatura e comportamento após reset/perda de calibração na placa; revisão do REQP-1709 do clocking gerado. |
 | Vídeo e DDR2 | Imagens íntegras, sem tearing, congelamento controlado da última imagem após falha e recuperação sem reset geral indevido. |
@@ -12,6 +12,6 @@ A confirmação do usuário de boot autônomo e HUD/sensores funcionando pertenc
 | Sensores/controle | Horizonte, bússola com orientação preservada, altitude, joystick, modos e ajuste vertical no monitor VGA. |
 | Flash futura | Artefato físico aceito, chip identificado sem ambiguidade, backup verificado, autorização específica e teste de boot após desligar/religar. |
 
-Durante a sprint o cartão estava na Nexys. Após a mensagem do usuário de que o colocou no PC, o leitor USB 816820130806 e a partição FAT32 UUID 3562-6631 foram identificados. O arquivo atual, lido com montagem ro, tem 90 quadros 320×240/30 e conferiu integralmente com a amostra local; 90 hashes e 13.500 CRC16 passaram. O vídeo completo de 17.331 quadros continua apenas na cópia local conhecida. Fragmentação e LBA físico seguem INDETERMINADOS porque o sistema exige autenticação administrativa para ler o dispositivo bruto. O comando somente leitura foi enviado ao usuário; não há senha administrativa disponível à sessão.
+O arquivo físico atual de 90 quadros foi comparado integralmente com a referência local no mapeador autenticado pelo usuário. O vídeo completo de 17.331 quadros permanece no computador. Não há bloqueio administrativo pendente para este mapa. O novo perfil corrige LBA/tamanho e preserva SPI=400 kHz; não deve ser interpretado como configuração de 30 FPS físicos.
 
-A inspeção offline do arquivo local e dos modelos não resolve essas pendências. O build atual usa LBA sintético e SPI conservador de 400 kHz; não deve ser levado à placa como configuração de 30 FPS. Nenhum novo bitstream foi liberado para programação.
+Os três CDC-10 foram rastreados no circuito roteado: dois no reset comum do espelho e um no MIG. Os ensaios digitais novos de pulso curto/parada de clock passaram, mas não comprovam largura mínima física de PRE, imunidade a glitches ou resets repetidos durante busy. REQP-1709 corresponde à topologia gerada; justificativa em VALIDACAO_OFFLINE.md, sem waiver específico ou aprovação física. Temporização externa SPI e ensaio do PHY continuam sendo condições de promoção. Nenhum novo bitstream foi liberado para programação.

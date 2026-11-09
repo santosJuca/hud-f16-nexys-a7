@@ -1,53 +1,29 @@
-# Próxima sessão: teste físico da integração
+# Próxima sessão: validação física incremental
 
-## Estado atual da leitura do cartão
+## Perfil identificado
 
-O cartão já está no PC, em /dev/sdc pelo leitor USB 816820130806; partição FAT32 UUID 3562-6631, montada ro. A amostra atual tem 90 quadros 320×240/30, 6.912.512 bytes e SHA-256 24f17b8a9bb7ec6b52aeb55a1301f065aadc05df1c03fa34b673222a4d8bdea2. Sua cópia conferida é validation/cartao-20261109/HUDVIDEO.BIN. Há 13.501 setores lógicos no arquivo, mas o LBA inicial e a contiguidade ainda não foram lidos por falta de autenticação administrativa. Não confundir número de setores do arquivo com endereço inicial. O comando enviado no chat usa o alias estável do leitor e o mapeador O_RDONLY; deve ser executado no Terminal com autenticação do Ubuntu.
+O mapa foi concluído pelo usuário com o mapeador O_RDONLY. Leitor USB serial 816820130806, partição FAT32 UUID 3562-6631, montagem ro, partição iniciando no LBA 8192. `HUDVIDEO.BIN` é contíguo no **LBA absoluto 30028160**, com **13501 setores de conteúdo** (13504 alocados), 90 quadros RGB332 de 320×240/30 nominal e SHA-256 `24f17b8a9bb7ec6b52aeb55a1301f065aadc05df1c03fa34b673222a4d8bdea2`.
 
-Comando concreto para o leitor atualmente identificado, após conferir novamente UUID 3562-6631 e serial 816820130806:
+Evidência: `evidencias/mapa-cartao-20261109.json`. O perfil sintetizado está em `evidencias/perfil-cartao-fechamento.json`; preserva sensores e SPI de leitura em 400 kHz. Não usar LBA 1 nem o tamanho do vídeo completo. Se o cartão/arquivo for modificado, movido ou substituído, repetir o mapa somente leitura. Não há necessidade de autenticar novamente apenas para repetir uma prova já concluída.
 
-```bash
-sudo python3 \
-  /home/santojuca/Downloads/hud_ddr2_noturna_20261108/tools/map_sd_video.py \
-  /dev/disk/by-id/usb-USB_Mass_Storage_Device_816820130806-0:0 \
-  /home/santojuca/Downloads/hud_ddr2_noturna_20261108/validation/cartao-20261109/HUDVIDEO.BIN \
-  /home/santojuca/Downloads/hud_ddr2_noturna_20261108/evidencias/mapa-cartao-20261109.json
-```
+## Antes de programar
 
-O comando solicita a senha diretamente no Terminal do Ubuntu; não enviar a senha no chat. A entrada é O_RDONLY e a saída usa criação exclusiva no computador. Se o relatório já existir, o programa recusa sobrescrevê-lo.
+1. Ler `RESULTADO_FINAL.md` e `VALIDACAO_OFFLINE.md`. Fechar as ressalvas de reset/MIG/REQP-1709 e temporização externa; não preencher atrasos de IO por estimativa sem referência da interface. A implementação com timing interno positivo não encerra essas ressalvas.
+2. Gerar `.bit` somente após satisfazer os critérios offline, em área preservada, a partir do perfil mapeado. Conferir constraints/pinagem, timing, DRC, CDC e skew dessa configuração. Registrar commit, genéricos, mapa, caminho e SHA-256. Esta entrega não autoriza JTAG, SD ou Flash.
+3. Confirmar a recuperação abaixo e a configuração habitual de boot, obter autorização específica para o artefato e conferir o alvo real. Alvo histórico: Digilent/210292AD34F5A, XC7A100TCSG324-1. Nenhuma consulta JTAG foi feita nesta sprint.
 
-## 1. Identificar o vídeo sem escrever no cartão
+## Ensaio após autorização específica
 
-Desligar a Nexys e colocar o cartão no leitor do computador. Identificar modelo, capacidade, serial e partições com `lsblk -o NAME,PATH,SIZE,MODEL,SERIAL,FSTYPE,UUID,MOUNTPOINTS`. Não adivinhar `/dev/sdX`, não montar para escrita e não usar um disco interno como entrada. Se o Ubuntu o montar automaticamente em escrita, interromper a inspeção e desmontar antes de continuar; não formatar ou reparar a FAT.
+1. Com Nexys desligada, devolver o microSD identificado ao slot, conferir conexões existentes e ligar no modo habitual. Não retirar cartão energizado ou alterar níveis/pinagem. Programar somente SRAM por JTAG com o artefato autorizado; conservar a Flash funcional.
+2. Conferir LD12 (lock da referência) e LD13 (calibração MIG). LD14 indica conclusão PASS do espelho, LD15 erro. Registrar os LEDs e o VGA durante a primeira carga; LED de lock sozinho não comprova calibração nem integridade de vídeo.
+3. Conferir sensores e HUD antes de julgar o fundo. Horizonte, bússola e referência angular devem manter o comportamento conhecido. Não reaplicar rotações aos sensores. Habilitar vídeo e aguardar quadro completo: a 400 kHz, a carga ideal mínima é 1,569 s/quadro, mais esperas. Atualização lenta é esperada e não prova falha da VGA.
+4. Observar reprodução contínua e retorno ao primeiro quadro. O loop dos 90 quadros exige pelo menos 141,21 s nesse perfil, podendo demorar mais. Registrar ausência de mistura/tearing e estabilidade de sincronismo, cores/proporção e preservação da imagem entre atualizações. Um vídeo de tela cronometrado fornece observação visual; não rotular isso como medida instrumentada de 30 FPS.
+5. Alternar modos existentes, ajustar a posição vertical e testar limites da bússola/atitude. O vídeo não deve desaparecer por deslocamento do HUD. Desligar/religar o vídeo deve recuperar reprodução sem exigir reset geral dos sensores.
+6. Acionar reset pelo controle previsto e observar nova calibração/recuperação. Evitar acionamentos repetidos enquanto o reset/busy anterior não terminar. Em erro ou perda de calibração, registrar LD13/LD15 e o estado do VGA, interromper a promoção e recuperar o firmware preservado pelo boot habitual. Não provocar desconexões elétricas para simular falha.
 
-Depois de estabelecer a identidade, executar o verificador com o **dispositivo inteiro**, a cópia local que se acredita estar no cartão e uma saída nova:
+Os contadores internos existentes são `video_frames`, `video_errors`, `video_late`, `video_cycles` e `sd_publications`. Nem todas as páginas de diagnóstico são acessíveis na configuração normal de switches; não afirmar que esses números foram medidos externamente. `video_frames` conta carga SD, não publicação VGA. Para FPS instrumentado, observar/publicar um contador da troca efetiva do banco (`rd_updated`) com ferramenta apropriada em um artefato de diagnóstico separado e requalificado. Nenhuma ILA ou porta nova foi acrescentada nesta sprint para não perturbar a implementação.
 
-```text
-python3 tools/map_sd_video.py DISPOSITIVO_INTEIRO_IDENTIFICADO REFERENCIA_LOCAL_HUDVIDEO.BIN evidencias/mapa-cartao-verificado.json
-```
-
-O código abre a entrada com O_RDONLY. Confere MBR, FAT32, cópias da FAT, tamanho e cadeia do arquivo raiz `HUDVIDEO.BIN`, exige contiguidade e compara todo o conteúdo com a referência local. Não desloca nem desfragmenta arquivos. Se rejeitar o cartão, conservar a evidência e investigar; não substituir pelo LBA histórico. O resultado vale para o conteúdo inspecionado, até qualquer alteração posterior no cartão. Os cinco testes de imagem FAT32 da sprint não constituem inspeção do cartão físico.
-
-A cópia 320×240/30 está em `/home/santojuca/Downloads/hud_ddr2_video_integracao/validation/video-completo-320-30/HUDVIDEO.BIN`. A cópia histórica 160×120/1 não pode ser confundida com ela. A referência histórica foi reconferida localmente em `/home/santojuca/Downloads/hud-video-modos-20261106/validation/video-bussola-20261106-GkXqhu/recovery-files/HUDVIDEO.BIN`, 11.246.080 bytes, 578 quadros, SHA-256 `615729d0740adc978b42fdf0a13dc4f18820109e4dd9e68ac66d137d431012d0`. Esse hash não comprova o conteúdo atual do cartão. Selecionar a referência conforme o tamanho/cabeçalho efetivamente lidos, sem supor qual delas está gravada. Se nenhuma referência conferir, identificar e extrair o arquivo somente leitura em uma nova pasta antes de preparar outro build.
-
-## 2. Preparar o artefato destinado à placa
-
-Criar outra área de build a partir da branch noturna, preservando esta entrega. Usar o cabeçalho e o mapa físico verificados para `SD_VIDEO_LBA`, `SD_VIDEO_SECTORS`, largura, altura e FPS; manter o perfil completo de `evidencias/perfil-fisico-preservado.json`. Não copiar LBA=1 do script offline. Repetir os testes afetados e implementar essa configuração.
-
-Iniciar com SPI conservador e aceitar atualização lenta. 400 kHz não sustenta 320×240/30; aumentar a frequência só após fechar o orçamento externo. Para o perfil rápido, manter inicialização a 400 kHz e escolher explicitamente `SD_READ_HALF_PERIOD_CYCLES`, sem alterar defaults silenciosamente. A 100 MHz, divisor 2 corresponde a 25 MHz; divisor 125 a 400 kHz.
-
-Antes de gerar/programar um `.bit`, avaliar CDC/reset/REQP-1709, setup/hold e constraints externas dessa configuração, DRC, clocks e bus skew. Registrar caminho absoluto, SHA-256, commit, mapa, genéricos e alvo/dispositivo. Obter autorização específica de JTAG para esse artefato. A sprint noturna não concedeu essa autorização.
-
-## 3. Ensaio incremental após autorização
-
-1. Conferir a placa Nexys A7-100T, dispositivo XC7A100TCSG324-1 e alvo conectado; o identificador histórico é `Digilent/210292AD34F5A`, sem consulta nova nesta sprint. Conferir a integridade do bitstream de recuperação abaixo e o acesso à configuração funcional na Flash.
-2. Programar apenas SRAM por JTAG com o novo artefato autorizado, mantendo a Flash. Confirmar clocks/calibração MIG e HUD básico antes de habilitar vídeo.
-3. Conferir horizonte, bússola, altitude e joystick. Não reaplicar rotações aos sensores por impressão visual. Validar modos existentes, retículo, escalas, bordas e ajuste vertical.
-4. Habilitar vídeo. Conferir proporção, canais RGB, ausência de tearing e contadores/estado de erro e calibração. Medir quadros efetivamente publicados; não usar apenas o FPS do cabeçalho.
-5. Exercitar desligamento/retorno do vídeo, mudança de modo, quadros atrasados e recuperação prevista. Testes de remoção/reset físico exigem sequência elétrica segura; não retirar cartão energizado por improviso.
-6. Se houver corrupção, perda de calibração, regressão de sensores ou travamento, interromper a promoção, registrar o estado e restaurar o firmware conhecido por power-cycle na configuração de boot habitual. Qualquer recarga por JTAG também exige autorização compatível.
-
-Aceite físico: HUD e sensores preservados, DDR2 calibrada estável, dados íntegros, troca apenas no blanking, recuperação após falhas e taxa medida compatível com o perfil escolhido. Guardar observação do monitor e medições com o hash do artefato.
+Aceite: DDR2 calibrada estável, HUD/sensores preservados, quadros íntegros, troca no blanking, recuperação e taxa medida compatível com a frequência escolhida. Os 30 FPS nominais só serão critério físico de um perfil rápido com throughput e temporização externa previamente comprovados. Flash futura segue `PROCEDIMENTO_FLASH_QSPI.md`, após aceite e autorização próprios.
 
 ## Recuperação preservada
 

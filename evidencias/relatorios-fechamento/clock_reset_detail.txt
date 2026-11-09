@@ -1,0 +1,14 @@
+MMCM u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/gen_mmcm.mmcm_i COMPENSATION=BUF_IN
+CLKIN1 nets=u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/pll_clk3 clocks=pll_clk3_out
+CLKFBIN nets=u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/CLK clocks=clk_pll_i
+CLKFBOUT nets=u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure/clk_pll_i clocks=clk_pll_i
+RESET u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe_reg[0] ASYNC_REG=1 LOC=SLICE_X59Y62
+RESET u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe_reg[1] ASYNC_REG=1 LOC=SLICE_X59Y62
+RESET u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe_reg[2] ASYNC_REG=1 LOC=SLICE_X59Y62
+RESET u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe_reg[3] ASYNC_REG=1 LOC=SLICE_X59Y62
+RESET u_ui_test/g_sd_mirror.u_mirror/src_reset_pipe_reg[4] ASYNC_REG=1 LOC=SLICE_X59Y62
+RESET u_ui_test/g_sd_mirror.u_mirror/ui_reset_pipe_reg[0] ASYNC_REG=1 LOC=SLICE_X61Y63
+RESET u_ui_test/g_sd_mirror.u_mirror/ui_reset_pipe_reg[1] ASYNC_REG=1 LOC=SLICE_X61Y63
+RESET u_ui_test/g_sd_mirror.u_mirror/ui_reset_pipe_reg[2] ASYNC_REG=1 LOC=SLICE_X61Y63
+RESET u_ui_test/g_sd_mirror.u_mirror/ui_reset_pipe_reg[3] ASYNC_REG=1 LOC=SLICE_X61Y63
+RESET u_ui_test/g_sd_mirror.u_mirror/ui_reset_pipe_reg[4] ASYNC_REG=1 LOC=SLICE_X61Y63

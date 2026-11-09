@@ -7,5 +7,9 @@
     "board_files": 4
   },
   "production_rtl_changed": false,
-  "ip_generated_edited": false
+  "ip_generated_edited": false,
+  "io_port_rows_identical_to_baseline": true,
+  "io_rows_compared": 132,
+  "recovery_bit_sha256_rechecked": true,
+  "mig_generated_infrastructure_sha256": "2dbb9bb2a1a4b95407c16b87d9ab421ba1d25c516a6faddff50fa46392035c52"
 }

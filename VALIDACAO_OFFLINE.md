@@ -100,3 +100,73 @@ O teste tests/tb_hud_offset_video.sv reaproveita o ensaio anterior de ajuste ver
 O usuário inseriu o microSD no PC. Leitor USB serial 816820130806, partição FAT32 UUID 3562-6631. Após desmontar a montagem automática rw, o cartão foi remontado com ro. HUDVIDEO.BIN tem 320×240/30, 90 quadros, 6.912.512 bytes, sequência a7699c175ddb435194c191d3e95ecb79 e SHA-256 24f17b8a9bb7ec6b52aeb55a1301f065aadc05df1c03fa34b673222a4d8bdea2. Conferiu com /home/santojuca/Downloads/hud-correcao-video-FHPwL3/amostra/HUDVIDEO.BIN. A cópia local extraída passou os 90 hashes de quadros e 13.500 CRC16 usando os metadados dessa referência anterior. Evidências: arquivo-cartao-20261109.json e integridade-arquivo-cartao-20261109.json.
 
 O mapeador não pôde abrir os setores: acesso direto negado, sudo sem autenticação indisponível e UDisks OpenForBackup não autorizado. Nenhuma dessas tentativas escreveu no cartão. Foi solicitado ao usuário executar o comando O_RDONLY no Terminal com autenticação. A identidade e integridade do arquivo estão confirmadas; localização LBA e fragmentação não estão. Não foi criado um mapa físico com números históricos.
+
+
+## Fechamento técnico de 09/11: resets e correspondência com o cartão
+
+A área isolada `hud_ddr2_fechamento_20261109`, branch `sprint/fechamento-tecnico-20261109`, parte de `3fc45f2`. Os resultados das seções anteriores pertencem à sprint noturna. A nova consulta abre seu DCP roteado preservado, sem reimplementar, salvar constraints ou acessar hardware. Comando executado:
+
+```bash
+/home/santojuca/AMD/2026.1/Vivado/bin/vivado -mode batch -nojournal \
+ -log validation/fechamento-reset/vivado.log \
+ -source scripts/inspecionar_reset_routed.tcl -tclargs \
+ /home/santojuca/Downloads/hud_ddr2_noturna_20261108/resultado/routed.dcp \
+ "$PWD/evidencias/reset-cones-20261109.txt"
+```
+
+Prefixos dos endpoints: M=`u_ui_test/g_sd_mirror.u_mirror`; I=`u_ui_test/u_mig/u_ddr2_p0_mig_nexys_mig/u_ddr2_infrastructure`. O clock principal tem nome Vivado `u_ui_test/u_mig/sys_clk_i` (100 MHz); UI=`clk_pll_i` (~81,25 MHz).
+
+| CDC-10 | Origem registrada apontada pelo CDC | Destino | Lógica, reset e exceção |
+|---|---|---|---|
+| Próprio, principal → UI | `inicio_operacao_reg[3]__0` | M/`ui_reset_pipe_reg[0]/PRE` | LUT3 INIT=DF: `src_rst OR ui_rst OR NOT calib`; PRE ativo alto, liberação por cinco FF UI; false path somente aos PRE em `scripts/p4c_cdc.tcl`. |
+| Próprio, UI → principal | I/`rstdiv0_sync_r1_reg` | M/`src_reset_pipe_reg[0]/PRE` | A mesma LUT3 e as três fontes; liberação por cinco FF do principal, mesma exceção específica. |
+| Interno MIG, principal → UI | `mig_resetn_reg` | I/`rstdiv0_sync_r_reg[0]/PRE` | LUT4 INIT=7FFF reúne reset externo ativo baixo e ausência de RDY/locks; cadeia de 12 estágios. A exceção gerada passa por `u_iodelay_ctrl/sys_rst_i`; XDC do MIG também limita rstdiv0→PHY_CONTROL/RESET a 5 ns. |
+
+O novo relatório lista **todas** as origens do cone, incluindo `init_calib_complete_reg` nos dois resets próprios e MMCM/PHASER LOCKED e IDELAYCTRL RDY no MIG. A lógica coincide com `rst_tmp` de `mig_7series_v4_2_infrastructure.v` gerado (linhas 704–723 na saída local), incluindo inversão por RST_ACT_LOW. Não há alteração desse IP ou nova exceção.
+
+O padrão de liberação local é compatível com a descrição AMD de [sincronizador de reset assíncrono, UG906](https://docs.amd.com/r/en-US/ug906-vivado-design-analysis/Asynchronous-Reset-Synchronizer). Isso não dispensa CDC-10: lógica combinacional pode gerar pulsos e a simulação digital não comprova largura mínima de PRE, ausência de metastabilidade ou ausência física de glitches. Não foi identificado defeito funcional nesses cones que justifique substituir as cadeias ou registrar o OR, atrasando a proteção contra perda de calibração.
+
+O ensaio novo usa XPM real: referência nominal, pulso de 1 ns em cada uma das três fontes durante escrita, pulso de perda de calibração com UI parada e retorno posterior, e regressão do reset durante retorno à BRAM. Exige recuperação e compara endereço, CRC32, cada byte recebido e cada byte da imagem de saída. Com UI parada, exige reset local ativo, origem indisponível e nenhum banco pendente; após retorno exige quadro novo íntegro. Os seis cenários passaram. Pulsos são estímulos lógicos, não especificação elétrica aceita para a FPGA. Também não qualificam resets repetidos antes de `wr_rst_busy`/`rd_rst_busy` terminarem, condição que a [UG953](https://docs.amd.com/r/2024.2-English/ug953-vivado-7series-libraries/XPM_FIFO_ASYNC) restringe. Log bruto: `evidencias/reset-fechamento-20261109.txt`.
+
+```bash
+OUT="$PWD/validation/reset-fechamento-final" bash scripts/test_video_ddr2.sh --reset-only
+```
+
+### Clocking MIG
+
+O REQP-1709 aponta precisamente a diferença entre CLKOUT3→BUFH→MMCM e CLKOUT0–2→PHASER/controle. O RTL gerado contém essa topologia e COMPENSATION=BUF_IN; não foi introduzida pelo espelho. Os clocks de memória 325 MHz, referência PHASER 650 MHz e UI 81,25 MHz são coerentes com a relação 2× de referência abaixo de 400 MHz e UI a 1/4 descritas pela AMD em [Clocking Architecture, UG586](https://docs.amd.com/r/en-US/ug586_7Series_MIS/Clocking-Architecture?contentId=RgaY9X9JIysZNUWlzwAGGg) e [Internal FPGA Logic Clock](https://docs.amd.com/r/en-US/ug586_7Series_MIS/Internal-FPGA-Logic-Clock?contentId=ahFtqieBVh~leekxFphRBw). Isso sustenta preservar os buffers gerados; não foi encontrada dispensa específica AMD para a ocorrência. Calibração e estabilidade do PHY continuam pendentes. Não foi aplicado waiver nem anunciado CDC limpo.
+
+### Mapa físico recebido e perfil corrigido
+
+Após autenticação feita pelo usuário, o mapeador O_RDONLY concluiu: partição começa em LBA 8192 (4.194.304 bytes), arquivo começa no **LBA absoluto 30028160** e ocupa 13501 setores de conteúdo. A extensão FAT contígua reserva 13504 setores; os três setores finais de alocação não pertencem ao arquivo e não devem aumentar `MAX_FILE_SECTORS`. O mapper percorreu a cadeia de clusters e conferiu as cópias FAT; seus números individuais de clusters não são exportados pelo relatório atual. O hash integral físico conferiu com a referência local: `24f17b8a9bb7ec6b52aeb55a1301f065aadc05df1c03fa34b673222a4d8bdea2`. Cópia exata do relatório: `evidencias/mapa-cartao-20261109.json`. A montagem permanece ro.
+
+O perfil anterior LBA=1/2599651 setores rejeitaria o cabeçalho de 90 quadros: o loader exige `frame_count == (MAX_FILE_SECTORS-1)/150` e tamanho exato. O perfil novo corrige ambos: LBA=30028160/13501 setores, 320×240/30 nominal, leitura SPI=400 kHz e calibração preservada. Está em `evidencias/perfil-cartao-fechamento.json`, inclusive o vetor exato de argumentos do build. O vídeo não foi alterado.
+
+### Vazão e limites do perfil conservador
+
+Cada quadro exige 150 CMD17 de 512 bytes. O limite inferior de transação, sem esperas, inclui 6 bytes comando, pelo menos 1 R1, 1 token, 512 dados, 2 CRC e 1 byte final com CS alto: 523 bytes equivalentes por setor. Há ainda transições de FSM, polling R1/token, arbitragem, espera do cartão e releitura DDR2.
+
+| SPI | Capacidade bruta | Tempo mínimo de 150 transações | Limite superior ideal de FPS |
+|---|---:|---:|---:|
+| 400 kHz, divisor 125 | 50.000 B/s | 1,569 s | 0,637 |
+| 25 MHz, divisor 2, somente modelo qualificado | 3.125.000 B/s | 25,104 ms | 39,834 |
+
+A 25 MHz, 30 FPS requer 2.304.000 B/s úteis e deixa no máximo 8,229 ms/quadro após esse limite ideal; o modelo anterior mediu 25,15651 ms de carga, reduzindo o orçamento a 8,177 ms (~54,5 µs/setor em média), antes dos outros custos não sobrepostos. Isso não é margem física garantida. A 400 kHz, o loop de 90 quadros leva **pelo menos 141,21 s**, e não os 3 s nominais do arquivo. O timeout do espelho é ~4,923 s; esperas longas podem provocar descarte/recuperação. Não foi aumentado SPI ou alterada constraint elétrica. A VGA segue seu clock fixo; o fundo permanece estável entre atualizações lentas.
+
+
+O cenário integrado nominal foi repetido com `BASE_LBA=30028160` tanto no loader como no modelo SDHC, para detectar truncamento/endereço incorreto na serialização CMD17. Passou com quatro publicações, loop ao quadro zero, zero erros e 2.150.400 comparações RGB. Usa fixture sintética de três quadros completos a SPI 25 MHz e modelo UI sem PHY; não é reprodução física dos 90 quadros nem validação do SPI rápido. O teste decodifica os comandos de 32 bits no modelo do cartão e compara os pixels publicados. Log: `evidencias/pipeline-lba-real.txt`.
+
+```bash
+OUT="$PWD/validation/pipeline-lba-real" BASE_LBA=30028160 SCENARIOS=0 bash scripts/test_sd_ddr2_vga.sh
+```
+
+Os 76 arquivos RTL, três arquivos MIG, três XDC e quatro arquivos de placa do manifesto congelado conferiram por SHA-256 na nova área. O diff dos fontes de produção e constraints contra `3fc45f2` é vazio. As diferenças de simulação continuam explícitas: MIG substituído por modelo UI, sensores ausentes nos ensaios anteriores, fixture de vídeo e frequência SPI de modelo. O novo build usa as fontes de produção preservadas com o perfil mapeado; resultados da implementação serão registrados em `RESULTADO_FINAL.md` e `evidencias/resultado.json`.
+
+
+### Implementação do perfil mapeado
+
+O build concluiu às 07:12:20 de 09/11/2026, fuso America/Sao_Paulo. O vetor executado é o campo `command` de `evidencias/perfil-cartao-fechamento.json`; cada genérico foi também conferido no XPR produzido pelo Vivado. WNS +0,335 ns, WHS +0,016 ns, TNS/THS zero, oito grupos de skew (mínimo +6,863 ns), zero erros DRC, zero no_clock e zero endpoints internos sem temporização. Não são os números históricos +0,230/+0,011 ns. Há 29 entradas e 40 saídas sem delay externo, portanto a aprovação interna não é sign-off de interface.
+
+A consulta complementar executou `scripts/qualificar_rc.tcl` e `scripts/qualificar_clock_reset.tcl` com esta raiz, depois `scripts/inspecionar_reset_routed.tcl resultado/routed.dcp evidencias/reset-cones-mapeado-20261109.txt`, usando Vivado em batch e logs novos em `validation/fechamento-reset/`. Os cones de reset do novo DCP são textualmente iguais aos da referência. Os cinco FF de origem ficaram em SLICE_X59Y62 e os cinco UI em SLICE_X61Y63, todos ASYNC_REG=1. O código gerado `mig_7series_v4_2_infrastructure.v` também é idêntico ao anterior, SHA-256 `2dbb9bb2a1a4b95407c16b87d9ab421ba1d25c516a6faddff50fa46392035c52`.
+
+A metodologia continua com 134 ocorrências e nenhum waiver. CDC mantém 46 CDC-3, 3 CDC-10, 1 CDC-8 e 176 CDC-15. O pior hold de 16 ps é interno ao domínio pixel, no caminho attitude_pending_reg[146]→attitude_display_reg[146], canto rápido do modelo; é positivo, mas estreito. Sem defeito de RTL demonstrado, não se alterou a atitude nem se iniciou uma busca de seeds apenas para aumentar a margem. Ficam retidos os checkpoints; nenhum `.bit` foi gerado enquanto reset/clocking e a interface externa não têm qualificação suficiente. Os relatórios brutos novos estão em `evidencias/relatorios-fechamento/`, sem tratamento de whitespace, e o log integral em `evidencias/build-fechamento.txt`.
