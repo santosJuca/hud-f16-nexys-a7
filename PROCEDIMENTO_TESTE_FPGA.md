@@ -4,6 +4,18 @@
 
 O cartão já está no PC, em /dev/sdc pelo leitor USB 816820130806; partição FAT32 UUID 3562-6631, montada ro. A amostra atual tem 90 quadros 320×240/30, 6.912.512 bytes e SHA-256 24f17b8a9bb7ec6b52aeb55a1301f065aadc05df1c03fa34b673222a4d8bdea2. Sua cópia conferida é validation/cartao-20261109/HUDVIDEO.BIN. Há 13.501 setores lógicos no arquivo, mas o LBA inicial e a contiguidade ainda não foram lidos por falta de autenticação administrativa. Não confundir número de setores do arquivo com endereço inicial. O comando enviado no chat usa o alias estável do leitor e o mapeador O_RDONLY; deve ser executado no Terminal com autenticação do Ubuntu.
 
+Comando concreto para o leitor atualmente identificado, após conferir novamente UUID 3562-6631 e serial 816820130806:
+
+```bash
+sudo python3 \
+  /home/santojuca/Downloads/hud_ddr2_noturna_20261108/tools/map_sd_video.py \
+  /dev/disk/by-id/usb-USB_Mass_Storage_Device_816820130806-0:0 \
+  /home/santojuca/Downloads/hud_ddr2_noturna_20261108/validation/cartao-20261109/HUDVIDEO.BIN \
+  /home/santojuca/Downloads/hud_ddr2_noturna_20261108/evidencias/mapa-cartao-20261109.json
+```
+
+O comando solicita a senha diretamente no Terminal do Ubuntu; não enviar a senha no chat. A entrada é O_RDONLY e a saída usa criação exclusiva no computador. Se o relatório já existir, o programa recusa sobrescrevê-lo.
+
 ## 1. Identificar o vídeo sem escrever no cartão
 
 Desligar a Nexys e colocar o cartão no leitor do computador. Identificar modelo, capacidade, serial e partições com `lsblk -o NAME,PATH,SIZE,MODEL,SERIAL,FSTYPE,UUID,MOUNTPOINTS`. Não adivinhar `/dev/sdX`, não montar para escrita e não usar um disco interno como entrada. Se o Ubuntu o montar automaticamente em escrita, interromper a inspeção e desmontar antes de continuar; não formatar ou reparar a FAT.
