@@ -2,7 +2,9 @@
 module sd_video_card_model #(
     parameter integer FILE_BYTES = 768512,
     parameter integer BASE_LBA = 1000,
-    parameter bit ALLOW_ICON = 0
+    parameter bit ALLOW_ICON = 0,
+    // Latencia de leitura (Nac) em bytes 0xFF antes do token; 0 preserva o modelo anterior.
+    parameter integer NAC_BYTES = 0
 )(
     input wire sck, cs_n, mosi, rst,
     input wire corrupt_crc, timeout_token, bad_header,
@@ -19,7 +21,7 @@ module sd_video_card_model #(
     end
     reg [47:0] command=0;
     integer bits=0, length=0, position=0;
-    reg reply [0:4300];
+    reg reply [0:4300+8*NAC_BYTES];
     reg [15:0] crc;
     reg [7:0] value;
     integer i,j,offset;
@@ -49,6 +51,7 @@ module sd_video_card_model #(
                     offset=(command[39:8]-BASE_LBA)*512;
                     if(!(ALLOW_ICON && command[39:8]==30006080) && (offset<0 || offset+512>FILE_BYTES)) $fatal(1,"LBA fora do arquivo %0d",command[39:8]);
                     append(0);
+                    for(j=0;j<NAC_BYTES;j=j+1) append(8'hff);
                     if(!timeout_token) begin
                         append(8'hfe); crc=0;
                         for(j=0;j<512;j=j+1) begin
