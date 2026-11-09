@@ -18,3 +18,8 @@ Os três CDC-10 foram rastreados no circuito roteado: dois no reset comum do esp
 
 
 Para a pre-release, não há falha elétrica conhecida que impeça um teste controlado por JTAG no perfil de 400 kHz e pinagem preservada. Restam validação do PHY/calibração, integridade real, reset, controles/sensores e publicação efetiva. A `.mcs` depende de confirmar o modelo exato da Flash e, para gravação, do aceite físico anterior. O microSD já está na placa segundo o usuário; seu conteúdo não foi alterado nesta missão.
+
+
+## Após correção dos indicadores
+
+A RC corrigida exige novo teste físico. O usuário identificou a RC anterior por relato de carga JTAG; nesta máquina não há leitura independente da SRAM nem origem física DDR2 dos pixels confirmada. Verificar primeiro USERCODE B38E538B no novo candidato. Confirmar LD14 persistente após publicação e LD15 persistente em falha, distinguindo histórico de estado atual da calibração. CPU RESET não limpa o histórico; recarregar a candidata limpa. Nenhum teste de falha foi injetado na placa pelo agente. SPI permanece 400 kHz e a Flash permanece intacta.

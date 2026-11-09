@@ -202,3 +202,60 @@ O contrato de fontes/CRC também passou novamente. Os seis cenários de reset e 
 O `.bit` tem 3825992 bytes, cabeçalho `7a100tcsg324`, payload com tamanho consistente e sync word AA995566. SHA-256 `12b6781beaa60033be1ced9acc8fac564a28ada25f6019f32575c749e8b33370`. Log completo: `evidencias/bitgen-release.txt`; DRC/route status: `evidencias/relatorios-release/`. Nenhum hardware manager/JTAG foi aberto.
 
 A `.mcs` não foi gerada: o modelo físico exato ainda não é identificável offline. A [página oficial Digilent](https://digilent.com/shop/nexys-a7-amd-artix-7-fpga-trainer-board-recommended-for-ece-curriculum/) informa variantes S25FL127S/S25FL128S; o RDID histórico comum não resolve a revisão. CONFIGRATE e largura x1 registrados no BIT não identificam a Flash. Não selecionar um part de programação por aproximação.
+
+
+## Correção dos indicadores após o primeiro ensaio físico
+
+Base preservada: commit publicado `52e223d22a190b61c868cfa2966d83ff715fd965`, BIT `hud-f16-ddr2-74b3541-experimental.bit`, SHA-256 `12b6781beaa60033be1ced9acc8fac564a28ada25f6019f32575c749e8b33370`. O usuário confirmou que programou esse arquivo por JTAG e fotografou antes de desligar/religar. A identidade é atribuída por esse relato, não por SHA recuperado da SRAM. Nesta sessão a interface USB-JTAG não está enumerada no computador e não há Hardware Manager ativo; os logs locais selecionados não contêm uma programação correlacionável. Registro: `evidencias/identificacao-teste-fisico.json`. Não foram executadas programação JTAG, gravação Flash ou operações no cartão.
+
+### Causa confirmada no código publicado
+
+LD12 era `ref_mmcm_locked`, LD13 `calib_ok`, LD14 `smoke_done && smoke_pass` e LD15 `smoke_error`. Em modo DDR2_VIDEO, os três últimos sinais de teste vêm diretamente de `ddr2_sd_frame_mirror`, no domínio UI. `CHECK_BYTE` conclui CRC32 e ativa done/pass; `WAIT_START`, ao consumir START seguinte, limpa done/pass/error. Assim, LD14 é uma janela de sucesso da última releitura, que pode desaparecer imediatamente com a pré-carga seguinte. LD15 também esquece uma falha na próxima tentativa. Nenhum dos dois representa histórico persistente; LD14 não observava o ACK da troca de banco. Isso explica por que LD14 apagado não comprova ausência de quadros válidos. Não comprova, por si, que essa foi a única causa da fotografia.
+
+Há também `VIDEO_SENSOR_STARTUP_CYCLES=1000000000` a 100 MHz: espera de até 10 s para liberar vídeo, antes da carga. A 400 kHz um quadro precisa de pelo menos 1,569 s mais overhead/esperas. Calibração pronta e imagem HUD visível não encerram essa espera nem provam a origem dos pixels de fundo.
+
+### Eventos do pipeline e origem dos pixels
+
+| Sinal | Domínio | Significado exato |
+|---|---|---|
+| `video_frames` | HUD 100 MHz | Incrementa no COMMIT do loader após quadro SD completo com setores CRC16 válidos. Ainda não prova releitura DDR2 ou banco publicado. |
+| `video_errors` / `video_failed` | HUD | Falhas do loader/cabeçalho/leitura. Contador não é o diagnóstico CRC32 do MIG. |
+| `video_late` | HUD | Carga SD excedeu o período nominal; esperado no perfil 400 kHz, não é corrupção. |
+| `video_cycles` | HUD | Ciclos de carga da última transferência SD, não tempo de publicação nem FPS VGA. |
+| `smoke_done/pass/error` | UI MIG | Resultado da transação de escrita/releitura/CRC32; limpo no próximo START. |
+| `ddr_out_commit` | HUD via FIFO XPM | Token de commit somente após readback/CRC32 aprovados; encerra o quadro no banco BRAM inativo. |
+| `g_video.u_frames.rd_updated` | Pixel 25 MHz | Pulso da troca real do banco na fronteira permitida; diferente de visibilidade de fundo. |
+| `video_frame_published` | HUD | Novo nome para o `wr_published` existente: ACK da troca, após drenar leitura anterior e passar pelo sincronizador de retorno. |
+| `sd_publications` | HUD | Publicações do overlay/ícone diagnóstico de setor. Não conta quadros de vídeo. Com ENABLE_SD_OVERLAY=0, não comprova avanço do vídeo. |
+
+No perfil físico, ENABLE_DDR2_VIDEO=1 faz todos os controles/dados de `u_frames` virem do retorno DDR2. O caminho SD direto→BRAM é selecionado apenas em outro build com essa opção zero; não existe fallback automático que contorne a DDR2 neste BIT. A saída do compositor ainda pode ser apenas HUD (vídeo desativado, banco inválido ou pixel opaco). Logo, a imagem F-16/HUD descrita nas fotos permanece **sem comprovação física independente de origem DDR2**. Na simulação, a origem é comprovada por comandos/bytes CRC16, escrita/leitura MIG, CRC32, troca do banco e comparação de cada pixel exibido.
+
+### Alteração mínima
+
+`ddr2_video_status.sv` só registra diagnóstico, sem dirigir ready, dados, FSM, reset do vídeo ou seleção de banco. Usa exclusivamente sinais do domínio HUD. LD14 mantém histórico de um commit DDR2 seguido do ACK de publicação. Commit sem ACK ou ACK sem commit não acende PASS. Uma pré-carga abortada não invalida o commit íntegro já pendente de publicação. LD15 registra `video_failed`, erro do buffer ou ABORT após início de uma transferência; o ABORT de calibração inicial é ignorado. PASS e erro podem ficar simultaneamente acesos: houve quadro válido e também uma falha na sessão.
+
+O reset desse histórico é `reset_operacao`, de inicialização do HUD. Recarregar o candidato por JTAG limpa LD14/LD15. CPU RESET reinicia o MIG, mas não apaga histórico; uma transferência interrompida pode registrar erro. Desligar/religar volta ao firmware anterior da Flash e exige nova carga JTAG do candidato para testar a correção. Não foram reaproveitados botões nem alterados sensores/modos.
+
+Nenhum pulso do clock pixel foi ligado diretamente à lógica de LEDs: o diagnóstico usa `wr_published`, cujo CDC de ACK já existe no buffer. A indicação legada é mantida quando ENABLE_DDR2_VIDEO=0. Não há ILA, novo clock, porta ou constraint adicional.
+
+### Verificações executadas
+
+O teste unitário `tb_ddr2_video_status` aprovou ausência de falso PASS, espera por publicação, persistência, abort de pré-carga, erro seguido de recuperação e limpeza do histórico no reset. Os 17 cenários XPM existentes passaram com as novas assertions do status: quadro de 76800 bytes, corrupções, abort, timeout, FIFO cheia, backpressure, reset de origem/UI/calibração, retorno, múltiplos quadros e preservação da última imagem. Também passaram FIFO real com 3072 palavras, contrato/CRC, cinco testes do conversor e cadência XADC. Logs novos em `evidencias/status-unit.txt` e `status-xpm.txt`. São testes digitais; não constituem nova prova física.
+
+O teste específico de ajuste vertical passou novamente em passo, blanking, saturação, clipping e preservação do fundo (`evidencias/hud-offset-status.txt`). A geometria/atitude/bússola não foi alterada. Os 12 modos da release anterior são evidência histórica, não reexecução nova.
+
+O top completo original com QUICK_STATUS=1 passou com 307200 pixels, duas publicações, um erro CRC16 injetado e LEDs=1111 após uma publicação íntegra. Confirmou LD14 persistente enquanto smoke_done já estava zero e LD15 retido após erro. Os sensores desse teste são NACK e a DDR2 é modelo UI, sem PHY. O teste usa 160×120, SPI de modelo 25 MHz e temporizador acelerado, sem alterar os parâmetros físicos do candidato.
+
+O executor recebeu também uma espera RETRY_CYCLES=50 apenas no testbench para repetir esse diagnóstico sem simular a espera de 100 ms pixel a pixel; a versão anterior já tinha concluído com PASS quando foi conferida. A repetição e o ensaio separado da recuperação BRAM terão seus logs finais registrados no resultado. Não há falha funcional ocultada por essa aceleração: CRC, número de retries e FSM são os reais.
+
+Para o próximo ensaio será gravado somente no arquivo BIT o USERID do commit RTL, legível por REGISTER.USERCODE no Hardware Manager. Esse identificador não recupera SHA-256 da SRAM e não é atestado criptográfico; evita confundir o firmware da Flash com a candidata sem introduzir lógica na FPGA. Referências AMD: [UG908, USERID](https://docs.amd.com/r/en-US/ug908-vivado-programming-debugging/7-Series-Bitstream-Settings) e [UG912, HW_DEVICE/REGISTER.USERCODE](https://docs.amd.com/r/en-US/ug912-vivado-properties/HW_DEVICE).
+
+
+A repetição acelerada do top passou: 307200 pixels, duas publicações, três quadros SD carregados, um erro CRC16 e LEDs=1111. A diferença entre três cargas e duas publicações demonstra por que os contadores não são equivalentes. A recuperação BRAM passou separadamente com 307200 pixels, duas publicações e **zero leituras/escritas MIG**, com app_rdy/app_wdf_rdy bloqueados apenas no modelo. Logs: `evidencias/top-status-original.txt`, `top-status-fast.txt`, `top-bram-status.txt`.
+
+A nova implementação do RTL `b38e538b330805b265fe1b9a7cf45d7c5501acec` concluiu em Vivado 2026.1 com WNS +0,468 ns, WHS +0,017 ns, TNS/THS zero, pulse-width mínimo +0,206 ns, oito grupos de skew (mínimo +6,449 ns), zero erros DRC. Mantém 46 CDC-3, 3 CDC-10, 1 CDC-8 e 176 CDC-15; nenhum alerta CDC novo e nenhum waiver. As 132 atribuições IO conferiram com a candidata anterior. Os clocks e o IP MIG permanecem iguais. Utilização: 20616 LUTs, 15399 FF, 64 tiles BRAM e 62 DSP. A folga de hold continua estreita e as ressalvas externas da primeira RC continuam aplicáveis. Relatórios novos em `evidencias/relatorios-status/`, log completo `evidencias/build-status.txt`.
+
+Reprodução: `iverilog -g2012 -s tb_ddr2_video_status -o SAIDA_NOVA tests/tb_ddr2_video_status.sv hud/rtl/ddr2_video_status.sv`; executar com vvp. Para XPM, `OUT=PASTA_NOVA bash scripts/test_video_ddr2.sh`. Para o top, `OUT=PASTA_NOVA QUICK_STATUS=1 bash scripts/test_top_ddr2_video.sh`; para BRAM, `OUT=OUTRA_PASTA TOP_CASE=bram bash scripts/test_top_ddr2_video.sh`. O perfil real de build mantém o vetor `command` de `evidencias/perfil-cartao-fechamento.json`; fonte e genéricos foram conferidos contra `fontes-status-build.json` e o XPR efetivamente sintetizado.
+
+
+O novo BIT foi gerado e validado como arquivo: 3825990 bytes, part 7a100tcsg324, USERID B38E538B, payload/tamanho/sync conferidos, SHA-256 `7c74a9d635f378c980f6378683126f182df92bcc0c3a16e19c1d11ecdd8df292`. A primeira checagem de cabeçalho esperava o prefixo 0x usado pelo default anterior; a forma explícita retornada pelo Vivado é UserID=B38E538B, normalizada e conferida contra config_properties.txt. Não foi falha de RTL nem reemissão do BIT. Log `evidencias/bitgen-status.txt`; DCP SHA-256 `57f162876e9e0f26cac82d4ce7f6770ad5fdc6561740e7d5b009bc129590ba10`. Nenhum hardware foi programado.

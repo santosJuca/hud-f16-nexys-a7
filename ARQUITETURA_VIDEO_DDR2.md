@@ -30,3 +30,10 @@ A seleção de recuperação exige outro artefato identificado e autorização p
 O fechamento mantém exatamente esse RTL e os genéricos de calibração. A alteração de configuração está em `evidencias/perfil-cartao-fechamento.json`: LBA absoluto 30028160, 13501 setores, 90 quadros RGB332 320×240/30 nominal. O mapa autenticado prova uma extensão FAT contígua de 13504 setores; o loader deve limitar-se aos 13501 setores do arquivo. O build noturno sintético apontava para outro tamanho e não aceitaria esse cabeçalho.
 
 Leitura SPI a 400 kHz preservada. A carga mínima ideal é 1,569 s por quadro; o compositor continua varrendo VGA a ~59,52 Hz e repetindo o último banco entre atualizações do fundo. Os contadores de atraso não indicam por si só corrupção. A meta de 30 FPS exige outra frequência qualificada e vazão física comprovada.
+
+
+## Diagnóstico persistente de publicação
+
+A correção `b38e538` conecta o `wr_published` existente do buffer de vídeo ao diagnóstico `ddr2_video_status`. Esse ACK já cruza pixel→HUD pelo sincronizador interno e só retorna após a troca de banco e a drenagem de leitura. LD14 exige um `ddr_out_commit` seguido desse ACK; não usa diretamente `smoke_done && smoke_pass`. LD15 mantém falhas do loader/buffer e ABORT após iniciar transferência, ignorando a calibração inicial. Os registros de status não dirigem nenhuma FSM/ready/dado e não introduzem CDC novo. O histórico só limpa na inicialização/reconfiguração do HUD, não no CPU RESET do MIG.
+
+O perfil DDR2 não seleciona SD→BRAM diretamente: com ENABLE_DDR2_VIDEO=1 os bytes e controles do buffer vêm somente da FIFO de retorno MIG. O modo BRAM continua como outra configuração, sem fallback automático. A comparação de pixels dos testbenches comprova essas rotas no modelo; a fotografia sozinha não as comprova fisicamente.

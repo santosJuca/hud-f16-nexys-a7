@@ -1,15 +1,15 @@
 {
-  "path": "/home/santojuca/Downloads/hud_ddr2_release_20261109/resultado-release/hud-f16-ddr2-74b3541-experimental.bit",
-  "bytes": 3825992,
-  "sha256": "12b6781beaa60033be1ced9acc8fac564a28ada25f6019f32575c749e8b33370",
+  "path": "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/resultado-release-status/hud-f16-ddr2-b38e538-status-experimental.bit",
+  "bytes": 3825990,
+  "sha256": "7c74a9d635f378c980f6378683126f182df92bcc0c3a16e19c1d11ecdd8df292",
   "header": {
-    "a": "top_reticula;UserID=0XFFFFFFFF;Version=2026.1;SW_CRC=c1fb15f8;SW_HDR_SHA256=142b8e7caa065966093a787c8733386056400fef4c915e310f9df6e596ed046d",
+    "a": "top_reticula;UserID=B38E538B;Version=2026.1;SW_CRC=09e0b0b5;SW_HDR_SHA256=0b0cc7007e1844d088a8a9aa8b7188d88d874dde02235e375aee0a2194fca38b",
     "b": "7a100tcsg324",
     "c": "2026/11/09",
-    "d": "07:26:15"
+    "d": "10:27:42"
   },
   "payload_bytes": 3825788,
-  "header_valid": true,
-  "sync_word_found": true,
+  "usercode": "B38E538B",
+  "rtl_commit": "b38e538b330805b265fe1b9a7cf45d7c5501acec",
   "physical_validation": false
 }

@@ -1,10 +1,10 @@
 {
-  "status": "EXPERIMENTAL_BIT_GERADO_NAO_VALIDADO_FISICAMENTE",
-  "branch": "release/hud-f16-ddr2-video-rc",
-  "base_commit": "3fc45f2a782f54fff0e22338775fd8697d405700",
-  "production_rtl_changed": false,
+  "status": "BIT_STATUS_CORRIGIDO_GERADO_NAO_VALIDADO_FISICAMENTE",
+  "branch": "fix/hud-ddr2-indicadores-20261109",
+  "base_commit": "52e223d22a190b61c868cfa2966d83ff715fd965",
+  "production_rtl_changed": true,
   "tests_commit": "e199ea6",
-  "consolidated_at": "2026-11-09T07:31:02.316882-03:00",
+  "consolidated_at": "2026-11-09T10:27:53.572630-03:00",
   "historical_results": {
     "root": "/home/santojuca/Downloads/hud_ddr2_noturna_20261108",
     "report": "evidencias/resultado.json",
@@ -14,35 +14,35 @@
     "mode_combinations": 12
   },
   "new_tests": {
-    "reset_scenarios": 6,
-    "reset_bytes_per_frame": 256,
-    "real_lba_pipeline_cases": 1,
-    "real_lba_pipeline_rgb_checks": 2150400,
-    "functional_failures": 0,
-    "static_contract_pass": true,
-    "frozen_sources_matched": {
-      "rtl": 76,
-      "mig": 3,
-      "xdc": 3,
-      "board": 4
-    },
-    "spi_400khz_cmd17_crc16_bytes": 512
+    "status_unit_pass": true,
+    "xpm_cases_with_status_assertions": 17,
+    "fifo_words": 3072,
+    "top_status_original_rgb_checks": 307200,
+    "top_status_fast_rgb_checks": 307200,
+    "top_status_fast_sd_frames": 3,
+    "top_status_fast_publications": 2,
+    "top_status_fast_injected_errors": 1,
+    "bram_recovery_rgb_checks": 307200,
+    "bram_recovery_mig_reads": 0,
+    "bram_recovery_mig_writes": 0,
+    "vertical_offset_background_preserved": true,
+    "functional_failures": 0
   },
   "timing": {
-    "wns_ns": 0.335,
-    "whs_ns": 0.016,
+    "wns_ns": 0.468,
+    "whs_ns": 0.017,
     "minimum_pulse_width_slack_ns": 0.206,
     "tns_ns": 0,
     "ths_ns": 0,
     "bus_skew_groups": 8,
-    "minimum_bus_skew_slack_ns": 6.863,
+    "minimum_bus_skew_slack_ns": 6.449,
     "drc_errors": 0,
     "no_clock": 0,
     "unconstrained_internal_endpoints": 0,
     "no_input_delay": 29,
     "no_output_delay": 40,
     "external_spi_timing_qualified": false,
-    "hold_worst_path": "attitude_pending_reg[146]/C -> attitude_display_reg[146]/D; pixel_clk; fast corner"
+    "hold_worst_path": "Consultar timing_routed.rpt desta implementacao"
   },
   "cdc": {
     "CDC-3": 46,
@@ -80,29 +80,25 @@
   "push_performed": false,
   "candidate_checkpoints": {
     "routed.dcp": {
-      "path": "/home/santojuca/Downloads/hud_ddr2_fechamento_20261109/resultado/routed.dcp",
-      "sha256": "99edc5c8f61a2b272b53a8a9dad6c6c200a48095d1c210a52e9f38f0e8e3c3e3"
-    },
-    "synthesized.dcp": {
-      "path": "/home/santojuca/Downloads/hud_ddr2_fechamento_20261109/resultado/synthesized.dcp",
-      "sha256": "9c59c8d019cf64d0c52cb9c47cf4a9f0f70389c835fc3d8462ea1b1e28bbb305"
+      "path": "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/resultado/routed.dcp",
+      "sha256": "57f162876e9e0f26cac82d4ce7f6770ad5fdc6561740e7d5b009bc129590ba10"
     }
   },
   "video_quality": "Existing conversion preserved; no new full conversion or subjective HUD redesign",
   "release_base_commit": "74b354144c75274c4ff59dff83c80a68dabe1dd8",
   "bitstream": {
-    "path": "/home/santojuca/Downloads/hud_ddr2_release_20261109/resultado-release/hud-f16-ddr2-74b3541-experimental.bit",
-    "bytes": 3825992,
-    "sha256": "12b6781beaa60033be1ced9acc8fac564a28ada25f6019f32575c749e8b33370",
+    "path": "/home/santojuca/Downloads/hud_ddr2_indicadores_20261109/resultado-release-status/hud-f16-ddr2-b38e538-status-experimental.bit",
+    "bytes": 3825990,
+    "sha256": "7c74a9d635f378c980f6378683126f182df92bcc0c3a16e19c1d11ecdd8df292",
     "header": {
-      "a": "top_reticula;UserID=0XFFFFFFFF;Version=2026.1;SW_CRC=c1fb15f8;SW_HDR_SHA256=142b8e7caa065966093a787c8733386056400fef4c915e310f9df6e596ed046d",
+      "a": "top_reticula;UserID=B38E538B;Version=2026.1;SW_CRC=09e0b0b5;SW_HDR_SHA256=0b0cc7007e1844d088a8a9aa8b7188d88d874dde02235e375aee0a2194fca38b",
       "b": "7a100tcsg324",
       "c": "2026/11/09",
-      "d": "07:26:15"
+      "d": "10:27:42"
     },
     "payload_bytes": 3825788,
-    "header_valid": true,
-    "sync_word_found": true,
+    "usercode": "B38E538B",
+    "rtl_commit": "b38e538b330805b265fe1b9a7cf45d7c5501acec",
     "physical_validation": false
   },
   "mcs_generated": false,
@@ -114,5 +110,24 @@
     "Reset source pulse/glitch and repeated-reset behavior not electrically qualified",
     "MIG/REQP-1709 and calibration lack physical evidence"
   ],
-  "experimental_classification": "Avisos qualificados estruturalmente para ensaio JTAG controlado a 400kHz; nao constituem sign-off eletrico/performance nem aprovacao QSPI"
+  "experimental_classification": "Avisos qualificados estruturalmente para ensaio JTAG controlado a 400kHz; nao constituem sign-off eletrico/performance nem aprovacao QSPI",
+  "rtl_commit": "b38e538b330805b265fe1b9a7cf45d7c5501acec",
+  "production_change_scope": "Somente conexao de ACK/erro do banco e modulo de status; transporte DDR2/video, sensores e constraints preservados",
+  "physical_observation": {
+    "firmware_reported_by_user": "hud-f16-ddr2-74b3541-experimental.bit; JTAG sem power-cycle antes da foto",
+    "independent_firmware_readback_available": false,
+    "vga_ddr2_origin": "INDETERMINADO FISICAMENTE",
+    "usb_jtag_enumerated": false
+  },
+  "status_semantics": {
+    "LD12": "ref_mmcm_locked",
+    "LD13": "init_calib_complete",
+    "LD14": "Commit DDR2 seguido de ACK de troca de banco; persistente",
+    "LD15": "Falha video/buffer/abort apos START; persistente",
+    "clear": "Inicializacao do HUD/reconfiguracao; CPU RESET do MIG nao limpa historico",
+    "clock_domain": "HUD; ACK pixel->HUD usa sincronizador existente"
+  },
+  "bit_usercode": "B38E538B",
+  "jtag_programmed_by_agent": false,
+  "card_modified": false
 }

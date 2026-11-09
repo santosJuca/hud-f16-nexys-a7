@@ -1,52 +1,58 @@
-# HUD F-16 DDR2 — release candidate experimental
+# HUD F-16 DDR2 — correção de LD14/LD15
 
-**EXPERIMENTAL — NÃO VALIDADO FISICAMENTE.** Candidato Nexys A7-100T, Vivado 2026.1, pronto para teste temporário por JTAG pelo usuário. Nenhuma FPGA, Flash ou microSD foi programada pelo agente nesta missão. A main permanece preservada.
+**EXPERIMENTAL — NÃO VALIDADO FISICAMENTE.** Esta candidata corrige o diagnóstico do primeiro teste físico. Não altera sensores, atitude, orientação magnética, modos, vídeo, SPI ou pinagem.
 
-- Branch: `release/hud-f16-ddr2-video-rc`.
-- [Pre-release e arquivos](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/hud-f16-ddr2-rc-20261109).
-- [Programação JTAG e recuperação](PROCEDIMENTO_TESTE_FPGA.md).
-- [Validação offline e classificação dos avisos](VALIDACAO_OFFLINE.md).
-- [Arquitetura implementada](ARQUITETURA_VIDEO_DDR2.md).
+[Baixar nova pre-release](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/hud-f16-ddr2-status-rc-20261109) · [Teste JTAG e recuperação](PROCEDIMENTO_TESTE_FPGA.md) · [Resultado](RESULTADO_FINAL.md) · [Validação](VALIDACAO_OFFLINE.md)
 
-O `.bit` `hud-f16-ddr2-74b3541-experimental.bit` tem SHA-256 `12b6781beaa60033be1ced9acc8fac564a28ada25f6019f32575c749e8b33370`. A Release inclui BIT de recuperação, DCP, relatórios, manifesto e SHA256SUMS. Os binários/checkpoint são assets; não entram no histórico Git. A `.mcs` está pendente da identificação exata da Flash, conforme [procedimento QSPI](PROCEDIMENTO_FLASH_QSPI.md).
+Branch: `fix/hud-ddr2-indicadores-20261109`. Base publicada preservada: `52e223d`. Fonte RTL: `b38e538b330805b265fe1b9a7cf45d7c5501acec`.
 
-## Perfil e resultado
+BIT: `hud-f16-ddr2-b38e538-status-experimental.bit`  
+SHA-256: `7c74a9d635f378c980f6378683126f182df92bcc0c3a16e19c1d11ecdd8df292`  
+USERCODE esperado após carga: **B38E538B**. O manifesto dos assets identifica o commit exato da tag.
 
-microSD CMD17/CRC16 → FIFO XPM → quadro de trabalho DDR2 → releitura/CRC32 → FIFO de retorno → dois bancos BRAM → HUD procedural → VGA 640×480. Há pré-carga enquanto a BRAM aguarda publicação e preservação da última imagem válida. O caminho BRAM anterior continua selecionável. Não há dupla superfície DDR2 nem escrita/releitura DDR2 simultâneas.
+## Indicadores
 
-O cartão mapeado contém **90 quadros RGB332 de 320×240, FPS nominal 30**, LBA absoluto **30028160**, **13501 setores**, contíguo. A extensão FAT reserva 13504 setores; não usar o padding como conteúdo. O vídeo completo de 17331 quadros permanece no computador. O arquivo/cartão não foi alterado. Se mudar o conteúdo ou a alocação, repetir o mapa somente leitura antes de usar este candidato.
+| LED | Significado nesta candidata |
+|---|---|
+| LD12 | Referência de clock travada agora. |
+| LD13 | Calibração MIG concluída agora. |
+| LD14 | Houve commit íntegro DDR2 e ACK da troca do banco de exibição; persistente. |
+| LD15 | Houve falha de vídeo/retorno/buffer; persistente, mesmo após recuperação. |
 
-A leitura física configurada é **400 kHz**, divisor 125 a 100 MHz. Não é um candidato de 30 FPS físicos: mínimo ideal 1,569 s/quadro, loop >=141,21 s, antes de esperas. A VGA mantém a varredura a ~59,52 Hz. O perfil 25 MHz foi apenas simulado e não está habilitado no BIT.
+LD14 anterior apagava no START seguinte e não comprovava publicação VGA. O novo status usa apenas o domínio HUD e o ACK já sincronizado do buffer. Recarregar o BIT limpa o histórico; CPU RESET do MIG não limpa. PASS e erro podem ficar simultaneamente acesos. LD14 não garante fundo visível sob o HUD ou vídeo habilitado.
 
-Implementação mapeada: **WNS +0,335 ns, WHS +0,016 ns**, oito grupos de skew aprovados, zero erros DRC. Permanecem três CDC-10 de reset qualificados estruturalmente, um CDC-8 MIG e REQP-1709 gerado, sem waivers. A margem de hold é estreita. Não se inventaram IO delays; a temporização externa e o PHY continuam pendentes de validação. O critério experimental permite emitir o BIT para esse teste controlado, sem confundir isso com aceite físico.
+O usuário confirmou JTAG da RC anterior antes das fotos. Nesta máquina não há USB-JTAG acessível; a origem física dos pixels das fotos continua sem comprovação independente. O novo USERID permite distinguir esta candidata no Hardware Manager, sem tentar recuperar SHA da SRAM. Nenhuma programação foi feita pelo agente.
 
-## Reproduzir
+## Perfil e validação
 
-O RTL/XDC/MIG de produção é idêntico à referência `74b3541`. O commit da tag acrescenta emissão, teste SPI e documentação. Ubuntu 24.04, Vivado/XSim 2026.1 em `/home/santojuca/AMD/2026.1/Vivado/bin`, Python 3.12 e Icarus 12 já utilizados.
+Cartão preservado: 90 quadros 320×240 RGB332/30 nominal, LBA absoluto 30028160, 13501 setores contíguos. Leitura SPI=400 kHz: atualização lenta, mínimo ideal 1,569 s/quadro e loop >=141,21 s, sem promessa de 30 FPS físicos. Há liberação de vídeo por sensores ou timeout de até 10 s. O vídeo completo de 17331 quadros permanece no PC.
+
+A implementação corrigida passou com WNS +0,468 ns / WHS +0,017 ns, oito grupos de skew e zero erros DRC. Mesmos CDC-10/CDC-8/CDC-15 e REQP-1709 qualificados, sem alertas novos ou waivers. Passaram status/reset, 17 cenários XPM com status, top com CRC ruim e publicação, recuperação BRAM sem tráfego MIG e ajuste vertical preservando fundo. São modelos digitais, não teste físico desta correção.
+
+A Release fornece BIT, DCP, recuperação anterior, relatórios e hashes como assets. Nenhum binário/checkpoint entra no histórico Git. Não há MCS enquanto o modelo exato da Flash não estiver confirmado. A main e a pre-release anterior não foram substituídas.
+
+## Reproduzir os testes
+
+Ubuntu 24.04, Vivado/XSim 2026.1, Icarus 12 e Python 3.12. Clonar esta branch e inicializar o submódulo Digilent no gitlink preservado. Saídas dos executores devem ser novas:
 
 ```bash
-git clone --branch release/hud-f16-ddr2-video-rc --single-branch \
- https://github.com/santosJuca/Trabalho-display-aviao-v2.git hud-ddr2-rc
-cd hud-ddr2-rc
-git submodule update --init --recursive
-mkdir -p validation/spi-400khz
-iverilog -g2012 -s tb_sd_read_400khz -o validation/spi-400khz/test.vvp \
- tests/tb_sd_read_400khz.sv tests/sd_video_card_model.sv hud/rtl/sd_spi_read_block.sv
-vvp validation/spi-400khz/test.vvp +VIDEO_HEX=tests/sd_header_90.hex
+mkdir -p validation/status-unit
+iverilog -g2012 -s tb_ddr2_video_status -o validation/status-unit/test.vvp \
+ tests/tb_ddr2_video_status.sv hud/rtl/ddr2_video_status.sv
+vvp validation/status-unit/test.vvp
+OUT="$PWD/validation/status-xpm" bash scripts/test_video_ddr2.sh
+OUT="$PWD/validation/top-status" QUICK_STATUS=1 bash scripts/test_top_ddr2_video.sh
+OUT="$PWD/validation/top-bram" TOP_CASE=bram bash scripts/test_top_ddr2_video.sh
 ```
 
-Os demais executores estão em `scripts/test_video_ddr2.sh --reset-only`, `scripts/test_sd_ddr2_vga.sh` e `scripts/test_top_ddr2_video.sh`; cada um recusa sobrescrever saídas. As regressões longas já concluídas não precisam ser repetidas apenas para baixar/programar o BIT. Para testar o LBA alto: `OUT="$PWD/validation/lba-real" BASE_LBA=30028160 SCENARIOS=0 bash scripts/test_sd_ddr2_vga.sh`.
+O top usa modelo UI MIG, sensores NACK, amostra 160×120 e SPI de modelo 25 MHz. Apenas no teste, debounce, timer e espera de retry são acelerados. O teste BRAM bloqueia app_rdy/app_wdf_rdy do modelo e compara pixels sem leituras/escritas DDR2. Os parâmetros físicos não são alterados por esses ensaios.
 
-Para reconstruir o perfil mapeado, executar o vetor `command` de `evidencias/perfil-cartao-fechamento.json` numa cópia sem `resultado/projeto`. `scripts/build_rc_offline.sh` conserva o perfil sintético histórico; não usá-lo como configuração física. O build completo gera DCP/relatórios, sem JTAG.
-
-Para repetir apenas a emissão do checkpoint preservado, baixar o asset DCP e conferir SHA256SUMS, então:
+Para reconstruir, executar o vetor `command` de `evidencias/perfil-cartao-fechamento.json` em cópia sem `resultado/projeto`. O script de emissão `scripts/emit_experimental_bit.tcl` aceita o DCP do hash publicado, confere part/pinagem/timing/DRC e gera o BIT local com USERID B38E538B. Exemplo:
 
 ```bash
 /home/santojuca/AMD/2026.1/Vivado/bin/vivado -mode batch -nojournal \
  -log emissao-nova.log -source scripts/emit_experimental_bit.tcl -tclargs \
- /CAMINHO/hud-f16-ddr2-74b3541-routed.dcp /CAMINHO/SAIDA_NOVA
+ /CAMINHO/hud-f16-ddr2-b38e538-status-routed.dcp /CAMINHO/SAIDA_NOVA
 ```
 
-O script aceita somente o SHA do DCP qualificado, verifica part/pinagem/timing/DRC e não abre hardware. Um build novo terá outro hash de DCP; deve ser requalificado e ter sua proveniência registrada antes de adaptar esse guard. O BIT novo também pode ter outro hash por metadados de data/hora; não alegar reprodução byte a byte sem comparar.
-
-`evidencias/manifesto-release-fontes.json` cobre esta árvore de fontes/documentos/relatórios. O `manifesto-release.json` e `SHA256SUMS` dos assets associam o commit exato aos binários. Os manifestos anteriores descrevem áreas e entregas históricas. O atlas elétrico já publicado na main, commit `14d1bf00d26a621e5d1213a41ff8071a9026a91e`, permanece intacto.
+Um build novo terá outro hash de DCP e precisa de nova qualificação/proveniência antes de adaptar o guard. Data/hora também podem mudar o hash do BIT. O script não abre hardware. A arquitetura e as etapas exatas dos contadores estão em ARQUITETURA_VIDEO_DDR2.md e VALIDACAO_OFFLINE.md. Manifestos anteriores são históricos; esta árvore tem manifesto-release-fontes.json e os assets têm manifesto-release.json/SHA256SUMS.
