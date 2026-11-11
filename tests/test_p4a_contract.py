@@ -20,7 +20,9 @@ assert 'app_addr = {11\'d0, index, 3\'d0}' in frame
 assert 'app_wdf_wren = write_accept' in frame
 assert 'app_en = write_accept || read_accept' in frame
 assert 'app_wdf_mask = 16\'d0' in frame
-assert 'sd_sector_buffer #(.BYTES(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT))' in top
+assert 'sd_sector_buffer #(.BYTES(SD_VIDEO_FRAME_BYTES))' in top
+assert 'localparam integer SD_VIDEO_FRAME_BYTES = SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT*SD_VIDEO_BPP/8;' in top
+assert 'parameter integer SD_VIDEO_BPP = 8,' in top  # padrao preserva RGB332
 assert 'assign scene_rgb=' not in frame
 print('P4A_STATIC_CONTRACT_PASS')
 print('P3D_SMOKE_SHA256:', hashlib.sha256(legacy.read_bytes()).hexdigest())

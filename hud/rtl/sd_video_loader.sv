@@ -1,11 +1,15 @@
 // CMD17 existente fornece bytes provisorios e confirma cada setor por CRC16.
+// BPP=8: RGB332 (fmt=1). BPP=2: indexado 640x480 (fmt=2) com a paleta RGB332 do
+// cabecalho (bytes 56..59) obrigatoriamente igual a PALETTE = {idx3,idx2,idx1,idx0}.
 module sd_video_loader #(
     parameter integer WIDTH = 320, HEIGHT = 240, FPS = 10,
+    parameter integer BPP = 8,
+    parameter logic [31:0] PALETTE = 32'h100C0400,
     parameter logic [31:0] BASE_LBA = 0,
     parameter integer MAX_FILE_SECTORS = 0,
     parameter integer CLK_HZ = 100_000_000,
     parameter integer RETRY_CYCLES = CLK_HZ / 10,
-    parameter integer ADDRESS_BITS = $clog2(WIDTH*HEIGHT)
+    parameter integer ADDRESS_BITS = $clog2(WIDTH*HEIGHT*BPP/8)
 )(
     input wire clk, rst, init_ready, init_failed,
     output wire request,
@@ -23,7 +27,8 @@ module sd_video_loader #(
     output reg [31:0] transfer_cycles = 0,
     output reg [3:0] state = 0
 );
-    localparam integer FRAME_BYTES = WIDTH*HEIGHT;
+    localparam integer FRAME_BYTES = WIDTH*HEIGHT*BPP/8;
+    localparam logic [15:0] FORMAT = BPP == 2 ? 16'd2 : 16'd1;
     localparam integer SECTORS = (FRAME_BYTES+511)/512;
     localparam integer PERIOD = CLK_HZ/FPS;
     localparam [3:0] INIT=0, HEADER_REQ=1, HEADER_BUSY=2, HEADER_READ=3,
@@ -46,7 +51,7 @@ module sd_video_loader #(
     wire header_ok = header[63:0] == 64'h0031444956445548 &&
         header[79:64] == 1 && header[95:80] == 512 &&
         header[111:96] == WIDTH && header[127:112] == HEIGHT &&
-        header[143:128] == FPS && header[159:144] == 1 &&
+        header[143:128] == FPS && header[159:144] == FORMAT &&
         header[191:160] >= 2 && header[223:192] == FRAME_BYTES &&
         header[255:224] == SECTORS*512 && header[319:288] == 1 &&
         header[447:320] != 0 && !reserved_bad &&
@@ -54,7 +59,7 @@ module sd_video_loader #(
         (MAX_FILE_SECTORS-1)%SECTORS == 0 &&
         64'(header[287:256]) == 64'(MAX_FILE_SECTORS)*512 &&
         64'(BASE_LBA)+MAX_FILE_SECTORS <= 64'h100000000;
-    initial if (WIDTH*HEIGHT < 512 || FPS < 1 || FPS > 60)
+    initial if (FRAME_BYTES < 512 || FPS < 1 || FPS > 60 || !(BPP == 8 || BPP == 2))
         $error("Perfil de video invalido");
     always @(posedge clk) begin
         frame_start <= 0; frame_abort <= 0; frame_commit <= 0;
@@ -84,7 +89,10 @@ module sd_video_loader #(
                         bytes_seen <= bytes_seen+1'b1;
                         if (state == HEADER_READ && byte_index < 56)
                             header <= {data_byte,header[447:8]};
-                        if (state == HEADER_READ && byte_index >= 56 && data_byte != 0)
+                        // fmt=2: bytes 56..59 devem conter exatamente a paleta sintetizada.
+                        if (state == HEADER_READ && byte_index >= 56 &&
+                            data_byte != (BPP == 2 && byte_index < 60 ?
+                                          PALETTE[{byte_index[1:0], 3'b000} +: 8] : 8'd0))
                             reserved_bad <= 1;
                     end
                     if (read_error) begin

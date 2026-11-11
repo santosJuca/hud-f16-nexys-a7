@@ -13,21 +13,43 @@ import uuid
 
 HEADER = struct.Struct('<8s6H5I16s8x')
 MAGIC = b'HUDVID1\0'
+FMT_RGB332 = 1
+# Experimental: 4 pixels por byte (bits 7:6 = pixel 0) e paleta de 4 entradas RGB332
+# nos bytes 56..59 do cabecalho; demais bytes reservados continuam zerados.
+FMT_INDEXED2 = 2
+PALETTE_OFFSET = 56
 
 
 def parse_header(data):
     if len(data) != 512:
         raise ValueError('Cabecalho exige 512 bytes')
     magic, version, header_bytes, width, height, fps, fmt, count, size, stride, total, offset, sequence = HEADER.unpack(data[:64])
-    if (magic != MAGIC or version != 1 or header_bytes != 512 or fmt != 1 or
-            (width, height) not in ((320, 240), (160, 120)) or not 1 <= fps <= 60 or
-            count < 2 or size != width*height or stride != (size+511)//512*512 or
-            total != 512+count*stride or offset != 1 or not any(sequence) or any(data[56:])):
+    if fmt == FMT_RGB332:
+        geometry_ok = (width, height) in ((320, 240), (160, 120)) and size == width*height
+        reserved = data[56:]
+        palette = None
+    elif fmt == FMT_INDEXED2:
+        geometry_ok = (width, height) == (640, 480) and size == width*height//4
+        palette = list(data[PALETTE_OFFSET:PALETTE_OFFSET+4])
+        reserved = data[PALETTE_OFFSET+4:]
+    else:
+        geometry_ok = False
+        reserved = data[56:]
+        palette = None
+    if (magic != MAGIC or version != 1 or header_bytes != 512 or not geometry_ok or
+            not 1 <= fps <= 60 or
+            count < 2 or stride != (size+511)//512*512 or
+            total != 512+count*stride or offset != 1 or not any(sequence) or any(reserved)):
         raise ValueError('Cabecalho HUDVIDEO invalido')
-    return dict(version=version, width=width, height=height, fps=fps,
-                pixel_format='RGB332', frame_count=count, frame_bytes=size,
+    info = dict(version=version, width=width, height=height, fps=fps,
+                pixel_format='RGB332' if fmt == FMT_RGB332 else 'INDEXED2_RGB332',
+                frame_count=count, frame_bytes=size,
                 frame_stride=stride, total_bytes=total, data_sector=offset,
                 sequence_id=sequence.hex())
+    if palette is not None:
+        info['bits_per_pixel'] = 2
+        info['palette_rgb332'] = [f'{p:02X}' for p in palette]
+    return info
 
 
 def convert(source, output, width=320, height=240, fps=10, synthetic=False, seconds=2):

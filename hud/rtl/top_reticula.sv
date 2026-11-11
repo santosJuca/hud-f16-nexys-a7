@@ -35,6 +35,9 @@ module top_reticula #(
     parameter logic [31:0] SD_VIDEO_LBA = 0,
     parameter integer SD_VIDEO_SECTORS = 0,
     parameter integer SD_VIDEO_WIDTH = 320, SD_VIDEO_HEIGHT = 240, SD_VIDEO_FPS = 10,
+    // Experimental: SD_VIDEO_BPP=2 seleciona 640x480 indexado (4 tons) com SD_VIDEO_PALETTE.
+    parameter integer SD_VIDEO_BPP = 8,
+    parameter logic [31:0] SD_VIDEO_PALETTE = 32'h100C0400,
     parameter integer SD_REQUEST_DEBOUNCE = 1_000_000,
     parameter logic [31:0] SD_DIAGNOSTIC_LBA = 0,
     parameter SD_REFERENCE_FILE = "",
@@ -1518,16 +1521,18 @@ wire [9:0] velocidade_hud_entrada =
     initial if (ENABLE_DDR2_VIDEO &&
         (!ENABLE_DDR2_SD_MIRROR || !ENABLE_SD_VIDEO || !ENABLE_SD_SUBSYSTEM))
         $error("DDR2_VIDEO exige SD, video e espelho DDR2 habilitados");
+    // Mesmo tamanho para RGB332 320x240 e 2 bpp 640x480: 76.800 bytes (150 setores).
+    localparam integer SD_VIDEO_FRAME_BYTES = SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT*SD_VIDEO_BPP/8;
     wire ddr_video_ready, ddr_src_ready;
     wire video_frame_published, video_frame_buffer_error;
     wire ddr_out_start,ddr_out_abort,ddr_out_commit,ddr_out_valid;
-    wire [($clog2(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT))-1:0] ddr_out_address;
+    wire [($clog2(SD_VIDEO_FRAME_BYTES))-1:0] ddr_out_address;
     wire [7:0] ddr_out_byte;
     wire p4b_frame_start, p4b_frame_abort, p4b_frame_commit, p4b_frame_write;
-    wire [($clog2(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT))-1:0] p4b_frame_address;
+    wire [($clog2(SD_VIDEO_FRAME_BYTES))-1:0] p4b_frame_address;
     wire [7:0] p4b_data_byte;
     generate if (ENABLE_SD_VIDEO && ENABLE_SD_SUBSYSTEM) begin : g_video
-        localparam integer AB = $clog2(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT);
+        localparam integer AB = $clog2(SD_VIDEO_FRAME_BYTES);
         wire frame_start, frame_abort, frame_commit, frame_write, frame_ready;
         wire [AB-1:0] frame_address, display_address;
         wire display_enable, display_valid, frame_valid;
@@ -1545,6 +1550,7 @@ wire [9:0] velocidade_hud_entrada =
             .frame_valid(frame_valid),.updated(updated_frame),.publish(publish_frame),
             .frozen(frozen),.frame_id(display_frame_id));
         sd_video_loader #(.WIDTH(SD_VIDEO_WIDTH),.HEIGHT(SD_VIDEO_HEIGHT),.FPS(SD_VIDEO_FPS),
+            .BPP(SD_VIDEO_BPP),.PALETTE(SD_VIDEO_PALETTE),
             .BASE_LBA(SD_VIDEO_LBA),.MAX_FILE_SECTORS(SD_VIDEO_SECTORS)) u_loader (
             .clk(clk_hud),.rst(reset_operacao),.init_ready(sd_init_ready && video_startup_ready),.init_failed(sd_init_failed),
             .request(video_request),.grant(video_grant),.lba(video_lba),
@@ -1556,7 +1562,7 @@ wire [9:0] velocidade_hud_entrada =
             .frame_commit(frame_commit),.frame_write(frame_write),.frame_address(frame_address),
             .header_valid(),.failed(video_failed),.frames_loaded(video_frames),.errors(video_errors),
             .late_frames(video_late),.transfer_cycles(video_cycles),.state(video_state));
-        sd_sector_buffer #(.BYTES(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT)) u_frames (
+        sd_sector_buffer #(.BYTES(SD_VIDEO_FRAME_BYTES)) u_frames (
             .wr_clk(clk_hud),.rd_clk(pixel_clk),.rst(reset_operacao),
             .wr_start(ENABLE_DDR2_VIDEO ? ddr_out_start : frame_start),
             .wr_abort(ENABLE_DDR2_VIDEO ? ddr_out_abort : frame_abort),
@@ -1568,7 +1574,8 @@ wire [9:0] velocidade_hud_entrada =
             .rd_frame_start(publish_frame),
             .rd_enable(display_enable),.rd_address(display_address),.rd_byte(display_byte),
             .rd_valid(display_valid),.rd_sector_valid(frame_valid),.rd_updated(updated_frame));
-        sd_video_background #(.WIDTH(SD_VIDEO_WIDTH),.HEIGHT(SD_VIDEO_HEIGHT)) u_background (
+        sd_video_background #(.WIDTH(SD_VIDEO_WIDTH),.HEIGHT(SD_VIDEO_HEIGHT),
+            .BPP(SD_VIDEO_BPP),.PALETTE(SD_VIDEO_PALETTE)) u_background (
             .pixel_clk(pixel_clk),.rst(reset_operacao),.toggle_button(video_mode),
             .pixel_x(pixel_x),.pixel_y(pixel_y),.video_on(video_on),.hsync(hsync),.vsync(vsync),
             .hud_rgb(capture_hud_rgb),.hud_opaque(capture_hud_opaque),.frame_valid(frame_valid),
@@ -1692,9 +1699,9 @@ wire [9:0] velocidade_hud_entrada =
     // O modo DDR2_VIDEO alimenta o buffer de exibicao pela releitura do MIG.
     ddr2_ui_smoke_top #(
         .FRAME_TEST_WORDS(ENABLE_DDR2_FRAME_TEST ?
-            (SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT/16) : 0),
+            (SD_VIDEO_FRAME_BYTES/16) : 0),
         .ENABLE_SD_MIRROR(ENABLE_DDR2_SD_MIRROR),.OUTPUT_STREAM(ENABLE_DDR2_VIDEO),
-        .MIRROR_FRAME_BYTES(SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT)
+        .MIRROR_FRAME_BYTES(SD_VIDEO_FRAME_BYTES)
     ) u_ui_test (
         .src_clk(clk_hud),
         .src_rst(reset_operacao),
@@ -1739,7 +1746,7 @@ wire [9:0] velocidade_hud_entrada =
         $error("P4B: habilite somente um modo de teste DDR2");
     initial if (ENABLE_DDR2_SD_MIRROR && !(ENABLE_SD_VIDEO && ENABLE_SD_SUBSYSTEM))
         $error("P4B: precisa de ENABLE_SD_VIDEO e ENABLE_SD_SUBSYSTEM");
-    initial if (ENABLE_DDR2_SD_MIRROR && (SD_VIDEO_WIDTH*SD_VIDEO_HEIGHT)%16 != 0)
+    initial if (ENABLE_DDR2_SD_MIRROR && (SD_VIDEO_FRAME_BYTES)%16 != 0)
         $error("P4B: quadro deve ter bytes multiplos de 16");
     initial if (ENABLE_DDR2_SD_MIRROR && (SD_VIDEO_LBA == 0 || SD_VIDEO_SECTORS <= 1))
         $error("P4B: informe LBA e quantidade de setores verificados no cartao atual");
