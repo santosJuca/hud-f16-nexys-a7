@@ -14,6 +14,7 @@ Branch local `sprint/spi-ddr2-throughput-20261109`. Os candidatos sintetizam o c
 - [Teste fisico, medicao ILA proposta e recuperacao](PROCEDIMENTO_TESTE_FPGA.md)
 - [Evidencias novas e comandos](evidencias/sprint-spi-20261109/comandos.txt)
 - [Pendencias fisicas](PENDENCIAS_FISICAS.md)
+- [Experimental: video 640x480 2 bpp, 4 tons verdes](VIDEO_640x480_2BPP.md)
 - [Referencia publicada de 5 MHz](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/hud-f16-ddr2-spi5-rc-20261109)
 
 Foram executados 21 cenarios SPI focados, sete cenarios integrados de quadro completo, dois builds e implementacao OOC da sonda de publicacao. Os testes detectam erros injetados; nao sao prova de placa. A sonda ocupa 37 LUTs/162 FF isoladamente, mas nao esta instanciada nos candidatos.
