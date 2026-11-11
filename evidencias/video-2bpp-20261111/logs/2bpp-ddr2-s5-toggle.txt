@@ -1,0 +1,6 @@
+HEADER parsed=3130657275747869662d70706232766e000000010003860000012c0000012c00000000030002001e01e00280020000010031444956445548 valid=1 init_failed=0
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=2
+DISPLAY_CADENCE interval_ms=33.600000 source_frame=3
+PASS sd_ddr2_vga WIDTH=640 HEIGHT=480 BPP=2 USE_DDR2=1 FPS=30 scenario=5 frames=3 updates=3 errors=0 pixel_checks=1228800 load_cycles=2515651 late_frames=0
+DDR2_TRAFFIC writes=14400 reads=14400 good_readbacks=3 preloads=0
+/home/claude/hud-video-640x480-2bpp/tests/tb_sd_ddr2_vga.sv:232: $finish called at 132960035000 (1ps)

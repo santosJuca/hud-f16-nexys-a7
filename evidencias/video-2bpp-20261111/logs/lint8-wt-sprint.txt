@@ -1,0 +1,456 @@
+%Warning-BLKSEQ: hud/rtl/sd_spi_read_block.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: hud/rtl/sd_spi_read_block.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: tests/ddr2_mig_ui_model.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: tests/ddr2_mig_ui_model.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: tests/ddr2_mig_ui_model.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: tests/ddr2_mig_ui_model.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: tests/ddr2_mig_ui_model.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: tests/ddr2_mig_ui_model.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: tests/ddr2_mig_ui_model.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: tests/ddr2_mig_ui_model.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: tests/ddr2_mig_ui_model.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: tests/ddr2_mig_ui_model.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: tests/sim_stubs/unisim_stubs.sv: Blocking assignment '=' in sequential logic process
+%Warning-BLKSEQ: tests/sim_stubs/unisim_stubs.sv: Blocking assignment '=' in sequential logic process
+%Warning-CASEINCOMPLETE: hud/rtl/sd_spi_command.sv: Case values incompletely covered (example pattern 0x0)
+%Warning-CASEINCOMPLETE: hud/rtl/sd_spi_command.sv: Case values incompletely covered (example pattern 0x0)
+%Warning-CASEINCOMPLETE: hud/rtl/sd_spi_read_block.sv: Case values incompletely covered (example pattern 0x0)
+%Warning-CASEINCOMPLETE: hud/rtl/sd_spi_read_block.sv: Case values incompletely covered (example pattern 0x0)
+%Warning-EOFNEWLINE: hud/rtl/mma8452_i2c.sv: Missing newline at end of file (POSIX 3.206).
+%Warning-PINMISSING: hud/rtl/top_reticula.sv: Cell has missing pin: 'pronto'
+%Warning-PINMISSING: hud/rtl/top_reticula.sv: Cell has missing pin: 'valido_destino'
+%Warning-SYNCASYNCNET: hud/rtl/top_reticula.sv: Signal flopped as both synchronous and async: 'top_reticula.reset_operacao'
+%Warning-TIMESCALEMOD: hud/rtl/alertas_vga.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/alertas_voo.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/atitude_accel_fixa.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/atitude_cordic.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/atitude_fusao_complementar.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/atitude_gyro_hud.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/atitude_vetorial.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/bmp085_altitude.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/bmp085_aritmetica_seq.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/bmp085_compensacao_pressao.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/bmp085_compensacao_pressao_seq.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/bmp085_compensacao_seq.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/bmp085_compensacao_temp.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/bmp085_compensacao_temp_seq.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/bmp085_i2c.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/buzzer_driver.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/calibracao_vga.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/captura_controle.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/controle_heading.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/controle_joystick.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/controle_manche.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/controle_modo.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/controle_modo_manche.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/controle_modo_operacao.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/dados_hud.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/ddr2_p4b_async_fifo.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/ddr2_sd_frame_mirror.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/ddr2_video_status.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/entrada_hud.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/estado_vertical.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/gyro_bias_dt.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/gyro_integrador.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/heading_fusao.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/heading_magnetico.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/hmc5883l_i2c.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/horizonte_atitude.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/hud_align_status_vga.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/hud_auto_zero.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/hud_capture_status_vga.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/hud_command_dispatch.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/hud_flight_coords.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/hud_vertical_adjust.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/joystick_xadc.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/mira_caca_vga.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/mira_joystick.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/mma8452_i2c.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/mpu6050_i2c.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/numeros_hud.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/operacao_hud.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/projecao_vertical.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/reticula_caca_vga.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/reticula_vga.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/sd_bitmap_overlay.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/sd_diagnostic.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/sd_sector_buffer.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/sd_spi_cmd0.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-TIMESCALEMOD: hud/rtl/sd_spi_command.sv: Timescale missing on this module as other modules have it (IEEE 1800-2017 3.14.2.3)
+%Warning-VARHIDDEN: hud/rtl/projecao_vertical.sv: Declaration of signal hides declaration in upper scope: 'seno'
+%Warning-WIDTHEXPAND: hud/rtl/alertas_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/alertas_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/alertas_vga.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/alertas_vga.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/alertas_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/alertas_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_accel_fixa.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'cal_count' generates 6 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ADD expects 32 bits on the LHS, but LHS's ARRAYSEL generates 26 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ADD expects 48 bits on the RHS, but RHS's ARRAYSEL generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ADD expects 48 bits on the RHS, but RHS's ARRAYSEL generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ADD expects 48 bits on the RHS, but RHS's ARRAYSEL generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ADD expects 48 bits on the RHS, but RHS's ARRAYSEL generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ADD expects 48 bits on the RHS, but RHS's ARRAYSEL generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ADD expects 50 bits on the LHS, but LHS's ARRAYSEL generates 48 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ADD expects 50 bits on the LHS, but LHS's ARRAYSEL generates 48 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ADD expects 50 bits on the RHS, but RHS's ARRAYSEL generates 48 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ADD expects 50 bits on the RHS, but RHS's ARRAYSEL generates 48 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ADD expects 50 bits on the RHS, but RHS's ARRAYSEL generates 48 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ADD expects 50 bits on the RHS, but RHS's ARRAYSEL generates 48 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's ARRAYSEL generates 24 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'ax' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'ay' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'az' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'gx' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'gy' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'gz' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator COND expects 32 bits on the Conditional False, but Conditional False's ARRAYSEL generates 26 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator DIVS expects 64 bits on the RHS, but RHS's VARREF 'CLK_HZ' generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'count' generates 7 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'still_count' generates 7 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'still_count' generates 7 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator SUB expects 32 bits on the RHS, but RHS's ARRAYSEL generates 26 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator SUB expects 64 bits on the RHS, but RHS's VARREF 'norm' generates 50 bits.
+%Warning-WIDTHEXPAND: hud/rtl/atitude_vetorial.sv: Operator VAR 'ALLOW_TILTED_STARTUP' expects 32 bits on the Initial value, but Initial value's CONST '1'h1' generates 1 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_pressao_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's SIGNED generates 17 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_pressao_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's SIGNED generates 20 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_pressao_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's VARREF 'ac1' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_pressao_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's VARREF 'ac2' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_pressao_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's VARREF 'ac3' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_pressao_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's VARREF 'b1' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_pressao_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's VARREF 'b2' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_pressao_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's VARREF 'b5' generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_temp_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's SIGNED generates 17 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_temp_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's SIGNED generates 17 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_temp_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's SIGNED generates 17 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_temp_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's VARREF 'mc' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_compensacao_temp_seq.sv: Operator ASSIGNDLY expects 64 bits on the Assign RHS, but Assign RHS's VARREF 'md' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/bmp085_i2c.sv: Operator ADD expects 8 bits on the RHS, but RHS's VARREF 'calib_index' generates 5 bits.
+%Warning-WIDTHEXPAND: hud/rtl/calibracao_vga.sv: Operator SHIFTRS expects 32 bits on the LHS, but LHS's VARREF 'dx' generates 27 bits.
+%Warning-WIDTHEXPAND: hud/rtl/calibracao_vga.sv: Operator SHIFTRS expects 32 bits on the LHS, but LHS's VARREF 'dy' generates 27 bits.
+%Warning-WIDTHEXPAND: hud/rtl/calibracao_vga.sv: Operator SUB expects 32 or 6 bits on the RHS, but RHS's SEL generates 3 bits.
+%Warning-WIDTHEXPAND: hud/rtl/controle_joystick.sv: Operator ADD expects 32 bits on the LHS, but LHS's REPLICATE generates 13 bits.
+%Warning-WIDTHEXPAND: hud/rtl/controle_joystick.sv: Operator ADD expects 32 bits on the LHS, but LHS's REPLICATE generates 13 bits.
+%Warning-WIDTHEXPAND: hud/rtl/controle_joystick.sv: Operator ADD expects 32 bits on the LHS, but LHS's REPLICATE generates 13 bits.
+%Warning-WIDTHEXPAND: hud/rtl/controle_joystick.sv: Operator ADD expects 32 bits on the LHS, but LHS's REPLICATE generates 13 bits.
+%Warning-WIDTHEXPAND: hud/rtl/controle_joystick.sv: Operator GT expects 32 bits on the LHS, but LHS's REPLICATE generates 13 bits.
+%Warning-WIDTHEXPAND: hud/rtl/controle_joystick.sv: Operator GT expects 32 bits on the LHS, but LHS's REPLICATE generates 13 bits.
+%Warning-WIDTHEXPAND: hud/rtl/ddr2_sd_frame_mirror.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'ui_index' generates 13 bits.
+%Warning-WIDTHEXPAND: hud/rtl/ddr2_sd_frame_mirror.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'ui_index' generates 13 bits.
+%Warning-WIDTHEXPAND: hud/rtl/ddr2_sd_frame_mirror.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'ui_index' generates 13 bits.
+%Warning-WIDTHEXPAND: hud/rtl/ddr2_sd_frame_mirror.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'ui_index' generates 13 bits.
+%Warning-WIDTHEXPAND: hud/rtl/ddr2_sd_frame_mirror.sv: Operator NEQ expects 32 bits on the LHS, but LHS's VARREF 'ui_index' generates 13 bits.
+%Warning-WIDTHEXPAND: hud/rtl/ddr2_ui_smoke_top.v: Operator VAR 'ENABLE_SD_MIRROR' expects 32 bits on the Initial value, but Initial value's CONST '1'h1' generates 1 bits.
+%Warning-WIDTHEXPAND: hud/rtl/ddr2_ui_smoke_top.v: Operator VAR 'OUTPUT_STREAM' expects 32 bits on the Initial value, but Initial value's CONST '1'h1' generates 1 bits.
+%Warning-WIDTHEXPAND: hud/rtl/estado_vertical.sv: Operator ADD expects 32 bits on the RHS, but RHS's VARREF 'vertical_counts' generates 19 bits.
+%Warning-WIDTHEXPAND: hud/rtl/estado_vertical.sv: Operator ADD expects 32 bits on the RHS, but RHS's VARREF 'vertical_counts' generates 19 bits.
+%Warning-WIDTHEXPAND: hud/rtl/estado_vertical.sv: Operator ADD expects 34 bits on the LHS, but LHS's SIGNED generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/estado_vertical.sv: Operator ADD expects 34 bits on the RHS, but RHS's SIGNED generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/estado_vertical.sv: Operator ADD expects 34 bits on the RHS, but RHS's SIGNED generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/estado_vertical.sv: Operator ADD expects 49 bits on the LHS, but LHS's SIGNED generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/estado_vertical.sv: Operator ADD expects 49 bits on the RHS, but RHS's SIGNED generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/estado_vertical.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 26 bits.
+%Warning-WIDTHEXPAND: hud/rtl/estado_vertical.sv: Operator GTS expects 32 bits on the LHS, but LHS's VARREF 'sem_gravidade' generates 20 bits.
+%Warning-WIDTHEXPAND: hud/rtl/estado_vertical.sv: Operator LTS expects 32 bits on the LHS, but LHS's VARREF 'sem_gravidade' generates 20 bits.
+%Warning-WIDTHEXPAND: hud/rtl/estado_vertical.sv: Operator SUB expects 32 bits on the LHS, but LHS's SIGNED generates 26 bits.
+%Warning-WIDTHEXPAND: hud/rtl/estado_vertical.sv: Operator SUB expects 32 bits on the LHS, but LHS's SIGNED generates 26 bits.
+%Warning-WIDTHEXPAND: hud/rtl/gyro_bias_dt.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'cal_count' generates 6 bits.
+%Warning-WIDTHEXPAND: hud/rtl/heading_fusao.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 20 bits.
+%Warning-WIDTHEXPAND: hud/rtl/heading_fusao.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 20 bits.
+%Warning-WIDTHEXPAND: hud/rtl/hud_align_status_vga.sv: Operator ADD expects 32 bits on the RHS, but RHS's VARREF 'ones' generates 4 bits.
+%Warning-WIDTHEXPAND: hud/rtl/hud_align_status_vga.sv: Operator ADD expects 32 bits on the RHS, but RHS's VARREF 'tens' generates 4 bits.
+%Warning-WIDTHEXPAND: hud/rtl/hud_align_status_vga.sv: Operator ADD expects 32 or 6 bits on the RHS, but RHS's VARREF 'col' generates 4 bits.
+%Warning-WIDTHEXPAND: hud/rtl/hud_align_status_vga.sv: Operator FUNCREF 'glyph' expects 32 bits on the Function Argument, but Function Argument's VARREF 'glyph_number' generates 5 bits.
+%Warning-WIDTHEXPAND: hud/rtl/hud_capture_status_vga.sv: Operator ADD expects 32 or 6 bits on the RHS, but RHS's VARREF 'col' generates 3 bits.
+%Warning-WIDTHEXPAND: hud/rtl/hud_vertical_adjust.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'pending_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/hud_vertical_adjust.sv: Operator GTES expects 32 bits on the LHS, but LHS's VARREF 'pending_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/hud_vertical_adjust.sv: Operator LTES expects 32 bits on the LHS, but LHS's VARREF 'pending_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/hud_vertical_adjust.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'pending_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator ADD expects 12 bits on the LHS, but LHS's SIGNED generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator ADD expects 12 bits on the RHS, but RHS's SIGNED generates 5 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator ADD expects 12 bits on the RHS, but RHS's SIGNED generates 5 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator GT expects 32 bits on the LHS, but LHS's VARREF 'step_x_calc' generates 12 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator GT expects 32 bits on the LHS, but LHS's VARREF 'step_y_calc' generates 12 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator GTS expects 32 bits on the LHS, but LHS's VARREF 'next_x' generates 12 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator GTS expects 32 bits on the LHS, but LHS's VARREF 'next_y' generates 12 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'dx' generates 12 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'dy' generates 12 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator LTS expects 32 bits on the LHS, but LHS's VARREF 'next_x' generates 12 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator LTS expects 32 bits on the LHS, but LHS's VARREF 'next_y' generates 12 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator SUB expects 12 bits on the LHS, but LHS's SIGNED generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator SUB expects 12 bits on the RHS, but RHS's SIGNED generates 5 bits.
+%Warning-WIDTHEXPAND: hud/rtl/mira_joystick.sv: Operator SUB expects 12 bits on the RHS, but RHS's SIGNED generates 5 bits.
+%Warning-WIDTHEXPAND: hud/rtl/numeros_hud.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/numeros_hud.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/numeros_hud.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/numeros_hud.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'ap_reg' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'ap_reg' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'ap_reg' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'ar_reg' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'ar_reg' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'ar_reg' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 32 bits on the RHS, but RHS's CONST '16'h200' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 32 bits on the RHS, but RHS's CONST '16'h200' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 32 bits on the RHS, but RHS's CONST '16'h200' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 32 bits on the RHS, but RHS's CONST '16'h200' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 32 bits on the RHS, but RHS's CONST '16'h200' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 32 bits on the RHS, but RHS's CONST '16'h200' generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 34 bits on the LHS, but LHS's SIGNED generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 34 bits on the RHS, but RHS's SIGNED generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/projecao_vertical.sv: Operator ADD expects 34 bits on the RHS, but RHS's SIGNED generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_caca_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_vga.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_vga.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/reticula_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_diagnostic.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'count' generates 20 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_sector_buffer.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'count' generates 18 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_sector_buffer.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'count' generates 18 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_sector_buffer.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'count' generates 18 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_sector_buffer.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'count' generates 18 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_spi_command.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'divider' generates 7 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_spi_command.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'wait_count' generates 6 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_spi_preamble.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'divider' generates 7 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_spi_preamble.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'power_count' generates 18 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_spi_read_block.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'divider' generates 7 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_spi_read_block.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'wait_count' generates 17 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_spi_read_block.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'wait_count' generates 17 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_video_background.sv: Operator DIV expects 32 bits on the LHS, but LHS's VARREF 'future_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_video_background.sv: Operator DIV expects 32 bits on the LHS, but LHS's VARREF 'future_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_video_loader.sv: Operator ADD expects 64 bits on the RHS, but RHS's VARREF 'MAX_FILE_SECTORS' generates 32 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_video_loader.sv: Operator EQ expects 32 bits on the LHS, but LHS's SEL generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_video_loader.sv: Operator EQ expects 32 bits on the LHS, but LHS's SEL generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/sd_video_loader.sv: Operator EQ expects 32 bits on the LHS, but LHS's SEL generates 16 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator DIV expects 32 bits on the LHS, but LHS's VARREF 'altitude_ft' generates 17 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator DIV expects 32 bits on the LHS, but LHS's VARREF 'altitude_ft' generates 17 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator DIV expects 32 bits on the LHS, but LHS's VARREF 'altitude_ft' generates 17 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator DIV expects 32 bits on the LHS, but LHS's VARREF 'altitude_ft' generates 17 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator DIV expects 32 bits on the LHS, but LHS's VARREF 'heading_deg' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator DIV expects 32 bits on the LHS, but LHS's VARREF 'heading_deg' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator DIV expects 32 bits on the LHS, but LHS's VARREF 'velocidade_kt' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator DIV expects 32 bits on the LHS, but LHS's VARREF 'velocidade_kt' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator FUNCREF 'glyph_on' expects 32 bits on the Function Argument, but Function Argument's VARREF 'pixel_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator MODDIV expects 32 bits on the LHS, but LHS's VARREF 'altitude_ft' generates 17 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator MODDIV expects 32 bits on the LHS, but LHS's VARREF 'heading_deg' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_caca_vga.sv: Operator MODDIV expects 32 bits on the LHS, but LHS's VARREF 'velocidade_kt' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'pitch_y_local' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'pitch_y_local' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'pitch_y_local' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'pitch_y_local' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the RHS, but RHS's CONST '22'sh2d' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the RHS, but RHS's CONST '22'sh55' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the RHS, but RHS's CONST '22'sh7d' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator ADD expects 32 bits on the RHS, but RHS's CONST '22'sha5' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'pixel_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator LTE expects 32 bits on the LHS, but LHS's VARREF 'render_flight_y' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_x' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'alvo_y' generates 9 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'pitch_y_local' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'pitch_y_local' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'pitch_y_local' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'pitch_y_local' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the RHS, but RHS's CONST '22'sh23' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the RHS, but RHS's CONST '22'sh4b' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the RHS, but RHS's CONST '22'sh73' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simbologia_vga.sv: Operator SUB expects 32 bits on the RHS, but RHS's CONST '22'sh9b' generates 22 bits.
+%Warning-WIDTHEXPAND: hud/rtl/simulador_voo.sv: Operator COND expects 18 bits on the Conditional True, but Conditional True's VARREF 'heading_delta_q8' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/velocidade_inercial.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'cal_count' generates 6 bits.
+%Warning-WIDTHEXPAND: hud/rtl/vga_controller.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'h_cont' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/vga_controller.sv: Operator EQ expects 32 bits on the LHS, but LHS's VARREF 'v_cont' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/vga_controller.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'h_cont' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/vga_controller.sv: Operator GTE expects 32 bits on the LHS, but LHS's VARREF 'v_cont' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/vga_controller.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'h_cont' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/vga_controller.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'h_cont' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/vga_controller.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'v_cont' generates 10 bits.
+%Warning-WIDTHEXPAND: hud/rtl/vga_controller.sv: Operator LT expects 32 bits on the LHS, but LHS's VARREF 'v_cont' generates 10 bits.
+%Warning-WIDTHEXPAND: tests/ddr2_mig_ui_model.sv: Operator SHIFTR expects 32 bits on the LHS, but LHS's VARREF 'app_addr' generates 27 bits.
+%Warning-WIDTHEXPAND: tests/sim_stubs/xpm_fifo_async_stub.sv: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'wbin' generates 6 bits.
+%Warning-WIDTHEXPAND: tests/sim_stubs/xpm_fifo_async_stub.sv: Operator SUB expects 32 bits on the RHS, but RHS's VARREF 'rbin_w' generates 6 bits.
+%Warning-WIDTHTRUNC: hud/rtl/atitude_gyro_hud.sv: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SHIFTRS generates 48 bits.
+%Warning-WIDTHTRUNC: hud/rtl/atitude_vetorial.sv: Logical operator COND expects 1 bit on the Conditional Test, but Conditional Test's VARREF 'ALLOW_TILTED_STARTUP' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/atitude_vetorial.sv: Logical operator COND expects 1 bit on the Conditional Test, but Conditional Test's VARREF 'ALLOW_TILTED_STARTUP' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/atitude_vetorial.sv: Logical operator IF expects 1 bit on the If, but If's VARREF 'ALLOW_TILTED_STARTUP' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/atitude_vetorial.sv: Operator ASSIGNDLY expects 23 bits on the Assign RHS, but Assign RHS's SEL generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/atitude_vetorial.sv: Operator ASSIGNDLY expects 24 bits on the Assign RHS, but Assign RHS's COND generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/atitude_vetorial.sv: Operator ASSIGNDLY expects 24 bits on the Assign RHS, but Assign RHS's SEL generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_altitude.sv: Operator ASSIGNDLY expects 13 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_compensacao_pressao_seq.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'b3_reg' generates 64 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_compensacao_pressao_seq.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'b6_reg' generates 64 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_compensacao_temp_seq.sv: Operator ASSIGNDLY expects 16 bits on the Assign RHS, but Assign RHS's SHIFTRS generates 64 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_compensacao_temp_seq.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'b5_reg' generates 64 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_compensacao_temp_seq.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'x1_reg' generates 64 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_compensacao_temp_seq.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'x1_reg' generates 64 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_compensacao_temp_seq.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'x2_reg' generates 64 bits.
+%Warning-WIDTHTRUNC: hud/rtl/bmp085_i2c.sv: Operator ASSIGNDLY expects 19 bits on the Assign RHS, but Assign RHS's SHIFTR generates 24 bits.
+%Warning-WIDTHTRUNC: hud/rtl/ddr2_sd_frame_mirror.sv: Logical operator COND expects 1 bit on the Conditional Test, but Conditional Test's VARREF 'OUTPUT_STREAM' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/ddr2_sd_frame_mirror.sv: Logical operator LOGAND expects 1 bit on the LHS, but LHS's VARREF 'OUTPUT_STREAM' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/ddr2_sd_frame_mirror.sv: Logical operator LOGAND expects 1 bit on the LHS, but LHS's VARREF 'OUTPUT_STREAM' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/ddr2_sd_frame_mirror.sv: Logical operator LOGAND expects 1 bit on the LHS, but LHS's VARREF 'OUTPUT_STREAM' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/ddr2_sd_frame_mirror.sv: Logical operator LOGNOT expects 1 bit on the LHS, but LHS's VARREF 'OUTPUT_STREAM' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/estado_vertical.sv: Operator ASSIGNDLY expects 14 bits on the Assign RHS, but Assign RHS's SHIFTRS generates 38 bits.
+%Warning-WIDTHTRUNC: hud/rtl/estado_vertical.sv: Operator ASSIGNDLY expects 19 bits on the Assign RHS, but Assign RHS's SHIFTRS generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/estado_vertical.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's SHIFTRS generates 48 bits.
+%Warning-WIDTHTRUNC: hud/rtl/estado_vertical.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's SHIFTRS generates 49 bits.
+%Warning-WIDTHTRUNC: hud/rtl/estado_vertical.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's SHIFTRS generates 49 bits.
+%Warning-WIDTHTRUNC: hud/rtl/estado_vertical.sv: Operator ASSIGNDLY expects 32 bits on the Assign RHS, but Assign RHS's SHIFTRS generates 49 bits.
+%Warning-WIDTHTRUNC: hud/rtl/estado_vertical.sv: Operator ASSIGNW expects 34 bits on the Assign RHS, but Assign RHS's ADD generates 49 bits.
+%Warning-WIDTHTRUNC: hud/rtl/hud_align_status_vga.sv: Operator ASSIGNW expects 3 bits on the Assign RHS, but Assign RHS's SHIFTR generates 10 bits.
+%Warning-WIDTHTRUNC: hud/rtl/hud_vertical_adjust.sv: Operator ASSIGNDLY expects 9 bits on the Assign RHS, but Assign RHS's ADD generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/hud_vertical_adjust.sv: Operator ASSIGNDLY expects 9 bits on the Assign RHS, but Assign RHS's NEGATE generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/hud_vertical_adjust.sv: Operator ASSIGNDLY expects 9 bits on the Assign RHS, but Assign RHS's SUB generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/hud_vertical_adjust.sv: Operator ASSIGNDLY expects 9 bits on the Assign RHS, but Assign RHS's VARREF 'LIMIT' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/projecao_vertical.sv: Operator ASSIGNDLY expects 19 bits on the Assign RHS, but Assign RHS's SHIFTRS generates 34 bits.
+%Warning-WIDTHTRUNC: hud/rtl/sd_spi_controller.sv: Operator VAR 'MAX_READ_WAIT_TOKEN_CLOCKS' expects 32 bits on the Initial value, but Initial value's MULS generates 64 bits.
+%Warning-WIDTHTRUNC: hud/rtl/sd_status_display.sv: Operator ASSIGNW expects 4 bits on the Assign RHS, but Assign RHS's SHIFTR generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/sd_status_display.sv: Operator ASSIGNW expects 8 bits on the Assign RHS, but Assign RHS's SHIFTR generates 64 bits.
+%Warning-WIDTHTRUNC: hud/rtl/sd_video_background.sv: Operator ASSIGNW expects 17 bits on the Assign RHS, but Assign RHS's ADD generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/simulador_voo.sv: Operator ASSIGN expects 11 bits on the Assign RHS, but Assign RHS's SHIFTR generates 16 bits.
+%Warning-WIDTHTRUNC: hud/rtl/top_reticula.sv: Operator VAR 'ENABLE_DDR2_SD_MIRROR' expects 1 bits on the Initial value, but Initial value's CONST '32'h1' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/top_reticula.sv: Operator VAR 'ENABLE_DDR2_VIDEO' expects 1 bits on the Initial value, but Initial value's CONST '32'h1' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/top_reticula.sv: Operator VAR 'ENABLE_SD_SUBSYSTEM' expects 1 bits on the Initial value, but Initial value's CONST '32'h1' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/top_reticula.sv: Operator VAR 'ENABLE_SD_VIDEO' expects 1 bits on the Initial value, but Initial value's CONST '32'h1' generates 32 bits.
+%Warning-WIDTHTRUNC: hud/rtl/velocidade_inercial.sv: Operator VAR 'DEADZONE_U' expects 19 bits on the Initial value, but Initial value's VARREF 'DEADZONE' generates 32 bits.
+%Warning-WIDTHTRUNC: tests/ddr2_mig_ui_model.sv: Bit extraction of array[8191:0] requires 13 bit index, not 27 bits.
+%Warning-WIDTHTRUNC: tests/sim_stubs/xpm_fifo_async_stub.sv: Logical operator LOGAND expects 1 bit on the RHS, but RHS's VARREF 'SIM_ASSERT_CHK' generates 32 bits.
+%Warning-WIDTHTRUNC: tests/sim_stubs/xpm_fifo_async_stub.sv: Logical operator LOGAND expects 1 bit on the RHS, but RHS's VARREF 'SIM_ASSERT_CHK' generates 32 bits.

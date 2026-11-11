@@ -1,0 +1,30 @@
+{
+  "entries": [
+    {
+      "index": 0,
+      "rgb332": "00",
+      "rgb12": "000",
+      "rgb24": "000000"
+    },
+    {
+      "index": 1,
+      "rgb332": "04",
+      "rgb12": "020",
+      "rgb24": "002200"
+    },
+    {
+      "index": 2,
+      "rgb332": "0C",
+      "rgb12": "060",
+      "rgb24": "006600"
+    },
+    {
+      "index": 3,
+      "rgb332": "10",
+      "rgb12": "090",
+      "rgb24": "009900"
+    }
+  ],
+  "hud_symbology_rgb12": "0F0",
+  "nota": "Verde maximo (G=7, 12h0F0) reservado ao HUD; video usa G<=4."
+}
