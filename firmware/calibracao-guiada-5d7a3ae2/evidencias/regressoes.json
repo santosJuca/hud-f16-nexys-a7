@@ -1,0 +1,13 @@
+{
+  "tb_heading_magnetico": "PASS",
+  "tb_heading_fusao": "PASS",
+  "tb_controle_heading": "PASS",
+  "tb_hmc5883l_i2c": "PASS",
+  "tb_atitude_fusao_complementar": "PASS",
+  "tb_sd_status_display": "PASS",
+  "tb_modo_operacao": "PASS",
+  "tb_alinhamento81": "PASS",
+  "tb_video_mode_publication": "PASS",
+  "tb_hud_dispatch": "INCOMPATIVEL COM BASELINE: expectativa CAPTURE sobre SW4 difere do RTL preservado; mesma falha reproduzida na fonte5DE9E304; teste integrado novo passou",
+  "mpu6050_i2c_tb": "INCONCLUSIVO: Icarus timeout120s; Verilator nao suporta disable do testbench; fonte MPU inalterada"
+}
