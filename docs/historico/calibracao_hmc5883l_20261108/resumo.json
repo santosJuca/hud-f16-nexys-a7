@@ -1,0 +1,150 @@
+{
+  "accepted_samples": 1873,
+  "rejected": {},
+  "tilt_limit_degrees": 5,
+  "applied_to_fpga": false,
+  "minimum": [
+    760,
+    -435
+  ],
+  "maximum": [
+    1024,
+    -113
+  ],
+  "offset": [
+    892.0,
+    -274.0
+  ],
+  "half_span": [
+    132.0,
+    161.0
+  ],
+  "static_noise_span": [
+    1,
+    2
+  ],
+  "minimum_required_span": [
+    20,
+    20
+  ],
+  "motion_distinguishable_from_noise": true,
+  "gain_q12": [
+    4546,
+    3727
+  ],
+  "samples_per_30_degree_sector": [
+    14,
+    46,
+    343,
+    5,
+    13,
+    271,
+    11,
+    3,
+    500,
+    320,
+    12,
+    335
+  ],
+  "missing_sectors": [],
+  "max_abs_roll": 3.240234375,
+  "max_abs_pitch": 2.1982421875,
+  "ready_for_review": true,
+  "model_scope": "Native XY midpoint offsets and positive axis gains; planar heading only",
+  "capture_exit_code": 0,
+  "raw_sha256": "9e70eb468601e77a6516f3f4c7a246df9c6ae8d8d20d83ba1a8abaf55cbbe894",
+  "offset_integer": [
+    892,
+    -274
+  ],
+  "old_calibration": {
+    "offset": [
+      717,
+      -161
+    ],
+    "gain_q12": [
+      4545,
+      3727
+    ]
+  },
+  "old_fit_on_new_data": {
+    "radius_mean": 270.16905337495325,
+    "radius_stdev": 88.50073880121653,
+    "radius_cv_percent": 32.75754113791525,
+    "heading_sectors_covered": 4,
+    "radius_min": 74.94508981845604,
+    "radius_max": 376.19438014826846
+  },
+  "proposed_fit": {
+    "radius_mean": 143.43957599701852,
+    "radius_stdev": 5.0206722680044855,
+    "radius_cv_percent": 3.5002001596190184,
+    "heading_sectors_covered": 12,
+    "radius_min": 124.06464275676453,
+    "radius_max": 156.96148090155512
+  },
+  "first20_mean_xy": [
+    863.85,
+    -417.05
+  ],
+  "last20_mean_xy": [
+    858.7,
+    -430.85
+  ],
+  "return_xy_distance_counts": 14.729646974724142,
+  "guided_positions_approximate_only": [
+    {
+      "position": "initial 12h",
+      "x": 865,
+      "y": -418,
+      "heading_old": 125.07915280655858,
+      "heading_proposed": 77.11785024261484
+    },
+    {
+      "position": "1h; giro aproximado de 30 graus horario desde a referencia inicial",
+      "x": 906,
+      "y": -431,
+      "heading_old": 130.4852523975111,
+      "heading_proposed": 96.20750610345287
+    },
+    {
+      "position": "3h; giro aproximado de 90 graus horario desde a referencia inicial",
+      "x": 1017,
+      "y": -305,
+      "heading_old": 158.5148771723053,
+      "heading_proposed": 168.5072393936441
+    },
+    {
+      "position": "6h; giro aproximado de 180 graus horario desde a referencia inicial",
+      "x": 955,
+      "y": -130,
+      "heading_old": 186.09662472878568,
+      "heading_proposed": 241.9138505069792
+    },
+    {
+      "position": "9h; giro aproximado de 270 graus horario desde a referencia inicial",
+      "x": 769,
+      "y": -216,
+      "heading_old": 139.06388833899476,
+      "heading_proposed": 338.86389779085226
+    },
+    {
+      "position": "12h; retorno informado a posicao inicial apos volta completa horaria",
+      "x": 858,
+      "y": -430,
+      "heading_old": 122.58698685828524,
+      "heading_proposed": 75.11267991528678
+    }
+  ],
+  "sampling": "Polling JTAG ~100ms; sequencias podem saltar publicacoes sem implicar perda de aquisicao do sensor",
+  "absolute_heading_accuracy": "Nao medida; celular ainda sem referencia magnetica verificada",
+  "decoded_csv_sha256": "0bf14db20bb4c9e6931dfbb0c39d56f3f1a23c1df156ad69a5cfcc6a422eaf76",
+  "programmed_capture_bit_sha256": "7a8c416e0eec1a58d952ecb0c5167495153ca2788c594cd49ad17d706ef2353d",
+  "raw_tilt_before_angular_zero": true,
+  "application": {
+    "sha256": "953a6416f25e1ff2ee5aa13c9a5b84dd4b59c85c73dbefec4d115154e6cd73a2",
+    "jtag_programmed": true,
+    "evidence": "/home/santojuca/Downloads/hud-video-modos-20261106/validation/bussola-coleta-20261108-5y5d40pe/calibrado/jtag-aprovado-qqlgx3mq",
+    "physical_validation": "pendente"
+  }
+}

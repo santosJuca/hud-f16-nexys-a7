@@ -1,0 +1,4 @@
+SOURCE_DCP=/home/santojuca/.codex/.chatgpt-projects/g-p-6a91af560a788191a5216a1bb50a03a5/output/calibracao-magnetica-guiada-20261113/resultado/routed.dcp
+SOURCE_SHA256=4f451a9d247de0b9cc79f640bd94840b25ac14ca425d6b5738a5400f8aad2bd3
+PART=xc7a100tcsg324-1
+READ_ONLY_CHECKPOINT_ANALYSIS; NO_SYNTHESIS_ROUTE_BITSTREAM_OR_HARDWARE_COMMANDS

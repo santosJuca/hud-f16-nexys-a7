@@ -28,7 +28,7 @@ jobs:
       - name: Instalar simuladores
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y iverilog verilator make g++ python3 python3-pil ffmpeg
+          sudo apt-get install --no-install-recommends -y iverilog verilator make g++ python3 python3-pil ffmpeg tcl
 
       - name: Registrar versoes
         run: |
@@ -67,7 +67,7 @@ jobs:
   firmware-recente:
     name: Firmware 5D7A3AE2
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
     defaults:
       run:
         shell: bash
@@ -89,9 +89,7 @@ jobs:
 
       - name: Reproduzir testes do firmware recente
         run: |
-          firmware_test_dir="$RUNNER_TEMP/hud-5d7a3ae2"
-          cp -a firmware/calibracao-guiada-5d7a3ae2 "$firmware_test_dir"
-          bash "$firmware_test_dir/scripts/reproduzir-testes.sh" 2>&1 | tee "$RUNNER_TEMP/firmware-recente.log"
+          bash scripts/test_latest_reconciliation.sh "$RUNNER_TEMP/hud-5d7a3ae2" 2>&1 | tee "$RUNNER_TEMP/firmware-recente.log"
 
       - name: Salvar evidencias do firmware recente
         if: always()
@@ -100,6 +98,7 @@ jobs:
           name: firmware-5d7a3ae2
           path: |
             ${{ runner.temp }}/firmware-recente.log
-            ${{ runner.temp }}/hud-5d7a3ae2/evidencias/
+            ${{ runner.temp }}/hud-5d7a3ae2/*.log
+            ${{ runner.temp }}/hud-5d7a3ae2/firmware/evidencias/
           if-no-files-found: warn
           retention-days: 30

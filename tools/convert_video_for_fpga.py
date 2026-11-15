@@ -40,7 +40,7 @@ def convert(source, output, width=320, height=240, fps=10, synthetic=False, seco
         if source is None or not stat.S_ISREG(source.lstat().st_mode):
             raise ValueError('Entrada deve ser arquivo regular')
         origin = str(source.resolve())
-        inputs = ['-i', origin]
+        inputs = ['-i', origin, '-t', str(seconds)]
     output.mkdir(mode=0o700)
     target = output/'HUDVIDEO.BIN'
     command = ['ffmpeg', '-v', 'error', '-nostdin', '-threads', '1', *inputs,

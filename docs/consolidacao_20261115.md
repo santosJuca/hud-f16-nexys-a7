@@ -41,9 +41,10 @@ O trabalho foi preparado em worktree novo, separado da main e dos experimentos.
 - As páginas de pinagem, sensores, arquitetura e timing identificam o perfil a que pertencem.
 - O CI verifica separadamente a base e o pacote recente, com retenção de artefatos de 30 dias.
 
-O atlas mostra o buzzer em JD4; a base v1.1 da raiz usa outro mapeamento.
-A navegação explicita essa diferença. Para qualquer montagem, conferir o XDC do
-perfil escolhido, sem misturar instruções entre as versões.
+Correção após a reconciliação local: o atlas e os XDC da base v1.1 e de
+5D7A3AE2 usam JD4/G3 para o buzzer. JC10/E6 pertence a uma etapa anterior.
+A afirmação anterior de divergência entre atlas e base v1.1 estava incorreta.
+Para qualquer montagem, conferir o XDC do perfil escolhido.
 
 ## Validação desta integração
 

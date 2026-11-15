@@ -76,6 +76,10 @@ O pacote recente já inclui fontes, parâmetros, MIG, constraints, scripts,
 relatórios e aceites. BIT, DCP, MCS e recuperação ficam nos assets da release.
 Não é preciso gerar ou programar outro firmware para organizar esses anexos.
 
+A reconciliação local acrescenta a [Fmax estimada do checkpoint 5D7A3AE2](evidencias/reconciliacao_local_20261115/fmax_estimado.rpt)
+e sua [proveniência e limites](evidencias/reconciliacao_local_20261115/analise_checkpoint.json).
+É uma análise do DCP preservado, sem nova síntese ou varredura de frequência.
+
 ## Vídeo associado
 
 O BIT recente espera B++ 640×480/2 bpp, 4.800 quadros, SHA-256

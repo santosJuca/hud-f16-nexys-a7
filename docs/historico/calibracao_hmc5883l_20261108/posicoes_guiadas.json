@@ -1,0 +1,185 @@
+[
+  {
+    "utc": "2026-11-08T15:24:52.411500+00:00",
+    "action": "Iniciar registro na posicao de referencia 12h; primeiro giro solicitado ate 1h",
+    "initial_probe": {
+      "mag_valid": true,
+      "mpu_valid": true,
+      "sample": 376,
+      "x": 865,
+      "y": -418,
+      "z": 892,
+      "roll": 0.005859375,
+      "pitch": -0.3916015625,
+      "age_seconds": 0.075
+    },
+    "physical_position": "12h e referencia relativa escolhida; nao e norte magnetico medido",
+    "operator_confirmed_motion": false
+  },
+  {
+    "utc": "2026-11-08T15:25:43.268396+00:00",
+    "operator_report": "Cheguei",
+    "confirmed_relative_position": "1h; giro aproximado de 30 graus horario desde a referencia inicial",
+    "rows": 495,
+    "last_age_seconds": 0.038,
+    "last": {
+      "mag_valid": true,
+      "mpu_valid": true,
+      "sample": 1144,
+      "x": 906,
+      "y": -431,
+      "z": 894,
+      "roll": 0.0400390625,
+      "pitch": -0.12890625
+    },
+    "last20_all_valid": true,
+    "last20_max_tilt": 0.146484375,
+    "raw_ranges_so_far": {
+      "x": [
+        858,
+        909
+      ],
+      "y": [
+        -435,
+        -415
+      ],
+      "z": [
+        890,
+        898
+      ]
+    },
+    "stopped": false,
+    "duration_seconds": 50.46
+  },
+  {
+    "utc": "2026-11-08T15:26:25.049132+00:00",
+    "operator_report": "cheguei em 3h",
+    "confirmed_relative_position": "3h; giro aproximado de 90 graus horario desde a referencia inicial",
+    "rows": 904,
+    "last_age_seconds": 0.012,
+    "last": {
+      "mag_valid": true,
+      "mpu_valid": true,
+      "sample": 1557,
+      "x": 1017,
+      "y": -305,
+      "z": 898,
+      "roll": 0.857421875,
+      "pitch": 0.25
+    },
+    "last20_all_valid": true,
+    "last20_max_tilt": 0.865234375,
+    "last20_unique_samples": 20,
+    "raw_ranges_so_far": {
+      "x": [
+        858,
+        1024
+      ],
+      "y": [
+        -435,
+        -303
+      ],
+      "z": [
+        873,
+        900
+      ]
+    },
+    "stop_requested": false,
+    "duration_seconds": 92.27
+  },
+  {
+    "utc": "2026-11-08T15:27:01.527197+00:00",
+    "operator_report": "cheguei em 6h",
+    "confirmed_relative_position": "6h; giro aproximado de 180 graus horario desde a referencia inicial",
+    "rows": 1261,
+    "last_age_seconds": 0.008,
+    "last": {
+      "mag_valid": true,
+      "mpu_valid": true,
+      "sample": 1918,
+      "x": 955,
+      "y": -130,
+      "z": 909,
+      "roll": 1.166015625,
+      "pitch": -0.744140625
+    },
+    "last20_all_valid": true,
+    "last20_max_tilt": 1.17578125,
+    "last20_unique_samples": 20,
+    "raw_ranges_so_far": {
+      "x": [
+        858,
+        1024
+      ],
+      "y": [
+        -435,
+        -126
+      ],
+      "z": [
+        873,
+        913
+      ]
+    },
+    "stop_requested": false,
+    "duration_seconds": 128.75,
+    "ready_for_next_step": true
+  },
+  {
+    "utc": "2026-11-08T15:27:33.809617+00:00",
+    "operator_report": "cheguei em 9h",
+    "confirmed_relative_position": "9h; giro aproximado de 270 graus horario desde a referencia inicial",
+    "rows": 1576,
+    "last_age_seconds": 0.101,
+    "last": {
+      "mag_valid": true,
+      "mpu_valid": true,
+      "sample": 2237,
+      "x": 769,
+      "y": -216,
+      "z": 905,
+      "roll": 0.333984375,
+      "pitch": -1.15234375
+    },
+    "last20_all_valid": true,
+    "last20_max_tilt": 1.1943359375,
+    "last20_unique_samples": 20,
+    "raw_ranges_so_far": {
+      "x": [
+        767,
+        1024
+      ],
+      "y": [
+        -435,
+        -113
+      ],
+      "z": [
+        873,
+        913
+      ]
+    },
+    "stop_requested": false,
+    "duration_seconds": 160.94,
+    "ready_for_next_step": true
+  },
+  {
+    "utc": "2026-11-08T15:28:04.134824+00:00",
+    "operator_report": "voltei às 12h",
+    "confirmed_relative_position": "12h; retorno informado a posicao inicial apos volta completa horaria",
+    "rows": 1873,
+    "last_age_seconds": 0.064,
+    "last": {
+      "mag_valid": true,
+      "mpu_valid": true,
+      "sample": 2537,
+      "x": 858,
+      "y": -430,
+      "z": 888,
+      "roll": -0.041015625,
+      "pitch": -0.2724609375
+    },
+    "last20_all_valid": true,
+    "last20_max_tilt": 0.275390625,
+    "last20_unique_samples": 20,
+    "duration_seconds": 191.3
+  }
+]
