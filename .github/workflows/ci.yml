@@ -71,8 +71,6 @@ jobs:
     defaults:
       run:
         shell: bash
-    env:
-      FIRMWARE_TEST_DIR: ${{ runner.temp }}/hud-5d7a3ae2
     steps:
       - uses: actions/checkout@v7
         with:
@@ -91,8 +89,9 @@ jobs:
 
       - name: Reproduzir testes do firmware recente
         run: |
-          cp -a firmware/calibracao-guiada-5d7a3ae2 "$FIRMWARE_TEST_DIR"
-          bash "$FIRMWARE_TEST_DIR/scripts/reproduzir-testes.sh" 2>&1 | tee "$RUNNER_TEMP/firmware-recente.log"
+          firmware_test_dir="$RUNNER_TEMP/hud-5d7a3ae2"
+          cp -a firmware/calibracao-guiada-5d7a3ae2 "$firmware_test_dir"
+          bash "$firmware_test_dir/scripts/reproduzir-testes.sh" 2>&1 | tee "$RUNNER_TEMP/firmware-recente.log"
 
       - name: Salvar evidencias do firmware recente
         if: always()
