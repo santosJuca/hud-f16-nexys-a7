@@ -1,0 +1,2 @@
+PASS score:128 vetores, limites25bit, produtos50bit, pesos55bit e comparacao exata
+/home/santojuca/.codex/.chatgpt-projects/g-p-6a91af560a788191a5216a1bb50a03a5/output/publicacao-calibracao-5d7a3ae2-20261113/firmware/calibracao-guiada-5d7a3ae2/tests/tb_mag_score.sv:30: $finish called at 10240000 (1ps)

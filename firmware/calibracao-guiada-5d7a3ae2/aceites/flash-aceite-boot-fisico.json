@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-11-13T19:34:21.001049-03:00",
+  "source": "Observacao fisica relatada pelo operador nesta conversa",
+  "operator_report": "dESLIGUEI E RELIGUEI INICIOU NORMAL",
+  "physical_power_cycle": "APROVADO_PELO_OPERADOR",
+  "scope": "Inicializacao normal apos desligamento e religamento fisicos, em resposta ao procedimento sem programacao JTAG",
+  "version_last_verified_from_flash": "5D7A3AE2",
+  "identity_after_physical_cycle": "Nao consultada por JTAG nesta etapa; ultimo boot comandado e readback integral confirmaram5D7A3AE2",
+  "image_sha256": "c7a16ae94504167fa432fc04d2accf8c6a0595c30f2ba68745008ae187dc11fd",
+  "no_new_programming_performed_this_step": true,
+  "runtime_calibration_persistence": false,
+  "limits": "Nao amplia precisao magnetica para outras orientacoes ou ambientes; CDC e timing externo SPI continuam pendentes"
+}

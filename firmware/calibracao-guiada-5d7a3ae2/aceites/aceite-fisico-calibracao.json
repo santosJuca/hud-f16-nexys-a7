@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-11-13T19:10:14.124105-03:00",
+  "source": "Relato do operador nesta conversa",
+  "usercode_programmed": "5D7A3AE2",
+  "bit_sha256": "ad8d6d7902bd50ed2924de9eb6b159d1d5b3ca8614247476aae44e0f79ee027a",
+  "operator_confirmed_APtO_2d_and_BTNR_apply": true,
+  "observations_deg": [
+    {
+      "position": "inicial",
+      "hud": 150,
+      "phone": 151,
+      "hud_minus_phone": -1
+    },
+    {
+      "position": "giro_direita",
+      "hud": 253,
+      "phone": 245,
+      "hud_minus_phone": 8
+    },
+    {
+      "position": "retorno",
+      "hud": 152,
+      "phone": 155,
+      "hud_minus_phone": -3
+    }
+  ],
+  "hud_initial_return_difference_deg": 2,
+  "scope": "Perfil aplicado e resposta ao giro/retorno confirmados pelo operador em tres posicoes; comparacao com celular sem rastreabilidade metrologica",
+  "not_validated": [
+    "precisao em todas as direcoes e inclinacoes",
+    "continuidade durante todo o movimento",
+    "repetibilidade em outros ambientes",
+    "regressao fisica de video horizonte e modos neste candidato"
+  ],
+  "persistence": "BIT e perfil runtime volateis; nenhuma nova escrita Flash ou microSD nesta validacao"
+}
