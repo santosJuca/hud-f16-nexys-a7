@@ -15,8 +15,11 @@ module tb_top_heading;
         .vauxp3(1'b0),.vauxn3(1'b0),.vauxp10(1'b0),.vauxn10(1'b0),
         .joystick_sw_n(1'b1),.i2c_sda(mpu_sda),.i2c_scl(mpu_scl),
         .baro_sda(baro_sda),.baro_scl(baro_scl),
-        .mag_sda(sda),.mag_scl(scl),.MAG_LED(led));
+        .mag_sda(sda),.mag_scl(scl),
+        .SD_DIAG_PAGE(4'b0000),
+        .MAG_LED(led));
     defparam dut.u_heading.DEBOUNCE_CYCLES=4;
+    defparam dut.u_hud_commands.DEBOUNCE_CYCLES=4;
     defparam dut.u_magnetometro.STARTUP_TICKS=16'd4;
     defparam dut.u_magnetometro.POLL_TICKS=16'd40;
     defparam dut.u_magnetometro.CONFIG_WAIT=16'd4;
@@ -31,8 +34,8 @@ module tb_top_heading;
     end
     task automatic botao(input logic [1:0] valor);
         @(negedge clk); btn=valor;
-        repeat(12) @(negedge clk);
-        btn=0; repeat(12) @(negedge clk);
+        repeat(32) @(negedge clk);
+        btn=0; repeat(32) @(negedge clk);
     endtask
     task automatic entrada(input integer esperado);
         #1;
@@ -81,7 +84,9 @@ module tb_top_heading;
         release dut.joystick_x_raw; release dut.joystick_y_raw;
         sw=7'b1111000; repeat(3) @(negedge clk);
         force dut.sensor_ok=1'b1; force dut.atitude_calibrada=1'b1;
-        force dut.gyro_bias_calibrado=1'b1; force dut.fusao_valida=1'b1;
+        force dut.gyro_bias_calibrado=1'b1;
+        force dut.vector_calibrated=1'b1;
+        force dut.fusao_valida=1'b1;
         force dut.fusao_pitch_px=-11'sd12; force dut.fusao_roll_q8=10'sd17;
         #1;
         if(!dut.usar_mpu || dut.pitch_px_entrada!=-12 || dut.roll_q8_entrada!=17)

@@ -1,0 +1,58 @@
+{
+  "tests": {
+    "tb_hud_auto_zero": [
+      "PASS: zero automatico unico, seguro e sem conflito manual"
+    ],
+    "tb_top_video_startup": [
+      "PASS partida: calibracao real antes do video, sem BTNL; prazo, modo manual e falhas MPU/SD preservados"
+    ],
+    "tb_horizonte_completo": [
+      "PASS geometria: 190171 pontos, 270 linhas; roll completo e pitch combinado"
+    ],
+    "tb_atitude_vetorial": [
+      "PASS atitude vetorial: 4713 comparacoes dinamicas, 5188 atualizacoes; calibracao, eixos, zero, aceleracao, falhas"
+    ],
+    "tb_atitude_bias": [
+      "PASS offset observado: media dos tres eixos, nivel, validade e zero condicionado",
+      "PASS rejeicao: offset excessivo, variacao e rampa acumulada na janela",
+      "PASS rejeicao: aceleracao instavel, pose inclinada e sensor invertido"
+    ],
+    "tb_top_atitude_bias": [
+      "PASS top bias: estimador real, fonte MPU e ATT validos; HDG ausente continua invalido",
+      "PASS top bias: desabilitacao por SW9 e recalibracao preservadas",
+      "PASS montagem, pitch/roll, rumo e motivos no CDC: ROTATED=0 FRONT_REVERSED=0"
+    ],
+    "tb_captura_controle": [
+      "PASS controles: bounce, video, captura, passo, vistas, grade, pulso de zero"
+    ],
+    "tb_sd_video_capture": [
+      "PASS captura video WIDTH=160 scenario=0 frames=6 updates=6 errors=0 pixel_checks=3379200 load_cycles=637299"
+    ],
+    "tb_top_capture": [
+      "PASS top captura+atitude+vistas+icone: 5222400 pixels, 4 combinacoes, BTNL retorna ao HUD, diagnostico isolado"
+    ],
+    "tb_top_sd_video": [
+      "PASS top video+HUD+icone: 4300800 pixels, 12 combinacoes, BTNL retorna ao HUD, diagnostico isolado"
+    ]
+  },
+  "pipeline_scenarios": {
+    "0": [
+      "PASS pipeline WIDTH=160 scenario=0 frames=4 updates=4 errors=0 pixel_checks=921600 load_cycles=637299"
+    ],
+    "1": [
+      "PASS pipeline WIDTH=160 scenario=1 frames=4 updates=4 errors=1 pixel_checks=921600 load_cycles=637299"
+    ],
+    "2": [
+      "PASS pipeline WIDTH=160 scenario=2 frames=4 updates=4 errors=1 pixel_checks=921600 load_cycles=637299"
+    ],
+    "3": [
+      "PASS invalid header: fallback, nenhum quadro publicado"
+    ],
+    "4": [
+      "PASS pipeline WIDTH=160 scenario=4 frames=2 updates=2 errors=3 pixel_checks=323409 load_cycles=637299"
+    ],
+    "5": [
+      "PASS pipeline WIDTH=160 scenario=5 frames=4 updates=3 errors=0 pixel_checks=921600 load_cycles=637299"
+    ]
+  }
+}

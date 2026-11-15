@@ -1,5 +1,7 @@
 # Próximas etapas
 
+> Este roteiro preserva pendências da base anterior. Para o conjunto recente e a entrega, consulte a [consolidação de 15/11](consolidacao_20261115.md) e o [guia de entrega](entrega_demo.md).
+
 O escopo atual é validar a montagem e registrar evidências do bitstream existente. Não há necessidade demonstrada de acrescentar funções ao HUD antes dessas verificações.
 
 1. **Verificar eletricamente o KY-023 e o XADC.** Confirmar alimentação, terra comum, faixa dos eixos, pares diferenciais e correspondência entre movimento físico e direção indicada.

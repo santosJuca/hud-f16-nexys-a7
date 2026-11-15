@@ -1,0 +1,15 @@
+{
+  "diagonal": "PASS",
+  "hard_iron": "PASS",
+  "noise": "PASS",
+  "rotated_soft_iron": "PASS",
+  "holdout_arc": "PASS",
+  "holdout_cluster": "PASS",
+  "holdout_outlier": "PASS",
+  "interference": "PASS",
+  "z_interference": "PASS",
+  "training_outlier": "PASS",
+  "stationary": "PASS",
+  "limited_arc": "PASS",
+  "no_improvement": "PASS"
+}

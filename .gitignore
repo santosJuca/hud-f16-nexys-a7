@@ -2,3 +2,8 @@
 /.Xil/
 *.jou
 *.log
+
+/validation/
+
+__pycache__/
+*.py[cod]

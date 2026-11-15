@@ -1,5 +1,7 @@
 # Sensores e entradas externas
 
+> Este guia descreve a base v1.1. A calibração guiada e a orientação do conjunto recente estão no [guia 5D7A3AE2](../firmware/calibracao-guiada-5d7a3ae2/README.md).
+
 Este documento descreve as conexões do top atual, conferidas em `rtl/top_reticula.sv` e `constraints/nexys_a7_reticula.xdc`. A existência de driver e simulação não comprova o funcionamento elétrico da montagem.
 
 | Dispositivo | Conexão atual | Uso no HUD | Limites conhecidos |
@@ -8,6 +10,12 @@ Este documento descreve as conexões do top atual, conferidas em `rtl/top_reticu
 | BMP085 | I²C independente: SDA JD1/H4, SCL JD2/H1 | Temperatura/pressão compensadas e altitude barométrica | Identificação/cálculos em simulação; LD5 aceso e ALT BAD ausente relatados em 13/10; altitude absoluta não caracterizada |
 | HMC5883L | I²C independente: SDA JD3/G1, SCL JD9/G2 | Rumo magnético planar combinado com gyro Z | LD6 aceso e rumo respondendo à rotação relatados em 13/10; sem compensação de inclinação/declinação e precisão não medida |
 | KY-023 | Eixos em VAUX3 e VAUX10 via JXADC; botão em JA1/C17 | Movimento da mira em CAÇA e LOCK/UNLOCK | Função relatada em 13/10; teste posterior com resistores de 27 kΩ relatou leituras acima de 1 V. Topologia/valores finais não documentados; faixa elétrica não validada |
+
+## Atitude e calibração atuais
+
+`FULL_ATTITUDE=1` seleciona o estimador vetorial e CORDIC; a cadeia complementar anterior permanece por parâmetro. A v1.1 tem relato físico de horizonte acompanhando MPU e desaparecimento de ATT BAD após calibração. Zero automático e SW7 em captura não dispensam estabilidade do sensor; não tratar ausência de validade como ângulo medido.
+
+A calibração HMC de 31/10 usa offsets X=717/Y=-161 e ganhos Q12 X=4545/Y=3727 em `constraints/magnetometer_calibration.tcl`. Os parâmetros de orientação do perfil ensaiado estão em `scripts/build_attitude_capture.tcl`. São específicos da montagem; a calibração de 19/10 é histórica, não deve sobrescrever o perfil posterior. A leitura continua planar.
 
 ## Alimentação e níveis
 
@@ -24,3 +32,7 @@ VOO e POUSO também simulam grandezas de voo conforme a política operacional; i
 ## Validação pendente
 
 Na bancada, confirmar cada barramento, identificação, leituras em repouso e movimento conhecido, desconexão e recuperação. Registrar orientação dos eixos, faixa observada do joystick, estabilidade do centro e tensão da montagem. LEDs LD4/LD5 informam estados de diagnóstico definidos no RTL, não precisão ou calibração completa.
+
+## microSD e buzzer
+
+SDHC SPI com CMD17, CRC16 e retries usa o leitor onboard; o perfil físico histórico é 160×120, solicitação de 1 FPS e half-period 125. A temporização elétrica SPI não está integralmente qualificada. O buzzer sai em JD4/G3 para estágio transistorizado externo. Não programar hardware ou alterar a fiação com base apenas na aprovação dos testes RTL.

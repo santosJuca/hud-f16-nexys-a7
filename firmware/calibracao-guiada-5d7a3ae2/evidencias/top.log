@@ -1,0 +1,2 @@
+PASS top: perfil original, controles, coleta, validacao, aplicacao, fallback 3D, recuperacao, invalidade, pitch/roll/video preservados
+/home/santojuca/.codex/.chatgpt-projects/g-p-6a91af560a788191a5216a1bb50a03a5/output/publicacao-calibracao-5d7a3ae2-20261113/firmware/calibracao-guiada-5d7a3ae2/tests/tb_mag_top.sv:61: $finish called at 62130000 (1ps)

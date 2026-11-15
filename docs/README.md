@@ -1,18 +1,35 @@
-# Documentação técnica
+# Documentação do HUD F-16
 
-O [README principal](../README.md) resume o HUD e as instruções de uso. Os guias abaixo detalham a branch `feat/modos-alertas`. A montagem de 13/10/2026 foi validada por relatos de bancada; os relatórios de 08/10 preservam seu contexto histórico.
+Comece pelo [README principal](../README.md). A versão recente é **5D7A3AE2**,
+preservada como pacote reproduzível. Os módulos da raiz pertencem à base v1.1
+anterior e têm documentação própria.
+
+## Firmware recente e entrega
 
 | Documento | Conteúdo |
 | --- | --- |
-| [Validação da montagem em 13/10/2026](validacao_hardware_20261013.md) | Pinagem atual, Flash, resultados relatados, verificações digitais e pendências elétricas |
-| [Pinagem](pinagem.md) | Pinos efetivamente usados no top e no XDC, controles e sensores |
-| [Arquitetura](arquitetura.md) | Fluxo de dados e responsabilidades dos blocos ativos |
-| [Entrega e demonstração](entrega_demo.md) | Estado físico informado, identidade do bitstream, ressalvas, roteiro, evidências e apresentação |
-| [Sensores](sensores.md) | Interfaces, funções e limites de validação |
-| [Testes](testes.md) | Regressão, cobertura e ressalvas da simulação |
-| [Timing e recursos](timing_recursos.md) | Resultados do build de 08/10/2026 e cobertura das constraints |
-| [Roadmap](roadmap.md) | Próximas verificações, sem ampliar o escopo funcional |
-| [Estudo de vídeo auxiliar](vga_auxiliar.md) | Exploração não implementada de captura/composição de vídeo |
-| [Catálogo de bitstreams](../bitstreams/README.md) | Versões, hashes, relatórios e status físico |
+| [Guia 5D7A3AE2](../firmware/calibracao-guiada-5d7a3ae2/README.md) | Operação, calibração, testes, build, vídeo e recuperação |
+| [Manifesto](../firmware/calibracao-guiada-5d7a3ae2/MANIFESTO.json) | Hashes, recursos, parâmetros e limites |
+| [Relatórios Vivado](../firmware/calibracao-guiada-5d7a3ae2/relatorios/) | Síntese, utilização, timing roteado, CDC, DRC e bus skew |
+| [Aceites](../firmware/calibracao-guiada-5d7a3ae2/aceites/) | Ensaios relatados, Flash/readback e ciclo físico de energia |
+| [Entrega e demonstração](entrega_demo.md) | Requisitos, evidência de pipeline e anexos necessários |
+| [Consolidação de 15/11](consolidacao_20261115.md) | Origens, decisões e validação da integração |
+| [Atlas elétrico](atlas-eletrico/README.md) | Pranchas e PDF; conferir com o XDC do perfil utilizado |
 
-Os documentos descrevem o RTL em `rtl/top_reticula.sv` e o XDC `constraints/nexys_a7_reticula.xdc`. Os relatórios do build de 08/10 comprovam síntese e implementação; os ensaios físicos posteriores são resultados informados pelo operador e estão identificados separadamente em `entrega_demo.md`. Arquivos de auditoria e validação com datas anteriores são registros históricos, não substituem esta descrição do estado atual.
+## Base v1.1 e registros anteriores
+
+| Documento | Conteúdo |
+| --- | --- |
+| [Guia v1.1 preservado](historico/README_baseline_20261106.md) | Controles, fontes e reprodução da base anterior |
+| [Arquitetura v1.1](arquitetura.md) | Fluxo e composição no RTL da raiz |
+| [Pinagem v1.1](pinagem.md) e [sensores](sensores.md) | Interfaces da base; não substituem o XDC 5D7A3AE2 |
+| [Testes v1.1](testes.md) | Regressão da raiz, vídeo, captura e ferramentas Python |
+| [Consolidação do PR #6](consolidacao_20261106/README.md) | Cobertura das branches, relatórios e recuperação |
+| [Validação física v1.1](HUD_V1_1_VALIDACAO_FISICA.md) | Oito verificações relatadas, com identidade e limites |
+| [Builds históricos](../bitstreams/README.md) | BITs e relatórios de outubro |
+| [Timing histórico](timing_recursos.md) | Métricas de 08/10, não da versão recente |
+| [Entrega de 08/10](historico/entrega_20261008.md) | Registro anterior preservado |
+| [Estudo de VGA externo](vga_auxiliar.md) | Proposta histórica; não é a reprodução SD/DDR2 atual |
+
+Arquivos datados preservam resultados da versão indicada. O registro posterior
+de aceite não altera retroativamente o status de um build anterior.

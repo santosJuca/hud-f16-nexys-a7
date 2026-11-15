@@ -1,4 +1,4 @@
-name: Simulacao RTL
+name: Validacao HUD
 
 on:
   push:
@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   simulacao:
-    name: Testes com Icarus Verilog
+    name: Base v1.1 - RTL e video
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     defaults:
@@ -28,7 +28,7 @@ jobs:
       - name: Instalar simuladores
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y iverilog verilator make g++
+          sudo apt-get install --no-install-recommends -y iverilog verilator make g++ python3 python3-pil ffmpeg
 
       - name: Registrar versoes
         run: |
@@ -36,11 +36,19 @@ jobs:
           vvp -V
           verilator --version
           g++ --version
+          python3 --version
+          ffmpeg -version
 
       - name: Executar simulacoes
         run: |
           mkdir -p build
           scripts/test.sh 2>&1 | tee build/tests.log
+
+      - name: Testar ferramentas Python
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+
+      - name: Testar video, captura e partida automatica
+        run: scripts/test_attitude_capture.sh build/capture 2>&1 | tee build/capture.log
 
       - name: Salvar log e capturas VGA
         if: always()
@@ -49,7 +57,49 @@ jobs:
           name: simulacao-rtl
           path: |
             build/tests.log
+            build/capture.log
+            build/capture/**/*.log
             build/*.ppm
             build/tests/*.ppm
           if-no-files-found: warn
-          retention-days: 14
+          retention-days: 30
+
+  firmware-recente:
+    name: Firmware 5D7A3AE2
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Instalar simulador
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y iverilog
+
+      - name: Registrar versoes
+        run: |
+          iverilog -V
+          vvp -V
+          python3 --version
+
+      - name: Reproduzir testes do firmware recente
+        run: |
+          firmware_test_dir="$RUNNER_TEMP/hud-5d7a3ae2"
+          cp -a firmware/calibracao-guiada-5d7a3ae2 "$firmware_test_dir"
+          bash "$firmware_test_dir/scripts/reproduzir-testes.sh" 2>&1 | tee "$RUNNER_TEMP/firmware-recente.log"
+
+      - name: Salvar evidencias do firmware recente
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-5d7a3ae2
+          path: |
+            ${{ runner.temp }}/firmware-recente.log
+            ${{ runner.temp }}/hud-5d7a3ae2/evidencias/
+          if-no-files-found: warn
+          retention-days: 30

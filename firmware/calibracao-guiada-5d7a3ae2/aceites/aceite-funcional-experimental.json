@@ -1,0 +1,26 @@
+{
+  "recorded_at": "2026-11-13T19:14:12.568772-03:00",
+  "status": "ACEITE_FUNCIONAL_EXPERIMENTAL_LIMITADO_AOS_TESTES_RELATADOS",
+  "source": "Observacao fisica informada pelo operador nesta conversa",
+  "usercode_last_programmed": "5D7A3AE2",
+  "bit_sha256": "ad8d6d7902bd50ed2924de9eb6b159d1d5b3ca8614247476aae44e0f79ee027a",
+  "operator_report": "video normal; horizonte normal; chegou ao POUSO",
+  "physical_checks": {
+    "guided_calibration_applied": true,
+    "compass_initial_turn_return": "Confirmado em tres posicoes; diferencas HUD-celular -1,+8,-3 graus",
+    "video": "Normal segundo operador",
+    "attitude_horizon": "Normal segundo operador",
+    "landing_mode": "POUSO atingido segundo operador"
+  },
+  "related_evidence": "aceite-fisico-calibracao.json",
+  "limits": [
+    "Nao comprova precisao magnetica em todas as orientacoes ou ambientes",
+    "Nao comprova boot autonomo deste candidato; carga JTAG volatil",
+    "Perfil runtime volatil; nao existe persistencia dos coeficientes novos neste aceite",
+    "CDC-10=3 e CDC-8=1 continuam pendentes; CDC-15=176",
+    "Timing externo SPI nao qualificado"
+  ],
+  "flash_written": false,
+  "microSD_written": false,
+  "git_publication": false
+}

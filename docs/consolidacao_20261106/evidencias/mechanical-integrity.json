@@ -1,0 +1,168 @@
+[
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/.gitattributes",
+    "sha256": "349250c0802b1c8da3d6c838484cb88e97d7942798f6db3244581517bf9389b2",
+    "bytes": 148
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/.gitignore",
+    "sha256": "dde58a6398475ea15d00a6213ba7f184ce2214772749ff2c373d963c40b5c205",
+    "bytes": 36
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/Gerar_HUD_FPGA_Stealth_V3.FCMacro",
+    "sha256": "d36a63e988b25dd53288cc48e4c70c87d57213609da81f8f573b2f6c4208b02a",
+    "bytes": 8355
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/HUD_FPGA_Stealth_V3.FCStd",
+    "sha256": "bd90b525201aa1b5abd3f1b3613a81811e2e0036fb37aee00c3808587be613c1",
+    "bytes": 109482,
+    "archive_crc": "PASS"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/LEIA_ME_PENDENCIAS.md",
+    "sha256": "5db9d56370b0b652f48ae119ec0769f7a642ad9bcecf2db6f51a1abe4a032c25",
+    "bytes": 10590
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/README.md",
+    "sha256": "717cedccb5673cdfde212d97beb727e06e576ba149fe4e92532d9fe6b81a4b9d",
+    "bytes": 1315
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/V3_layout_interno.png",
+    "sha256": "0980d7a0fba8969f3086e466e1b1a79d674f2915cf6de45a2a94a2f1ff7301a0",
+    "bytes": 32579
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/V3_montada.png",
+    "sha256": "297fb850280e25096f796fa3c6f07a5f7acdffc0b72799e9d69ecfa87fdbecfb",
+    "bytes": 20501
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/auditoria_final.json",
+    "sha256": "6905749e45ec13409fa13694728827c5d91ea163f71624e50daaa4ae4378847a",
+    "bytes": 2993
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/consulta_repositorio.json",
+    "sha256": "fea49daac424960f2868fe1667781513fc87388b0ed7138cc0b08998981e13b5",
+    "bytes": 590
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/exportacoes_PRELIMINARES/Montagem_V3_SEM_ELETRONICA.step",
+    "sha256": "6edeaed40dfb6127bcc08b1cef6e2e7903e6cc2fa83af1a3f089994972f90e8b",
+    "bytes": 239799,
+    "step_envelope": "PASS (not geometry validation)"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/exportacoes_PRELIMINARES/_01_Base_removivel.step",
+    "sha256": "2f1a1223cf8dc6298ee843321c44745d25f348cc1d52c29ad594b4386324fdf7",
+    "bytes": 65168,
+    "step_envelope": "PASS (not geometry validation)"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/exportacoes_PRELIMINARES/_01_Base_removivel.stl",
+    "sha256": "aed0b538cfa4030dfbb5dc81f96893a31aa324aa4a10a359ee989d93eec85d5a",
+    "bytes": 89684,
+    "stl_closed_edges": "PASS"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/exportacoes_PRELIMINARES/_02_Fuselagem_oca_asas_delta.step",
+    "sha256": "9a9bb57344681923a829a7320f653f024b639fb94245a5f7365689e06b5b54a5",
+    "bytes": 107832,
+    "step_envelope": "PASS (not geometry validation)"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/exportacoes_PRELIMINARES/_02_Fuselagem_oca_asas_delta.stl",
+    "sha256": "aeda68de6a6e7fb09c6ad8d72496ea816d716272681be3e57a58cac7f9afbe07",
+    "bytes": 113384,
+    "stl_closed_edges": "PASS"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/exportacoes_PRELIMINARES/_03_Tampa_cockpit_duas_derivas.step",
+    "sha256": "765a131ca4b9c880696c0241f56ec08735601828daed7c2bec3b11bb2a0aaac0",
+    "bytes": 52529,
+    "step_envelope": "PASS (not geometry validation)"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/exportacoes_PRELIMINARES/_03_Tampa_cockpit_duas_derivas.stl",
+    "sha256": "379896a52087eaf5a859fbe825dfa13fc8462aca3f5cd23d7c8b1eaff02b763d",
+    "bytes": 48484,
+    "stl_closed_edges": "PASS"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/exportacoes_PRELIMINARES/_04_Aplique_Direita.step",
+    "sha256": "04748bd6b1b91c17c3d6775d3463b02fc7212abb8455ef45f0e9333e9ab83d9f",
+    "bytes": 7552,
+    "step_envelope": "PASS (not geometry validation)"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/exportacoes_PRELIMINARES/_04_Aplique_Direita.stl",
+    "sha256": "d3208087c9e95aa45963b6a2fa8344369bc532f63412ea2cf222533225f4773f",
+    "bytes": 684,
+    "stl_closed_edges": "PASS"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/exportacoes_PRELIMINARES/_04_Aplique_Esquerda.step",
+    "sha256": "f5ee48d02907863966c6d0f89d39c9de4b75a144e8434c8b5db0d7ae33a71729",
+    "bytes": 7558,
+    "step_envelope": "PASS (not geometry validation)"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/exportacoes_PRELIMINARES/_04_Aplique_Esquerda.stl",
+    "sha256": "808878ced4bc03d4e99eb4b749f76d86be06e952e5664cb7f1fe0f28ec45d233",
+    "bytes": 684,
+    "stl_closed_edges": "PASS"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/inspecao_fontes.json",
+    "sha256": "c33eb1954b5c4d3d15d7f254cbdc005361c840e218196369d65bd9a3295006f4",
+    "bytes": 161280
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/manifesto_fontes.json",
+    "sha256": "1c52063da065affd1d6e618a2673865c233670494dadb46ade0c7512924c8788",
+    "bytes": 1035
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/referencias/HUD_FPGA_Aviao_V1.FCStd",
+    "sha256": "f3e2cc149d237ad725b478cea4fc23d67feffb53971a83623cce1c7867e89729",
+    "bytes": 56214,
+    "archive_crc": "PASS"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/referencias/HUD_FPGA_Stealth_V2(2).FCMacro",
+    "sha256": "cd8609da4e1713958588759405970806fa147d99e4b72e0c859931e96338f5ec",
+    "bytes": 5370
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/referencias/HUD_FPGA_Stealth_V2.FCStd",
+    "sha256": "95630cae61ea19e9b6a696a5ce36efb21276bd482a60e441ed25691519333f64",
+    "bytes": 65198,
+    "archive_crc": "PASS"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/referencias/base_extraida_do_ZIP.step",
+    "sha256": "fdcb20eddaa94565adc50935a2755dac7e36638978edb146bae255a8602639c9",
+    "bytes": 168587,
+    "step_envelope": "PASS (not geometry validation)"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/referencias/case-for-the-digilent-nexys-a7-nexys-4-fpga-board-model_files.zip",
+    "sha256": "f3a5da88fae774f054a57f41efceba3f611e4f5dd18bfbd211b47c9ab8c7c2a4",
+    "bytes": 4671158,
+    "archive_crc": "PASS"
+  },
+  {
+    "path": "mechanical/HUD_FPGA_Stealth_V3/verificacao_V3.json",
+    "sha256": "596644eb7429400274dd88d9b78a08967eb486d30bfc30ed07d2781348d53e9d",
+    "bytes": 3643
+  },
+  {
+    "path": "gabinete/HUD_F16_V1_3_2_PUBLICACAO_ATOMICA/01_CAD_3D/projeto_editavel.py",
+    "python_syntax": "PASS",
+    "generation": "NOT_RUN missing gerador_v12_preservado.py, nucleo_v11_preservado.py and STEP inputs"
+  }
+]
