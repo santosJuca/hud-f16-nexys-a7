@@ -13,6 +13,7 @@ anterior e têm documentação própria.
 | [Relatórios Vivado](../firmware/calibracao-guiada-5d7a3ae2/relatorios/) | Síntese, utilização, timing roteado, CDC, DRC e bus skew |
 | [Aceites](../firmware/calibracao-guiada-5d7a3ae2/aceites/) | Ensaios relatados, Flash/readback e ciclo físico de energia |
 | [Entrega e demonstração](entrega_demo.md) | Requisitos, evidência de pipeline e anexos necessários |
+| [Reconciliação local](reconciliacao_local_20261115.md) | Comparação de worktrees, melhorias recuperadas e testes complementares |
 | [Consolidação de 15/11](consolidacao_20261115.md) | Origens, decisões e validação da integração |
 | [Atlas elétrico](atlas-eletrico/README.md) | Pranchas e PDF; conferir com o XDC do perfil utilizado |
 

@@ -1,0 +1,35 @@
+{
+  "bitstream/hud-f16-calibracao-magnetica-guiada-experimental.bit": {
+    "path": "/home/santojuca/.codex/.chatgpt-projects/g-p-6a91af560a788191a5216a1bb50a03a5/output/calibracao-magnetica-guiada-20261113/bitstream/hud-f16-calibracao-magnetica-guiada-experimental.bit",
+    "bytes": 3825990,
+    "sha256": "ad8d6d7902bd50ed2924de9eb6b159d1d5b3ca8614247476aae44e0f79ee027a"
+  },
+  "resultado/routed.dcp": {
+    "path": "/home/santojuca/.codex/.chatgpt-projects/g-p-6a91af560a788191a5216a1bb50a03a5/output/calibracao-magnetica-guiada-20261113/resultado/routed.dcp",
+    "bytes": 42170852,
+    "sha256": "4f451a9d247de0b9cc79f640bd94840b25ac14ca425d6b5738a5400f8aad2bd3"
+  },
+  "flash/flash-nova-completa.mcs": {
+    "path": "/home/santojuca/.codex/.chatgpt-projects/g-p-6a91af560a788191a5216a1bb50a03a5/output/calibracao-magnetica-guiada-20261113/flash/flash-nova-completa.mcs",
+    "bytes": 46141452,
+    "sha256": "c7a16ae94504167fa432fc04d2accf8c6a0595c30f2ba68745008ae187dc11fd"
+  },
+  "flash/flash-nova-completa.bin": {
+    "path": "/home/santojuca/.codex/.chatgpt-projects/g-p-6a91af560a788191a5216a1bb50a03a5/output/calibracao-magnetica-guiada-20261113/flash/flash-nova-completa.bin",
+    "bytes": 16777216,
+    "sha256": "a1d99f09e991c7b53b52a6f2ad144304189eccdda2ec038f3e5e77ae5e7a6b0f"
+  },
+  "flash/flash-depois-gravacao.bin": {
+    "path": "/home/santojuca/.codex/.chatgpt-projects/g-p-6a91af560a788191a5216a1bb50a03a5/output/calibracao-magnetica-guiada-20261113/flash/flash-depois-gravacao.bin",
+    "bytes": 16777216,
+    "sha256": "a1d99f09e991c7b53b52a6f2ad144304189eccdda2ec038f3e5e77ae5e7a6b0f"
+  },
+  "bit_header": {
+    "a": "top_reticula;UserID=5D7A3AE2;Version=2026.1;SW_CRC=62e2e02c;SW_HDR_SHA256=e0a0c34ea83eceec2a7b9369b17bd5c37e86ec1b3749b6a2c5dd5f25a16d08b9",
+    "b": "7a100tcsg324",
+    "c": "2026/11/13",
+    "d": "18:56:53"
+  },
+  "current_device_identity": "INDETERMINADA: nenhum acesso de hardware nesta tarefa",
+  "last_physical_evidence": "5D7A3AE2, aceites de 13/11/2026; sem nova consulta apos power cycle relatado"
+}

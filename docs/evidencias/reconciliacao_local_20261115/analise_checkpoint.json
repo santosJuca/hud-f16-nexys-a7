@@ -1,0 +1,29 @@
+{
+  "source_dcp_sha256": "4f451a9d247de0b9cc79f640bd94840b25ac14ca425d6b5738a5400f8aad2bd3",
+  "operation": "Reabertura de checkpoint e analise, sem nova sintese/implementacao/BIT/hardware",
+  "wns_ns": 0.07,
+  "whs_ns": 0.019,
+  "tns_ns": 0,
+  "ths_ns": 0,
+  "wpws_ns": 0.206,
+  "lut": 22684,
+  "ff": 16800,
+  "bram_tiles": 64,
+  "dsp": 82,
+  "drc_errors": 0,
+  "drc_warnings": 180,
+  "cdc_unsafe_endpoints": 3,
+  "cdc_unknown_endpoints": 0,
+  "fmax_estimated_mhz": {
+    "system_100mhz": 100.705,
+    "pixel_25mhz": 64.025
+  },
+  "fmax_limits": "Estimativa de setup em um ciclo no mesmo dominio; exclui travessias e I/O, nao autoriza overclock, nem qualifica MIG/DDR2 externamente",
+  "report_sha256": {
+    "fmax.rpt": "a74d3f3a1fcea3cb513dfe6e0f4038f8889ffa2b4abf9e517da611b6fbdec30a",
+    "timing.rpt": "4ee7b0d1716962fdb293da9b145767c7d4e9fb3a088a123469ee93e346a4d3c4",
+    "utilization.rpt": "30a494e7e483381d10c5fc14402dc6750d43df616dd0f3474b6b01f52281d211",
+    "cdc.rpt": "e5c8b252219626760b7180e6dd7bd43cc482643e8beb995be37a4ebac6c070f2",
+    "drc.rpt": "74f26df72e0f293513a42f9174d3681dd10c487566d75b9d9d0b3f4e7cbdddc2"
+  }
+}

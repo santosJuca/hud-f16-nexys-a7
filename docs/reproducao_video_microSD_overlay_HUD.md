@@ -111,8 +111,13 @@ RGB332: R em bits 7:5, G em 4:2, B em 1:0. Expansão VGA RGB444 por repetição 
 A ferramenta usa Python padrão e FFmpeg já instalado. O diretório de saída precisa ser novo; ela não sobrescreve saídas nem escreve em dispositivos. Exemplo, dentro do repositório:
 
 ```sh
-python3 tools/convert_video_for_fpga.py /tmp/hud-video-real --input /caminho/video.mp4 --width 320 --fps 10
+python3 tools/convert_video_for_fpga.py /tmp/hud-video-real --input /caminho/video.mp4 --width 320 --fps 10 --seconds 2
 ```
+
+`--seconds` limita a duração tanto da entrada real quanto da sintética; o padrão
+é 2 segundos. Para outra duração, informe o valor explicitamente. A saída continua
+exigindo pelo menos dois quadros. Este conversor RGB332 é da base v1.1; não
+substitui o gerador do vídeo B++ 2 bpp do firmware recente.
 
 Para gerar uma sequência sintética local:
 

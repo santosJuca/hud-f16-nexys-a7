@@ -3,6 +3,7 @@ import importlib.util
 import json
 from pathlib import Path
 import struct
+import subprocess
 import tempfile
 import unittest
 
@@ -12,6 +13,16 @@ spec.loader.exec_module(video)
 
 
 class ConversionTest(unittest.TestCase):
+    def test_seconds_limits_real_input(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source=Path(tmp)/'source.mkv'
+            subprocess.run(['ffmpeg','-v','error','-nostdin','-f','lavfi','-i',
+                            'testsrc2=size=320x240:rate=30','-t','2','-c:v','ffv1',str(source)],
+                           check=True)
+            info=video.convert(source,Path(tmp)/'short',320,240,30,False,1)
+            self.assertEqual(info['frame_count'],30)
+            self.assertEqual(info['total_bytes'],512+30*76800)
+
     def test_motion_alignment_hashes_and_preservation(self):
         with tempfile.TemporaryDirectory() as tmp:
             out=Path(tmp)/'video'

@@ -52,13 +52,25 @@ O comando executa testes específicos da calibração, regressões selecionadas 
 integração do top com modelos. Gera arquivos locais no pacote. Os dois testes
 legados documentados como inconclusivo/incompatível não são contabilizados como PASS.
 
-Para a base v1.1, com Icarus, Verilator, compilador C++, Python 3 e FFmpeg:
+Para a base v1.1, com Icarus, Verilator, compilador C++, Python 3, Tcl e FFmpeg:
 
 ```bash
 bash scripts/test.sh
 python3 -m unittest discover -s tests -p 'test_*.py'
 bash scripts/test_attitude_capture.sh build/capture
 ```
+
+Para a cobertura complementar recuperada dos worktrees, com Python 3 e Icarus:
+
+```bash
+mkdir -p build
+bash scripts/test_latest_reconciliation.sh build/reconciliacao-recente
+```
+
+O diretório deve ser novo. O script preserva o pacote publicado e executa uma
+cópia, incluindo orientação MPU, prioridade dos comandos e recuperação I²C.
+O banco MPU pode consumir vários minutos; timeout é falha, não PASS. A
+[reconciliação local](docs/reconciliacao_local_20261115.md) registra as origens e os limites.
 
 Os testes geram resultados em `build/`. O [workflow de CI](.github/workflows/ci.yml)
 verifica os dois conjuntos e salva os logs. Simulação não acessa a placa nem

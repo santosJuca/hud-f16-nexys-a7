@@ -1,0 +1,88 @@
+{
+  "base_commit": "a6f47b9b373bfd2dd4f6c23288cd0f2561592959",
+  "branch": "integration/reconciliacao-local-20261115",
+  "status": "PRONTA_PARA_REVISAO_E_COMMIT",
+  "new_commits": 0,
+  "staged_files": 0,
+  "original_worktrees_checked": 8,
+  "originals_preserved": true,
+  "rtl_xdc_mig_generics_unchanged": true,
+  "python_tests": 12,
+  "python_result": "PASS",
+  "published_cases": {
+    "diagonal": "PASS",
+    "hard_iron": "PASS",
+    "noise": "PASS",
+    "rotated_soft_iron": "PASS",
+    "holdout_arc": "PASS",
+    "holdout_cluster": "PASS",
+    "holdout_outlier": "PASS",
+    "interference": "PASS",
+    "z_interference": "PASS",
+    "training_outlier": "PASS",
+    "stationary": "PASS",
+    "limited_arc": "PASS",
+    "no_improvement": "PASS"
+  },
+  "published_regressions_historical_status": {
+    "tb_heading_magnetico": "PASS",
+    "tb_heading_fusao": "PASS",
+    "tb_controle_heading": "PASS",
+    "tb_hmc5883l_i2c": "PASS",
+    "tb_atitude_fusao_complementar": "PASS",
+    "tb_sd_status_display": "PASS",
+    "tb_modo_operacao": "PASS",
+    "tb_alinhamento81": "PASS",
+    "tb_video_mode_publication": "PASS",
+    "tb_hud_dispatch": "INCOMPATIVEL COM BASELINE: expectativa CAPTURE sobre SW4 difere do RTL preservado; mesma falha reproduzida na fonte5DE9E304; teste integrado novo passou",
+    "mpu6050_i2c_tb": "INCONCLUSIVO: Icarus timeout120s; Verilator nao suporta disable do testbench; fonte MPU inalterada"
+  },
+  "current_mpu_result": "PASS; nao altera o registro historico publicado",
+  "final_runner_result": "PASS",
+  "new_ci_remote_run": false,
+  "hardware_accessed": false,
+  "new_synthesis_implementation_bitstream": false,
+  "checkpoint_reopened_and_analyzed": true,
+  "checks": {
+    "dispatcher.log": {
+      "result": "PASS",
+      "sha256": "299b15fe0170bc08fc776b9f481afc83728d1c223796822c2c4857275541211c"
+    },
+    "orientation-0.log": {
+      "result": "PASS",
+      "sha256": "4b78ecb5b6bddb0f3d1a885bb8eef0b85a02a1bd27e31dbbe313d0a905c894e2"
+    },
+    "orientation-1.log": {
+      "result": "PASS",
+      "sha256": "2e9ee02c6c1805e50b15e0978d7b25a01d70fee0447a772796463818bdce4581"
+    },
+    "mpu.log": {
+      "result": "PASS",
+      "sha256": "6c869cdb8e721ac4b1ae45ab3491d36c07bd64bf49ce30ebab041b69e8d82850"
+    },
+    "tb_heading_video_live.log": {
+      "result": "PASS",
+      "sha256": "9295c4547114e364a3823cec29fe0cde00eac871c6acde58cd221272d777d2ad"
+    },
+    "tb_video_pipe_equivalence.log": {
+      "result": "PASS",
+      "sha256": "1b40f48198701e128b66dc06431202bf19eb1a621ebfa051e09581a8eff877ed"
+    },
+    "tb_video_operacao_f16_anchors.log": {
+      "result": "PASS",
+      "sha256": "a71437fb6743d9aaee91a4e1063f1cf5d58058160132dec5301d2914fed84be2"
+    },
+    "tb_alignment_routing.log": {
+      "result": "PASS",
+      "sha256": "603fecbd40c666b9d7b756a112a3b14f57ecd94e527b8f2a1a0869554fe77d88"
+    },
+    "compass-0.log": {
+      "result": "PASS",
+      "sha256": "27d3f760508baab48826ab92f254866e53591c7134f3c0d0d786783407f06fa2"
+    },
+    "compass-1.log": {
+      "result": "PASS",
+      "sha256": "9bab5519e840f24609835cacc8ee2f8c270069059f83bcf7f41f945877ceb95e"
+    }
+  }
+}
