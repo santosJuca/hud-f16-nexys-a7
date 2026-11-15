@@ -72,9 +72,9 @@ O perfil `mpu-left90-mag-right90-front180-hdg-minus90` gira somente a bússola e
 
 ## Mecânica, histórico e recuperação
 
-- [Gabinete F-16 v1.3.2](../../gabinete/HUD_F16_V1_3_2_PUBLICACAO_ATOMICA/README_IMPORTACAO.md): dois STEP com hashes originais, DXF, manual e inventário; fontes auxiliares ainda ausentes. Fabricação bloqueada.
-- [Stealth V3](../../mechanical/HUD_FPGA_Stealth_V3/README.md): projeto FreeCAD editável, macro, STEP/STL e referências, todos preliminares.
+- [Gabinete F-16 v1.3.2](https://github.com/santosJuca/Trabalho-display-aviao-v2/blob/28e736db2b0962ae3494660a8b84944ad087d8c5/gabinete/HUD_F16_V1_3_2_PUBLICACAO_ATOMICA/README_IMPORTACAO.md): dois STEP com hashes originais, DXF, manual e inventário; fontes auxiliares ainda ausentes. Fabricação bloqueada.
+- [Stealth V3](https://github.com/santosJuca/Trabalho-display-aviao-v2/blob/28e736db2b0962ae3494660a8b84944ad087d8c5/mechanical/HUD_FPGA_Stealth_V3/README.md): projeto FreeCAD editável, macro, STEP/STL e referências, todos preliminares.
 - [Recuperação](../consolidacao_20261106/recuperacao.md): backup, commits anteriores e artefatos oficiais.
-- [Índice técnico](../README.md), [arquitetura](../arquitetura.md), [sensores](../sensores.md) e [catálogo de bitstreams](../../bitstreams/README.md).
+- [Índice técnico](../README.md), [arquitetura](../arquitetura.md), [sensores](../sensores.md) e [catálogo de bitstreams](https://github.com/santosJuca/Trabalho-display-aviao-v2/blob/28e736db2b0962ae3494660a8b84944ad087d8c5/bitstreams/README.md).
 
 O plano v1.2 é apenas documental. Captura de VGA externa, genlock e chave RGB analógica continuam experimentais no PR #5; não são o vídeo microSD. Velocidade de voo é simulada, heading não tem compensação de inclinação/declinação, LOCK não rastreia alvos e este projeto não é instrumento aeronáutico certificado.

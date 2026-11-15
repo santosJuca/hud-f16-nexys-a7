@@ -7,3 +7,11 @@
 
 __pycache__/
 *.py[cod]
+
+# Saídas de simulação e rastros de execução Vivado
+*.vcd
+*.vcd.gz
+*.vvp
+*.wdb
+vivado_pid*.str
+/obj_dir/

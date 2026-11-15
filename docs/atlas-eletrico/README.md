@@ -1,10 +1,13 @@
 # Atlas elétrico do HUD FPGA
 
-> O atlas, o XDC da base v1.1 e o XDC 5D7A3AE2 mapeiam o buzzer para JD4/G3. Registros de outubro com JC10/E6 são históricos. Confira sempre o XDC do [perfil escolhido](../../README.md#escolha-do-conjunto) antes de usar as pranchas.
+> O atlas, o XDC da base v1.1 e o XDC 5D7A3AE2 mapeiam o buzzer para JD4/G3. Registros de outubro com JC10/E6 são históricos. Confira sempre o XDC do [perfil escolhido](../../README.md#versões-e-evidências) antes de usar as pranchas.
 
-Quatro pranchas de montagem para a Nexys A7-100T, com o mapeamento de sensores, joystick e buzzer. O controle do buzzer usa JD4, com alimentação em JC12 (3,3 V) e GND em JC11.
+Quatro pranchas de referência para a Nexys A7-100T, com o mapeamento de sensores,
+joystick e buzzer. A prancha do buzzer representa controle em JD4, alimentação em
+JC12 (3,3 V) e GND em JC11. A [descrição da montagem](../montagem.md) registra o
+que foi confirmado na bancada.
 
-[PDF vetorial para impressão](atlas-eletrico-hud-nexys-a7.pdf) · [Pacote completo](atlas-completo-png-svg-pdf.zip)
+[PDF vetorial para impressão](atlas-eletrico-hud-nexys-a7.pdf)
 
 | Prancha | Imagem | Vetor editável |
 | --- | --- | --- |

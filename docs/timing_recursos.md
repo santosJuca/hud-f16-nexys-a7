@@ -26,4 +26,4 @@ O pior caminho de setup reportado tem 15 níveis lógicos; o detalhe está em `t
 
 ## Proveniência e validação
 
-O catálogo em [`bitstreams/README.md`](../bitstreams/README.md) identifica a versão, hash e status físico. Os resultados de síntese, roteamento e geração desta página não são validação física. À época deste registro, não havia ensaios físicos; resultados posteriores informados pelo operador estão em [`entrega_demo.md`](entrega_demo.md). Builds de 05/10, 06/10 e 07/10 têm conjuntos e resultados diferentes e não são usados como fonte das métricas desta página.
+O catálogo em [`bitstreams/README.md`](https://github.com/santosJuca/Trabalho-display-aviao-v2/blob/28e736db2b0962ae3494660a8b84944ad087d8c5/bitstreams/README.md) identifica a versão, hash e status físico. Os resultados de síntese, roteamento e geração desta página não são validação física. À época deste registro, não havia ensaios físicos; resultados posteriores informados pelo operador estão em [`entrega_demo.md`](entrega_demo.md). Builds de 05/10, 06/10 e 07/10 têm conjuntos e resultados diferentes e não são usados como fonte das métricas desta página.

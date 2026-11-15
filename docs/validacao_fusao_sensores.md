@@ -34,7 +34,7 @@ multicycle path foi acrescentada.
 ## Utilização após route
 
 A referência anterior é o relatório arquivado em
-`bitstreams/2026-10-05_hmc5883l/utilization.rpt`.
+[`utilization.rpt`](https://github.com/santosJuca/Trabalho-display-aviao-v2/blob/de80521704b04bc6029f99fae43a71ad09780658/bitstreams/2026-10-05_hmc5883l/utilization.rpt).
 
 | Recurso | Base | Fusão | Diferença | Uso do dispositivo |
 | --- | ---: | ---: | ---: | ---: |

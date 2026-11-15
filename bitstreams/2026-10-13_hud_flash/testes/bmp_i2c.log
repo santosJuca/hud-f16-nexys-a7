@@ -1,6 +1,0 @@
-===== TESTE BMP085 =====
-PASS BMP085: endereco 0x77 e CHIP_ID=0x55
-PASS BMP085: CHIP_ID incorreto detectado
-PASS BMP085: NACK de endereco detectado
-PASS todos os testes bmp085_i2c
-/home/santojuca/Downloads/Trabalho-display-aviao-v2/tests/tb_bmp085_i2c.sv:318: $finish called at 922585000 (1ps)

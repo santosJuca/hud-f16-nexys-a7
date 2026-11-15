@@ -1,2 +1,0 @@
-PASS: vertical invertido em NORMAL/CACA, horizontal preservado, centro e LEDs corretos
-/tmp/tb_hud_joystick_vertical.sv:48: $finish called at 2170000 (1ps)

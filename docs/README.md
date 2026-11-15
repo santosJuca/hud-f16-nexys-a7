@@ -15,7 +15,9 @@ anterior e têm documentação própria.
 | [Entrega e demonstração](entrega_demo.md) | Requisitos, evidência de pipeline e anexos necessários |
 | [Reconciliação local](reconciliacao_local_20261115.md) | Comparação de worktrees, melhorias recuperadas e testes complementares |
 | [Consolidação de 15/11](consolidacao_20261115.md) | Origens, decisões e validação da integração |
-| [Atlas elétrico](atlas-eletrico/README.md) | Pranchas e PDF; conferir com o XDC do perfil utilizado |
+| [Montagem confirmada e interfaces](montagem.md) | Duas caixas, interfaces e limites da documentação elétrica |
+| [Atlas elétrico](atlas-eletrico/README.md) | Pranchas e PDF de referência por perfil |
+| [Pipeline do MVP](entrega_academica/mvp_v11/README.md) | Captura simulada, identidade do candidato e reprodução |
 
 ## Base v1.1 e registros anteriores
 
@@ -27,10 +29,20 @@ anterior e têm documentação própria.
 | [Testes v1.1](testes.md) | Regressão da raiz, vídeo, captura e ferramentas Python |
 | [Consolidação do PR #6](consolidacao_20261106/README.md) | Cobertura das branches, relatórios e recuperação |
 | [Validação física v1.1](HUD_V1_1_VALIDACAO_FISICA.md) | Oito verificações relatadas, com identidade e limites |
-| [Builds históricos](../bitstreams/README.md) | BITs e relatórios de outubro |
 | [Timing histórico](timing_recursos.md) | Métricas de 08/10, não da versão recente |
 | [Entrega de 08/10](historico/entrega_20261008.md) | Registro anterior preservado |
-| [Estudo de VGA externo](vga_auxiliar.md) | Proposta histórica; não é a reprodução SD/DDR2 atual |
 
 Arquivos datados preservam resultados da versão indicada. O registro posterior
 de aceite não altera retroativamente o status de um build anterior.
+
+## Arquivos históricos
+
+O [commit 28e736d](https://github.com/santosJuca/Trabalho-display-aviao-v2/tree/28e736db2b0962ae3494660a8b84944ad087d8c5)
+preserva os gabinetes CAD preliminares, os esquemáticos de outubro, os BITs antigos
+com seus manifestos e relatórios, e os estudos de VGA externo e SPI. A árvore
+histórica é recuperável sem alterar o checkout atual:
+
+```bash
+git ls-tree -r --name-only 28e736db2b0962ae3494660a8b84944ad087d8c5 -- gabinete mechanical docs/esquematico bitstreams
+git archive --format=zip --output=hud-historico.zip 28e736db2b0962ae3494660a8b84944ad087d8c5 -- gabinete mechanical docs/esquematico bitstreams
+```
