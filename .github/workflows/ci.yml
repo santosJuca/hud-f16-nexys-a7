@@ -1,4 +1,4 @@
-name: Simulacao RTL
+name: Validacao HUD
 
 on:
   push:
@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   simulacao:
-    name: Regressao RTL e video
+    name: Base v1.1 - RTL e video
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     defaults:
@@ -62,4 +62,45 @@ jobs:
             build/*.ppm
             build/tests/*.ppm
           if-no-files-found: warn
-          retention-days: 14
+          retention-days: 30
+
+  firmware-recente:
+    name: Firmware 5D7A3AE2
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    env:
+      FIRMWARE_TEST_DIR: ${{ runner.temp }}/hud-5d7a3ae2
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Instalar simulador
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y iverilog
+
+      - name: Registrar versoes
+        run: |
+          iverilog -V
+          vvp -V
+          python3 --version
+
+      - name: Reproduzir testes do firmware recente
+        run: |
+          cp -a firmware/calibracao-guiada-5d7a3ae2 "$FIRMWARE_TEST_DIR"
+          bash "$FIRMWARE_TEST_DIR/scripts/reproduzir-testes.sh" 2>&1 | tee "$RUNNER_TEMP/firmware-recente.log"
+
+      - name: Salvar evidencias do firmware recente
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-5d7a3ae2
+          path: |
+            ${{ runner.temp }}/firmware-recente.log
+            ${{ runner.temp }}/hud-5d7a3ae2/evidencias/
+          if-no-files-found: warn
+          retention-days: 30

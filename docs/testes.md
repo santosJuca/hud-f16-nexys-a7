@@ -1,5 +1,7 @@
 # Testes e validação
 
+> Esta página descreve a suíte v1.1 da raiz. A [suíte 5D7A3AE2](../firmware/calibracao-guiada-5d7a3ae2/scripts/reproduzir-testes.sh) é executada separadamente pelo CI; consulte o [guia recente](../firmware/calibracao-guiada-5d7a3ae2/README.md).
+
 A consolidação usa três entradas reproduzíveis, também executadas pelo workflow existente em `.github/workflows/ci.yml`:
 
 ```sh

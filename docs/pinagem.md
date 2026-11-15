@@ -1,5 +1,7 @@
 # Pinagem e controles
 
+> Esta pinagem pertence à base v1.1 da raiz. Para 5D7A3AE2, use o [guia recente](../firmware/calibracao-guiada-5d7a3ae2/README.md) e seus XDC; não misture perfis.
+
 Este mapa foi conferido contra o top [top_reticula](../rtl/top_reticula.sv) e o [XDC ativo](../constraints/nexys_a7_reticula.xdc). O alvo configurado é a Nexys A7-100T, FPGA `xc7a100tcsg324-1`. Pinos indicados são PACKAGE_PIN do FPGA. A conferência documental não valida cabos, módulos ou níveis elétricos da montagem.
 
 Consulte também o [guia operacional v1.1](GUIA_OPERACIONAL_HUD_V1_1.md), baseado no RTL funcional da v1.0.

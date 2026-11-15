@@ -1,5 +1,7 @@
 # Sensores e entradas externas
 
+> Este guia descreve a base v1.1. A calibração guiada e a orientação do conjunto recente estão no [guia 5D7A3AE2](../firmware/calibracao-guiada-5d7a3ae2/README.md).
+
 Este documento descreve as conexões do top atual, conferidas em `rtl/top_reticula.sv` e `constraints/nexys_a7_reticula.xdc`. A existência de driver e simulação não comprova o funcionamento elétrico da montagem.
 
 | Dispositivo | Conexão atual | Uso no HUD | Limites conhecidos |

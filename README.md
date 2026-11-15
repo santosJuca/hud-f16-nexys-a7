@@ -1,74 +1,104 @@
 # HUD F-16 na Nexys A7-100T
 
-HUD acadêmico em SystemVerilog para a Artix-7 `xc7a100tcsg324-1`. Gera VGA 640×480, combina instrumentos, sensores e vídeo RGB332 lido do microSD por SPI. O raster usa 25 MHz, 800×525 posições e **59,524 Hz**; a taxa de quadros novos do arquivo é independente desse refresh.
+Projeto acadêmico de Sistemas Digitais: simbologia aeronáutica gerada em
+SystemVerilog e exibida em VGA 640×480 na FPGA Artix-7 `xc7a100tcsg324-1`.
+Inclui horizonte, retículo, escalas, rumo, mira com LOCK, modos de exibição,
+sensores e simulação didática de voo e pouso.
 
-## Estado da consolidação de 06/11/2026
+## Versão recente: 5D7A3AE2
 
-A branch de integração reúne o firmware v1.1, as correções locais dos testes, a documentação de bancada, o CAD Stealth V3 e os arquivos recuperados do gabinete F-16 v1.3.2. O [relatório de consolidação](docs/consolidacao_20261106/README.md) contém inventário das 22 branches, decisões por funcionalidade, testes e bloqueios de promoção.
+O [firmware com calibração magnética guiada](firmware/calibracao-guiada-5d7a3ae2/README.md)
+é o conjunto recente ensaiado na placa em 13/11/2026. Seu snapshot foi publicado
+em `057b586820b86153536804148213a63c487086b6` e está integrado neste repositório,
+com fontes, constraints, MIG, parâmetros, testes, relatórios e aceites.
 
-O RTL funcional coincide com `622eacb`, ensaiado por JTAG na v1.1. O [registro físico v1.1](docs/HUD_V1_1_VALIDACAO_FISICA.md) relata oito verificações aprovadas em 01/11. A [v1.0](docs/HUD_V1_0_ESTAVEL.md) permanece a referência de boot QSPI confirmado. Esses relatos pertencem aos bitstreams identificados, não comprovam qualquer novo build desta consolidação.
+- [Baixar BIT, fontes e pacote completo](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/hud-f16-calibracao-guiada-5d7a3ae2-20261113).
+- [Operação, calibração, identidade e recuperação](firmware/calibracao-guiada-5d7a3ae2/README.md).
+- [Entrega e demonstração](docs/entrega_demo.md).
+- [Índice da documentação](docs/README.md).
 
-**O aceite físico da consolidação está pendente.** Os relatos de desaparecimento do vídeo, deslocamento da bússola e inconsistência angular durante ajustes continuam como riscos até ensaio dirigido na placa. Simulação e timing interno não encerram essa pendência. Não há programação automática de JTAG/Flash nem escrita no cartão neste fluxo.
+O operador confirmou calibração aplicada, giro/retorno da bússola, vídeo,
+horizonte, chegada ao POUSO e início normal após desligar/religar. Os
+[aceites](firmware/calibracao-guiada-5d7a3ae2/aceites/) distinguem esses relatos
+dos registros de programação e readback. São resultados daquela montagem,
+não uma garantia de precisão em qualquer ambiente.
 
-## Funcionalidades presentes
+O programa é persistente na Flash; os coeficientes calculados durante a
+calibração guiada são voláteis. Permanecem três CDC-10, um CDC-8 e a
+qualificação de timing externo SPI. Os 30 FPS do vídeo são configurados,
+não medidos fisicamente.
 
-- VGA RGB444; retículos ORIGINAL/CAÇA, NORMAL/DECLUTTER, horizonte completo, ladder de pitch, heading, fitas laterais, números e alertas.
-- MPU6050: I²C, calibração, estimador vetorial com giroscópio/acelerômetro, CORDIC, referência de zero automática e manual, validade e recuperação. A cadeia complementar legada continua disponível por parâmetro.
-- HMC5883L: calibração específica da montagem, rumo planar e fusão com gyro Z. BMP085: compensação de pressão/temperatura, altitude e estado vertical.
-- KY-023 por XADC, movimento fixo de quatro pixels por tick e LOCK independente nos dois estilos; buzzer e ACK por BTNC.
-- SDHC/SPI: inicialização, CMD17, CRC16, timeout, diagnóstico de setor e ícone, dois bancos BRAM com troca em blanking, reprodução em loop e retenção do último quadro íntegro em falhas.
-- Captura com passo por quadro, quatro vistas, grade/diagnóstico, indicador CAP e ajuste vertical do HUD sem alterar os ângulos estimados.
+## Escolha do conjunto
 
-O perfil fisicamente ensaiado usa arquivo **160×120 a 1 FPS solicitado**, escalado ao raster 640×480, divisor SPI half=125. O RTL também admite 320×240, com evidência histórica de simulação/implementação; não é outra resolução de saída VGA nem aprovação de FPS físico maior. A taxa real depende do cartão e das repetições de quadros.
+| Conjunto | Fontes e reprodução | Uso |
+| --- | --- | --- |
+| **5D7A3AE2, 13/11** | [Pacote recente](firmware/calibracao-guiada-5d7a3ae2/README.md) | Calibração guiada, esteira híbrida, vídeo 2 bpp/DDR2 e modos sincronizados |
+| HUD v1.1, consolidação do PR #6 | [RTL](rtl/), [constraints](constraints/), [scripts](scripts/) e [testes](tests/) | Base anterior preservada, com captura e vídeo BRAM; não gera o firmware recente |
+| Builds de outubro | [Catálogo](bitstreams/README.md) | Artefatos históricos identificados por data e hash |
+| Mecânica | [Stealth V3](mechanical/HUD_FPGA_Stealth_V3/README.md) e [gabinete F-16](gabinete/) | CAD e documentação preliminares; fabricação não liberada |
 
-## Controles e montagem
+Esses conjuntos têm controles, pinagens e relatórios próprios. Não combine
+um XDC ou BIT de outubro com o procedimento do firmware recente.
 
-Consulte o [guia operacional](docs/GUIA_OPERACIONAL_HUD_V1_1.md) e a [pinagem atual](docs/pinagem.md). SW4 seleciona alinhamento; BTNU/BTND então deixam de ajustar rumo. Na captura, os botões têm funções próprias. SW5–SW7 também selecionam páginas do diagnóstico; não são controles independentes em todos os contextos.
+## Reproduzir os testes
 
-O buzzer atual sai em **JD4/G3** via estágio externo; JA1/C17 recebe o botão do joystick. Documentos antigos registram outras ligações. O [atlas elétrico](docs/atlas-eletrico/README.md) descreve a montagem, mas não substitui medição: a faixa unipolar do XADC é nominalmente 0–1 V e houve relato de sobretensão. Não repetir uma conexão ainda não conferida.
+Na raiz do repositório, com Python 3 e Icarus Verilog (`iverilog`/`vvp`):
 
-## Obter e testar
+```bash
+bash firmware/calibracao-guiada-5d7a3ae2/scripts/reproduzir-testes.sh
+```
 
-```sh
-git clone https://github.com/santosJuca/Trabalho-display-aviao-v2.git
-cd Trabalho-display-aviao-v2
-sudo apt-get install iverilog verilator make g++ python3 python3-pil ffmpeg
-scripts/test.sh
+O comando executa testes específicos da calibração, regressões selecionadas e
+integração do top com modelos. Gera arquivos locais no pacote. Os dois testes
+legados documentados como inconclusivo/incompatível não são contabilizados como PASS.
+
+Para a base v1.1, com Icarus, Verilator, compilador C++, Python 3 e FFmpeg:
+
+```bash
+bash scripts/test.sh
 python3 -m unittest discover -s tests -p 'test_*.py'
-scripts/test_attitude_capture.sh build/capture
+bash scripts/test_attitude_capture.sh build/capture
 ```
 
-Use diretório novo em cada execução de captura/vídeo; os scripts recusam reutilizá-lo. [Cobertura e limites dos testes](docs/testes.md). O workflow em `.github/workflows/ci.yml` executa as três verificações acima e conserva logs/capturas. O teste isolado de vídeo é `scripts/test_video.sh build/video`.
+Os testes geram resultados em `build/`. O [workflow de CI](.github/workflows/ci.yml)
+verifica os dois conjuntos e salva os logs. Simulação não acessa a placa nem
+comprova funcionamento físico.
 
-## Compilar no Vivado
+## Reproduzir a implementação recente
 
-Ferramenta de referência: **AMD Vivado 2026.1**. Carregue `settings64.sh` da instalação para disponibilizar `vivado` no PATH. Simulações usam `tests/xadc_stub.sv`; esse stub não faz parte da síntese.
+Com Vivado 2026.1 instalado:
 
-HUD sem vídeo, com os parâmetros padrão e a calibração magnética versionada:
-
-```sh
-vivado -mode batch -source scripts/build_vivado.tcl
+```bash
+VIVADO=/caminho/do/Vivado/2026.1/bin/vivado bash firmware/calibracao-guiada-5d7a3ae2/scripts/reproduzir-build.sh
 ```
 
-Saída: `build/vivado/reticula.runs/impl_1/top_reticula.bit`. Esse comando **não habilita o subsistema SD**. Preserva builds anteriores em `build/before-*` e bloqueia bitstream em caso de falha de síntese, implementação, setup/hold ou DRC com erros.
+O script copia as entradas para uma pasta temporária nova e executa síntese e
+roteamento. Não gera BIT nem programa hardware. O pacote documenta separadamente
+a emissão offline de BIT a partir de checkpoint. A reprodução de um build novo
+não o torna idêntico ao BIT ensaiado; confira os hashes de cada artefato.
 
-Vídeo em cartão real exige `HUDVIDEO.BIN` contíguo e mapa FAT32 conferido. FFmpeg e necessario tanto para converter videos reais como para gerar as fixtures sinteticas dos testes. Converter gera apenas arquivos locais; copiar para cartão e programar a FPGA são operações separadas. Nunca usar um LBA histórico como mapa de outro cartão.
+## Vídeo e montagem
 
-```sh
-python3 tools/convert_video_for_fpga.py --help
-python3 tools/map_sd_video.py --help
-python3 tools/build_video_bitstream.py build/video-mapeado --map /caminho/mapa.json --read-half 125 --mounting mpu-left90-mag-right90-front180-hdg-plus90
-```
+O firmware recente usa o vídeo **B++ 640×480, 2 bpp, 4.800 quadros**, com SHA-256
+`229261917a3ad34b355656fc455fc8ee1041f36f42d823421b6e529566bf1d4a`.
+O perfil compilado espera LBA `31837888` e `720001` setores no cartão documentado.
+Ele não localiza automaticamente o arquivo em outro cartão.
 
-O wrapper reconfere o arquivo/dispositivo em modo de leitura antes de compilar; recusa mudanças de LBA, conteúdo ou cabeçalho. O perfil de montagem acima pertence à montagem ensaiada, não é universal. Sua saída é `experimental_attitude_capture.bit`; sem `--mounting` especial, o fluxo original produz `experimental.bit`. Veja o [procedimento de vídeo](docs/reproducao_video_microSD_overlay_HUD.md) para formato, mapeamento e limites elétricos. Um build de simulação não deve ser programado como vídeo real.
+O B++ não está incluído na release de firmware. A
+[release de mídia de 13/11](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/hud-f16-video-640x480-2bpp-20261113)
+contém a versão anterior, de hash `450d2b3d…`; ela não é o B++ esperado pelo conjunto recente.
 
-O perfil `mpu-left90-mag-right90-front180-hdg-minus90` gira somente a bússola em 180° em relação ao perfil `hdg-plus90`, preservando os parâmetros do MPU. Foi acrescentado para o ajuste solicitado na montagem atual; o [registro do ajuste](docs/consolidacao_20261106/ajuste_bussola_180_20261106.md) distingue os testes digitais do aceite físico ainda pendente.
+O [atlas elétrico](docs/atlas-eletrico/README.md) é uma referência de montagem.
+Confira-o contra o XDC do perfil utilizado. JTAG, Flash e microSD são operações
+separadas e exigem identificação do alvo, conferência de integridade e recuperação.
 
-## Mecânica, histórico e recuperação
+## Escopo acadêmico e evidências
 
-- [Gabinete F-16 v1.3.2](gabinete/HUD_F16_V1_3_2_PUBLICACAO_ATOMICA/README_IMPORTACAO.md): dois STEP com hashes originais, DXF, manual e inventário; fontes auxiliares ainda ausentes. Fabricação bloqueada.
-- [Stealth V3](mechanical/HUD_FPGA_Stealth_V3/README.md): projeto FreeCAD editável, macro, STEP/STL e referências, todos preliminares.
-- [Recuperação](docs/consolidacao_20261106/recuperacao.md): backup, commits anteriores e artefatos oficiais.
-- [Índice técnico](docs/README.md), [arquitetura](docs/arquitetura.md), [sensores](docs/sensores.md) e [catálogo de bitstreams](bitstreams/README.md).
+O caminho gráfico procedural da base v1.1 não usa framebuffer externo. O vídeo
+com DDR2 é uma extensão e deve ser distinguido desse núcleo, pois o enunciado
+proíbe framebuffer externo. Sensores, gabinete e calibração guiada também são extensões.
 
-O plano v1.2 é apenas documental. Captura de VGA externa, genlock e chave RGB analógica continuam experimentais no PR #5; não são o vídeo microSD. Velocidade de voo é simulada, heading não tem compensação de inclinação/declinação, LOCK não rastreia alvos e este projeto não é instrumento aeronáutico certificado.
+A [consolidação atual](docs/consolidacao_20261115.md) registra origens, decisões,
+validações e limites. Os detalhes da base anterior foram preservados no
+[guia v1.1](docs/historico/README_baseline_20261106.md). O projeto é didático;
+os dados simulados e a mira não representam instrumentos ou rastreamento aeronáuticos reais.

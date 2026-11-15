@@ -1,5 +1,7 @@
 # Timing e recursos do build de 08/10/2026
 
+> Registro histórico de 08/10. Os [relatórios 5D7A3AE2](../firmware/calibracao-guiada-5d7a3ae2/relatorios/) e seu [manifesto](../firmware/calibracao-guiada-5d7a3ae2/MANIFESTO.json) pertencem à versão recente; não reutilize as métricas abaixo como atuais.
+
 Os valores desta página vêm dos relatórios versionados em [`bitstreams/2026-10-08_hud_caca_marker/`](https://github.com/santosJuca/Trabalho-display-aviao-v2/blob/11343bb/bitstreams/2026-10-08_hud_caca_marker/), associados pelo README daquela pasta ao bitstream `top_reticula.bit`, à branch `feat/modos-alertas` e ao Vivado 2026.1 (build 6511674). O repositório não contém um manifesto de hashes de todas as fontes daquele build; portanto, não se afirma identidade criptográfica entre cada fonte e os relatórios.
 
 | Métrica | Relatório | Valor |

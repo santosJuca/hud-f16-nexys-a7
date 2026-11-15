@@ -1,24 +1,35 @@
-# Documentação técnica
+# Documentação do HUD F-16
 
-| Documento | Uso |
-|---|---|
-| [Consolidação de 06/11/2026](consolidacao_20261106/README.md) | Estado integrado, evidências e bloqueios |
-| [Branches](consolidacao_20261106/branches.md) | Todas as referências locais/remotas e decisões |
-| [Cobertura](consolidacao_20261106/cobertura.md) | Funcionalidades, origens, testes e classificação |
-| [Testes atuais](testes.md) | Regressão reproduzível e limites |
-| [Recuperação](consolidacao_20261106/recuperacao.md) | Backups, versões e retorno seguro |
-| [Guia operacional v1.1](GUIA_OPERACIONAL_HUD_V1_1.md) | Switches, botões, captura e alinhamento |
-| [Pinagem](pinagem.md) | Mapeamento atual, XDC e riscos elétricos |
-| [Arquitetura](arquitetura.md) | Caminhos ativos, legados e vídeo |
-| [Sensores](sensores.md) | Aquisição, calibração e limites |
-| [Atlas elétrico](atlas-eletrico/README.md) | Montagem documentada, sem substituir medições |
-| [Vídeo microSD](reproducao_video_microSD_overlay_HUD.md) | Formato, mapeamento e histórico de desenvolvimento |
-| [Validação v1.0](HUD_V1_0_ESTAVEL.md) | Boot QSPI historicamente confirmado |
-| [Validação v1.1](HUD_V1_1_VALIDACAO_FISICA.md) | Ensaio JTAG de oito verificações |
-| [Plano v1.2](HUD_V1_2_PLANO.md) | Planejamento, sem RTL novo |
-| [Catálogo de bitstreams](../bitstreams/README.md) | Artefatos históricos versionados |
-| [Bancada VGA externa](bancada_sobreposicao_vga.md) | Estudo e cabos; não é vídeo SD |
-| [Gabinete F-16 v1.3.2](../gabinete/HUD_F16_V1_3_2_PUBLICACAO_ATOMICA/README_IMPORTACAO.md) | STEP/DXF/manual e fontes faltantes |
-| [Stealth V3](../mechanical/HUD_FPGA_Stealth_V3/README.md) | CAD preliminar alternativo |
+Comece pelo [README principal](../README.md). A versão recente é **5D7A3AE2**,
+preservada como pacote reproduzível. Os módulos da raiz pertencem à base v1.1
+anterior e têm documentação própria.
 
-Documentos datados de 08/10 a 31/10 preservam suas evidências e pinagens históricas. A descrição atual é a do README, guia operacional, arquitetura e XDC consolidados. Alegações antigas de ausência de vídeo/framebuffer, falta de workflow, pinos JC7/JC10 ou SW4–SW8 sem uso não descrevem o firmware v1.1. Os relatos físicos não se transferem automaticamente para um novo bitstream.
+## Firmware recente e entrega
+
+| Documento | Conteúdo |
+| --- | --- |
+| [Guia 5D7A3AE2](../firmware/calibracao-guiada-5d7a3ae2/README.md) | Operação, calibração, testes, build, vídeo e recuperação |
+| [Manifesto](../firmware/calibracao-guiada-5d7a3ae2/MANIFESTO.json) | Hashes, recursos, parâmetros e limites |
+| [Relatórios Vivado](../firmware/calibracao-guiada-5d7a3ae2/relatorios/) | Síntese, utilização, timing roteado, CDC, DRC e bus skew |
+| [Aceites](../firmware/calibracao-guiada-5d7a3ae2/aceites/) | Ensaios relatados, Flash/readback e ciclo físico de energia |
+| [Entrega e demonstração](entrega_demo.md) | Requisitos, evidência de pipeline e anexos necessários |
+| [Consolidação de 15/11](consolidacao_20261115.md) | Origens, decisões e validação da integração |
+| [Atlas elétrico](atlas-eletrico/README.md) | Pranchas e PDF; conferir com o XDC do perfil utilizado |
+
+## Base v1.1 e registros anteriores
+
+| Documento | Conteúdo |
+| --- | --- |
+| [Guia v1.1 preservado](historico/README_baseline_20261106.md) | Controles, fontes e reprodução da base anterior |
+| [Arquitetura v1.1](arquitetura.md) | Fluxo e composição no RTL da raiz |
+| [Pinagem v1.1](pinagem.md) e [sensores](sensores.md) | Interfaces da base; não substituem o XDC 5D7A3AE2 |
+| [Testes v1.1](testes.md) | Regressão da raiz, vídeo, captura e ferramentas Python |
+| [Consolidação do PR #6](consolidacao_20261106/README.md) | Cobertura das branches, relatórios e recuperação |
+| [Validação física v1.1](HUD_V1_1_VALIDACAO_FISICA.md) | Oito verificações relatadas, com identidade e limites |
+| [Builds históricos](../bitstreams/README.md) | BITs e relatórios de outubro |
+| [Timing histórico](timing_recursos.md) | Métricas de 08/10, não da versão recente |
+| [Entrega de 08/10](historico/entrega_20261008.md) | Registro anterior preservado |
+| [Estudo de VGA externo](vga_auxiliar.md) | Proposta histórica; não é a reprodução SD/DDR2 atual |
+
+Arquivos datados preservam resultados da versão indicada. O registro posterior
+de aceite não altera retroativamente o status de um build anterior.

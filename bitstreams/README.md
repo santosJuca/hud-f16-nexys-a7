@@ -1,5 +1,7 @@
 # Bitstream atual do HUD
 
+> Catálogo histórico de outubro. A versão recente é [5D7A3AE2](../firmware/calibracao-guiada-5d7a3ae2/README.md), com binários nos assets da [release](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/hud-f16-calibracao-guiada-5d7a3ae2-20261113). A expressão “atual” nos registros abaixo refere-se à data do registro.
+
 A pasta [2026-10-13_hud_flash](2026-10-13_hud_flash/README.md) contém a versão gravada na Flash e validada funcionalmente pelo operador: inicialização, VGA, joystick, sensores e buzzer/ACK. As medições elétricas permanecem pendentes.
 
 - FPGA: Nexys A7-100T, `xc7a100tcsg324-1`; Vivado 2026.1.
