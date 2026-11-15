@@ -1,0 +1,4 @@
+*.FCBak
+*.FCStd1
+*.log
+__pycache__/

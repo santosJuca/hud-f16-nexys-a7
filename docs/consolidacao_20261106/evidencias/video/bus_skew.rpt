@@ -1,0 +1,251 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (lin64) Build 6511674 Tue Jun 16 11:01:26 MDT 2026
+| Date         : Fri Nov  6 12:23:30 2026
+| Host         : santojuca-System-Product-Name running 64-bit Ubuntu 24.04.5 LTS
+| Command      : report_bus_skew -file /home/santojuca/Downloads/Trabalho-display-aviao-v2-consolidacao-20261106/validation/consolidacao-20261106/vivado-video-fixed/bus_skew.rpt
+| Design       : top_reticula
+| Device       : 7a100t-csg324
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+| Design State : Routed
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Bus Skew Report
+
+Table of Contents
+-----------------
+1. Bus Skew Report Summary
+2. Bus Skew Report Per Constraint
+
+1. Bus Skew Report Summary
+--------------------------
+
+Id  Position  From                            To                              Corner  Requirement(ns)  Actual(ns)  Slack(ns)
+--  --------  ------------------------------  ------------------------------  ------  ---------------  ----------  ---------
+1   21        [get_cells -hier -filter {NAME =~ u_entrada/retido_reg*}]
+                                              [get_cells -hier -filter {NAME =~ u_entrada/dados_destino_reg*}]
+                                                                              Slow             10.000       1.475      8.525
+2   29        [get_cells -hier -filter {NAME =~ u_attitude_cdc/retido_reg* || NAME =~ u_video_diag_cdc/retido_reg*}]
+                                              [get_cells -hier -filter {NAME =~ u_attitude_cdc/dados_destino_reg* || NAME =~ u_video_diag_cdc/dados_destino_reg*}]
+                                                                              Slow             10.000       1.815      8.185
+
+
+2. Bus Skew Report Per Constraint
+---------------------------------
+
+Id: 1
+set_bus_skew -from [get_cells -hier -filter {NAME =~ u_entrada/retido_reg*}] -to [get_cells -hier -filter {NAME =~ u_entrada/dados_destino_reg*}] 10.000
+Requirement: 10.000ns
+Endpoints: 91
+
+From Clock            To Clock              Endpoint Pin                    Reference Pin                   Corner  Actual(ns)  Slack(ns)
+--------------------  --------------------  ------------------------------  ------------------------------  ------  ----------  ---------
+sys_clk_pin           pixel_clk             u_entrada/dados_destino_reg[72]/D
+                                                                            u_entrada/dados_destino_reg[0]/D
+                                                                                                            Slow         1.475      8.525
+
+
+Slack (MET) :             8.525ns  (requirement - actual skew)
+  Endpoint Source:        u_entrada/retido_reg[72]/C
+                            (rising edge-triggered cell FDRE clocked by sys_clk_pin)
+  Endpoint Destination:   u_entrada/dados_destino_reg[72]/D
+                            (rising edge-triggered cell FDRE clocked by pixel_clk)
+  Reference Source:       u_entrada/retido_reg[0]/C
+                            (rising edge-triggered cell FDRE clocked by sys_clk_pin)
+  Reference Destination:  u_entrada/dados_destino_reg[0]/D
+                            (rising edge-triggered cell FDRE clocked by pixel_clk)
+  Path Type:              Bus Skew (Max at Slow Process Corner)
+  Requirement:            10.000ns
+  Endpoint Relative Delay:   -0.602ns
+  Reference Relative Delay:  -2.365ns
+  Relative CRPR:              0.288ns
+  Actual Bus Skew:            1.475ns  (Endpoint Relative Delay - Reference Relative Delay - Relative CRPR)
+
+Endpoint path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock sys_clk_pin rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=1, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.096     3.602 r  clk_IBUF_BUFG_inst/O
+                         net (fo=9807, routed)        1.794     5.397    u_entrada/clk_IBUF_BUFG
+    SLICE_X56Y150        FDRE                                         r  u_entrada/retido_reg[72]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X56Y150        FDRE (Prop_fdre_C_Q)         0.518     5.915 r  u_entrada/retido_reg[72]/Q
+                         net (fo=1, routed)           1.150     7.064    u_entrada/retido__0[72]
+    SLICE_X44Y152        FDRE                                         r  u_entrada/dados_destino_reg[72]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock pixel_clk rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=1, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.091     3.422 r  clk_IBUF_BUFG_inst/O
+                         net (fo=9807, routed)        1.511     4.934    u_vga/clk_IBUF_BUFG
+    SLICE_X51Y95         FDRE (Prop_fdre_C_Q)         0.367     5.301 r  u_vga/clk25_reg/Q
+                         net (fo=2, routed)           0.520     5.821    pixel_clk
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091     5.912 r  pixel_clk_BUFG_inst/O
+                         net (fo=1630, routed)        1.677     7.589    u_entrada/pixel_clk
+    SLICE_X44Y152        FDRE                                         r  u_entrada/dados_destino_reg[72]/C
+                         clock pessimism              0.180     7.769    <hidden>
+    SLICE_X44Y152        FDRE (Setup_fdre_C_D)       -0.103     7.666    u_entrada/dados_destino_reg[72]
+  -------------------------------------------------------------------
+                         data arrival                           7.064    <hidden>
+                         clock arrival                          7.666    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                        -0.602    <hidden>
+
+Reference path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock sys_clk_pin rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=1, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.091     3.422 r  clk_IBUF_BUFG_inst/O
+                         net (fo=9807, routed)        1.496     4.918    u_entrada/clk_IBUF_BUFG
+    SLICE_X31Y132        FDRE                                         r  u_entrada/retido_reg[0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X31Y132        FDRE (Prop_fdre_C_Q)         0.367     5.285 r  u_entrada/retido_reg[0]/Q
+                         net (fo=1, routed)           0.397     5.682    u_entrada/retido__0[0]
+    SLICE_X30Y133        FDRE                                         r  u_entrada/dados_destino_reg[0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock pixel_clk rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=1, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.096     3.602 r  clk_IBUF_BUFG_inst/O
+                         net (fo=9807, routed)        1.632     5.235    u_vga/clk_IBUF_BUFG
+    SLICE_X51Y95         FDRE (Prop_fdre_C_Q)         0.456     5.691 r  u_vga/clk25_reg/Q
+                         net (fo=2, routed)           0.578     6.269    pixel_clk
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096     6.365 r  pixel_clk_BUFG_inst/O
+                         net (fo=1630, routed)        1.619     7.984    u_entrada/pixel_clk
+    SLICE_X30Y133        FDRE                                         r  u_entrada/dados_destino_reg[0]/C
+                         clock pessimism             -0.180     7.804    <hidden>
+    SLICE_X30Y133        FDRE (Hold_fdre_C_D)         0.243     8.047    u_entrada/dados_destino_reg[0]
+  -------------------------------------------------------------------
+                         data arrival                           5.682    <hidden>
+                         clock arrival                          8.047    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                        -2.365    <hidden>
+
+
+
+Id: 2
+set_bus_skew -from [get_cells -hier -filter {NAME =~ u_attitude_cdc/retido_reg* || NAME =~ u_video_diag_cdc/retido_reg*}] -to [get_cells -hier -filter {NAME =~ u_attitude_cdc/dados_destino_reg* || NAME =~ u_video_diag_cdc/dados_destino_reg*}] 10.000
+Requirement: 10.000ns
+Endpoints: 343
+
+From Clock            To Clock              Endpoint Pin                    Reference Pin                   Corner  Actual(ns)  Slack(ns)
+--------------------  --------------------  ------------------------------  ------------------------------  ------  ----------  ---------
+sys_clk_pin           pixel_clk             u_video_diag_cdc/dados_destino_reg[138]/D
+                                                                            u_attitude_cdc/dados_destino_reg[208]/D
+                                                                                                            Slow         1.815      8.185
+
+
+Slack (MET) :             8.185ns  (requirement - actual skew)
+  Endpoint Source:        u_video_diag_cdc/retido_reg[138]/C
+                            (rising edge-triggered cell FDRE clocked by sys_clk_pin)
+  Endpoint Destination:   u_video_diag_cdc/dados_destino_reg[138]/D
+                            (rising edge-triggered cell FDRE clocked by pixel_clk)
+  Reference Source:       u_attitude_cdc/retido_reg[208]/C
+                            (rising edge-triggered cell FDRE clocked by sys_clk_pin)
+  Reference Destination:  u_attitude_cdc/dados_destino_reg[208]/D
+                            (rising edge-triggered cell FDRE clocked by pixel_clk)
+  Path Type:              Bus Skew (Max at Slow Process Corner)
+  Requirement:            10.000ns
+  Endpoint Relative Delay:   -0.313ns
+  Reference Relative Delay:  -2.417ns
+  Relative CRPR:              0.288ns
+  Actual Bus Skew:            1.815ns  (Endpoint Relative Delay - Reference Relative Delay - Relative CRPR)
+
+Endpoint path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock sys_clk_pin rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=1, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.096     3.602 r  clk_IBUF_BUFG_inst/O
+                         net (fo=9807, routed)        1.699     5.301    u_video_diag_cdc/clk_IBUF_BUFG
+    SLICE_X76Y110        FDRE                                         r  u_video_diag_cdc/retido_reg[138]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X76Y110        FDRE (Prop_fdre_C_Q)         0.478     5.779 r  u_video_diag_cdc/retido_reg[138]/Q
+                         net (fo=1, routed)           1.214     6.993    u_video_diag_cdc/retido_reg_n_0_[138]
+    SLICE_X67Y109        FDRE                                         r  u_video_diag_cdc/dados_destino_reg[138]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock pixel_clk rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=1, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.091     3.422 r  clk_IBUF_BUFG_inst/O
+                         net (fo=9807, routed)        1.511     4.934    u_vga/clk_IBUF_BUFG
+    SLICE_X51Y95         FDRE (Prop_fdre_C_Q)         0.367     5.301 r  u_vga/clk25_reg/Q
+                         net (fo=2, routed)           0.520     5.821    pixel_clk
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091     5.912 r  pixel_clk_BUFG_inst/O
+                         net (fo=1630, routed)        1.497     7.409    u_video_diag_cdc/pixel_clk
+    SLICE_X67Y109        FDRE                                         r  u_video_diag_cdc/dados_destino_reg[138]/C
+                         clock pessimism              0.180     7.589    <hidden>
+    SLICE_X67Y109        FDRE (Setup_fdre_C_D)       -0.282     7.307    u_video_diag_cdc/dados_destino_reg[138]
+  -------------------------------------------------------------------
+                         data arrival                           6.993    <hidden>
+                         clock arrival                          7.307    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                        -0.313    <hidden>
+
+Reference path:
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock sys_clk_pin rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.411     1.411 r  clk_IBUF_inst/O
+                         net (fo=1, routed)           1.920     3.331    clk_IBUF
+    BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.091     3.422 r  clk_IBUF_BUFG_inst/O
+                         net (fo=9807, routed)        1.493     4.915    u_attitude_cdc/clk_IBUF_BUFG
+    SLICE_X51Y109        FDRE                                         r  u_attitude_cdc/retido_reg[208]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X51Y109        FDRE (Prop_fdre_C_Q)         0.367     5.282 r  u_attitude_cdc/retido_reg[208]/Q
+                         net (fo=1, routed)           0.349     5.631    u_attitude_cdc/retido[208]
+    SLICE_X50Y109        FDRE                                         r  u_attitude_cdc/dados_destino_reg[208]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock pixel_clk rise edge)
+                                                      0.000     0.000 r  <hidden>
+    E3                                                0.000     0.000 r  clk
+                         net (fo=0)                   0.000     0.000    clk
+    E3                   IBUF (Prop_ibuf_I_O)         1.482     1.482 r  clk_IBUF_inst/O
+                         net (fo=1, routed)           2.025     3.506    clk_IBUF
+    BUFGCTRL_X0Y16       BUFG (Prop_bufg_I_O)         0.096     3.602 r  clk_IBUF_BUFG_inst/O
+                         net (fo=9807, routed)        1.632     5.235    u_vga/clk_IBUF_BUFG
+    SLICE_X51Y95         FDRE (Prop_fdre_C_Q)         0.456     5.691 r  u_vga/clk25_reg/Q
+                         net (fo=2, routed)           0.578     6.269    pixel_clk
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096     6.365 r  pixel_clk_BUFG_inst/O
+                         net (fo=1630, routed)        1.616     7.981    u_attitude_cdc/pixel_clk
+    SLICE_X50Y109        FDRE                                         r  u_attitude_cdc/dados_destino_reg[208]/C
+                         clock pessimism             -0.180     7.801    <hidden>
+    SLICE_X50Y109        FDRE (Hold_fdre_C_D)         0.247     8.048    u_attitude_cdc/dados_destino_reg[208]
+  -------------------------------------------------------------------
+                         data arrival                           5.631    <hidden>
+                         clock arrival                          8.048    <hidden>
+  -------------------------------------------------------------------
+                         relative delay                        -2.417    <hidden>
+
+
+

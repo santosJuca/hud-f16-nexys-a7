@@ -1,0 +1,125 @@
+# HUD FPGA STEALTH V2 - ESTUDO ESTETICO PARAMETRICO
+# FreeCAD 1.1+, execute como macro. Importe a base STEP na caixa de dialogo.
+# Modelo conceitual, NAO pronto para impressao. Nao altera a V1 ou o STEP fonte.
+import FreeCAD as App
+import Part
+import Import
+from FreeCAD import Vector
+try:
+    from PySide import QtGui as QtWidgets
+except ImportError:
+    try:
+        from PySide2 import QtWidgets
+    except ImportError:
+        from PySide6 import QtWidgets
+
+path, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Selecione base.step da Nexys A7', '', 'STEP (*.step *.stp)')
+if not path:
+    raise RuntimeError('Operacao cancelada: selecione um STEP.')
+doc = App.newDocument('HUD_FPGA_Stealth_V2')
+previous = {o.Name for o in doc.Objects}
+Import.insert(path, doc.Name)
+references = [o for o in doc.Objects if o.Name not in previous and hasattr(o,'Shape') and not o.Shape.isNull()]
+if not references:
+    raise RuntimeError('STEP sem geometria importavel.')
+bb = references[0].Shape.BoundBox
+for o in references[1:]:
+    bb.add(o.Shape.BoundBox)
+if min(bb.XLength,bb.YLength) < 20:
+    raise RuntimeError('Escala de importacao inesperada.')
+cx=(bb.XMin+bb.XMax)/2
+cy=(bb.YMin+bb.YMax)/2
+L=bb.XLength
+W=bb.YLength
+# Eixo longitudinal X: nariz a esquerda, cauda a direita.
+nose=bb.XMin-75
+rear=bb.XMax+70
+half=W/2+43
+wing=115
+bottom_z=0
+floor=4
+shell_h=31
+COL_SHELL=(0.37,0.44,0.52)
+COL_WING=(0.21,0.32,0.46)
+COL_TRIM=(0.09,0.16,0.24)
+COL_ACCENT=(0.10,0.48,0.72)
+
+def poly(points,z=0):
+    verts=[Vector(x,y,z) for x,y in points]
+    return Part.Face(Part.makePolygon(verts+[verts[0]]))
+
+def feature(name,shape,color,transparency=0):
+    obj=doc.addObject('PartDesign::Feature',name)
+    obj.Label=name.replace('_',' ')
+    obj.Shape=shape
+    obj.ViewObject.ShapeColor=color
+    obj.ViewObject.LineColor=(0.12,0.17,0.22)
+    obj.ViewObject.Transparency=transparency
+    return obj
+
+# Corpo central futurista: estilizacao da silhueta, ainda sem recortes mecanicos.
+profile=[
+ (nose,cy),(nose+22,cy-half*.28),(bb.XMin-16,cy-half*.70),
+ (bb.XMin+10,cy-half),(bb.XMax-24,cy-half),
+ (rear-24,cy-half*.74),(rear,cy-half*.30),
+ (rear,cy+half*.30),(rear-24,cy+half*.74),
+ (bb.XMax-24,cy+half),(bb.XMin+10,cy+half),
+ (bb.XMin-16,cy+half*.70),(nose+22,cy+half*.28)]
+body_solid=poly(profile).extrude(Vector(0,0,shell_h))
+# Rebaixo aberto superior: apenas zona tecnica central, fundo e bordas mantidos.
+inner_l=bb.XLength+24
+inner_w=bb.YLength+35
+inner=Part.makeBox(inner_l,inner_w,shell_h+2,Vector(cx-inner_l/2,cy-inner_w/2,floor))
+body=feature('01_Fuselagem_Compartimento',body_solid.cut(inner),COL_SHELL)
+
+# Asas enflechadas, trapezoidais com cortes na ponta; uma de cada lado.
+for s,label in [(-1,'Esquerda'),(1,'Direita')]:
+    root=cy+s*(half-7)
+    tip=cy+s*(half+wing)
+    shape=poly([(bb.XMin+L*.18,root),
+                (bb.XMin+L*.81,tip),
+                (bb.XMax+42,tip),
+                (bb.XMax+12,root)],z=3).extrude(Vector(0,0,9))
+    feature('02_Asa_Delta_'+label,shape,COL_WING)
+    # Filete visual central, ainda nao e volume de suporte eletrico.
+    accent=poly([(bb.XMin+L*.65,cy+s*(half+19)),
+                 (bb.XMin+L*.92,cy+s*(half+wing-20)),
+                 (bb.XMin+L*.98,cy+s*(half+wing-20)),
+                 (bb.XMin+L*.76,cy+s*(half+19))],z=12).extrude(Vector(0,0,1.4))
+    feature('03_Detalhe_Azul_'+label,accent,COL_ACCENT)
+
+# Cockpit prismático facetado; a entrada do joystick será definida após medicao.
+canopy_outline=[(nose+24,cy),(nose+53,cy-21),(bb.XMin-20,cy-24),
+                (bb.XMin-3,cy),(bb.XMin-20,cy+24),(nose+53,cy+21)]
+canopy=poly(canopy_outline,z=shell_h).extrude(Vector(0,0,10))
+feature('04_Cockpit_Reserva_Joystick',canopy,COL_TRIM,25)
+
+# Tampa central destacada, sem furos: a janela dos SW0-SW15 precisa de medida fisica.
+cover_outline=[(bb.XMin-3,cy-inner_w/2-3),(bb.XMax+3,cy-inner_w/2-3),
+               (bb.XMax+3,cy+inner_w/2+3),(bb.XMin-3,cy+inner_w/2+3)]
+cover=feature('05_Tampa_Tecnica_Visual',poly(cover_outline,z=shell_h+3).extrude(Vector(0,0,3)),(0.64,0.68,0.71),65)
+
+# Duas derivas traseiras verticais, triangulares no plano XZ.
+for s,name in [(-1,'Esquerda'),(1,'Direita')]:
+    ypos=cy+s*half*.48
+    p=[Vector(rear-70,ypos,shell_h),Vector(rear-14,ypos,shell_h),Vector(rear-31,ypos,shell_h+43)]
+    face=Part.Face(Part.makePolygon(p+[p[0]]))
+    feature('06_Deriva_'+name,face.extrude(Vector(0,s*4,0)),COL_WING)
+
+# STEP de referencia na propria origem XY, transladado apenas na vertical.
+# A posicao exata dos furos de montagem ainda nao foi verificada.
+for o in references:
+    o.Placement.Base=o.Placement.Base.add(Vector(0,0,floor+8-bb.ZMin))
+    o.Label='REFERENCIA_ORIGINAL_STEP_'+o.Name
+    o.ViewObject.ShapeColor=(0.10,0.50,0.31)
+    o.ViewObject.Transparency=0
+
+# Dados de orientacao para futuro detalhamento.
+feature('07_Reserva_Protoboard_Esq',Part.makeBox(72,28,1.5,Vector(cx-36,cy-half+8,floor+1)),(0.93,0.75,0.42),50)
+feature('07_Reserva_Protoboard_Dir',Part.makeBox(72,28,1.5,Vector(cx-36,cy+half-36,floor+1)),(0.93,0.75,0.42),50)
+
+doc.recompute()
+Gui.activeDocument().activeView().viewAxonometric()
+Gui.activeDocument().activeView().fitAll()
+App.Console.PrintMessage('\nHUD FPGA STEALTH V2 criado. STEP referencia: %.2f x %.2f x %.2f mm\n' % (L,W,bb.ZLength))
+App.Console.PrintMessage('ATENCAO: estudo estetico. Recessos, colisoes, furos de fixacao, switches e alturas NAO validados.\n')

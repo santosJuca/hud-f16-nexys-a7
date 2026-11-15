@@ -1,0 +1,202 @@
+{
+  "parts": [
+    {
+      "name": "_01_Base_removivel",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 143450.24421824625,
+      "bb": [
+        -79.219,
+        -46.619,
+        0.0,
+        196.138793571046,
+        155.839,
+        14.0
+      ],
+      "mesh_closed": true
+    },
+    {
+      "name": "_02_Fuselagem_oca_asas_delta",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 261673.94024674926,
+      "bb": [
+        -79.219,
+        -161.619,
+        3.0,
+        196.138793571046,
+        270.839,
+        28.000000000000004
+      ],
+      "mesh_closed": true
+    },
+    {
+      "name": "_03_Tampa_cockpit_duas_derivas",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 142073.61428809783,
+      "bb": [
+        -79.219,
+        -46.619,
+        28.0,
+        196.138793571046,
+        155.839,
+        74.0
+      ],
+      "mesh_closed": true
+    },
+    {
+      "name": "_04_Aplique_Esquerda",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 1178.9558850565393,
+      "bb": [
+        80.5135658211799,
+        -141.61899999999997,
+        12.0,
+        123.53163769962507,
+        -65.619,
+        13.4
+      ],
+      "mesh_closed": true
+    },
+    {
+      "name": "_04_Aplique_Direita",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 1178.9558850565395,
+      "bb": [
+        80.5135658211799,
+        174.839,
+        12.0,
+        123.53163769962507,
+        250.839,
+        13.4
+      ],
+      "mesh_closed": true
+    }
+  ],
+  "collisions": [],
+  "reserve_pair_collisions": [],
+  "reserves": [
+    {
+      "name": "Proto_esquerda_72x28x12",
+      "bb": [
+        24.9598968,
+        -38.619,
+        5.0,
+        96.9598968,
+        -10.619,
+        17.0
+      ],
+      "enclosure_overlap_mm3": 0.0,
+      "cassette_overlap_mm3": 0.0
+    },
+    {
+      "name": "Proto_direita_72x28x12",
+      "bb": [
+        24.9598968,
+        119.839,
+        5.0,
+        96.9598968,
+        147.839,
+        17.0
+      ],
+      "enclosure_overlap_mm3": 0.0,
+      "cassette_overlap_mm3": 0.0
+    },
+    {
+      "name": "KY023_RESERVA_24x24x20",
+      "bb": [
+        -44.0,
+        42.61,
+        5.0,
+        -20.0,
+        66.61,
+        25.0
+      ],
+      "enclosure_overlap_mm3": 0.0,
+      "cassette_overlap_mm3": 0.0
+    },
+    {
+      "name": "MPU6050_GY521_RESERVA_25x18x12",
+      "bb": [
+        137.0,
+        12.0,
+        5.0,
+        162.0,
+        30.0,
+        17.0
+      ],
+      "enclosure_overlap_mm3": 0.0,
+      "cassette_overlap_mm3": 0.0
+    },
+    {
+      "name": "BMP085_RESERVA_20x18x12",
+      "bb": [
+        137.0,
+        43.0,
+        5.0,
+        157.0,
+        61.0,
+        17.0
+      ],
+      "enclosure_overlap_mm3": 0.0,
+      "cassette_overlap_mm3": 0.0
+    },
+    {
+      "name": "HMC5883L_RESERVA_20x18x12",
+      "bb": [
+        137.0,
+        76.0,
+        5.0,
+        157.0,
+        94.0,
+        17.0
+      ],
+      "enclosure_overlap_mm3": 0.0,
+      "cassette_overlap_mm3": 0.0
+    },
+    {
+      "name": "Buzzer_d20_h12",
+      "bb": [
+        163.0,
+        45.0,
+        5.0,
+        183.0,
+        65.0,
+        17.0
+      ],
+      "enclosure_overlap_mm3": 0.0,
+      "cassette_overlap_mm3": 0.0
+    }
+  ],
+  "source_compatibility": {
+    "reference_symmetric_difference_mm3": 0.0,
+    "cassette_enclosure_overlap_mm3": 0.0
+  },
+  "fasteners_xy": [
+    [
+      10.0,
+      -39.0
+    ],
+    [
+      105.0,
+      -39.0
+    ],
+    [
+      10.0,
+      148.0
+    ],
+    [
+      105.0,
+      148.0
+    ]
+  ],
+  "pad_contacts_mm2": [
+    113.09733552923258,
+    113.09733552923258,
+    113.09733552923258,
+    113.09733552923258
+  ]
+}

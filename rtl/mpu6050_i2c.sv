@@ -54,7 +54,8 @@ module mpu6050_i2c #(
     } state_t;
     state_t state = ST_IDLE;
 
-    typedef enum logic [2:0] { OP_ID, OP_WAKE, OP_GYRO_CONFIG, OP_ACCEL_CONFIG, OP_DATA } operation_t;
+    typedef enum logic [2:0] { OP_ID, OP_WAKE, OP_GYRO_CONFIG, OP_ACCEL_CONFIG,
+        OP_FILTER_CONFIG, OP_ACCEL_FILTER, OP_DATA } operation_t;
     operation_t operation = OP_ID;
     logic [7:0] tx_data = 8'h00;
     logic [7:0] rx_data = 8'h00;
@@ -66,7 +67,9 @@ module mpu6050_i2c #(
     logic ack_error = 1'b0;
     wire escrita_config = (operation == OP_WAKE) ||
                           (operation == OP_GYRO_CONFIG) ||
-                          (operation == OP_ACCEL_CONFIG);
+                          (operation == OP_ACCEL_CONFIG) ||
+                          (operation == OP_FILTER_CONFIG) ||
+                          (operation == OP_ACCEL_FILTER);
     wire last_byte = (operation == OP_ID) || (byte_index == 4'd13);
 
     always_ff @(posedge clk) begin
@@ -165,6 +168,8 @@ module mpu6050_i2c #(
                                         OP_WAKE: tx_data <= 8'h6B;
                                         OP_GYRO_CONFIG: tx_data <= 8'h1B;
                                         OP_ACCEL_CONFIG: tx_data <= 8'h1C;
+                                        OP_FILTER_CONFIG: tx_data <= 8'h1A;
+                                        OP_ACCEL_FILTER: tx_data <= 8'h1D;
                                         default: tx_data <= 8'h3B;
                                     endcase
                                     etapa <= 2'd1;
@@ -174,8 +179,9 @@ module mpu6050_i2c #(
                                 2'd1: begin
                                     etapa <= 2'd2;
                                     if (escrita_config) begin
-                                        // SLEEP=0; giroscopio +/-250 graus/s; accel +/-2g.
-                                        tx_data <= 8'h00;
+                                        // DLPF=5: cerca de 10 Hz; faixas +/-250 graus/s e +/-2g.
+                                        tx_data <= (operation == OP_FILTER_CONFIG ||
+                                                    operation == OP_ACCEL_FILTER) ? 8'h05 : 8'h00;
                                         bit_index <= 3'd7;
                                         state <= ST_TX_LOW;
                                     end else
@@ -287,7 +293,16 @@ module mpu6050_i2c #(
                                     operation <= OP_GYRO_CONFIG;
                                 end
                                 OP_GYRO_CONFIG: operation <= OP_ACCEL_CONFIG;
-                                OP_ACCEL_CONFIG: operation <= OP_DATA;
+                                OP_ACCEL_CONFIG: operation <= OP_FILTER_CONFIG;
+                                OP_FILTER_CONFIG: begin
+                                    // ID 70 usa filtro de accel separado; nao escrever 1D no MPU6050.
+                                    operation <= who_am_i == 8'h70 ? OP_ACCEL_FILTER : OP_DATA;
+                                    if(who_am_i != 8'h70) idle_count <= STARTUP_TICKS;
+                                end
+                                OP_ACCEL_FILTER: begin
+                                    operation <= OP_DATA;
+                                    idle_count <= STARTUP_TICKS; // Assenta o filtro antes de calibrar.
+                                end
                                 OP_DATA: begin
                                     // Publica uma amostra completa; ignora a temperatura (6 e 7).
                                     amostra_nova <= 1'b1;

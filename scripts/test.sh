@@ -3,9 +3,27 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-mkdir -p build/tests
+test_dir="${TEST_OUT_DIR:-build/tests}"
+mkdir -p "$test_dir"
 
 tests=(
+    "calibracao_diagnostico|tb_calibracao_diagnostico|tests/tb_calibracao_diagnostico.sv"
+    "sd_bitmap_overlay|tb_sd_bitmap_overlay|tests/tb_sd_bitmap_overlay.sv"
+    "top_sd_overlay|tb_top_sd_overlay|tests/tb_top_sd_overlay.sv"
+    "sd_sector_buffer|tb_sd_sector_buffer|tests/tb_sd_sector_buffer.sv"
+    "sd_status_display|tb_sd_status_display|tests/tb_sd_status_display.sv"
+    "sd_diagnostic|tb_sd_diagnostic|tests/tb_sd_diagnostic.sv"
+    "sd_spi_preamble|tb_sd_spi_preamble|tests/tb_sd_spi_preamble.sv"
+    "sd_spi_cmd0|tb_sd_spi_cmd0|tests/tb_sd_spi_cmd0.sv"
+    "sd_spi_command|tb_sd_spi_command|tests/tb_sd_spi_command.sv"
+    "sd_spi_startup|tb_sd_spi_startup|tests/tb_sd_spi_startup.sv"
+    "sd_spi_acmd|tb_sd_spi_acmd|tests/tb_sd_spi_acmd.sv"
+    "sd_spi_init|tb_sd_spi_init|tests/tb_sd_spi_init.sv"
+    "sd_spi_token_timeout|tb_sd_spi_token_timeout|tests/tb_sd_spi_token_timeout.sv"
+    "sd_spi_read_block|tb_sd_spi_read_block|tests/tb_sd_spi_read_block.sv"
+    "sd_spi_controller|tb_sd_spi_controller|tests/tb_sd_spi_controller.sv"
+    "sd_spi_throughput|tb_sd_spi_throughput|tests/tb_sd_spi_throughput.sv"
+    "top_sd_integration|tb_top_sd_integration|tests/tb_top_sd_integration.sv"
     "modo_operacao|tb_modo_operacao|tests/tb_modo_operacao.sv"
     "simulador_voo|tb_simulador_voo|tests/tb_simulador_voo.sv"
     "mira_joystick|tb_mira_joystick|tests/tb_mira_joystick.sv"
@@ -15,6 +33,11 @@ tests=(
     "top_joystick_lock|tb_top_joystick_lock|tests/tb_top_joystick_lock.sv"
     "marcador_integrado|tb_marcador_integrado|tests/tb_marcador_integrado.sv"
     "captura_marcador|tb_captura_marcador|tests/tb_captura_marcador.sv"
+    "hud_capture_status|tb_hud_capture_status|tests/tb_hud_capture_status.sv"
+    "hud_dispatch|tb_hud_dispatch|tests/tb_hud_dispatch.sv"
+    "hud_offset|tb_hud_offset|tests/tb_hud_offset.sv"
+    "hud_layers|tb_hud_layers|tests/tb_hud_layers.sv"
+    "hud_high_bank|tb_hud_high_bank|tests/tb_hud_high_bank.sv"
     "simulador_pouso|tb_simulador_pouso|tests/tb_simulador_pouso.sv"
     "alertas_voo|tb_alertas_voo|tests/tb_alertas_voo.sv"
     "buzzer_driver|tb_buzzer_driver|tests/tb_buzzer_driver.sv"
@@ -73,28 +96,30 @@ tests=(
 for spec in "${tests[@]}"; do
     IFS='|' read -r nome top fonte <<< "$spec"
 
+    if [[ -n "${TEST_FILTER:-}" && ! "$nome" =~ ${TEST_FILTER} ]]; then continue; fi
+
     echo
     echo "===== TESTE: $nome ====="
 
-    if [[ "$nome" =~ ^(roll|vga)$ ]] && command -v verilator >/dev/null 2>&1; then
+    if [[ "$nome" =~ ^(roll|vga|top_sd_overlay|hud_high_bank|modos|frames_estilos|top_atitude|captura_marcador)$ ]] && command -v verilator >/dev/null 2>&1; then
         # Exhaustive raster sweeps are much faster in Verilator; keep every vector.
-        verilator --binary --timing -Wno-fatal \
+        verilator --binary --timing -j 4 -Wno-fatal \
             --top-module "$top" \
-            --Mdir "build/tests/${nome}_verilator" \
+            --Mdir "${test_dir}/${nome}_verilator" \
             tests/xadc_stub.sv \
             rtl/*.sv \
             "$fonte"
 
-        "build/tests/${nome}_verilator/V${top}"
+        "${test_dir}/${nome}_verilator/V${top}"
     else
         iverilog -g2012 \
             -s "$top" \
-            -o "build/tests/$nome" \
+            -o "$test_dir/$nome" \
             tests/xadc_stub.sv \
             rtl/*.sv \
             "$fonte"
 
-        vvp "build/tests/$nome"
+        vvp "$test_dir/$nome"
     fi
 done
 

@@ -8,7 +8,7 @@ module tb_horizonte;
     wire [3:0] r,g,b;
     wire hs,vs;
     // Regressao da configuracao anterior; modos novos tem banco integrado proprio.
-    top_reticula #(.MODOS_OPERACIONAIS(1'b0)) dut (
+    top_reticula #(.FULL_ATTITUDE(1'b0),.MODOS_OPERACIONAIS(1'b0)) dut (
         .operacao_sw(2'b00),.ack_btn(1'b0),.clk(clk),
         .btn_heading(2'b00),
         .sw({sw[15:12],3'b000}),

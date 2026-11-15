@@ -1,0 +1,802 @@
+{
+  "completed": 84,
+  "total": 84,
+  "results": {
+    "calibracao_diagnostico": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS diagnostico VGA: 4928 pixels; seis eixos, sinal, ID/IO e ocultacao"
+      ]
+    },
+    "sd_bitmap_overlay": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS bitmap: 4096 pixels, 4 cantos, transparencia, orientacao, prefetch BRAM e sync original"
+      ]
+    },
+    "top_sd_overlay": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS top overlay: SPI/CMD17/CRC -> BRAM -> blanking -> RGB; pixels=804",
+        "PASS top overlay: erro CRC preserva banco, recuperacao, 12 combinacoes HUD e sync alinhado",
+        "PASS top: SDHC, CMD17 explicito LBA0, CRC, LEDs e VGA preservado"
+      ]
+    },
+    "sd_sector_buffer": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS buffer: 512 bytes, CRC externo/commit e publicacao no blanking",
+        "PASS buffer: abort parcial e CRC ruim preservam setor anterior",
+        "PASS buffer: rejeita contagem incompleta, indice errado e byte excedente",
+        "PASS buffer: bancos alternados, dados antigos estaveis e duas fases de ACK",
+        "PASS buffer: reset durante recepcao e nova transferencia completa"
+      ]
+    },
+    "sd_status_display": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS sd_status_display: 16 glifos, 8 anodos, paginas e apagamento"
+      ]
+    },
+    "sd_diagnostic": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS sd_diagnostic: debounce, 512 bytes, primeiro erro, CRC, repeticao e timeout"
+      ]
+    },
+    "sd_spi_preamble": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS: 80 clocks SPI, CS alto, alimentacao habilitada"
+      ]
+    },
+    "sd_spi_cmd0": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS: CMD0 recebeu R1=0x01",
+        "PASS: CMD0 timeout controlado"
+      ]
+    },
+    "sd_spi_command": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS: CMD8 R7 valido",
+        "PASS: CMD8 eco incorreto detectavel",
+        "PASS: CMD8 timeout controlado"
+      ]
+    },
+    "sd_spi_startup": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS: preamble integrado, 80 clocks",
+        "PASS: CMD0 integrado",
+        "PASS: CMD8 integrado",
+        "PASS: sequencia CMD0 -> CMD8"
+      ]
+    },
+    "sd_spi_acmd": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS: CMD55 em estado idle",
+        "PASS: ACMD41 ainda inicializando",
+        "PASS: CMD55 repetido",
+        "PASS: ACMD41 concluiu inicializacao",
+        "PASS: CMD58 OCR e CCS=1",
+        "PASS: sequencia SDHC simulada"
+      ]
+    },
+    "sd_spi_init": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS: Inicializacao SDHC nominal | comandos=5 ACMD41=1 erro=0",
+        "PASS: ACMD41 com tres tentativas | comandos=9 ACMD41=3 erro=0",
+        "PASS: Timeout CMD0 | comandos=1 ACMD41=0 erro=7",
+        "PASS: Timeout CMD8 | comandos=2 ACMD41=0 erro=7",
+        "PASS: CMD8 R7 eco invalido | comandos=2 ACMD41=0 erro=2",
+        "PASS: CMD8 R1 invalido | comandos=2 ACMD41=0 erro=2",
+        "PASS: OCR CCS incompativel | comandos=5 ACMD41=1 erro=6",
+        "PASS: OCR power-up incompleto | comandos=5 ACMD41=1 erro=6",
+        "PASS: Limite de tentativas ACMD41 | comandos=8 ACMD41=3 erro=5",
+        "PASS: todos os 9 cenarios P2G aprovados"
+      ]
+    },
+    "sd_spi_token_timeout": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS token timeout: HALF=2, prazo=100034 ciclos de 100MHz"
+      ]
+    },
+    "sd_spi_read_block": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS: leitura nominal LBA 0, 512 bytes e CRC",
+        "PASS: LBA nao nulo e leituras consecutivas distintas",
+        "PASS: erro scenario=1 codigo=1",
+        "PASS: erro scenario=2 codigo=2",
+        "PASS: erro scenario=3 codigo=3",
+        "PASS: erro scenario=4 codigo=4",
+        "PASS: erro scenario=5 codigo=5",
+        "PASS: token no ultimo byte permitido e recuperacao sem reset",
+        "PASS: vetor independente 512 x FF, CRC=7FA1",
+        "PASS: erro scenario=7 codigo=5",
+        "PASS: start durante busy ignorado",
+        "PASS: reset durante transferencia aborta e libera CS",
+        "PASS: leitura completa apos reset durante transferencia",
+        "PASS: todos os cenarios P2H executados"
+      ]
+    },
+    "sd_spi_controller": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS: preâmbulo e inicialização com três tentativas ACMD41",
+        "PASS: leitura LBA 0, 512 bytes byte a byte e CRC16 correto",
+        "PASS: segundo LBA e dados distintos sem repetir inicialização",
+        "PASS: timeout R1 libera CS e retorna erro específico",
+        "PASS: nova leitura após timeout recuperável",
+        "PASS: CRC incorreto não confirma block_valid",
+        "PASS: nova leitura após falha de CRC recuperável",
+        "PASS: falha de init propagada e leituras bloqueadas",
+        "PASS: reset durante inicialização reinicia e permite leitura",
+        "PASS: reset durante leitura aborta, reinicializa e recupera",
+        "PASS: arbitragem exclusiva, trocas em idle, CS e sequência CMDs verificados",
+        "PASS: todos os cenários integrados P2I executados"
+      ]
+    },
+    "sd_spi_throughput": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "SECTOR half=125 r1_delay_bytes=1 token_delay_bytes=0 lba=00000100 cycles=1050003 sck_edges=4200 intersector_gap_cycles=0 confirmed=512 crc=PASS",
+        "SECTOR half=125 r1_delay_bytes=1 token_delay_bytes=0 lba=00000101 cycles=1050003 sck_edges=4200 intersector_gap_cycles=3 confirmed=512 crc=PASS",
+        "SECTOR half=125 r1_delay_bytes=1 token_delay_bytes=0 lba=00000102 cycles=1050003 sck_edges=4200 intersector_gap_cycles=3 confirmed=512 crc=PASS",
+        "PASS throughput: inicialização conservadora, CMD17 sequenciais, cada byte e CRC verificados"
+      ]
+    },
+    "top_sd_integration": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS top: SDHC, CMD17 explicito LBA0, CRC, LEDs e VGA preservado"
+      ]
+    },
+    "modo_operacao": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS modo operacional: 00/01/10/11, repique e reset"
+      ]
+    },
+    "simulador_voo": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS voo: pitch, altitude, velocidade suave, heading circular e perda/recuperação MPU"
+      ]
+    },
+    "mira_joystick": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS mira: centro/deadzone, eixos, limites, debounce, LOCK e UNLOCK"
+      ]
+    },
+    "hud_joystick_vertical": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS: vertical invertido em NORMAL/CACA, horizontal preservado, centro e LEDs corretos"
+      ]
+    },
+    "marcador_joystick": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS marcador: inicial, sentidos, proporcionalidade, retenção, deadzone, clamp, arbitragem e reset"
+      ]
+    },
+    "joystick_start_threshold": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS limiar: 252 e 435 parados, 436 inicia passo simetrico"
+      ]
+    },
+    "top_joystick_lock": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS top joystick: velocidade igual com deflexoes desiguais, quatro sentidos, deadzone, LOCK/UNLOCK NORMAL e CAÇA"
+      ]
+    },
+    "marcador_integrado": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS integração marcador: controlador, CDC, quadro, raster, modos, LOCK e limites"
+      ]
+    },
+    "captura_marcador": {
+      "status": "PASS",
+      "log": "raster-recheck.log",
+      "evidence": [
+        "PASS captura marcador: quatro cantos RTL e 8 posições incluindo os quatro limites"
+      ]
+    },
+    "hud_capture_status": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS CAP: modos, pixels, vista pura e clipping"
+      ]
+    },
+    "hud_dispatch": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS dispatcher SW4 / heading / capture isolation"
+      ]
+    },
+    "hud_offset": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS 1px step, frame commit, saturation, clipping, persistence"
+      ]
+    },
+    "hud_layers": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS compass screen anchored, flight horizon translated/clipped"
+      ]
+    },
+    "hud_high_bank": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS bank=0 pitch=0 pixels omitidos=0",
+        "PASS bank=30 pitch=0 pixels omitidos=0",
+        "PASS bank=-30 pitch=0 pixels omitidos=0",
+        "PASS bank=59 pitch=0 pixels omitidos=0",
+        "PASS bank=60 pitch=0 pixels omitidos=175",
+        "PASS bank=-60 pitch=0 pixels omitidos=172",
+        "PASS bank=90 pitch=0 pixels omitidos=172",
+        "PASS bank=-90 pitch=0 pixels omitidos=172",
+        "PASS bank=120 pitch=0 pixels omitidos=172",
+        "PASS bank=150 pitch=0 pixels omitidos=0",
+        "PASS bank=90 pitch=10 pixels omitidos=172",
+        "PASS bank=-90 pitch=-10 pixels omitidos=172",
+        "PASS high-bank: linha, marcas e instrumentos preservados"
+      ]
+    },
+    "simulador_pouso": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS pouso: cinco fases, monotonia, VSI, parada, reentrada e reset"
+      ]
+    },
+    "alertas_voo": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS alertas: 183 verificacoes, limiares, histerese, sinais, prioridade, sensores e pouso"
+      ]
+    },
+    "buzzer_driver": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS buzzer: cadencias, debounce, ACK, escalada, fim, enable e reset"
+      ]
+    },
+    "fontes_operacao": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS fontes: primeira amostra, expiracao individual, perda, recuperacao e fallback"
+      ]
+    },
+    "alertas_vga": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS overlay: textos, cores de prioridade e blanking"
+      ]
+    },
+    "modos_operacao_integrado": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS modos integrados: 43 verificacoes, fontes, CDC, quadro, visual, audio e reset"
+      ]
+    },
+    "heading_fusao": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS heading_fusao: 124 verificacoes"
+      ]
+    },
+    "projecao_vertical": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS projecao_vertical: 9 vetores e bloqueios"
+      ]
+    },
+    "estado_vertical": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS estado_vertical: 29 verificacoes"
+      ]
+    },
+    "top_fusao_sensores": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS top_fusao_sensores: 11 verificacoes"
+      ]
+    },
+    "reticula": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS retículo: espessuras 1/2/3, vão 0/6 e blanking"
+      ]
+    },
+    "hmc5883l_i2c": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS HMC: ausencia, novas tentativas e ID incorreto",
+        "PASS HMC: H43, writes, repeated START, stretching, XYZ, ACK/NACK e STOP atomico",
+        "PASS HMC: NACK em dados preserva amostra e exige reidentificacao",
+        "PASS HMC: SDA presa no STOP, timeout e recuperacao",
+        "PASS HMC: SCL presa, timeout e recuperacao; todos os testes passaram"
+      ]
+    },
+    "heading_magnetico": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS heading: 1393 vetores em 9 configuracoes; cardeais, quadrantes, wrap, offsets, limites e perda"
+      ]
+    },
+    "top_heading": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS top: rumo magnético e CDC; joystick independente, botoes, perdas, recuperacao e estabilidade de quadro"
+      ]
+    },
+    "controle_heading": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS heading: incremento, decremento, wrap e botoes simultaneos"
+      ]
+    },
+    "controle_joystick": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS joystick: centro, deadzone, quatro sentidos e botao"
+      ]
+    },
+    "controle_manche": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS manche pipeline: calibracao, deadzone, proporcionalidade e saturacao"
+      ]
+    },
+    "modo_manche": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS modo manche: SENSOR/MANCHE por toggle, debounce e retencao"
+      ]
+    },
+    "horizonte": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS horizonte: quatro combinações, atualização entre quadros, bordas, vão e retículo fixo"
+      ]
+    },
+    "atitude": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS atitude: tres posicoes, marcas de pitch +/-10/20/30/40, espessura, vao e blanking",
+        "PASS direção: N/E/S/W, escala 2x, limites da fita, wrap e blanking"
+      ]
+    },
+    "atitude_accel_fixa": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS calibracao plana: pitch=0 roll=0",
+        "PASS frente para baixo: pitch=-64 roll=0",
+        "PASS tras para baixo: pitch=64 roll=0",
+        "PASS direita para baixo: pitch=0 roll=64",
+        "PASS esquerda para baixo: pitch=0 roll=-64",
+        "PASS saturacao pitch: pitch=80 roll=0",
+        "PASS saturacao roll: pitch=0 roll=128",
+        "PASS perda do sensor: pitch=0 roll=0",
+        "PASS todos os testes atitude_accel_fixa"
+      ]
+    },
+    "gyro_bias_dt": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS bias: x=100 y=-50",
+        "PASS correcao: x=25 y=30",
+        "PASS dt: 21 ciclos entre amostras",
+        "PASS perda do sensor: estado temporal reiniciado",
+        "PASS todos os testes gyro_bias_dt"
+      ]
+    },
+    "gyro_integrador": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS +1 grau: angulo_q10=1024",
+        "PASS acumulacao +2 graus: angulo_q10=2048",
+        "PASS retorno para +1 grau: angulo_q10=1024",
+        "PASS simetria positiva/negativa",
+        "PASS todos os testes gyro_integrador"
+      ]
+    },
+    "atitude_gyro_hud": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS pitch +10 graus -> 40 px",
+        "PASS roll +10 graus -> 44 q8",
+        "PASS saturacoes",
+        "PASS todos os testes atitude_gyro_hud"
+      ]
+    },
+    "atitude_fusao_complementar": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS inicializacao plana",
+        "PASS gyro positivo: pitch=9920 roll=9920",
+        "PASS perda do sensor",
+        "PASS gyro negativo: pitch=-9920 roll=-9920",
+        "PASS referencia accel: pitch=10076 roll=10076",
+        "PASS retencao sem nova amostra",
+        "PASS todos os testes atitude_fusao_complementar"
+      ]
+    },
+    "velocidade_inercial": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS +1g: velocidade=19 kt",
+        "PASS compensacao de pitch",
+        "PASS desaceleracao: velocidade=0 kt",
+        "PASS velocidade inercial: calibracao, integracao, pitch, saturacao e perda de sensor"
+      ]
+    },
+    "velocidade_inercial_pipeline": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS velocidade pipeline: amostras consecutivas, modelo Q16, dt invalido, deadzone, limites 0/500 e perda em voo"
+      ]
+    },
+    "velocidade_inercial_dt_real": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS timing real: amostra_nova antes de dt_valid, velocidade=3 kt"
+      ]
+    },
+    "entrada_hud": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS entrada: 16 amostras atômicas de 128 bits de 100 para 25 MHz, sem duplicação"
+      ]
+    },
+    "dados_hud": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS dados: captura atômica, pulso válido, retenção, coincidência e saturação de rumo"
+      ]
+    },
+    "numeros": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS numeros: fitas arredondadas, valor central, molduras, zeros e limites"
+      ]
+    },
+    "roll": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS roll: horizonte contrarrota nos dois sentidos e escala fixa",
+        "PASS grid: roll=0 centro=160, 307200 pixels e blanking",
+        "PASS grid: roll=0 centro=320, 307200 pixels e blanking",
+        "PASS grid: roll=0 centro=240, 307200 pixels e blanking",
+        "PASS grid: roll=64 centro=240, 307200 pixels e blanking",
+        "PASS grid: roll=-64 centro=240, 307200 pixels e blanking",
+        "PASS grid: roll=127 centro=160, 307200 pixels e blanking",
+        "PASS grid: roll=-127 centro=320, 307200 pixels e blanking",
+        "PASS grid: roll=128 centro=320, 307200 pixels e blanking",
+        "PASS grid: roll=-128 centro=160, 307200 pixels e blanking",
+        "PASS grid: roll=511 centro=240, 307200 pixels e blanking",
+        "PASS grid: roll=-512 centro=240, 307200 pixels e blanking"
+      ]
+    },
+    "modo": {
+      "status": "PASS",
+      "log": "rtl.log",
+      "evidence": [
+        "PASS modo: repique ignorado, SW0=0 NORMAL, SW0=1 DECLUTTER, aplicação entre quadros"
+      ]
+    },
+    "estilos": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS estilo 00: HUD original NORMAL",
+        "PASS SW1: troca somente entre quadros",
+        "PASS estilo 10: HUD CACA NORMAL",
+        "PASS estilo 11: HUD CACA DECLUTTER",
+        "PASS estilo 01: HUD original DECLUTTER",
+        "PASS blanking: original e CACA",
+        "PASS controles: SW0/SW1 independentes nas quatro combinacoes",
+        "PASS todos os testes de estilos"
+      ]
+    },
+    "frames_estilos": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS imagem original: build/hud_original_pitch_roll.ppm",
+        "PASS imagem CACA: build/hud_caca_pitch_roll.ppm",
+        "PASS comparacao visual ORIGINAL x CACA"
+      ]
+    },
+    "modos": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS modos: NORMAL/DECLUTTER/NORMAL, quadros completos, símbolos críticos e blanking"
+      ]
+    },
+    "top_atitude": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS inicializacao fusao: gyro=281/281 fusao=0/0",
+        "PASS fusao observadora: gyro=562/562 fusao=273/273 HUD=1/1",
+        "PASS fusao ativa no HUD: pitch=1 roll=1",
+        "PASS observador gyro: pitch_q10=562 roll_q10=562 pitch_px=2 roll_q8=2",
+        "PASS seleção MPU/manual pelos switches 15..12",
+        "PASS fallback SENSOR: switches preservados quando MPU indisponivel",
+        "PASS top: SENSOR, joystick independente, fusao, fallback e perda do sensor"
+      ]
+    },
+    "vga": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS velocidade: geometria, oito marcas, verde e limites em quadro completo",
+        "PASS VGA: 420000 pixels, 307200 ativos, HS=96 pixels/linha, VS=2 linhas, pixel=40 ns"
+      ]
+    },
+    "bmp085_calibracao": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS CHIP_ID = 0x55",
+        "PASS AC1=408 AC2=-72 AC3=-14383",
+        "PASS AC4=32741 AC5=32757 AC6=23153",
+        "PASS B1=6190 B2=4 MB=-32768 MC=-8711 MD=2868",
+        "PASS todos os 11 coeficientes BMP085"
+      ]
+    },
+    "bmp085_temperatura": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS CHIP_ID = 0x55",
+        "PASS AC1=408 AC2=-72 AC3=-14383",
+        "PASS AC4=32741 AC5=32757 AC6=23153",
+        "PASS B1=6190 B2=4 MB=-32768 MC=-8711 MD=2868",
+        "PASS todos os 11 coeficientes BMP085",
+        "PASS TEMP CMD: F4 <- 0x2E",
+        "PASS TEMP WAIT: 5509900000 ns",
+        "PASS TEMP F6/F7: UT=0x6cfa (27898)",
+        "PASS todos os testes BMP085 temperatura"
+      ]
+    },
+    "bmp085_pressao": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS CHIP_ID = 0x55",
+        "PASS AC1=408 AC2=-72 AC3=-14383",
+        "PASS AC4=32741 AC5=32757 AC6=23153",
+        "PASS B1=6190 B2=4 MB=-32768 MC=-8711 MD=2868",
+        "PASS todos os 11 coeficientes BMP085",
+        "PASS TEMP CMD: F4 <- 0x2E",
+        "PASS TEMP WAIT: 5509900000 ns",
+        "PASS TEMP F6/F7: UT=0x6cfa (27898)",
+        "PASS todos os testes BMP085 temperatura",
+        "PASS PRESS CMD: F4 <- 0x34",
+        "PASS PRESS WAIT: 5509900000 ns",
+        "PASS PRESS F6/F7/F8: UP=23843 (0x05d23)",
+        "PASS todos os testes BMP085 pressao"
+      ]
+    },
+    "bmp085_continuo": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS CHIP_ID = 0x55",
+        "PASS AC1=408 AC2=-72 AC3=-14383",
+        "PASS AC4=32741 AC5=32757 AC6=23153",
+        "PASS B1=6190 B2=4 MB=-32768 MC=-8711 MD=2868",
+        "PASS todos os 11 coeficientes BMP085",
+        "PASS CHIP_ID = 0x55",
+        "PASS AC1=408 AC2=-72 AC3=-14383",
+        "PASS AC4=32741 AC5=32757 AC6=23153",
+        "PASS B1=6190 B2=4 MB=-32768 MC=-8711 MD=2868",
+        "PASS todos os 11 coeficientes BMP085",
+        "PASS CONTINUO pressao=0 ciclo=1 UT=27898 UP=0 TEMP_WAIT=5509900 ns PRESS_WAIT=0 ns",
+        "PASS intervalo pressao=0 obtido=52501 ns esperado>=42500 ns",
+        "PASS CONTINUO pressao=0 ciclo=2 UT=27899 UP=0 TEMP_WAIT=5509900 ns PRESS_WAIT=0 ns",
+        "PASS CONTINUO pressao=1 ciclo=1 UT=27898 UP=23843 TEMP_WAIT=5509900 ns PRESS_WAIT=5509900 ns",
+        "PASS intervalo pressao=1 obtido=100010000 ns esperado>=100000000 ns",
+        "PASS CONTINUO pressao=1 ciclo=2 UT=27899 UP=23844 TEMP_WAIT=5509900 ns PRESS_WAIT=5509900 ns",
+        "PASS BMP085 continuo: dois ciclos TEMP/PRESS, pausa de 100 ms e modo somente TEMP"
+      ]
+    },
+    "bmp085_compensacao_temp": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS X1=4743 X2=-2343 B5=2400",
+        "PASS temperatura=150 deciC = 15,0 C",
+        "PASS todos os testes BMP085 compensacao temperatura"
+      ]
+    },
+    "bmp085_compensacao_pressao": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS B6=-1600 B3=422 B4=33457 B7=1171050000",
+        "PASS pressao base=70003 Pa",
+        "PASS pressao compensada=69964 Pa",
+        "PASS todos os testes BMP085 compensacao pressao"
+      ]
+    },
+    "bmp085_aritmetica_seq": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS aritmetica BMP085: 208 produtos/divisoes signed, limites e truncamento"
+      ]
+    },
+    "bmp085_compensacao_temp_seq": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS temperatura sequencial: 203 amostras equivalentes e captura estavel"
+      ]
+    },
+    "bmp085_compensacao_pressao_seq": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS pressao sequencial: 304 amostras, B7 baixo=50 alto=91 invalidas=163"
+      ]
+    },
+    "bmp085_compensacao_seq": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS cadeia sequencial: captura, pendente, validade, recuperacao e retencao de altitude"
+      ]
+    },
+    "top_bmp085_seq": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS top BMP085: UT=27898 UP=23843 pressao=69964 altitude=9897, retencao e LED"
+      ]
+    },
+    "bmp085_altitude": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS INVALIDO: P=101325 valid=0",
+        "PASS: P=101325 Pa -> altitude=0 ft",
+        "PASS: P=100000 Pa -> altitude=364 ft",
+        "PASS: P=95000 Pa -> altitude=1773 ft",
+        "PASS: P=90000 Pa -> altitude=3244 ft",
+        "PASS: P=80000 Pa -> altitude=6395 ft",
+        "PASS: P=70000 Pa -> altitude=9884 ft",
+        "PASS: P=60000 Pa -> altitude=13803 ft",
+        "PASS: P=50000 Pa -> altitude=18291 ft",
+        "PASS: P=40000 Pa -> altitude=23577 ft",
+        "PASS: P=30000 Pa -> altitude=30069 ft",
+        "PASS: P=69964 Pa -> altitude=9897 ft",
+        "PASS: P=110000 Pa -> altitude=0 ft",
+        "PASS: P=120000 Pa -> altitude=0 ft",
+        "PASS INVALIDO: P=29999 valid=1",
+        "PASS INVALIDO: P=120001 valid=1",
+        "PASS: tb_bmp085_altitude sequencial"
+      ]
+    },
+    "bmp085_altitude_monotonia": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS: monotonicidade verificada em 71326 pressoes",
+        "PASS: tb_bmp085_altitude_monotonia sequencial"
+      ]
+    },
+    "bmp085_i2c": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS BMP085: endereco 0x77 e CHIP_ID=0x55",
+        "PASS BMP085: CHIP_ID incorreto detectado",
+        "PASS BMP085: NACK de endereco detectado",
+        "PASS todos os testes bmp085_i2c"
+      ]
+    },
+    "mpu6050_i2c": {
+      "status": "PASS",
+      "log": "rtl-final.log",
+      "evidence": [
+        "PASS sensor ausente: sensor_ok=0, novas tentativas",
+        "PASS WHO_AM_I=69: sensor_ok=0, sem inicializacao",
+        "PASS NACK em PWR_MGMT_1: sensor_ok=0",
+        "PASS NACK GYRO_CONFIG: nao publica dados nem avanca configuracao",
+        "PASS NACK ACCEL_CONFIG: nao publica dados",
+        "PASS NACK CONFIG: nao publica dados; ID 68 nao escreve ACCEL_CONFIG2",
+        "PASS leitura com clock stretching: eixos=4660,-292,-32768,32767,-1,258",
+        "PASS amostra_nova: pulso unico por conjunto completo",
+        "PASS segunda amostra: eixos publicados juntos apos STOP",
+        "PASS SDA presa no STOP: sem publicacao e eixos preservados",
+        "PASS recuperacao apos SDA presa no STOP",
+        "PASS NACK de registrador: invalida status, preserva eixos e recupera",
+        "PASS NACK de endereco de leitura: recupera",
+        "PASS SCL preso: sensor_ok=0 apos timeout",
+        "PASS recuperacao apos liberar SCL",
+        "PASS NACK ACCEL_CONFIG2: sensor invalido ate configurar filtro do ID 70",
+        "PASS WHO_AM_I=70: identificacao, wake, filtros separados e leitura de dados",
+        "PASS todos os testes"
+      ]
+    }
+  },
+  "pending": []
+}

@@ -12,6 +12,7 @@ foreach name {timing_summary.rpt utilization.rpt drc.rpt check_timing.rpt cdc.rp
 create_project reticula $project_dir -part xc7a100tcsg324-1
 add_files [glob [file join $root rtl *.sv]]
 add_files -fileset constrs_1 [file join $root constraints nexys_a7_reticula.xdc]
+add_files -fileset constrs_1 [file join $root constraints attitude_capture.xdc]
 set_property top top_reticula [current_fileset]
 # Perfil medido desta montagem; defaults RTL continuam sem calibracao.
 source [file join $root constraints magnetometer_calibration.tcl]
@@ -20,6 +21,8 @@ launch_runs synth_1 -jobs 4
 wait_on_run synth_1
 if {[get_property PROGRESS [get_runs synth_1]] ne "100%"} { error "Sintese nao concluida" }
 puts "SYNTHESIS=PASS"
+# A calibracao vetorial exige otimizacao fisica no perfil sem video.
+set_property strategy Performance_Explore [get_runs impl_1]
 launch_runs impl_1 -to_step route_design -jobs 4
 wait_on_run impl_1
 if {[get_property PROGRESS [get_runs impl_1]] ne "100%"} { error "Implementacao nao concluida" }

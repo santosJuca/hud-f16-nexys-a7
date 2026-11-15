@@ -1,3 +1,7 @@
+# Programacao volatil reservada ao usuario; nunca executada pelo build.
+if {![info exists ::env(HUD_ALLOW_VOLATILE_PROGRAM)] || $::env(HUD_ALLOW_VOLATILE_PROGRAM) ne "EXPLICIT_USER_ACTION"} {
+    error "Programacao desativada. Exige acao explicita do usuario e artefato aprovado."
+}
 set root [file normalize [file join [file dirname [info script]] ..]]
 set bitstream [file join $root build vivado reticula.runs impl_1 top_reticula.bit]
 if {![file exists $bitstream]} { error "Gere o bitstream antes de programar a placa" }
