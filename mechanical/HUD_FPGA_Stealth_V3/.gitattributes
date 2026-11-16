@@ -1,7 +1,0 @@
-# Preserve exact source/reference bytes and CAD exports.
-referencias/** -text
-*.FCStd binary
-*.stl binary
-*.png binary
-*.step -text
-*.FCMacro -text
