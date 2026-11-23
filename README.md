@@ -7,10 +7,11 @@ calibração magnética guiada e vídeo de fundo sincronizado aos modos SOLO, VO
 
 ## Versões e evidências
 
-A [documentação v1.2 `12000007`](docs/hud-v12-12000007/README.md) está disponível na árvore: arquitetura, catálogo, interligações e 15 esquemas nativos do Vivado. É um candidato separado, com demonstração física pendente.
+A versão documental mais recente é a **v1.2 `12000007`**, com [arquitetura, catálogo, interligações e 15 esquemas nativos do Vivado](docs/hud-v12-12000007/README.md). Suas fontes exatas estão no [pacote da release documental](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/docs-hud-v12-12000007-vivado-20261123). O candidato tem demonstração física pendente; o firmware com aceites de bancada permanece identificado separadamente.
 
 | Conjunto | Uso | Referência |
 | --- | --- | --- |
+| **v1.2 `12000007`** | Candidato mais recente documentado: SD nativo em quatro linhas, DDR2, vídeo DIA/NOITE e pipeline de instrumentos. Sem aceite físico conclusivo. | [Documentação na main](docs/hud-v12-12000007/README.md) · [Fontes e checkpoint da referência](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/docs-hud-v12-12000007-vivado-20261123) |
 | **5D7A3AE2** | Firmware de bancada ensaiado em 13/11/2026. Vídeo 2 bpp, DDR2 e calibração magnética guiada. | [Fontes, operação e artefatos](firmware/calibracao-guiada-5d7a3ae2/README.md) · [Aceites físicos](firmware/calibracao-guiada-5d7a3ae2/aceites/) |
 | **MVP v1.1** | Perfil procedural sem framebuffer externo, selecionado para a entrega. Validação offline com `MODOS_OPERACIONAIS=1`. | [Pipeline, perfil e reprodução](docs/entrega_academica/mvp_v11/README.md) · [Checklist da entrega](docs/entrega_demo.md) |
 
@@ -26,6 +27,8 @@ de retículo, horizonte, instrumentos e alertas calculam máscaras a partir das
 coordenadas e do estado de voo. `top_reticula` resolve a prioridade das camadas
 e entrega RGB durante a área ativa. O estado visual da base é publicado na
 fronteira do quadro para evitar mudanças no meio da imagem.
+
+Na v1.2 `12000007`, o host SD nativo alimenta dois bancos de quadro em DDR2; o leitor VGA usa buffers de linha e prefetch. O modo NOITE usa 2 bpp e o modo DIA usa RGB332, ambos em 640×480. A atualização dos instrumentos acompanha o estado publicado por quadro. O caminho de fase do perfil de voo tem três grupos de registros; as máscaras e a seleção final de RGB são predominantemente combinacionais. Veja a [arquitetura v1.2](docs/hud-v12-12000007/arquitetura.pdf) e o [pipeline extraído pelo Vivado](docs/hud-v12-12000007/vivado/07-pipeline-tres-estagios.pdf).
 
 No 5D7A3AE2, o leitor SPI busca setores do microSD e o caminho de vídeo com DDR2 e
 buffers entrega os pixels de fundo sincronizados ao raster. A sequência de modos
@@ -45,6 +48,10 @@ separada para a Nexys A7-100T**. A [documentação de montagem](docs/montagem.md
 identifica as interfaces com evidência disponível e os limites das pranchas elétricas.
 
 ## Simular e reproduzir
+
+Para a v1.2, use as fontes, constraints e 55 overrides de `genericos.txt` do pacote identificado acima. Os arquivos `rtl/` e scripts padrão da raiz continuam pertencendo à base v1.1. O pacote `firmware/calibracao-guiada-5d7a3ae2/` também é uma configuração própria; nenhum desses caminhos deve ser apresentado como reprodução automática do `12000007`.
+
+Os comandos abaixo verificam a base v1.1 e o 5D7A3AE2, conforme indicado. A suíte atual do CI não é uma regressão da v1.2.
 
 Na raiz, com Python 3, Icarus Verilog, Verilator, make, compilador C++, FFmpeg e Tcl:
 
@@ -73,6 +80,8 @@ identificar os genéricos efetivos do candidato v1.1. O [build padrão da raiz](
 usa o perfil v1.1 padrão. Um novo build precisa de identidade e evidência próprias.
 
 ## Limites
+
+Na v1.2, os mapas e cabeçalhos DIA/NOITE pertencem ao snapshot `12000007`. O [relatório da configuração](docs/hud-v12-12000007/arquitetura.pdf) registra as identidades e os limites. A alocação física do setor HFCAL2D, a qualificação dos coeficientes, os avisos CDC restantes e a demonstração física do candidato permanecem pendentes. Os esquemas e os relatórios estáticos do Vivado não encerram essas pendências.
 
 O perfil 5D7A3AE2 espera o B++ de 4.800 quadros, SHA-256
 `229261917a3ad34b355656fc455fc8ee1041f36f42d823421b6e529566bf1d4a`, no LBA

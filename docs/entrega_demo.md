@@ -1,6 +1,25 @@
 # Entrega e demonstração do HUD F-16
 
-## Identidade do conjunto recente
+## Entrega documental atual: v1.2 12000007
+
+A referência mais recente é o candidato local `12000007`, com [arquitetura e catálogo](hud-v12-12000007/README.md) e [15 esquemas nativos do Vivado](hud-v12-12000007/vivado/README.md). O [pacote da release documental](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/docs-hud-v12-12000007-vivado-20261123) contém as fontes exatas, constraints, parâmetros, checkpoint, scripts, logs e formatos editáveis.
+
+| Identificação | Referência |
+| --- | --- |
+| BIT do candidato | SHA-256 `88f7872de8cb77769781611b84aa1caa2c2f37bc4cfddc43baefa717d91aaec6`; não acompanha a pasta documental da main |
+| Checkpoint de origem | SHA-256 `79b7caa7b93c18a618fe680c039371f944cc22b3bf731ea53d8f2cac049b1110` |
+| Configuração | SD nativo em quatro linhas, DDR2, DIA RGB332/NOITE 2 bpp, 55 overrides e defaults identificados |
+| Conferência documental | 99 instâncias locais confirmadas na elaboração RTL; cinco macros XPM acrescentadas; 15 esquemas nativos e inventários de portas |
+| Alcance | Elaboração RTL e extração da implementação preservada; MIG como interface somente na elaboração. Sem novo ensaio físico |
+
+- [x] Disponibilizar arquitetura, catálogo, apresentação, conexões e pinagem da configuração na main.
+- [x] Publicar fontes de referência, checkpoint, scripts e registros na release documental, com hashes.
+- [ ] Concluir o tratamento dos avisos CDC restantes, a confirmação da alocação física do setor HFCAL2D e a qualificação dos coeficientes da montagem.
+- [ ] Demonstrar fisicamente o candidato identificado e registrar a mídia, controles e condições do ensaio.
+
+A entrega documental não transfere aceites físicos de outras imagens nem converte o perfil com DDR2 no MVP acadêmico sem framebuffer externo.
+
+## Firmware de bancada: 5D7A3AE2
 
 | Item | Referência |
 | --- | --- |
@@ -19,7 +38,7 @@ runtime da calibração são voláteis. A organização do Git não altera essas
 O [registro de 08/10](historico/entrega_20261008.md) foi preservado como histórico.
 Seus controles, BIT e pendências não descrevem automaticamente o firmware recente.
 
-## Núcleo exigido e extensões
+## Núcleo acadêmico exigido e extensões
 
 O enunciado disponível pede VGA, coordenadas, retículo, horizonte configurável,
 escala de altitude, direção, marcador, dois modos, atualização contínua e elementos
@@ -27,11 +46,11 @@ na região ativa (RF-01 a RF-10). Pede ainda arquitetura, RTL/testbench, projeto
 Vivado com constraints e relatórios, README, utilização/Fmax, apresentação e demo.
 
 A base v1.1 na raiz preserva o caminho procedural sem framebuffer externo.
-O firmware recente acrescenta vídeo em DDR2. Essa extensão precisa ser distinguida
+O firmware 5D7A3AE2 e o candidato v1.2 acrescentam vídeo em DDR2. Essa extensão precisa ser distinguida
 do núcleo, pois o enunciado proíbe framebuffer externo. Sensores, gabinete,
 calibração guiada e fundo de vídeo não são condições para completar o MVP.
 
-## Evidência de pipeline gráfico
+## Evidência de pipeline gráfico do MVP v1.1
 
 A cadeia a apresentar é:
 
@@ -55,7 +74,7 @@ A [CI da main 28e736d](https://github.com/santosJuca/Trabalho-display-aviao-v2/a
 separadamente. O pacote acadêmico local contém também relatório, apresentação,
 roteiro, matriz RF-01 a RF-10 e artefatos originais com manifesto de hashes.
 
-## Checklist de entrega
+## Checklist acadêmico do MVP v1.1
 
 - [ ] Identificar commit/tag, perfil, BIT e hash na capa do relatório e na demo.
 - [ ] Relacionar RF-01 a RF-10 aos módulos, testes e trechos demonstrados da mesma versão.
@@ -78,9 +97,9 @@ A reconciliação local acrescenta a [Fmax estimada do checkpoint 5D7A3AE2](evid
 e sua [proveniência e limites](evidencias/reconciliacao_local_20261115/analise_checkpoint.json).
 É uma análise do DCP preservado, sem nova síntese ou varredura de frequência.
 
-## Vídeo associado
+## Vídeo associado ao 5D7A3AE2
 
-O BIT recente espera B++ 640×480/2 bpp, 4.800 quadros, SHA-256
+O BIT 5D7A3AE2 espera B++ 640×480/2 bpp, 4.800 quadros, SHA-256
 `229261917a3ad34b355656fc455fc8ee1041f36f42d823421b6e529566bf1d4a`,
 LBA `31837888`, `720001` setores no cartão identificado no pacote.
 O BIN está preservado localmente, mas não está nos assets da release de firmware;

@@ -1,6 +1,6 @@
 # Arquitetura RTL consolidada
 
-> Este documento descreve o RTL v1.1 da raiz. O [firmware recente](../firmware/calibracao-guiada-5d7a3ae2/README.md) tem fontes, MIG e parâmetros próprios. Os detalhes operacionais da base estão no [guia preservado](historico/README_baseline_20261106.md).
+> Este documento descreve o RTL v1.1 da raiz. O [firmware 5D7A3AE2](../firmware/calibracao-guiada-5d7a3ae2/README.md) tem fontes, MIG e parâmetros próprios. Os detalhes operacionais da base estão no [guia preservado](historico/README_baseline_20261106.md). Para a versão documental mais recente, consulte a [v1.2 12000007](hud-v12-12000007/README.md); os dados desta página continuam restritos ao perfil v1.1.
 
 O top é `rtl/top_reticula.sv`, com aquisição/controles a 100 MHz e raster VGA a 25 MHz. A saída permanece 640×480 em um total de 800×525 pixels, 59,524 Hz.
 

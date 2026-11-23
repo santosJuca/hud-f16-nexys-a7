@@ -16,3 +16,5 @@ Para o firmware de bancada, use as [constraints do 5D7A3AE2](../firmware/calibra
 e os [aceites](../firmware/calibracao-guiada-5d7a3ae2/aceites/). Para a base, consulte
 a [pinagem v1.1](pinagem.md). O [atlas](atlas-eletrico/README.md) inclui sensores,
 joystick e buzzer, com o alcance descrito em cada prancha.
+
+Para o candidato documental mais recente, use a [pinagem v1.2 12000007](hud-v12-12000007/pinagem.csv) e as constraints das fontes identificadas na [release da configuração](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/docs-hud-v12-12000007-vivado-20261123). Essa pinagem é uma extração lógica do XDC; não comprova a fiação ou a validação física da montagem v1.2.

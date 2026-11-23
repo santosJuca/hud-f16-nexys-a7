@@ -1,14 +1,12 @@
 # Documentação do HUD F-16
 
-Comece pelo [README principal](../README.md). O firmware de bancada de referência é **5D7A3AE2**,
-preservado como pacote reproduzível. Os módulos da raiz pertencem à base v1.1
-anterior e têm documentação própria.
+Comece pela [documentação v1.2 `12000007`](hud-v12-12000007/README.md), a referência documental mais recente. O firmware de bancada com aceites físicos é **5D7A3AE2**. Os módulos da raiz pertencem à base v1.1 e têm documentação própria. As três configurações permanecem separadas.
 
-## Candidato v1.2 documentado
+## Versão documental atual: v1.2 12000007
 
 A [arquitetura v1.2 `12000007`](hud-v12-12000007/README.md) reúne documentos em PDF/DOCX, catálogo e conexões em CSV e 15 esquemas nativos do Vivado 2026.1. A configuração usa SD nativo/DDR2 e tem fontes próprias no pacote da release. Não substitui a base v1.1 ou os aceites físicos do 5D7A3AE2.
 
-## Firmware recente e entrega
+## Firmware de bancada 5D7A3AE2 e entrega acadêmica
 
 | Documento | Conteúdo |
 | --- | --- |
@@ -16,7 +14,7 @@ A [arquitetura v1.2 `12000007`](hud-v12-12000007/README.md) reúne documentos em
 | [Manifesto](../firmware/calibracao-guiada-5d7a3ae2/MANIFESTO.json) | Hashes, recursos, parâmetros e limites |
 | [Relatórios Vivado](../firmware/calibracao-guiada-5d7a3ae2/relatorios/) | Síntese, utilização, timing roteado, CDC, DRC e bus skew |
 | [Aceites](../firmware/calibracao-guiada-5d7a3ae2/aceites/) | Ensaios relatados, Flash/readback e ciclo físico de energia |
-| [Entrega e demonstração](entrega_demo.md) | Requisitos, evidência de pipeline e anexos necessários |
+| [Entrega e demonstração](entrega_demo.md) | Identidades separadas, entrega documental v1.2 e checklist acadêmico MVP |
 | [Reconciliação local](reconciliacao_local_20261115.md) | Comparação de worktrees, melhorias recuperadas e testes complementares |
 | [Consolidação de 15/11](consolidacao_20261115.md) | Origens, decisões e validação da integração |
 | [Montagem confirmada e interfaces](montagem.md) | Duas caixas, interfaces e limites da documentação elétrica |

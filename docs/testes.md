@@ -1,6 +1,6 @@
 # Testes e validação
 
-> Esta página descreve a suíte v1.1 da raiz. A [suíte 5D7A3AE2](../firmware/calibracao-guiada-5d7a3ae2/scripts/reproduzir-testes.sh) é executada separadamente pelo CI; consulte o [guia recente](../firmware/calibracao-guiada-5d7a3ae2/README.md).
+> Esta página descreve a suíte v1.1 da raiz. A [suíte 5D7A3AE2](../firmware/calibracao-guiada-5d7a3ae2/scripts/reproduzir-testes.sh) é executada separadamente pelo CI; consulte o [guia 5D7A3AE2](../firmware/calibracao-guiada-5d7a3ae2/README.md). Para a versão documental mais recente, consulte a [v1.2 12000007](hud-v12-12000007/README.md); os dados desta página continuam restritos ao perfil v1.1.
 
 A consolidação usa três entradas reproduzíveis, também executadas pelo workflow existente em `.github/workflows/ci.yml`:
 
