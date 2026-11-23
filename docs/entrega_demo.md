@@ -44,26 +44,24 @@ retículos, `simbologia_vga`, números e alertas geram máscaras; `top_reticula`
 compõe o RGB. `entrada_hud` transfere os dados entre clocks e `dados_hud` os
 aplica na fronteira de quadro. Consulte a [arquitetura](arquitetura.md).
 
-Esse é um fluxo funcional, não uma declaração de cinco estágios registrados.
-Para a versão demonstrada, anexar uma captura temporal que mostre coordenadas,
-região ativa, máscara de símbolo, RGB e sincronismos, explicando sua latência.
-O teste `tb_vga` da base verifica o raster completo e o blanking; os testes de
-modos verificam mudanças entre quadros. Esses resultados não substituem a captura
-temporal da implementação selecionada nem a demonstração em monitor.
+A [captura do MVP v1.1](entrega_academica/mvp_v11/README.md) usa o perfil do
+candidato acadêmico. O banco verificou 20 rasters completos, incluindo RGB
+preto no blanking, temporização de HS/VS e prioridade das máscaras. O
+diagrama apresenta o fluxo funcional. A demonstração física em monitor
+permanece como evidência própria.
 
-O CI é evidência complementar: guardar SHA, URL do run, logs e capturas. O run
-[42271011383](https://github.com/santosJuca/Trabalho-display-aviao-v2/actions/runs/42271011383)
-pertence a `c481ceb`, não ao snapshot recente. O CI de
-[057b586](https://github.com/santosJuca/Trabalho-display-aviao-v2/actions/runs/43521449535)
-executou a suíte antiga da raiz; a consolidação acrescenta um job específico do
-firmware recente. O novo run só deve ser citado como aprovado após sua conclusão.
+A [CI da main 28e736d](https://github.com/santosJuca/Trabalho-display-aviao-v2/actions/runs/43741729969)
+é evidência da suíte anterior a esta limpeza. A captura do MVP foi executada
+separadamente. O pacote acadêmico local contém também relatório, apresentação,
+roteiro, matriz RF-01 a RF-10 e artefatos originais com manifesto de hashes.
 
 ## Checklist de entrega
 
 - [ ] Identificar commit/tag, perfil, BIT e hash na capa do relatório e na demo.
 - [ ] Relacionar RF-01 a RF-10 aos módulos, testes e trechos demonstrados da mesma versão.
-- [ ] Anexar arquitetura e evidência temporal do pipeline gráfico.
-- [ ] Anexar relatório final e apresentação.
+- [x] Preparar arquitetura e evidência temporal do pipeline gráfico do MVP.
+- [x] Preparar relatório e apresentação no pacote acadêmico local.
+- [ ] Revisar relatório e apresentação com o grupo e anexar à submissão.
 - [ ] Anexar síntese, utilização, timing e Fmax da versão escolhida; não usar Fmax histórica como atual.
 - [ ] Preservar os artefatos do CI fora da retenção temporária do GitHub Actions.
 - [ ] Mostrar retículo, horizonte, escalas, direção e marcador simultâneos.

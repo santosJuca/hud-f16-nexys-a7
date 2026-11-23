@@ -1,2 +1,0 @@
-PASS mira: centro/deadzone, eixos, limites, debounce, LOCK e UNLOCK
-/home/santojuca/Downloads/Trabalho-display-aviao-v2/tests/tb_mira_joystick.sv:53: $finish called at 2960000 (1ps)

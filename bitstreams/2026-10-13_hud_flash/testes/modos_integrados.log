@@ -1,2 +1,0 @@
-PASS modos integrados: 43 verificacoes, fontes, CDC, quadro, visual, audio e reset
-/home/santojuca/Downloads/Trabalho-display-aviao-v2/tests/tb_modos_operacao_integrado.sv:98: $finish called at 65675000 (1ps)

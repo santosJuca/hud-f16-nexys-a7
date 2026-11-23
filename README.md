@@ -1,116 +1,84 @@
 # HUD F-16 na Nexys A7-100T
 
-Projeto acadêmico de Sistemas Digitais: simbologia aeronáutica gerada em
-SystemVerilog e exibida em VGA 640×480 na FPGA Artix-7 `xc7a100tcsg324-1`.
-Inclui horizonte, retículo, escalas, rumo, mira com LOCK, modos de exibição,
-sensores e simulação didática de voo e pouso.
+Demonstrador de Sistemas Digitais em SystemVerilog para a FPGA Artix-7
+`xc7a100tcsg324-1`. Gera um HUD em VGA 640×480 com retículo, horizonte artificial,
+escalas, rumo, mira com LOCK e alertas. A versão de bancada integra sensores,
+calibração magnética guiada e vídeo de fundo sincronizado aos modos SOLO, VOO e POUSO.
 
-## Versão recente: 5D7A3AE2
+## Versões e evidências
 
-O [firmware com calibração magnética guiada](firmware/calibracao-guiada-5d7a3ae2/README.md)
-é o conjunto recente ensaiado na placa em 13/11/2026. Seu snapshot foi publicado
-em `057b586820b86153536804148213a63c487086b6` e está integrado neste repositório,
-com fontes, constraints, MIG, parâmetros, testes, relatórios e aceites.
-
-- [Baixar BIT, fontes e pacote completo](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/hud-f16-calibracao-guiada-5d7a3ae2-20261113).
-- [Operação, calibração, identidade e recuperação](firmware/calibracao-guiada-5d7a3ae2/README.md).
-- [Entrega e demonstração](docs/entrega_demo.md).
-- [Índice da documentação](docs/README.md).
-
-O operador confirmou calibração aplicada, giro/retorno da bússola, vídeo,
-horizonte, chegada ao POUSO e início normal após desligar/religar. Os
-[aceites](firmware/calibracao-guiada-5d7a3ae2/aceites/) distinguem esses relatos
-dos registros de programação e readback. São resultados daquela montagem,
-não uma garantia de precisão em qualquer ambiente.
-
-O programa é persistente na Flash; os coeficientes calculados durante a
-calibração guiada são voláteis. Permanecem três CDC-10, um CDC-8 e a
-qualificação de timing externo SPI. Os 30 FPS do vídeo são configurados,
-não medidos fisicamente.
-
-## Escolha do conjunto
-
-| Conjunto | Fontes e reprodução | Uso |
+| Conjunto | Uso | Referência |
 | --- | --- | --- |
-| **5D7A3AE2, 13/11** | [Pacote recente](firmware/calibracao-guiada-5d7a3ae2/README.md) | Calibração guiada, esteira híbrida, vídeo 2 bpp/DDR2 e modos sincronizados |
-| HUD v1.1, consolidação do PR #6 | [RTL](rtl/), [constraints](constraints/), [scripts](scripts/) e [testes](tests/) | Base anterior preservada, com captura e vídeo BRAM; não gera o firmware recente |
-| Builds de outubro | [Catálogo](bitstreams/README.md) | Artefatos históricos identificados por data e hash |
-| Mecânica | [Stealth V3](mechanical/HUD_FPGA_Stealth_V3/README.md) e [gabinete F-16](gabinete/) | CAD e documentação preliminares; fabricação não liberada |
+| **5D7A3AE2** | Firmware de bancada ensaiado em 13/11/2026. Vídeo 2 bpp, DDR2 e calibração magnética guiada. | [Fontes, operação e artefatos](firmware/calibracao-guiada-5d7a3ae2/README.md) · [Aceites físicos](firmware/calibracao-guiada-5d7a3ae2/aceites/) |
+| **MVP v1.1** | Perfil procedural sem framebuffer externo, selecionado para a entrega. Validação offline com `MODOS_OPERACIONAIS=1`. | [Pipeline, perfil e reprodução](docs/entrega_academica/mvp_v11/README.md) · [Checklist da entrega](docs/entrega_demo.md) |
 
-Esses conjuntos têm controles, pinagens e relatórios próprios. Não combine
-um XDC ou BIT de outubro com o procedimento do firmware recente.
+O operador registrou resposta do horizonte, bússola e calibração, vídeo, entrada
+em POUSO e boot após desligar e religar no 5D7A3AE2. A identidade do BIT ensaiado
+está no [manifesto](firmware/calibracao-guiada-5d7a3ae2/MANIFESTO.json). O candidato
+acadêmico tem BIT e DCP próprios e a demonstração física desse candidato está pendente.
 
-## Reproduzir os testes
+## Arquitetura e pipeline
 
-Na raiz do repositório, com Python 3 e Icarus Verilog (`iverilog`/`vvp`):
+O `vga_controller` gera coordenadas, região ativa e pulsos HS/VS. Os módulos
+de retículo, horizonte, instrumentos e alertas calculam máscaras a partir das
+coordenadas e do estado de voo. `top_reticula` resolve a prioridade das camadas
+e entrega RGB durante a área ativa. O estado visual da base é publicado na
+fronteira do quadro para evitar mudanças no meio da imagem.
+
+No 5D7A3AE2, o leitor SPI busca setores do microSD e o caminho de vídeo com DDR2 e
+buffers entrega os pixels de fundo sincronizados ao raster. A sequência de modos
+coordena a reprodução e as referências de velocidade e altitude. O compositor
+aplica a simbologia por cima do fundo. O MPU6050 alimenta roll e pitch, e o
+HMC5883L alimenta o cálculo de rumo, com perfil inicial 3D e perfil guiado 2D
+selecionável próximo do nível.
+
+A [captura temporal](docs/entrega_academica/mvp_v11/README.md) mostra coordenadas,
+máscaras, RGB e sincronismos no MVP. A [arquitetura da base](docs/arquitetura.md)
+detalha a publicação por quadro e a composição.
+
+## Montagem
+
+A montagem informada pelo responsável tem **uma caixa de madeira** e **uma caixa
+separada para a Nexys A7-100T**. A [documentação de montagem](docs/montagem.md)
+identifica as interfaces com evidência disponível e os limites das pranchas elétricas.
+
+## Simular e reproduzir
+
+Na raiz, com Python 3, Icarus Verilog, Verilator, make, compilador C++, FFmpeg e Tcl:
 
 ```bash
-bash firmware/calibracao-guiada-5d7a3ae2/scripts/reproduzir-testes.sh
-```
-
-O comando executa testes específicos da calibração, regressões selecionadas e
-integração do top com modelos. Gera arquivos locais no pacote. Os dois testes
-legados documentados como inconclusivo/incompatível não são contabilizados como PASS.
-
-Para a base v1.1, com Icarus, Verilator, compilador C++, Python 3, Tcl e FFmpeg:
-
-```bash
+bash scripts/validate_mvp_v11.sh build/mvp-v11
 bash scripts/test.sh
 python3 -m unittest discover -s tests -p 'test_*.py'
 bash scripts/test_attitude_capture.sh build/capture
-```
-
-Para a cobertura complementar recuperada dos worktrees, com Python 3 e Icarus:
-
-```bash
-mkdir -p build
 bash scripts/test_latest_reconciliation.sh build/reconciliacao-recente
 ```
 
-O diretório deve ser novo. O script preserva o pacote publicado e executa uma
-cópia, incluindo orientação MPU, prioridade dos comandos e recuperação I²C.
-O banco MPU pode consumir vários minutos; timeout é falha, não PASS. A
-[reconciliação local](docs/reconciliacao_local_20261115.md) registra as origens e os limites.
+Os comandos com destino explícito esperam diretórios novos. O runner do MVP
+confere os hashes do perfil antes de compilar. O último comando roda a suíte
+5D7A3AE2 e a cobertura complementar recuperada dos worktrees.
+O [CI](.github/workflows/ci.yml) executa as regressões da base e do firmware recente.
 
-Os testes geram resultados em `build/`. O [workflow de CI](.github/workflows/ci.yml)
-verifica os dois conjuntos e salva os logs. Simulação não acessa a placa nem
-comprova funcionamento físico.
-
-## Reproduzir a implementação recente
-
-Com Vivado 2026.1 instalado:
+Para síntese e implementação offline do 5D7A3AE2 com Vivado 2026.1:
 
 ```bash
-VIVADO=/caminho/do/Vivado/2026.1/bin/vivado bash firmware/calibracao-guiada-5d7a3ae2/scripts/reproduzir-build.sh
+VIVADO=/caminho/do/Vivado/2026.1/bin/vivado \
+  bash firmware/calibracao-guiada-5d7a3ae2/scripts/reproduzir-build.sh
 ```
 
-O script copia as entradas para uma pasta temporária nova e executa síntese e
-roteamento. Não gera BIT nem programa hardware. O pacote documenta separadamente
-a emissão offline de BIT a partir de checkpoint. A reprodução de um build novo
-não o torna idêntico ao BIT ensaiado; confira os hashes de cada artefato.
+Consulte o [perfil acadêmico](docs/entrega_academica/mvp_v11/README.md) para
+identificar os genéricos efetivos do candidato v1.1. O [build padrão da raiz](scripts/build_vivado.tcl)
+usa o perfil v1.1 padrão. Um novo build precisa de identidade e evidência próprias.
 
-## Vídeo e montagem
+## Limites
 
-O firmware recente usa o vídeo **B++ 640×480, 2 bpp, 4.800 quadros**, com SHA-256
-`229261917a3ad34b355656fc455fc8ee1041f36f42d823421b6e529566bf1d4a`.
-O perfil compilado espera LBA `31837888` e `720001` setores no cartão documentado.
-Ele não localiza automaticamente o arquivo em outro cartão.
+O perfil 5D7A3AE2 espera o B++ de 4.800 quadros, SHA-256
+`229261917a3ad34b355656fc455fc8ee1041f36f42d823421b6e529566bf1d4a`, no LBA
+`31837888`, com `720001` setores. O BIN está fora da release de firmware e a release
+anterior de mídia contém outro hash. Os 30 FPS são configurados. A taxa física, a
+precisão magnética integral e o timing externo SPI seguem sem qualificação. Os
+coeficientes da calibração guiada são voláteis. Os relatórios do firmware registram
+três CDC-10 e um CDC-8 pendentes.
 
-O B++ não está incluído na release de firmware. A
-[release de mídia de 13/11](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/hud-f16-video-640x480-2bpp-20261113)
-contém a versão anterior, de hash `450d2b3d…`; ela não é o B++ esperado pelo conjunto recente.
-
-O [atlas elétrico](docs/atlas-eletrico/README.md) é uma referência de montagem.
-Confira-o contra o XDC do perfil utilizado. JTAG, Flash e microSD são operações
-separadas e exigem identificação do alvo, conferência de integridade e recuperação.
-
-## Escopo acadêmico e evidências
-
-O caminho gráfico procedural da base v1.1 não usa framebuffer externo. O vídeo
-com DDR2 é uma extensão e deve ser distinguido desse núcleo, pois o enunciado
-proíbe framebuffer externo. Sensores, gabinete e calibração guiada também são extensões.
-
-A [consolidação atual](docs/consolidacao_20261115.md) registra origens, decisões,
-validações e limites. Os detalhes da base anterior foram preservados no
-[guia v1.1](docs/historico/README_baseline_20261106.md). O projeto é didático;
-os dados simulados e a mira não representam instrumentos ou rastreamento aeronáuticos reais.
+O [índice técnico](docs/README.md) reúne operação, pinagem por perfil, validações e
+histórico recuperável.

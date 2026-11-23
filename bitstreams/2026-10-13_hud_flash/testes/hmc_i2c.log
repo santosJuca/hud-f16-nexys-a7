@@ -1,6 +1,0 @@
-PASS HMC: ausencia, novas tentativas e ID incorreto
-PASS HMC: H43, writes, repeated START, stretching, XYZ, ACK/NACK e STOP atomico
-PASS HMC: NACK em dados preserva amostra e exige reidentificacao
-PASS HMC: SDA presa no STOP, timeout e recuperacao
-PASS HMC: SCL presa, timeout e recuperacao; todos os testes passaram
-/home/santojuca/Downloads/Trabalho-display-aviao-v2/tests/tb_hmc5883l_i2c.sv:78: $finish called at 31853090000 (1ps)
