@@ -7,6 +7,8 @@ calibração magnética guiada e vídeo de fundo sincronizado aos modos SOLO, VO
 
 ## Versões e evidências
 
+A [documentação v1.2 `12000007`](docs/hud-v12-12000007/README.md) está disponível na árvore: arquitetura, catálogo, interligações e 15 esquemas nativos do Vivado. É um candidato separado, com demonstração física pendente.
+
 | Conjunto | Uso | Referência |
 | --- | --- | --- |
 | **5D7A3AE2** | Firmware de bancada ensaiado em 13/11/2026. Vídeo 2 bpp, DDR2 e calibração magnética guiada. | [Fontes, operação e artefatos](firmware/calibracao-guiada-5d7a3ae2/README.md) · [Aceites físicos](firmware/calibracao-guiada-5d7a3ae2/aceites/) |

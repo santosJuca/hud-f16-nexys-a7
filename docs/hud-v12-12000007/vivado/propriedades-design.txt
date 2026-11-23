@@ -1,0 +1,147 @@
+Property                 Type     Read-only  Value
+CFGBVS                   enum     false      VCCO
+CLASS                    string   true       design
+CONFIG_VOLTAGE           enum     false      3.3
+CONSTRSET                fileset  true       constrs_1
+DCP_VERSION              string   true       Vivado v2026.1 (64-bit) SW Build 6511674 on Tue Jun 16 11:01:26 MDT 2026
+ENABLE_AIE_NETLIST_VIEW  bool     false      1
+ENABLE_NOC_NETLIST_VIEW  bool     false      1
+IS_BLOCK                 bool     true       0
+MLO_VERSION_NUMBER       string   false      2026.1_9
+NAME                     string   true       checkpoint_routed
+NEEDS_REFRESH            bool     true       0
+NEEDS_SAVE               bool     true       0
+PART                     part     true       xc7a100tcsg324-1
+SRCSET                   fileset  true       sources_1
+TELEMETRY_DATA           string   false      {
+                                               "Design Characteristics Data": {
+                                                 "Utilization Report": {
+                                                   "BRAM": {
+                                                     "Available": "135",
+                                                     "Utilization": "0"
+                                                   },
+                                                   "BUFGCTRL": {
+                                                     "Available": "32",
+                                                     "Utilization": "8"
+                                                   },
+                                                   "DSP": {
+                                                     "Available": "240",
+                                                     "Utilization": "84"
+                                                   },
+                                                   "F7MUX": {
+                                                     "Available": "31700",
+                                                     "Utilization": "170"
+                                                   },
+                                                   "F8MUX": {
+                                                     "Available": "15850",
+                                                     "Utilization": "40"
+                                                   },
+                                                   "LUT": {
+                                                     "Available": "63400",
+                                                     "Utilization": "24338"
+                                                   },
+                                                   "LUTAsLogic": {
+                                                     "Available": "63400",
+                                                     "Utilization": "23327"
+                                                   },
+                                                   "LUTAsMem": {
+                                                     "Available": "19000",
+                                                     "Utilization": "1011"
+                                                   },
+                                                   "MMCM": {
+                                                     "Available": "6",
+                                                     "Utilization": "2"
+                                                   },
+                                                   "PLL": {
+                                                     "Available": "6",
+                                                     "Utilization": "1"
+                                                   },
+                                                   "REG": {
+                                                     "Available": "126800",
+                                                     "Utilization": "17831"
+                                                   }
+                                                 }
+                                               },
+                                               "Design Flow Data": {
+                                                 "Design Data": {
+                                                   "Design Mode": "Project flow",
+                                                   "Top Methodology": "SystemVerilog"
+                                                 },
+                                                 "Implementation": {
+                                                   "Opt Design": {
+                                                     "Run Time": "7 seconds"
+                                                   },
+                                                   "Place Design": {
+                                                     "Run Time": "59.980000 seconds"
+                                                   },
+                                                   "Route Design": {
+                                                     "Run Time": "62.730000 seconds"
+                                                   }
+                                                 },
+                                                 "Synthesis": {
+                                                   "Run Time": "198.800003 seconds"
+                                                 }
+                                               }
+                                             }
+TOP                      string   true       top_reticula
+XLNX_PROJ_DIR            string   false      /dev/shm/hud-v12-top-build-ysffobcF/resultado/projeto
+Property                    Type    Read-only  Value
+CLASS                       string  true       cell
+FILE_NAME                   string  true       /dev/shm/hud-v12-top-build-ysffobcF/hud/rtl/top_reticula.sv
+INSERT_MBUFG_CONTROL_LOGIC  bool    false      0
+IS_BLACKBOX                 bool    true       0
+IS_BOUNDARY_INST            bool    true       0
+IS_DEBUGGABLE               bool    true       0
+IS_ENCRYPTED                bool    true       0
+IS_MATCHED                  bool    true       0
+IS_ORIG_CELL                bool    true       1
+IS_PRIMITIVE                bool    true       0
+IS_REUSED                   bool    true       0
+IS_SEQUENTIAL               bool    true       0
+LINE_NUMBER                 int     true       694
+NAME                        string  true       u_vector
+ORIG_REF_NAME               string  true       atitude_vetorial
+PRIMITIVE_COUNT             int     true       6574
+REF_NAME                    string  true       atitude_vetorial
+REUSE_STATUS                enum    true       
+SCOPED_NAME                 string  true       u_vector
+Property                    Type    Read-only  Value
+CLASS                       string  true       cell
+FILE_NAME                   string  true       /dev/shm/hud-v12-top-build-ysffobcF/hud/rtl/top_reticula.sv
+INSERT_MBUFG_CONTROL_LOGIC  bool    false      0
+IS_BLACKBOX                 bool    true       0
+IS_BOUNDARY_INST            bool    true       0
+IS_DEBUGGABLE               bool    true       0
+IS_ENCRYPTED                bool    true       0
+IS_MATCHED                  bool    true       0
+IS_ORIG_CELL                bool    true       1
+IS_PRIMITIVE                bool    true       0
+IS_REUSED                   bool    true       0
+IS_SEQUENTIAL               bool    true       0
+LINE_NUMBER                 int     true       1414
+NAME                        string  true       u_vga
+ORIG_REF_NAME               string  true       vga_controller
+PRIMITIVE_COUNT             int     true       2631
+REF_NAME                    string  true       vga_controller
+REUSE_STATUS                enum    true       
+SCOPED_NAME                 string  true       u_vga
+Property                    Type    Read-only  Value
+CLASS                       string  true       cell
+FILE_NAME                   string  true       /dev/shm/hud-v12-top-build-ysffobcF/hud/rtl/top_reticula.sv
+INSERT_MBUFG_CONTROL_LOGIC  bool    false      0
+IS_BLACKBOX                 bool    true       0
+IS_BOUNDARY_INST            bool    true       0
+IS_DEBUGGABLE               bool    true       0
+IS_ENCRYPTED                bool    true       0
+IS_MATCHED                  bool    true       0
+IS_ORIG_CELL                bool    true       1
+IS_PRIMITIVE                bool    true       0
+IS_REUSED                   bool    true       0
+IS_SEQUENTIAL               bool    true       0
+LINE_NUMBER                 int     true       2017
+NAME                        string  true       u_ui_test
+ORIG_REF_NAME               string  true       ddr2_ui_smoke_top
+PRIMITIVE_COUNT             int     true       7477
+REF_NAME                    string  true       ddr2_ui_smoke_top
+REUSE_STATUS                enum    true       
+SCOPED_NAME                 string  true       u_ui_test

@@ -1,0 +1,53 @@
+{
+  "tool": "Vivado 2026.1, build 6511674",
+  "candidate": "12000007",
+  "checkpoint_sha256": "79b7caa7b93c18a618fe680c039371f944cc22b3bf731ea53d8f2cac049b1110",
+  "bit_sha256": "88f7872de8cb77769781611b84aa1caa2c2f37bc4cfddc43baefa717d91aaec6",
+  "RTL_sources": 100,
+  "generic_overrides": 55,
+  "rtl_non_primitive_hierarchy_cells": 225,
+  "routed_non_primitive_hierarchy_cells": 223,
+  "comparison": {
+    "expected_local_instances": 99,
+    "matched_local_instances": 99
+  },
+  "XPM_macro_instances": 5,
+  "native_schematics": 15,
+  "rtl_MIG": "interface only; synth_stub emitted by write_verilog from same checkpoint",
+  "new_rtl_elaboration": true,
+  "new_full_synthesis": false,
+  "new_implementation": false,
+  "new_bitstream": false,
+  "new_simulation": false,
+  "hardware_access": false,
+  "functional_files_preserved": 118,
+  "pdf_processing": "Only /Rotate set to zero for reading copies; native PDFs/SCH retained byte for byte.",
+  "executed_scripts": [
+    "extrair-checkpoint.tcl",
+    "exportar-esquemas.tcl (01-08; stopped at 09)",
+    "exportar-detalhes.tcl (09-10 and register/timing extraction)",
+    "extrair-interface-mig.tcl",
+    "elaborar-rtl.tcl (with MIG interface)"
+  ],
+  "attempts_retained": [
+    "read_ip without board failed",
+    "read_ip with board had no generated MIG module; replaced only in analysis project by checkpoint-derived black-box declaration"
+  ],
+  "files": {
+    "05-ddr2-fifos.sch": "d9d4281468494ee85deb8bb03a00c8346f5ed551146d385748d93b1e1378a18c",
+    "10-saida-rgb.sch": "86acee63b7622aae39e707174510f27a5d76bbcc3b1fb9ae8d4b07a93e499f6c",
+    "08-cdc-pedido-confirmacao.sch": "24960e6acecaaaee9455c5de8ca6589330e351ff26342302231f4926bc92f947",
+    "02-atitude-bussola.sch": "0b9d8ebdb928859145331c29778739a899485860c474d7b2baceea993f169d41",
+    "15-rtl-pipeline.sch": "41560eeb309392d1b6615c4ea7525cf781962881f2fbfe647dba8edf97517b2f",
+    "03-comandos-estado.sch": "52ebb35ee0121bc1654876f4d902a9518715e0879fb1f3017a594540d5cca990",
+    "11-rtl-visao-geral.sch": "75b7b769c577950000058673ff661e0197071c38a7b779523458379bb76bac43",
+    "01-visao-geral.sch": "8297ddbf1375aee9ce9bd3433592fd32b3d70b2e659a0e2c355592b9d9e9fa60",
+    "09-prefetch-pixel.sch": "58bc0d4b7d4fc1fe781df9dfd2f712424d9c0fafcc4bf4d1feabd624ab15bc92",
+    "07-pipeline-tres-estagios.sch": "90f7b437cf99f626071cb29b0b2c8e36c17763ae21c634c2260d46ef5826885d",
+    "04-host-sd-nativo.sch": "504bec9f65e2ca8818a41a2b2c03a7c35f388f086b207e93e1a0a505c77d9cd1",
+    "13-rtl-sensores.sch": "d6325d9a7931b8dc7631279fd85b74e1cca2299286f0be00c3eba5bc77643ef9",
+    "14-rtl-sd-ddr2.sch": "128829198273d355d9610577e76d8cace662d920c8462dbd49f0b4ed6e324d8f",
+    "06-renderizacao.sch": "308f61a4140f40ba86508bbe74bb17a99cbafe7ce711c969ae9a2da517300964",
+    "12-rtl-cdc-quadro.sch": "7cea8dbe049efd3eda24e8d26ddc86a69373ebe244a3daf66ae117ea161df28b"
+  }
+}

@@ -1,8 +1,12 @@
 # Documentação do HUD F-16
 
-Comece pelo [README principal](../README.md). A versão recente é **5D7A3AE2**,
-preservada como pacote reproduzível. Os módulos da raiz pertencem à base v1.1
+Comece pelo [README principal](../README.md). O firmware de bancada de referência é **5D7A3AE2**,
+preservado como pacote reproduzível. Os módulos da raiz pertencem à base v1.1
 anterior e têm documentação própria.
+
+## Candidato v1.2 documentado
+
+A [arquitetura v1.2 `12000007`](hud-v12-12000007/README.md) reúne documentos em PDF/DOCX, catálogo e conexões em CSV e 15 esquemas nativos do Vivado 2026.1. A configuração usa SD nativo/DDR2 e tem fontes próprias no pacote da release. Não substitui a base v1.1 ou os aceites físicos do 5D7A3AE2.
 
 ## Firmware recente e entrega
 
