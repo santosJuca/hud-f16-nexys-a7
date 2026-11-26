@@ -1,95 +1,68 @@
-# HUD F-16 na Nexys A7-100T
+# HUD F-16
 
-Demonstrador de Sistemas Digitais em SystemVerilog para a FPGA Artix-7
-`xc7a100tcsg324-1`. Gera um HUD em VGA 640×480 com retículo, horizonte artificial,
-escalas, rumo, mira com LOCK e alertas. A versão de bancada integra sensores,
-calibração magnética guiada e vídeo de fundo sincronizado aos modos SOLO, VOO e POUSO.
+**Desenvolvimento de um Head-Up Display em FPGA**
 
-## Versões e evidências
+Projeto acadêmico de Engenharia da Computação da PUCRS, desenvolvido na disciplina de Sistemas Digitais com uso do laboratório IDEAR para o desafio da AEL Sistemas de 2026.
 
-A versão documental mais recente é a **v1.2 `12000007`**, com [arquitetura, catálogo, interligações e 15 esquemas nativos do Vivado](docs/hud-v12-12000007/README.md). Suas fontes exatas estão no [pacote da release documental](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/docs-hud-v12-12000007-vivado-20261123). O candidato tem demonstração física pendente; o firmware com aceites de bancada permanece identificado separadamente.
+**Entrega acadêmica concluída · Atualizado em 26/11/2026**
 
-| Conjunto | Uso | Referência |
-| --- | --- | --- |
-| **v1.2 `12000007`** | Candidato mais recente documentado: SD nativo em quatro linhas, DDR2, vídeo DIA/NOITE e pipeline de instrumentos. Sem aceite físico conclusivo. | [Documentação na main](docs/hud-v12-12000007/README.md) · [Fontes e checkpoint da referência](https://github.com/santosJuca/Trabalho-display-aviao-v2/releases/tag/docs-hud-v12-12000007-vivado-20261123) |
-| **5D7A3AE2** | Firmware de bancada ensaiado em 13/11/2026. Vídeo 2 bpp, DDR2 e calibração magnética guiada. | [Fontes, operação e artefatos](firmware/calibracao-guiada-5d7a3ae2/README.md) · [Aceites físicos](firmware/calibracao-guiada-5d7a3ae2/aceites/) |
-| **MVP v1.1** | Perfil procedural sem framebuffer externo, selecionado para a entrega. Validação offline com `MODOS_OPERACIONAIS=1`. | [Pipeline, perfil e reprodução](docs/entrega_academica/mvp_v11/README.md) · [Checklist da entrega](docs/entrega_demo.md) |
+`SystemVerilog` · `Artix-7` · `Nexys A7-100T` · `Vivado 2026.1`
 
-O operador registrou resposta do horizonte, bússola e calibração, vídeo, entrada
-em POUSO e boot após desligar e religar no 5D7A3AE2. A identidade do BIT ensaiado
-está no [manifesto](firmware/calibracao-guiada-5d7a3ae2/MANIFESTO.json). O candidato
-acadêmico tem BIT e DCP próprios e a demonstração física desse candidato está pendente.
+<img src="assets/hud-prototipo-externo.jpg" alt="Vista externa da caixa de madeira do protótipo, com a placa Nexys A7 e os controles visíveis" width="540">
 
-## Arquitetura e pipeline
+[Apresentação e matriz](presentation/README.md) · [Operação e reprodução](docs/entrega-final.md) · [Arquitetura e esquemas Vivado](docs/hud-v12-12000007/README.md) · [Acervo técnico](docs/README.md)
 
-O `vga_controller` gera coordenadas, região ativa e pulsos HS/VS. Os módulos
-de retículo, horizonte, instrumentos e alertas calculam máscaras a partir das
-coordenadas e do estado de voo. `top_reticula` resolve a prioridade das camadas
-e entrega RGB durante a área ativa. O estado visual da base é publicado na
-fronteira do quadro para evitar mudanças no meio da imagem.
+## O desafio
 
-Na v1.2 `12000007`, o host SD nativo alimenta dois bancos de quadro em DDR2; o leitor VGA usa buffers de linha e prefetch. O modo NOITE usa 2 bpp e o modo DIA usa RGB332, ambos em 640×480. A atualização dos instrumentos acompanha o estado publicado por quadro. O caminho de fase do perfil de voo tem três grupos de registros; as máscaras e a seleção final de RGB são predominantemente combinacionais. Veja a [arquitetura v1.2](docs/hud-v12-12000007/arquitetura.pdf) e o [pipeline extraído pelo Vivado](docs/hud-v12-12000007/vivado/07-pipeline-tres-estagios.pdf).
+O projeto gera simbologia de voo em tempo real a partir das coordenadas da varredura VGA. O núcleo procedural desenha retículo, horizonte artificial, escalas, indicador de rumo e marcador com LOCK/UNLOCK. Os modos NORMAL e DECLUTTER controlam a densidade das informações na tela.
 
-No 5D7A3AE2, o leitor SPI busca setores do microSD e o caminho de vídeo com DDR2 e
-buffers entrega os pixels de fundo sincronizados ao raster. A sequência de modos
-coordena a reprodução e as referências de velocidade e altitude. O compositor
-aplica a simbologia por cima do fundo. O MPU6050 alimenta roll e pitch, e o
-HMC5883L alimenta o cálculo de rumo, com perfil inicial 3D e perfil guiado 2D
-selecionável próximo do nível.
+A ampliação acadêmica integra sensores, controles e vídeo de fundo. Os fundos DIA e NOITE vêm do microSD. A DDR2 mantém os bancos de quadros usados na reprodução. A simbologia procedural é composta sobre o fundo.
 
-A [captura temporal](docs/entrega_academica/mvp_v11/README.md) mostra coordenadas,
-máscaras, RGB e sincronismos no MVP. A [arquitetura da base](docs/arquitetura.md)
-detalha a publicação por quadro e a composição.
+## Protótipo e arquitetura
 
-## Montagem
+| Montagem interna | Simulação do núcleo procedural |
+| --- | --- |
+| <img src="assets/hud-prototipo-interno.jpg" alt="Placa, cabeamento e componentes no interior da montagem" width="360"> | <img src="assets/hud-simulacao-procedural.png" alt="Captura de simulação com horizonte, escalas e retículo em verde" width="360"> |
+| Fotografia usada na apresentação acadêmica. | Raster simulado de 640 × 480, referenciado na [CI da base](https://github.com/santosJuca/Trabalho-display-aviao-v2/actions/runs/43741729969). |
 
-A montagem informada pelo responsável tem **uma caixa de madeira** e **uma caixa
-separada para a Nexys A7-100T**. A [documentação de montagem](docs/montagem.md)
-identifica as interfaces com evidência disponível e os limites das pranchas elétricas.
+O MPU6050 fornece dados de atitude e o HMC5883L fornece a referência magnética. O BMP085 integra o caminho de pressão e dados barométricos. O host SD nativo carrega os bancos de DDR2. O caminho de pixels usa buffers de linha e prefetch, enquanto os instrumentos didáticos do perfil de voo passam por três estágios registrados. A composição final entrega RGB e sincronismos na interface VGA.
 
-## Simular e reproduzir
+O [esquema do pipeline no Vivado](docs/hud-v12-12000007/vivado/07-pipeline-tres-estagios.pdf) mostra os registradores da implementação roteada. A [arquitetura em PDF](docs/hud-v12-12000007/arquitetura.pdf) detalha as interfaces e a [matriz AEL](presentation/HUD_F16_MATRIZ_REQUISITOS_AEL_DEFINITIVO.pdf) relaciona cada requisito à evidência correspondente.
 
-Para a v1.2, use as fontes, constraints e 55 overrides de `genericos.txt` do pacote identificado acima. Os arquivos `rtl/` e scripts padrão da raiz continuam pertencendo à base v1.1. O pacote `firmware/calibracao-guiada-5d7a3ae2/` também é uma configuração própria; nenhum desses caminhos deve ser apresentado como reprodução automática do `12000007`.
+## Resultados técnicos
 
-Os comandos abaixo verificam a base v1.1 e o 5D7A3AE2, conforme indicado. A suíte atual do CI não é uma regressão da v1.2.
+| Item | Implementação de referência |
+| --- | --- |
+| Plataforma | Digilent Nexys A7-100T, Artix-7 `xc7a100tcsg324-1` |
+| Saída VGA | 640 × 480 pixels ativos |
+| Clocks configurados | 100 MHz no domínio principal e 25 MHz no domínio de pixel |
+| Utilização pós-rota | 23.631 LUTs, 17.502 flip-flops, 84 DSPs e 0 BRAM tiles |
+| Timing pós-rota | WNS +0,167 ns e WHS +0,015 ns |
+| Fundo de vídeo | DIA em RGB332 e NOITE em 2 bpp, com microSD e DDR2 |
 
-Na raiz, com Python 3, Icarus Verilog, Verilator, make, compilador C++, FFmpeg e Tcl:
+A equipe confirmou em 26/11 o funcionamento do rumo magnético após a correção da falha de recuperação. O [registro de entrega](docs/entrega-final.md) delimita essa confirmação, os resultados pós-rota e as ressalvas de CDC e timing externo.
 
-```bash
-bash scripts/validate_mvp_v11.sh build/mvp-v11
-bash scripts/test.sh
-python3 -m unittest discover -s tests -p 'test_*.py'
-bash scripts/test_attitude_capture.sh build/capture
-bash scripts/test_latest_reconciliation.sh build/reconciliacao-recente
-```
+## Demonstração e reprodução
 
-Os comandos com destino explícito esperam diretórios novos. O runner do MVP
-confere os hashes do perfil antes de compilar. O último comando roda a suíte
-5D7A3AE2 e a cobertura complementar recuperada dos worktrees.
-O [CI](.github/workflows/ci.yml) executa as regressões da base e do firmware recente.
+A demonstração percorre SOLO, DECOLAGEM, VOO e POUSO e mostra a seleção DIA/NOITE, o marcador, os modos de simbologia e a resposta dos sensores. O [roteiro de apresentação](presentation/HUD_F16_ROTEIRO_DEFINITIVO.pdf) indica a sequência e o tempo previsto.
 
-Para síntese e implementação offline do 5D7A3AE2 com Vivado 2026.1:
+Use o [guia de operação e reprodução](docs/entrega-final.md) para identificar o snapshot do build aprovado, conferir os hashes e localizar as fontes, constraints, IP e checkpoint. O [atlas elétrico](docs/atlas-eletrico/atlas-eletrico-hud-nexys-a7.pdf) complementa a documentação de montagem.
 
-```bash
-VIVADO=/caminho/do/Vivado/2026.1/bin/vivado \
-  bash firmware/calibracao-guiada-5d7a3ae2/scripts/reproduzir-build.sh
-```
+## Equipe de desenvolvimento
 
-Consulte o [perfil acadêmico](docs/entrega_academica/mvp_v11/README.md) para
-identificar os genéricos efetivos do candidato v1.1. O [build padrão da raiz](scripts/build_vivado.tcl)
-usa o perfil v1.1 padrão. Um novo build precisa de identidade e evidência próprias.
+| Integrante | <img src="assets/icons/github.svg" width="14" alt=""> GitHub | <img src="assets/icons/linkedin.svg" width="14" alt=""> LinkedIn | <img src="assets/icons/envelope.svg" width="14" alt=""> E-mail |
+| --- | --- | --- | --- |
+| Juarez Fernando Gonçalves dos Santos | [santosJuca](https://github.com/santosJuca) | [Perfil](https://www.linkedin.com/in/juarez-fernando-santos/) | [Juarez.santos00@edu.pucrs.br](mailto:Juarez.santos00@edu.pucrs.br) |
+| Állan Viana da Rosa | [Allanvrosa](https://github.com/Allanvrosa) | [Perfil](https://www.linkedin.com/in/állan-viana-da-rosa-979540324/) | [allan.rosa@edu.pucrs.br](mailto:allan.rosa@edu.pucrs.br) |
+| Leandro Bitencourt Silveira Junior | [Leandrob-ts](https://github.com/Leandrob-ts) | [Perfil](https://www.linkedin.com/in/leandro-bitencourt-silveira-junior/) | [leandro.junio@edu.pucrs.br](mailto:leandro.junio@edu.pucrs.br) |
+| Theo Kirsch | [treoucha](https://github.com/treoucha) | [Perfil](https://br.linkedin.com/in/theo-carvalho-01138a448) | [Theo.kirsch@edu.pucrs.br](mailto:Theo.kirsch@edu.pucrs.br) |
 
-## Limites
+## Agradecimentos
 
-Na v1.2, os mapas e cabeçalhos DIA/NOITE pertencem ao snapshot `12000007`. O [relatório da configuração](docs/hud-v12-12000007/arquitetura.pdf) registra as identidades e os limites. A alocação física do setor HFCAL2D, a qualificação dos coeficientes, os avisos CDC restantes e a demonstração física do candidato permanecem pendentes. Os esquemas e os relatórios estáticos do Vivado não encerram essas pendências.
+À PUCRS e ao professor Anderson Roberto Pinheiro Domingues, pela orientação na disciplina de Sistemas Digitais. Ao IDEAR, Laboratório Interdisciplinar de Empreendedorismo e Inovação, pelo espaço utilizado no desenvolvimento. À AEL Sistemas, pela proposição do desafio acadêmico.
 
-O perfil 5D7A3AE2 espera o B++ de 4.800 quadros, SHA-256
-`229261917a3ad34b355656fc455fc8ee1041f36f42d823421b6e529566bf1d4a`, no LBA
-`31837888`, com `720001` setores. O BIN está fora da release de firmware e a release
-anterior de mídia contém outro hash. Os 30 FPS são configurados. A taxa física, a
-precisão magnética integral e o timing externo SPI seguem sem qualificação. Os
-coeficientes da calibração guiada são voláteis. Os relatórios do firmware registram
-três CDC-10 e um CDC-8 pendentes.
+## Referências
 
-O [índice técnico](docs/README.md) reúne operação, pinagem por perfil, validações e
-histórico recuperável.
+- [Documentação da Nexys A7](https://digilent.com/reference/programmable-logic/nexys-a7/reference-manual)
+- [Documentação AMD Vivado](https://docs.amd.com/)
+- [Documentação de arquitetura e validação do projeto](docs/README.md)

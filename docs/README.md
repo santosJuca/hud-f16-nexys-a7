@@ -1,5 +1,7 @@
 # Documentação do HUD F-16
 
+Para a configuração apresentada em 26/11/2026, comece pelo [guia da entrega final](entrega-final.md). Os demais documentos mantêm o contexto e a data de seus respectivos registros.
+
 Comece pela [documentação v1.2 `12000007`](hud-v12-12000007/README.md), a referência documental mais recente. O firmware de bancada com aceites físicos é **5D7A3AE2**. Os módulos da raiz pertencem à base v1.1 e têm documentação própria. As três configurações permanecem separadas.
 
 ## Versão documental atual: v1.2 12000007
